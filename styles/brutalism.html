@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brutalism — Atlas</title>
+<meta name="description" content="Brutalism: raw HTML, default blue links, Times New Roman, no comfort.">
+<link rel="stylesheet" href="../assets/reset.css">
+<style>
+    /* ══ BRUTALISM (WEB BRUTALISM) ════════════════════════════════
+       The honest document. Nothing is designed away: default link
+       blue, underlines, Times New Roman, visible structure, no
+       radius, no shadow, no easing. It looks like the browser won.
+       Ugly is not the goal — INDIFFERENCE to beauty is.            */
+
+    :root{
+      --paper:#ffffff;
+      --ink:#000000;
+      --link:#0000ee;      /* the browser default, untouched */
+      --visited:#551a8b;
+      --alert:#ff0000;
+      --grey:#c0c0c0;
+    }
+
+    body{
+      background:var(--paper);
+      color:var(--ink);
+      font-family:"Times New Roman",Times,serif;
+      font-size:16px;
+      line-height:1.35;
+      max-width:none;
+      padding:0;
+    }
+
+    /* Everything is a bordered box. The border is 1px and black. */
+    nav,header,section{border:1px solid var(--ink);margin:0;padding:8px}
+
+    /* ── Nav: an inline list of underlined links ─────────────── */
+    .nav{display:block;background:var(--grey)}
+    .logo{font-size:34px;font-weight:700;font-family:"Times New Roman",Times,serif;
+      display:block;text-decoration:underline;color:var(--ink);letter-spacing:-.02em}
+    .nav ul{display:block;margin-top:4px}
+    .nav li{display:inline}
+    .nav li::after{content:" | "}
+    .nav li:last-child::after{content:""}
+    .nav ul a{color:var(--link);text-decoration:underline}
+    .nav ul a:visited{color:var(--visited)}
+    .nav ul a:hover{background:var(--alert);color:var(--paper)}
+
+    /* ── Hero: unstyled type at document scale ───────────────── */
+    .hero h1{font-size:48px;font-weight:700;line-height:1.05;margin-bottom:12px;font-family:inherit}
+    .hero p{font-size:16px;margin-bottom:12px}
+    .btn{color:var(--link);text-decoration:underline;font-size:16px;font-family:inherit;
+      background:none;border:none;padding:0;display:inline}
+    .btn::before{content:"[ "}
+    .btn::after{content:" ]"}
+    .btn:hover{background:var(--alert);color:var(--paper)}
+
+    /* ── Features: an actual HTML table, because that is honest ─ */
+    .features{padding:0}
+    .features table{border-collapse:collapse;width:100%}
+    .features th,.features td{border:1px solid var(--ink);padding:8px;vertical-align:top;text-align:left}
+    .features th{background:var(--grey);font-weight:700;width:110px;font-size:14px;
+      text-transform:uppercase;letter-spacing:.02em}
+    .features h3{font-size:22px;font-weight:700;display:inline;font-family:inherit}
+    .features p{display:inline;font-size:16px}
+    .icon{font-family:"Courier New",Courier,monospace;font-size:13px;text-transform:uppercase}
+
+    /* ── CTA ─────────────────────────────────────────────────── */
+    .cta h2{font-size:36px;font-weight:700;margin-bottom:10px;font-family:inherit}
+    .cta button{font-family:inherit;font-size:16px;color:var(--link);text-decoration:underline;display:inline}
+    .cta button::before{content:"[ "}
+    .cta button::after{content:" ]"}
+    .cta button:hover{background:var(--alert);color:var(--paper)}
+
+    /* ── Structural annotations: the page describes itself ───── */
+    .tag{font-family:"Courier New",Courier,monospace;font-size:11px;color:var(--ink);
+      background:var(--paper);display:block;margin-bottom:4px}
+    .rule{border:none;border-top:1px solid var(--ink);margin:0}
+    .blink{font-family:"Courier New",Courier,monospace;font-size:12px;color:var(--alert)}
+    .meta{font-family:"Courier New",Courier,monospace;font-size:11px;padding:6px 8px;border:1px solid var(--ink)}
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <nav class="nav">
+    <span class="tag">&lt;nav&gt;</span>
+    <a href="#" class="logo">Atlas</a>
+    <ul>
+      <li><a href="#">Work</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero">
+    <span class="tag">&lt;header&gt;</span>
+    <h1>Design is how it feels to use.</h1>
+    <p>A study in visual language, one style at a time.</p>
+    <p><a href="#" class="btn">Explore</a></p>
+  </header>
+
+  <section class="features">
+    <span class="tag" style="padding:8px 8px 0">&lt;section id="features"&gt;</span>
+    <table>
+      <tbody>
+        <tr>
+          <th scope="row"><span class="icon">Grid</span></th>
+          <td><h3>Structure</h3> &mdash; <p>Every element has a reason to be where it is.</p></td>
+        </tr>
+        <tr>
+          <th scope="row"><span class="icon">Split</span></th>
+          <td><h3>Contrast</h3> &mdash; <p>Tension between elements creates meaning.</p></td>
+        </tr>
+        <tr>
+          <th scope="row"><span class="icon">Pulse</span></th>
+          <td><h3>Rhythm</h3> &mdash; <p>Repetition and spacing set the pace.</p></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="cta">
+    <span class="tag">&lt;section id="cta"&gt;</span>
+    <h2>Start building.</h2>
+    <p><button>Get in touch</button></p>
+    <p class="blink" id="cursor">READY_</p>
+  </section>
+
+  <p class="meta" id="meta">document loaded</p>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Brutalism">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Brutalism</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>Web brutalism, roughly 2014–2018 (brutalistwebsites.com, Bloomberg, Balenciaga) — named after 1950s béton brut architecture, which exposed raw material rather than cladding it.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#ffffff"></span><code>#ffffff</code> — page background, never tinted</li>
+              <li><span class="sw" style="--c:#000000"></span><code>#000000</code> — text and every 1px border</li>
+              <li><span class="sw" style="--c:#0000ee"></span><code>#0000ee</code> — the browser's default unvisited link blue, deliberately untouched</li>
+              <li><span class="sw" style="--c:#551a8b"></span><code>#551a8b</code> — the browser's default visited purple</li>
+              <li><span class="sw" style="--c:#ff0000"></span><code>#ff0000</code> — pure red for hover inversion and the blinking cursor</li>
+              <li><span class="sw" style="--c:#c0c0c0"></span><code>#c0c0c0</code> — system grey for table headers and the nav band</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Times New Roman for everything structural, paired with Courier New for machine annotations — both browser defaults, no webfont is loaded at all. Weights are only 400 and 700 because that is all the default stack guarantees. Sizes come straight off a document scale: 48px h1, 36px h2, 22px h3, 16px body, 11–13px mono. Line-height sits at a cramped 1.35 and no tracking is applied anywhere.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>There is no grid and no max-width: every block is a full-bleed <code>&lt;section&gt;</code> with an 8px pad and a 1px black border, stacked in source order with zero margin so borders collide into shared 2px seams. The feature row is a real <code>&lt;table&gt;</code> with <code>border-collapse</code>, because a table is the honest element for tabular content.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>Default browser link styling preserved intact — blue, purple when visited, always underlined.</li>
+              <li>Visible structural annotations (<code>&lt;nav&gt;</code>, <code>&lt;section id="cta"&gt;</code>) printed in mono above each block, so the page documents its own markup.</li>
+              <li>Buttons rendered as bracketed text links — <code>[ Explore ]</code> via <code>::before</code>/<code>::after</code> — rather than as styled objects.</li>
+              <li>Uniform 1px black borders with no radius, no shadow, and no margin collapse control.</li>
+              <li>A live mono status line and a blinking <code>READY_</code> cursor driven by <code>setInterval</code>, in the register of a terminal rather than a product.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>Deliberately unrefined: there is not a single <code>transition</code> on the page. Hover states snap instantly to a red background with white text. JS blinks the <code>READY_</code> cursor by toggling <code>visibility</code> every 600ms and writes the document's real viewport width and load timestamp into the mono status line, updating on resize — information, not decoration.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Load no webfonts. Use Times New Roman for content and Courier New for machine text, at browser-default sizes.</li>
+              <li>Leave links at <code>#0000ee</code>, underlined, with visited purple intact — never restyle an anchor into a button.</li>
+              <li>Give every block a 1px solid black border, 8px padding, no radius, no shadow, no margin, and let borders touch.</li>
+              <li>Ban all transitions and animations except utilitarian ones (a blinking cursor, a live counter); hover states must snap.</li>
+              <li>Expose structure instead of hiding it — print tag names, use real tables for tabular data, and let the page read as a document rather than a product.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* No easing, no polish. A blinking cursor and a factual status line. */
+  (function () {
+    var c = document.getElementById('cursor');
+    setInterval(function () {
+      c.style.visibility = c.style.visibility === 'hidden' ? 'visible' : 'hidden';
+    }, 600);
+
+    var meta = document.getElementById('meta');
+    function write() {
+      meta.textContent = 'viewport: ' + window.innerWidth + 'x' + window.innerHeight +
+        ' | dpr: ' + window.devicePixelRatio +
+        ' | loaded: ' + new Date().toISOString();
+    }
+    write();
+    window.addEventListener('resize', write);
+  })();
+</script>
+</body>
+</html>

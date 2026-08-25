@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neo-Brutalism — Atlas</title>
+<meta name="description" content="Neo-Brutalism: flat blocks, 4px black outlines, hard offset shadows, one chunky sans.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+    /* ══ NEO-BRUTALISM ════════════════════════════════════════════
+       Brutalism after a design system got hold of it. Raw honesty
+       is kept as an AESTHETIC — thick outlines, flat fills, hard
+       shadows — but everything is now deliberate: one typeface, a
+       fixed palette, an orderly grid, and nothing rotated.        */
+
+    :root{
+      --bg:#fdf6e3;       /* warm paper ground     */
+      --ink:#101010;      /* outlines and text     */
+      --yellow:#ffd93d;   /* primary block colour  */
+      --coral:#ff6b6b;    /* secondary block       */
+      --mint:#7bf1a8;     /* tertiary block        */
+      --card:#ffffff;     /* neutral block         */
+      --b:4px;            /* the one border width  */
+      --sh:6px;           /* the one shadow offset */
+    }
+
+    body{
+      background:var(--bg);
+      color:var(--ink);
+      font-family:"Space Grotesk",-apple-system,"Segoe UI",sans-serif;
+      font-weight:500;
+    }
+
+    .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(16px,4vw,32px)}
+
+    /* One block primitive. Everything on the page is this. */
+    .block{
+      background:var(--card);
+      border:var(--b) solid var(--ink);
+      border-radius:0;
+      box-shadow:var(--sh) var(--sh) 0 var(--ink);
+    }
+
+    /* ── Nav ─────────────────────────────────────────────────── */
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+      padding:14px 20px;margin-top:28px;background:var(--yellow)}
+    .logo{font-size:26px;font-weight:700;letter-spacing:-.03em}
+    .nav ul{display:flex;gap:10px}
+    .nav ul a{display:block;border:3px solid var(--ink);background:var(--card);padding:7px 16px;
+      font-size:14px;font-weight:700;box-shadow:3px 3px 0 var(--ink);
+      transition:transform .08s linear,box-shadow .08s linear,background .08s linear}
+    .nav ul a:hover{background:var(--mint)}
+    .nav ul a:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+
+    /* ── Hero: two orderly columns, nothing rotated ──────────── */
+    .hero{display:grid;grid-template-columns:1.55fr 1fr;gap:26px;margin:26px 0}
+    .hero-main{padding:44px 36px;background:var(--card)}
+    .hero h1{font-size:clamp(36px,5.6vw,62px);font-weight:700;line-height:1.02;letter-spacing:-.035em}
+    .hero p{margin-top:20px;font-size:17px;font-weight:500;max-width:34ch}
+    .btn{display:inline-block;margin-top:30px;background:var(--coral);color:var(--ink);
+      border:var(--b) solid var(--ink);box-shadow:var(--sh) var(--sh) 0 var(--ink);
+      padding:15px 34px;font-size:17px;font-weight:700;
+      transition:transform .08s linear,box-shadow .08s linear}
+    .btn:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--ink)}
+    .btn:active{transform:translate(6px,6px);box-shadow:0 0 0 var(--ink)}
+
+    .hero-side{background:var(--mint);padding:26px;display:flex;flex-direction:column;justify-content:space-between;gap:18px}
+    .hero-side .badge{border:3px solid var(--ink);background:var(--card);padding:8px 12px;
+      font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;align-self:flex-start}
+    .hero-side .stack{display:grid;gap:10px}
+    .hero-side .stack i{height:22px;border:3px solid var(--ink);background:var(--yellow)}
+    .hero-side .stack i:nth-child(2){background:var(--coral);width:78%}
+    .hero-side .stack i:nth-child(3){background:var(--card);width:56%}
+    .hero-side .count{font-size:44px;font-weight:700;letter-spacing:-.04em;line-height:1}
+
+    /* ── Features: three equal blocks, equal gaps ────────────── */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-bottom:26px}
+    .card{padding:26px 24px 30px;transition:transform .08s linear,box-shadow .08s linear}
+    .card:nth-child(1){background:var(--yellow)}
+    .card:nth-child(2){background:var(--coral)}
+    .card:nth-child(3){background:var(--mint)}
+    .card:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--ink)}
+    .icon{display:inline-block;border:3px solid var(--ink);background:var(--card);
+      padding:5px 11px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+    .card h3{font-size:30px;font-weight:700;letter-spacing:-.03em;margin:18px 0 8px;line-height:1}
+    .card p{font-size:15.5px;font-weight:500;line-height:1.45}
+
+    /* ── CTA ─────────────────────────────────────────────────── */
+    .cta{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
+      background:var(--yellow);padding:44px 36px;margin-bottom:56px}
+    .cta h2{font-size:clamp(30px,4.6vw,52px);font-weight:700;letter-spacing:-.035em}
+    .cta button{background:var(--ink);color:var(--bg);border:var(--b) solid var(--ink);
+      box-shadow:var(--sh) var(--sh) 0 var(--card),calc(var(--sh) + 4px) calc(var(--sh) + 4px) 0 var(--ink);
+      padding:15px 30px;font-size:16px;font-weight:700;
+      transition:transform .08s linear,box-shadow .08s linear}
+    .cta button:active{transform:translate(6px,6px);box-shadow:0 0 0 var(--ink)}
+
+    @media(max-width:820px){
+      .hero{grid-template-columns:1fr}
+      .features{grid-template-columns:1fr}
+    }
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <nav class="nav block">
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <div class="hero-main block">
+        <h1>Design is how it feels to use.</h1>
+        <p>A study in visual language, one style at a time.</p>
+        <br>
+        <a href="#" class="btn">Explore</a>
+      </div>
+      <aside class="hero-side block" aria-hidden="true">
+        <span class="badge">No gradients</span>
+        <div class="stack"><i></i><i></i><i></i></div>
+        <p class="count" id="count">00</p>
+      </aside>
+    </header>
+
+    <section class="features">
+      <article class="card block">
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+      </article>
+      <article class="card block">
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+      </article>
+      <article class="card block">
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+      </article>
+    </section>
+
+    <section class="cta block">
+      <h2>Start building.</h2>
+      <button>Get in touch</button>
+    </section>
+
+  </div>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Neo-Brutalism">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Neo-Brutalism</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>Circa 2020 onward — Gumroad's redesign, Figma community kits and Tailwind-era product marketing, borrowing brutalism's rawness as a decorative language rather than an ideology.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#fdf6e3"></span><code>#fdf6e3</code> — warm off-white page ground</li>
+              <li><span class="sw" style="--c:#101010"></span><code>#101010</code> — every outline, every shadow, all text</li>
+              <li><span class="sw" style="--c:#ffd93d"></span><code>#ffd93d</code> — primary yellow block (nav, CTA, card one)</li>
+              <li><span class="sw" style="--c:#ff6b6b"></span><code>#ff6b6b</code> — coral secondary block and primary button</li>
+              <li><span class="sw" style="--c:#7bf1a8"></span><code>#7bf1a8</code> — mint tertiary block</li>
+              <li><span class="sw" style="--c:#ffffff"></span><code>#ffffff</code> — neutral block for text-heavy surfaces</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Space Grotesk alone (fallback: system UI sans) at exactly two weights — 700 for every heading, button, badge and nav item, 500 for body. One family is the point: the outlines carry the personality, so the type stays consistent. Headings run <code>clamp(36px, 5.6vw, 62px)</code> for the hero and a flat 30px on cards, all at −0.035em with 1.0–1.02 leading; body sits at 15.5–17px; labels are 12px uppercase at 0.1em.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>A 1080px centred wrapper on an explicit grid: the hero is a 1.55fr / 1fr split, the cards a strict <code>repeat(3, 1fr)</code>, and every gap in the page is the same 26px. Everything is axis-aligned at 0deg and flush to its cell — the style's energy comes from weight and colour, never from tilt or overlap.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>A single reusable <code>.block</code> primitive: flat fill, 4px solid black border, zero radius, and a 6px hard-offset black shadow with no blur.</li>
+              <li>Strictly flat colour — no gradient, no texture, no pattern anywhere on the page.</li>
+              <li>Nested outlines: 3px-bordered badges and pills sitting inside 4px-bordered blocks, establishing hierarchy by border weight.</li>
+              <li>A double-offset shadow on the dark CTA button (white layer then black layer) to keep it readable on a yellow block.</li>
+              <li>Bar-stack graphics built from bordered <code>&lt;i&gt;</code> elements of decreasing width, using fill colour as data.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>Physical and mechanical, all at 80ms linear — no easing curves. Hovering a card or button moves it −2px on both axes and grows the shadow to 9px; pressing it translates +6px into its own shadow, which collapses to 0 so the element appears to depress into the page. JS counts the hero badge number from 00 to 29 on load using <code>requestAnimationFrame</code>, padded to two digits.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Define one block primitive — flat fill, 4px black border, 0 radius, 6px hard black shadow — and build the entire page from it.</li>
+              <li>Use one geometric sans at two weights only (500 / 700); never mix typefaces.</li>
+              <li>Fill blocks with flat saturated colour from a fixed 3-colour set plus white; ban gradients, textures and patterns outright.</li>
+              <li>Keep every element axis-aligned on a strict grid with one repeated gap value — no rotation, no overlap, no collage.</li>
+              <li>Make interaction physical: hover lifts and grows the shadow, active translates into the shadow until it disappears, all at ~80ms linear.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* Count the badge up to 29 — one for each style in the set. */
+  (function () {
+    var el = document.getElementById('count');
+    var target = 29, start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / 900, 1);
+      el.textContent = String(Math.round(p * target)).padStart(2, '0');
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  })();
+</script>
+</body>
+</html>

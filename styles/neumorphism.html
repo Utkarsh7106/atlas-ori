@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neumorphism — Atlas</title>
+<meta name="description" content="Neumorphism: soft UI extruded from a single grey surface with paired light and dark shadows.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+    /* ══ NEUMORPHISM (SOFT UI) ════════════════════════════════════
+       One surface, one colour. Nothing sits ON the page — elements
+       are pushed OUT of it or pressed INTO it, using a paired light
+       shadow (top-left) and dark shadow (bottom-right). Contrast is
+       deliberately low; the whole page is a single piece of plastic.*/
+
+    :root{
+      --surface:#e0e5ec;   /* THE colour — background and every element */
+      --light:#ffffff;     /* top-left highlight shadow  */
+      --dark:#a3b1c6;      /* bottom-right cast shadow   */
+      --text:#4a5568;      /* soft slate, never black    */
+      --muted:#8494ab;
+      --accent:#6d5dfc;    /* used sparingly, at low saturation on screen */
+      --r:22px;
+    }
+
+    body{
+      background:var(--surface);
+      color:var(--text);
+      font-family:"Poppins",-apple-system,"Segoe UI",sans-serif;
+      font-weight:400;
+      padding:0 clamp(16px,4vw,40px);
+    }
+    .wrap{max-width:1020px;margin:0 auto;padding:36px 0 72px}
+
+    /* The two states of every element. Nothing else exists. */
+    .out{
+      background:var(--surface);
+      border-radius:var(--r);
+      box-shadow:-7px -7px 16px var(--light), 8px 8px 18px var(--dark);
+      transition:box-shadow .4s ease;
+    }
+    .in{
+      background:var(--surface);
+      border-radius:var(--r);
+      box-shadow:inset -6px -6px 12px var(--light), inset 7px 7px 14px var(--dark);
+    }
+    /* Pressing the CTA flips the whole page inside-out. */
+    body.pressed .card{box-shadow:inset -6px -6px 12px var(--light), inset 7px 7px 14px var(--dark)}
+    body.pressed .hero{box-shadow:inset -6px -6px 14px var(--light), inset 8px 8px 16px var(--dark)}
+
+    /* ── Nav ─────────────────────────────────────────────────── */
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+      padding:16px 24px}
+    .logo{font-size:21px;font-weight:600;letter-spacing:.01em;color:var(--text)}
+    .nav ul{display:flex;gap:12px}
+    .nav ul a{display:block;padding:10px 20px;border-radius:14px;font-size:14px;font-weight:500;color:var(--muted);
+      transition:box-shadow .28s ease,color .28s ease}
+    .nav ul a:hover{color:var(--text);box-shadow:-4px -4px 9px var(--light), 5px 5px 10px var(--dark)}
+    .nav ul a:active{box-shadow:inset -3px -3px 7px var(--light), inset 4px 4px 8px var(--dark)}
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .hero{margin-top:30px;padding:64px 52px;text-align:center;border-radius:34px}
+    .hero h1{font-size:clamp(30px,4.6vw,52px);font-weight:600;line-height:1.14;letter-spacing:-.01em;
+      color:var(--text);max-width:16ch;margin:0 auto;
+      text-shadow:1px 1px 1px var(--light), -1px -1px 1px rgba(163,177,198,.55)}
+    .hero p{margin-top:20px;font-size:16px;color:var(--muted);max-width:40ch;margin-left:auto;margin-right:auto}
+
+    .btn{display:inline-block;margin-top:36px;padding:17px 44px;border-radius:18px;
+      font-size:15px;font-weight:600;color:var(--accent);background:var(--surface);
+      box-shadow:-6px -6px 14px var(--light), 7px 7px 15px var(--dark);
+      transition:box-shadow .22s ease,transform .22s ease}
+    .btn:hover{box-shadow:-8px -8px 18px var(--light), 9px 9px 20px var(--dark)}
+    .btn:active,.btn.on{box-shadow:inset -5px -5px 11px var(--light), inset 6px 6px 13px var(--dark)}
+
+    /* ── Features ────────────────────────────────────────────── */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:38px}
+    .card{padding:34px 28px 36px;text-align:center}
+    .icon{display:inline-flex;align-items:center;justify-content:center;
+      width:74px;height:74px;border-radius:50%;margin-bottom:22px;
+      font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+      box-shadow:inset -4px -4px 9px var(--light), inset 5px 5px 10px var(--dark)}
+    .card h3{font-size:19px;font-weight:600;color:var(--text);margin-bottom:9px}
+    .card p{font-size:14.5px;color:var(--muted);line-height:1.6}
+
+    /* ── CTA ─────────────────────────────────────────────────── */
+    .cta{margin-top:38px;padding:56px 40px;text-align:center;border-radius:34px}
+    .cta h2{font-size:clamp(26px,3.6vw,40px);font-weight:600;color:var(--text);
+      text-shadow:1px 1px 1px var(--light), -1px -1px 1px rgba(163,177,198,.55)}
+    .cta button{margin-top:28px;padding:17px 40px;border-radius:18px;font-size:15px;font-weight:600;
+      color:var(--accent);background:var(--surface);
+      box-shadow:-6px -6px 14px var(--light), 7px 7px 15px var(--dark);
+      transition:box-shadow .22s ease}
+    .cta button:active{box-shadow:inset -5px -5px 11px var(--light), inset 6px 6px 13px var(--dark)}
+
+    @media(max-width:820px){.features{grid-template-columns:1fr}.hero{padding:46px 26px}}
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <nav class="nav out">
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero out">
+      <h1>Design is how it feels to use.</h1>
+      <p>A study in visual language, one style at a time.</p>
+      <a href="#" class="btn" id="explore">Explore</a>
+    </header>
+
+    <section class="features">
+      <article class="card out">
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+      </article>
+      <article class="card out">
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+      </article>
+      <article class="card out">
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+      </article>
+    </section>
+
+    <section class="cta out">
+      <h2>Start building.</h2>
+      <button>Get in touch</button>
+    </section>
+
+  </div>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Neumorphism">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Neumorphism</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>2019–2020, coined from "new skeuomorphism" after a widely shared Dribbble concept by Alexander Plyuto; a short-lived reaction to flat design's total lack of affordance.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#e0e5ec"></span><code>#e0e5ec</code> — the single surface colour: page, cards, buttons, nav, all identical</li>
+              <li><span class="sw" style="--c:#ffffff"></span><code>#ffffff</code> — top-left highlight shadow</li>
+              <li><span class="sw" style="--c:#a3b1c6"></span><code>#a3b1c6</code> — bottom-right cast shadow</li>
+              <li><span class="sw" style="--c:#4a5568"></span><code>#4a5568</code> — primary text, soft slate rather than black</li>
+              <li><span class="sw" style="--c:#8494ab"></span><code>#8494ab</code> — secondary text and inactive labels</li>
+              <li><span class="sw" style="--c:#6d5dfc"></span><code>#6d5dfc</code> — the only hue on the page, on button labels only</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Poppins throughout (fallback: system UI sans) — a geometric face whose round bowls match the soft extrusions. Weights stop at 600; true bold would break the low-contrast illusion. Hero at <code>clamp(30px, 4.6vw, 52px)</code>/600, card titles 19px/600, body 14.5–16px/400 in the muted slate, labels 10px uppercase at 0.1em. Headings carry a two-part text-shadow (1px white, −1px grey) so even the type looks embossed into the surface.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>A 1020px centred column with everything centre-aligned — symmetry keeps the light source consistent, and off-centre content would betray the fixed top-left illumination. Blocks are stacked with a uniform 30–38px rhythm and a 32px card gap; padding is generous (34–64px) because shadows need clear space to read as depth.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>Paired shadows on every element — <code>-7px -7px 16px #ffffff</code> plus <code>8px 8px 18px #a3b1c6</code> — implying one fixed light source at the top left.</li>
+              <li>The same shadow pair rewritten with <code>inset</code> to produce the pressed, concave state; there is no third state.</li>
+              <li>Zero borders and zero fills: element and background are literally the same colour, so only shadow defines edges.</li>
+              <li>Large soft radii (14–34px) scaled to element size, with circular inset wells for icons.</li>
+              <li>Embossed type via a two-direction <code>text-shadow</code> that mirrors the surface lighting.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>All motion is shadow interpolation — nothing moves, scales, or changes colour. Nav links extrude on hover and depress on click; the button's shadow deepens on hover over 220ms. Clicking <em>Explore</em> toggles a <code>pressed</code> class on <code>&lt;body&gt;</code>, which flips the hero and all three cards from convex to concave over 400ms, turning the whole page inside out — the clearest demonstration of the style's single idea.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Pick one mid-light desaturated surface colour (around <code>#e0e5ec</code>) and give it to the page background and every element without exception.</li>
+              <li>Define exactly two shadow recipes — outer (light top-left, dark bottom-right) and the same values with <code>inset</code> — and use only those for depth.</li>
+              <li>Never use borders, fills, or dark text; keep text a soft slate and reserve any hue for a single accent on labels.</li>
+              <li>Keep the light source constant at the top left, which means centre-aligned symmetrical layouts and generous padding around every element.</li>
+              <li>Animate only <code>box-shadow</code> — convex to concave on press — and accept that low contrast is the style's defining trade-off, so keep body text at or above 14px.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* One idea, made interactive: press the page in, press it back out. */
+  (function () {
+    var btn = document.getElementById('explore');
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.body.classList.toggle('pressed');
+      btn.classList.toggle('on');
+    });
+  })();
+</script>
+</body>
+</html>
