@@ -19,11 +19,36 @@
     :root{
       --paper:#ffffff;
       --ink:#111111;
-      --red:#e2231a;
-      --grey:#8a8a8a;
+      --red:#d31f16;     /* 5.28:1 on paper (was #e2231a, 4.68:1) */
+      --grey:#707070;    /* 4.95:1 on paper (was #8a8a8a, 3.45:1) */
       --rule:#dcdcdc;
       --col-gap:24px;
       --margin:clamp(20px,4vw,56px);
+      --rail:0px;        /* left rail width; only non-zero in sidebar mode */
+    }
+
+    /* ── Chrome theme layer ────────────────────────────────────────
+       These tokens dress ONLY the chrome — nav/sidebar, footer,
+       dialog and their controls. The hero, cards and CTA never read
+       them, so the demo content is identical in both chrome themes. */
+    :root{
+      --chrome-bg:var(--paper);
+      --chrome-ink:var(--ink);
+      --chrome-grey:var(--grey);
+      --chrome-red:var(--red);
+      --chrome-hair:var(--rule);
+      --chrome-on-red:#ffffff;  /* text on the signal colour */
+    }
+    :root[data-chrome="dark"]{
+      --chrome-bg:#111111;
+      --chrome-ink:#f2f2f2;   /* 16.87:1 on chrome-bg */
+      --chrome-grey:#9a9a9a;  /*  6.71:1 on chrome-bg */
+      --chrome-red:#ff4438;   /*  5.52:1 on chrome-bg — same hue as --red,
+                                  lifted only so the signal colour still
+                                  clears 4.5:1 against black.            */
+      --chrome-hair:#3a3a3a;
+      --chrome-on-red:#111111;  /* white on the lifted red is only 3.42:1;
+                                   ink on it is 5.52:1 */
     }
 
     body{
@@ -33,6 +58,8 @@
       font-weight:400;
       -webkit-font-smoothing:antialiased;
       padding:0 var(--margin);
+      padding-left:calc(var(--margin) + var(--rail));
+      transition:padding-left .22s linear;   /* CSS, so reset.css can mute it */
     }
 
     /* The grid every single element snaps to. */
@@ -44,13 +71,62 @@
       margin:0 auto;
     }
 
-    /* ── Nav: logo left, links hard right, 4px black rule beneath ─ */
-    .nav{padding-top:28px;align-items:baseline}
+    /* ── Nav: logo cols 1-4, controls 4-8, links hard right 8-13,
+           4px rule beneath. The empty middle of the original nav is
+           where the chrome controls go — they fill grid cells that
+           were already reserved, rather than floating over the page. */
+    .nav{padding-top:28px;align-items:baseline;position:relative;isolation:isolate;
+      color:var(--chrome-ink);transition:color .2s linear}
+    /* the chrome surface, bled out to the body's padding edge */
+    .nav::before{content:"";position:absolute;top:0;bottom:0;
+      left:calc(-1 * (var(--margin) + var(--rail)));right:calc(-1 * var(--margin));
+      background:var(--chrome-bg);z-index:-1;transition:background .2s linear}
     .nav .logo{grid-column:1/4;font-size:20px;font-weight:700;letter-spacing:-.04em;text-transform:uppercase}
     .nav ul{grid-column:8/13;display:flex;justify-content:flex-end;gap:32px}
     .nav a{font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase}
-    .nav a:hover{color:var(--red)}
-    .nav-rule{grid-column:1/13;height:4px;background:var(--ink);margin-top:20px}
+    .nav a:hover{color:var(--chrome-red)}
+    .nav-rule{grid-column:1/13;height:4px;background:var(--chrome-ink);margin-top:20px;
+      transition:background .2s linear}
+    .nav-controls{grid-column:4/8;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+    /* ── Sidebar mode: the same nav, re-placed as a fixed left rail ─
+           4px rule moves from "beneath" to "beside" — the section-rule
+           weight is unchanged, only its edge. */
+    :root[data-nav="side"]{--rail:216px}
+    [data-nav="side"] .nav{
+      position:fixed;left:0;top:0;bottom:0;width:var(--rail);
+      display:flex;flex-direction:column;align-items:stretch;gap:0;
+      max-width:none;margin:0;padding:28px var(--col-gap);
+      background:var(--chrome-bg);border-right:4px solid var(--chrome-ink);
+      overflow-y:auto;z-index:70;
+      transition:background .2s linear,border-color .2s linear}
+    [data-nav="side"] .nav::before{display:none}
+    [data-nav="side"] .nav .logo{grid-column:auto;margin-bottom:28px}
+    [data-nav="side"] .nav ul{grid-column:auto;display:flex;flex-direction:column;
+      justify-content:flex-start;align-items:flex-start;gap:14px;order:3}
+    [data-nav="side"] .nav-controls{grid-column:auto;flex-direction:column;
+      align-items:stretch;gap:8px;order:2;margin-bottom:28px}
+    /* in the rail the 4px right border is the section rule, so the
+       horizontal rule collapses rather than being drawn twice */
+    [data-nav="side"] .nav-rule{grid-column:auto;height:0;margin:0}
+
+    /* ── Toggle control: a bordered field with a mono state readout.
+           2px border = the item-level rule weight used on cards.     */
+    .sw-toggle{
+      display:flex;align-items:stretch;gap:0;
+      border:2px solid currentColor;background:transparent;color:var(--chrome-ink);
+      padding:0;text-align:left;
+      transition:color .18s linear,border-color .18s linear}
+    .sw-toggle__label{padding:7px 9px;font:500 10px/1.2 "Inter Tight","Helvetica Neue",Arial,sans-serif;
+      letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+    .sw-toggle__state{padding:7px 9px;margin-left:auto;
+      font:500 10px/1.2 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;
+      background:var(--chrome-ink);color:var(--chrome-bg);white-space:nowrap;
+      transition:background .18s linear,color .18s linear}
+    /* pressed = the non-default state, so it takes the signal colour */
+    .sw-toggle[aria-pressed="true"] .sw-toggle__state{background:var(--chrome-red);color:var(--chrome-on-red)}
+    .sw-toggle:hover{color:var(--chrome-red)}
+    .sw-toggle:focus-visible{outline:2px solid var(--chrome-red);outline-offset:2px}
 
     /* ── Hero: headline cols 1–9, deck pushed to 10–12 ──────────── */
     .hero{padding:72px 0 0;align-items:start}
@@ -95,15 +171,93 @@
       font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;transition:background .18s linear}
     .cta .cta-btn:hover{background:var(--red)}
 
+    /* ── Component reference band: mirrors .hero-lower exactly —
+           full-column button at 1-4, mono metadata at 5-9.          */
+    .component{border-top:4px solid var(--ink);padding:40px 0 56px;align-items:center}
+    .component__title{grid-column:1/4;font:500 12px/1 "Inter Tight","Helvetica Neue",Arial,sans-serif;
+      letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
+    .component__meta{grid-column:5/9;font:400 11px/1.5 "IBM Plex Mono",monospace;
+      letter-spacing:.08em;color:var(--grey);text-transform:uppercase}
+    .component__trigger{grid-column:10/13;display:block;width:100%;
+      background:var(--ink);color:var(--paper);padding:20px 0;text-align:center;
+      font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+      transition:background .18s linear}
+    .component__trigger:hover{background:var(--red)}
+    .component__trigger:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+    /* ── Dialog: native <dialog>, so focus trap / Esc / inert
+           background / focus return are the platform's job.         */
+    .dialog{
+      padding:0;border:0;max-width:none;
+      width:min(760px, calc(100vw - 2 * var(--margin)));
+      background:var(--chrome-bg);color:var(--chrome-ink);
+      border-top:4px solid var(--chrome-red);
+    }
+    .dialog::backdrop{background:rgba(17,17,17,.72)}
+    /* opacity only — the page's Motion rule forbids transforms */
+    .dialog[open]{animation:dlg-in .18s linear}
+    .dialog[open]::backdrop{animation:dlg-in .18s linear}
+    @keyframes dlg-in{from{opacity:0}to{opacity:1}}
+    .dialog__inner{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--col-gap);
+      padding:28px var(--col-gap) 32px}
+    .dialog__num{grid-column:1/13;font:500 11px/1 "IBM Plex Mono",monospace;
+      letter-spacing:.1em;color:var(--chrome-red)}
+    .dialog__title{grid-column:1/10;margin-top:14px;
+      font-size:clamp(46px,5vw,56px);font-weight:700;line-height:.9;
+      letter-spacing:-.048em;text-transform:uppercase}
+    .dialog__body{grid-column:1/9;margin-top:18px;font-size:15px;line-height:1.45}
+    .dialog__meta{grid-column:9/13;margin-top:18px;
+      font:400 11px/1.5 "IBM Plex Mono",monospace;letter-spacing:.08em;
+      color:var(--chrome-grey);text-transform:uppercase;border-top:2px solid var(--chrome-ink);padding-top:10px}
+    .dialog__close{grid-column:1/4;margin-top:28px;display:block;width:100%;
+      background:var(--chrome-red);color:var(--chrome-on-red);padding:18px 0;text-align:center;
+      font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+      transition:background .18s linear}
+    .dialog__close:hover{background:var(--chrome-ink);color:var(--chrome-bg)}
+    .dialog__close:focus-visible{outline:2px solid var(--chrome-red);outline-offset:3px}
+
+    /* ── Footer: closes the demo the way the nav opens it — logo
+           block 1-4, metadata 4-9, links hard right 9-13.           */
+    .site-footer{position:relative;isolation:isolate;padding:0 0 44px;
+      color:var(--chrome-ink);transition:color .2s linear}
+    .site-footer::before{content:"";position:absolute;top:0;bottom:0;
+      left:calc(-1 * (var(--margin) + var(--rail)));right:calc(-1 * var(--margin));
+      background:var(--chrome-bg);z-index:-1;transition:background .2s linear}
+    .site-footer__rule{grid-column:1/13;height:4px;background:var(--chrome-ink);
+      margin-bottom:26px;transition:background .2s linear}
+    .site-footer__mark{grid-column:1/4;font-size:20px;font-weight:700;
+      letter-spacing:-.04em;text-transform:uppercase}
+    .site-footer__meta{grid-column:4/9;font:400 11px/1.5 "IBM Plex Mono",monospace;
+      letter-spacing:.08em;color:var(--chrome-grey);text-transform:uppercase}
+    .site-footer__links{grid-column:9/13;display:flex;justify-content:flex-end;gap:32px}
+    .site-footer__links a{font-size:12px;font-weight:500;letter-spacing:.1em;
+      text-transform:uppercase;border-bottom:2px solid transparent;padding-bottom:3px;
+      transition:color .18s linear,border-color .18s linear}
+    .site-footer__links a:hover{color:var(--chrome-red);border-bottom-color:var(--chrome-red)}
+    .site-footer__links a:focus-visible{outline:2px solid var(--chrome-red);outline-offset:3px}
+
     /* ── Grid overlay (press G) ─────────────────────────────────── */
-    #overlay{position:fixed;inset:0;padding:0 var(--margin);pointer-events:none;opacity:0;
-      transition:opacity .25s linear;z-index:50}
+    #overlay{position:fixed;inset:0;padding:0 var(--margin);
+      padding-left:calc(var(--margin) + var(--rail));
+      pointer-events:none;opacity:0;
+      transition:opacity .25s linear,padding-left .22s linear;z-index:50}
     #overlay.on{opacity:1}
     #overlay .grid{height:100%}
-    #overlay .grid span{background:rgba(226,35,26,.09);border-left:1px solid rgba(226,35,26,.3);height:100%}
-    .hint{position:fixed;left:var(--margin);bottom:16px;z-index:60;
-      font:500 10px/1 "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--grey)}
-    .hint b{color:var(--red)}
+    #overlay .grid span{background:rgba(211,31,22,.09);border-left:1px solid rgba(211,31,22,.3);height:100%}
+
+    /* The hint is now two real buttons: one toggles the overlay, one
+       turns the single-key shortcut off (WCAG 2.1.4). */
+    /* z-index must clear .design-points (80), which paints above
+       page-level fixed layers — otherwise these buttons stop being
+       clickable once that section is under the pointer. */
+    .hint{position:fixed;left:calc(var(--margin) + var(--rail));bottom:16px;z-index:90;
+      display:flex;gap:8px;transition:left .22s linear}
+    .hint button{border:2px solid var(--ink);background:var(--paper);color:var(--ink);
+      padding:6px 9px;font:500 10px/1 "IBM Plex Mono",monospace;letter-spacing:.12em;
+      text-transform:uppercase;transition:background .18s linear,color .18s linear}
+    .hint button:hover{background:var(--ink);color:var(--paper)}
+    .hint button[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#ffffff}  /* light surface only: 5.28:1 */
+    .hint button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 
     @media(max-width:860px){
       .hero h1{grid-column:1/13}
@@ -114,45 +268,144 @@
       .mark{display:none}
       .cta h2{grid-column:1/13}
       .cta .cta-btn{grid-column:1/7;margin-top:32px}
+      /* below 860px the rail would eat the measure, so the nav is
+         always the top bar regardless of the stored preference */
+      :root[data-nav="side"]{--rail:0px}
+      /* relative, not static: .nav::before is absolutely positioned and
+         must keep .nav as its containing block, or it sizes against the
+         viewport and overhangs the right edge by one --margin */
+      [data-nav="side"] .nav{position:relative;width:auto;display:grid;
+        grid-template-columns:repeat(12,1fr);gap:var(--col-gap);
+        max-width:1400px;margin:0 auto;padding:28px 0 0;border-right:0;overflow:visible}
+      [data-nav="side"] .nav::before{display:block}
+      [data-nav="side"] .nav .logo{grid-column:1/13;margin-bottom:0}
+      [data-nav="side"] .nav ul{grid-column:1/13;flex-direction:row;gap:22px;order:0;margin-top:16px}
+      [data-nav="side"] .nav-controls{grid-column:1/13;flex-direction:row;
+        justify-content:flex-start;order:0;margin:16px 0 0}
+      [data-nav="side"] .nav-rule{grid-column:1/13;height:4px;margin-top:20px}
+      .nav .logo{grid-column:1/13}
+      .nav-controls{grid-column:1/13;justify-content:flex-start;margin-top:16px}
+      .nav ul{grid-column:1/13;justify-content:flex-start;gap:22px;margin-top:16px}
+      .component__title{grid-column:1/7}
+      .component__meta{grid-column:7/13;text-align:right}
+      .component__trigger{grid-column:1/7;margin-top:28px}
+      .site-footer__mark{grid-column:1/7}
+      .site-footer__meta{grid-column:1/13;margin-top:14px}
+      .site-footer__links{grid-column:1/13;justify-content:flex-start;gap:24px;margin-top:18px}
+      .dialog__title{grid-column:1/13}
+      .dialog__body,.dialog__meta{grid-column:1/13}
+      .dialog__close{grid-column:1/7}
     }
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
-    .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
-    .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
-    .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
-    .dp dd > ul,.dp dd > ol{padding-left:20px}
-    .dp dd > ul{list-style:disc}
-    .dp dd > ol{list-style:decimal}
-    .dp li{margin-bottom:7px}
+    /* ══ DESIGN POINTS — rebuilt in this page's own system ═════════
+       Every word of the content is unchanged; only the presentation
+       is replaced. It now sits on the same 12-column grid as the rest
+       of the page: labels at cols 1-4, definitions at 5-13, a mono
+       red numeral per row, 2px item rules, 4px section rule. It is a
+       section of the page now, not a neutral panel bolted underneath. */
+    .dp-divider{height:4px;background:var(--ink);border:0;margin:0 auto;max-width:1400px}
+    .design-points{position:relative;z-index:80;background:var(--paper);color:var(--ink);
+      padding:56px 0 104px;border-top:0;
+      font-family:"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.45;letter-spacing:0;text-transform:none;
+      text-align:left;font-style:normal}
+    .dp-inner{max-width:1400px;margin:0 auto;
+      display:grid;grid-template-columns:repeat(12,1fr);gap:var(--col-gap)}
+
+    .dp-kicker{grid-column:1/13;display:grid;grid-template-columns:repeat(12,1fr);
+      gap:var(--col-gap);align-items:end;margin-bottom:44px}
+    /* the one display-size heading in the panel — inside the page's
+       ramp (nothing between 15px and 46px), below the CTA's 88px */
+    .design-points h2{grid-column:1/10;margin:0;
+      font:700 clamp(46px,5.4vw,68px)/.9 "Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;
+      letter-spacing:-.048em;text-transform:uppercase;color:var(--ink)}
+    .dp-back{grid-column:10/13;justify-self:end;
+      font:500 12px/1 "Inter Tight","Helvetica Neue",Arial,sans-serif;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--ink);text-decoration:none;
+      border-bottom:2px solid var(--ink);padding-bottom:4px;
+      transition:color .18s linear,border-color .18s linear}
+    .dp-back:hover{color:var(--red);border-bottom-color:var(--red)}
+
+    .dp{grid-column:1/13;margin:0;counter-reset:dp}
+    .dp-row{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--col-gap);
+      border-top:2px solid var(--ink);padding:16px 0 32px;counter-increment:dp}
+    .dp-row:first-child{padding-top:16px}
+    /* label column: mono, because this page reserves mono for
+       numerals, metadata and grid labels — a field name is a label */
+    .dp dt{grid-column:1/4;
+      font:500 11px/1.5 "IBM Plex Mono",monospace;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--ink)}
+    .dp dt::before{content:counter(dp,decimal-leading-zero);display:block;
+      margin-bottom:12px;color:var(--red);letter-spacing:.1em}
+    .dp dd{grid-column:5/13;margin:0;color:var(--ink);font-size:15px;line-height:1.5}
+
+    /* lists lose their generic markers: a 12px ink rule for bullets,
+       mono red numerals for the ordered list — the same numeral
+       device the feature cards use */
+    .dp dd > ul,.dp dd > ol{list-style:none;padding-left:0;margin:0}
+    .dp dd > ul > li{position:relative;padding-left:24px;margin-bottom:9px}
+    .dp dd > ul > li::before{content:"";position:absolute;left:0;top:.65em;
+      width:12px;height:2px;background:var(--ink)}
+    .dp dd > ol{counter-reset:dprule}
+    .dp dd > ol > li{position:relative;padding-left:36px;margin-bottom:9px;counter-increment:dprule}
+    .dp dd > ol > li::before{content:counter(dprule,decimal-leading-zero);position:absolute;left:0;top:.18em;
+      font:500 11px/1.5 "IBM Plex Mono",monospace;letter-spacing:.1em;color:var(--red)}
     .dp li:last-child{margin-bottom:0}
-    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
-    .dp-palette{list-style:none!important;padding-left:0!important}
-    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
-    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+
+    /* hex values are metadata → mono, underscored rather than boxed */
+    .dp code{font-family:"IBM Plex Mono",monospace;font-size:13px;background:none;
+      padding:0;border-radius:0;border-bottom:1px solid var(--rule);color:var(--ink)}
+
+    .dp-palette{list-style:none;padding-left:0}
+    .dp-palette li{display:flex;align-items:center;gap:10px;padding-left:0;margin-bottom:9px}
+    .dp-palette li::before{display:none}
+    /* square swatch: this page has no border-radius anywhere */
+    .sw{display:inline-block;width:14px;height:14px;border-radius:0;flex:none;
+      border:1px solid var(--rule);vertical-align:baseline;margin-right:0;background:var(--c)}
+
+    @media(max-width:860px){
+      .design-points h2{grid-column:1/13}
+      .dp-back{grid-column:1/13;justify-self:start;margin-top:18px}
+      .dp dt{grid-column:1/13}
+      .dp dd{grid-column:1/13;margin-top:14px}
+      .dp-row{padding-bottom:26px}
+    }
 </style>
+<script>
+  /* Applied before first paint so a stored preference never flashes the
+     default first. Same defensive try/catch as dark-mode-ui.html: any
+     storage failure (private mode, quota, blocked cookies) falls through
+     to the default rather than throwing. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }
+    }
+    root.setAttribute('data-nav',     read('atlas-swiss-nav',     ['top', 'side'],  'top'));
+    root.setAttribute('data-chrome',  read('atlas-swiss-chrome',  ['light', 'dark'], 'light'));
+    root.setAttribute('data-gridkey', read('atlas-swiss-gridkey', ['on', 'off'],    'on'));
+  })();
+</script>
 </head>
 <body>
 
   <nav class="nav grid">
     <a href="../index.html" class="logo">Atlas</a>
+
+    <div class="nav-controls">
+      <button type="button" class="sw-toggle" id="nav-toggle" aria-pressed="false">
+        <span class="sw-toggle__label">Nav</span>
+        <span class="sw-toggle__state" id="nav-toggle-state">Top</span>
+      </button>
+      <button type="button" class="sw-toggle" id="chrome-toggle" aria-pressed="false">
+        <span class="sw-toggle__label">Chrome</span>
+        <span class="sw-toggle__state" id="chrome-toggle-state">Light</span>
+      </button>
+    </div>
+
     <ul>
       <li><a href="#">Work</a></li>
       <li><a href="#">About</a></li>
@@ -201,8 +454,42 @@
     <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
   </section>
 
+  <section class="component grid" aria-labelledby="component-title">
+    <h2 class="component__title" id="component-title">Component reference</h2>
+    <p class="component__meta">004 / Dialog · focus trapped · Esc to close</p>
+    <button type="button" class="component__trigger" id="dialog-open">Open dialog</button>
+  </section>
+
+  <footer class="site-footer grid">
+    <div class="site-footer__rule"></div>
+    <p class="site-footer__mark">Atlas</p>
+    <p class="site-footer__meta">Swiss Design · 12-column grid · 24px gutter</p>
+    <nav class="site-footer__links" aria-label="Footer">
+      <a href="../index.html">All styles</a>
+      <!-- TODO: real repository URL lands in the separate GitHub-link pass -->
+      <a href="#github-placeholder">GitHub</a>
+    </nav>
+  </footer>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <div class="dialog__inner">
+      <p class="dialog__num">004 / Dialog</p>
+      <h2 class="dialog__title" id="dialog-title">Component reference</h2>
+      <div class="dialog__body">
+        <p>A modal built on the native dialog element. The browser traps focus inside it,
+        closes it on Escape, and makes everything behind it inert. Clicking the backdrop
+        closes it, and focus returns to the button that opened it.</p>
+      </div>
+      <p class="dialog__meta">Native &lt;dialog&gt; · showModal()</p>
+      <button type="button" class="dialog__close" id="dialog-close">Close</button>
+    </div>
+  </dialog>
+
   <div id="overlay" aria-hidden="true"><div class="grid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
-  <p class="hint">Press <b>G</b> for grid</p>
+  <div class="hint">
+    <button type="button" id="grid-toggle" aria-pressed="false">Grid</button>
+    <button type="button" id="key-toggle" aria-pressed="true">Key G on</button>
+  </div>
 
   <hr class="dp-divider">
 
@@ -230,8 +517,8 @@
             <ul class="dp-palette">
               <li><span class="sw" style="--c:#ffffff"></span><code>#ffffff</code> — page background</li>
               <li><span class="sw" style="--c:#111111"></span><code>#111111</code> — type, 4px rules, secondary button</li>
-              <li><span class="sw" style="--c:#e2231a"></span><code>#e2231a</code> — single signal colour: CTA, numerals, circle mark</li>
-              <li><span class="sw" style="--c:#8a8a8a"></span><code>#8a8a8a</code> — metadata and small caption text</li>
+              <li><span class="sw" style="--c:#d31f16"></span><code>#d31f16</code> — single signal colour: CTA, numerals, circle mark</li>
+              <li><span class="sw" style="--c:#707070"></span><code>#707070</code> — metadata and small caption text</li>
               <li><span class="sw" style="--c:#dcdcdc"></span><code>#dcdcdc</code> — light hairline where a 2px rule would be too loud</li>
             </ul>
           </dd>
@@ -283,18 +570,130 @@
   </section>
 
 <script>
-  /* Grid overlay: G toggles it; it also flashes once on load so the
-     system announces itself before the user touches anything. */
   (function () {
-    var overlay = document.getElementById('overlay');
-    var hint = document.querySelector('.hint');
-    function toggle() { overlay.classList.toggle('on'); }
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'g' || e.key === 'G') toggle();
+    var root = document.documentElement;
+
+    /* Storage is best-effort everywhere: a failure must never break a control. */
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    /* ── 1. Navbar <-> sidebar ──────────────────────────────────────
+       State lives in data-nav on <html>; all reflow is CSS, so the
+       sitewide prefers-reduced-motion rule in reset.css mutes it. */
+    var navBtn   = document.getElementById('nav-toggle');
+    var navState = document.getElementById('nav-toggle-state');
+
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navState.textContent = mode === 'side' ? 'Side' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next);
+      store('atlas-swiss-nav', next);
     });
-    hint.addEventListener('click', toggle);
-    overlay.classList.add('on');
-    setTimeout(function () { overlay.classList.remove('on'); }, 1100);
+
+    /* ── 2. Light / dark chrome ─────────────────────────────────────
+       Only --chrome-* tokens change, and only the nav, footer and
+       dialog read them, so hero/cards/CTA are untouched either way. */
+    var chromeBtn   = document.getElementById('chrome-toggle');
+    var chromeState = document.getElementById('chrome-toggle-state');
+
+    function applyChrome(mode) {
+      root.setAttribute('data-chrome', mode);
+      chromeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      chromeState.textContent = mode === 'dark' ? 'Dark' : 'Light';
+    }
+    applyChrome(root.getAttribute('data-chrome') === 'dark' ? 'dark' : 'light');
+
+    chromeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-chrome') === 'dark' ? 'light' : 'dark';
+      applyChrome(next);
+      store('atlas-swiss-chrome', next);
+    });
+
+    /* ── 3. Dialog ──────────────────────────────────────────────────
+       Native <dialog>.showModal() supplies the focus trap, Escape,
+       and an inert background for free. Only backdrop-click and an
+       explicit focus return are added on top. */
+    var dlg      = document.getElementById('dialog');
+    var openBtn  = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    var returnTo = null;
+
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function () {
+        returnTo = document.activeElement;
+        dlg.showModal();
+      });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+
+      /* The dialog's only child fills it, so a click that lands on the
+         dialog element itself came from the backdrop. */
+      dlg.addEventListener('click', function (e) {
+        if (e.target === dlg) dlg.close();
+      });
+
+      /* Browsers already restore focus on close; doing it explicitly
+         covers the older ones that do not. */
+      dlg.addEventListener('close', function () {
+        if (returnTo && typeof returnTo.focus === 'function') returnTo.focus();
+        returnTo = null;
+      });
+    } else if (openBtn) {
+      openBtn.hidden = true;   /* no native dialog: hide the control rather than ship a dead one */
+    }
+
+    /* ── 4. Grid overlay + its single-key shortcut ──────────────────
+       WCAG 2.1.4 (Character Key Shortcuts): a single-character
+       shortcut must be switchable off, remappable, or focus-scoped.
+       This one is switchable off via the "Key G" button, the choice
+       persists, and the handler additionally ignores modifier chords,
+       auto-repeat, and any keystroke aimed at a text field. */
+    var overlay = document.getElementById('overlay');
+    var gridBtn = document.getElementById('grid-toggle');
+    var keyBtn  = document.getElementById('key-toggle');
+
+    function setOverlay(on) {
+      overlay.classList.toggle('on', on);
+      gridBtn.setAttribute('aria-pressed', String(on));
+    }
+    gridBtn.addEventListener('click', function () {
+      setOverlay(!overlay.classList.contains('on'));
+    });
+
+    function applyKey(state) {
+      root.setAttribute('data-gridkey', state);
+      keyBtn.setAttribute('aria-pressed', String(state === 'on'));
+      keyBtn.textContent = state === 'on' ? 'Key G on' : 'Key G off';
+    }
+    applyKey(root.getAttribute('data-gridkey') === 'off' ? 'off' : 'on');
+
+    keyBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-gridkey') === 'on' ? 'off' : 'on';
+      applyKey(next);
+      store('atlas-swiss-gridkey', next);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (root.getAttribute('data-gridkey') !== 'on') return;   /* switched off */
+      if (e.ctrlKey || e.metaKey || e.altKey) return;           /* leave browser chords alone */
+      if (e.repeat) return;                                     /* holding G must not strobe */
+      var el = e.target;
+      if (el && (el.isContentEditable ||
+                 /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))) return;  /* never steal typing */
+      if (e.key === 'g' || e.key === 'G') {
+        setOverlay(!overlay.classList.contains('on'));
+      }
+    });
+
+    /* Declare the grid once on load, as the page always has. */
+    setOverlay(true);
+    setTimeout(function () { setOverlay(false); }, 1100);
   })();
 </script>
 </body>
