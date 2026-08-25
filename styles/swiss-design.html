@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ SWISS DESIGN (INTERNATIONAL TYPOGRAPHIC STYLE) ═══════════
        Everything is subordinate to the 12-column grid. Objectivity
@@ -16,44 +16,52 @@
        mathematical spacing, one signal colour, geometric shapes as
        information rather than decoration.                          */
 
+    /* ── ONE theme token set, driving the whole page ───────────────
+       --chrome-* are the source of truth and flip with data-theme.
+       The page's original names (--paper/--ink/--grey/--red/--rule)
+       are now aliases of them, so every colour declaration already
+       written against those names themes itself with no edit. */
     :root{
-      --paper:#ffffff;
-      --ink:#111111;
-      --red:#d31f16;     /* 5.28:1 on paper (was #e2231a, 4.68:1) */
-      --grey:#707070;    /* 4.95:1 on paper (was #8a8a8a, 3.45:1) */
-      --rule:#dcdcdc;
+      --chrome-bg:#ffffff;
+      --chrome-ink:#111111;
+      --chrome-red:#d31f16;     /* 5.28:1 on bg (was #e2231a, 4.68:1) */
+      --chrome-grey:#707070;    /* 4.95:1 on bg (was #8a8a8a, 3.45:1) */
+      --chrome-hair:#dcdcdc;
+      --chrome-on-red:#ffffff;  /* text placed on the signal colour */
+      --overlay-tint:rgba(211,31,22,.09);
+      --overlay-line:rgba(211,31,22,.30);
+
+      --paper:var(--chrome-bg);
+      --ink:var(--chrome-ink);
+      --red:var(--chrome-red);
+      --grey:var(--chrome-grey);
+      --rule:var(--chrome-hair);
+
       --col-gap:24px;
       --margin:clamp(20px,4vw,56px);
       --rail:0px;        /* left rail width; only non-zero in sidebar mode */
     }
 
-    /* ── Chrome theme layer ────────────────────────────────────────
-       These tokens dress ONLY the chrome — nav/sidebar, footer,
-       dialog and their controls. The hero, cards and CTA never read
-       them, so the demo content is identical in both chrome themes. */
-    :root{
-      --chrome-bg:var(--paper);
-      --chrome-ink:var(--ink);
-      --chrome-grey:var(--grey);
-      --chrome-red:var(--red);
-      --chrome-hair:var(--rule);
-      --chrome-on-red:#ffffff;  /* text on the signal colour */
-    }
-    :root[data-chrome="dark"]{
+    /* Dark is the same page inverted, not a separate skin: only these
+       six values change and every rule downstream follows. */
+    :root[data-theme="dark"]{
       --chrome-bg:#111111;
-      --chrome-ink:#f2f2f2;   /* 16.87:1 on chrome-bg */
-      --chrome-grey:#9a9a9a;  /*  6.71:1 on chrome-bg */
-      --chrome-red:#ff4438;   /*  5.52:1 on chrome-bg — same hue as --red,
-                                  lifted only so the signal colour still
-                                  clears 4.5:1 against black.            */
+      --chrome-ink:#f2f2f2;     /* 16.87:1 on bg */
+      --chrome-red:#ff4438;     /*  5.52:1 on bg — the same hue as the light
+                                    red, lifted only so the single signal
+                                    colour still clears 4.5:1 on black. */
+      --chrome-grey:#9a9a9a;    /*  6.71:1 on bg */
       --chrome-hair:#3a3a3a;
-      --chrome-on-red:#111111;  /* white on the lifted red is only 3.42:1;
+      --chrome-on-red:#111111;  /* white on the lifted red is 3.42:1;
                                    ink on it is 5.52:1 */
+      --overlay-tint:rgba(255,68,56,.12);
+      --overlay-line:rgba(255,68,56,.36);
     }
 
     body{
       background:var(--paper);
       color:var(--ink);
+      transition:background .2s linear,color .2s linear;
       font-family:"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;
       font-weight:400;
       -webkit-font-smoothing:antialiased;
@@ -71,23 +79,27 @@
       margin:0 auto;
     }
 
-    /* ── Nav: logo cols 1-4, controls 4-8, links hard right 8-13,
-           4px rule beneath. The empty middle of the original nav is
-           where the chrome controls go — they fill grid cells that
-           were already reserved, rather than floating over the page. */
-    .nav{padding-top:28px;align-items:baseline;position:relative;isolation:isolate;
-      color:var(--chrome-ink);transition:color .2s linear}
-    /* the chrome surface, bled out to the body's padding edge */
-    .nav::before{content:"";position:absolute;top:0;bottom:0;
-      left:calc(-1 * (var(--margin) + var(--rail)));right:calc(-1 * var(--margin));
-      background:var(--chrome-bg);z-index:-1;transition:background .2s linear}
-    .nav .logo{grid-column:1/4;font-size:20px;font-weight:700;letter-spacing:-.04em;text-transform:uppercase}
-    .nav ul{grid-column:8/13;display:flex;justify-content:flex-end;gap:32px}
+    /* ── Nav: two masses, not three. The wordmark anchors the left;
+           navigation and its controls stack into one right-hand block
+           on rows 1 and 2. The middle is now a deliberate void rather
+           than a gap with debris floating in it. Controls are demoted
+           below the links and hung on a 1px hairline — the weight the
+           palette already reserves for "where a 2px rule is too loud". */
+    .nav{padding-top:28px;position:relative;
+      row-gap:12px;align-items:baseline}
+    .nav .logo{grid-column:1/5;grid-row:1;font-size:20px;font-weight:700;
+      letter-spacing:-.04em;text-transform:uppercase}
+    .nav ul{grid-column:7/13;grid-row:1;display:flex;justify-content:flex-end;gap:32px}
     .nav a{font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase}
-    .nav a:hover{color:var(--chrome-red)}
-    .nav-rule{grid-column:1/13;height:4px;background:var(--chrome-ink);margin-top:20px;
+    .nav a:hover{color:var(--red)}
+    .nav-rule{grid-column:1/13;grid-row:3;height:4px;background:var(--ink);margin-top:18px;
       transition:background .2s linear}
-    .nav-controls{grid-column:4/8;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+    /* one control cluster, not two loose buttons */
+    .nav-controls{grid-column:7/13;grid-row:2;justify-self:end;
+      display:flex;align-items:stretch;
+      border:1px solid var(--rule);transition:border-color .2s linear}
+    .nav-controls .sw-toggle + .sw-toggle{border-left:1px solid var(--rule)}
 
     /* ── Sidebar mode: the same nav, re-placed as a fixed left rail ─
            4px rule moves from "beneath" to "beside" — the section-rule
@@ -95,38 +107,44 @@
     :root[data-nav="side"]{--rail:216px}
     [data-nav="side"] .nav{
       position:fixed;left:0;top:0;bottom:0;width:var(--rail);
-      display:flex;flex-direction:column;align-items:stretch;gap:0;
+      display:flex;flex-direction:column;align-items:stretch;gap:0;row-gap:0;
       max-width:none;margin:0;padding:28px var(--col-gap);
-      background:var(--chrome-bg);border-right:4px solid var(--chrome-ink);
+      background:var(--paper);border-right:4px solid var(--ink);
       overflow-y:auto;z-index:70;
       transition:background .2s linear,border-color .2s linear}
-    [data-nav="side"] .nav::before{display:none}
-    [data-nav="side"] .nav .logo{grid-column:auto;margin-bottom:28px}
-    [data-nav="side"] .nav ul{grid-column:auto;display:flex;flex-direction:column;
-      justify-content:flex-start;align-items:flex-start;gap:14px;order:3}
-    [data-nav="side"] .nav-controls{grid-column:auto;flex-direction:column;
-      align-items:stretch;gap:8px;order:2;margin-bottom:28px}
+    [data-nav="side"] .nav .logo{grid-column:auto;grid-row:auto;margin-bottom:26px}
+    [data-nav="side"] .nav ul{grid-column:auto;grid-row:auto;display:flex;flex-direction:column;
+      justify-content:flex-start;align-items:flex-start;gap:14px;order:2}
+    /* in the rail the cluster runs full width and reads as a footer to
+       the link list, keeping the same subordinate register */
+    [data-nav="side"] .nav-controls{grid-column:auto;grid-row:auto;justify-self:stretch;
+      flex-direction:column;align-items:stretch;order:3;margin-top:26px;
+      border:1px solid var(--rule)}
+    [data-nav="side"] .nav-controls .sw-toggle + .sw-toggle{border-left:0;border-top:1px solid var(--rule)}
+    [data-nav="side"] .sw-toggle{justify-content:space-between}
     /* in the rail the 4px right border is the section rule, so the
        horizontal rule collapses rather than being drawn twice */
     [data-nav="side"] .nav-rule{grid-column:auto;height:0;margin:0}
 
-    /* ── Toggle control: a bordered field with a mono state readout.
-           2px border = the item-level rule weight used on cards.     */
+    /* ── Toggle: deliberately lighter than the nav links it sits under.
+           9px label against their 12px, hairline rather than a 2px
+           item rule, and no filled chip until the control is actually
+           in its non-default state.                                  */
     .sw-toggle{
-      display:flex;align-items:stretch;gap:0;
-      border:2px solid currentColor;background:transparent;color:var(--chrome-ink);
-      padding:0;text-align:left;
-      transition:color .18s linear,border-color .18s linear}
-    .sw-toggle__label{padding:7px 9px;font:500 10px/1.2 "Inter Tight","Helvetica Neue",Arial,sans-serif;
-      letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
-    .sw-toggle__state{padding:7px 9px;margin-left:auto;
-      font:500 10px/1.2 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;
-      background:var(--chrome-ink);color:var(--chrome-bg);white-space:nowrap;
-      transition:background .18s linear,color .18s linear}
-    /* pressed = the non-default state, so it takes the signal colour */
-    .sw-toggle[aria-pressed="true"] .sw-toggle__state{background:var(--chrome-red);color:var(--chrome-on-red)}
-    .sw-toggle:hover{color:var(--chrome-red)}
-    .sw-toggle:focus-visible{outline:2px solid var(--chrome-red);outline-offset:2px}
+      display:flex;align-items:center;gap:8px;
+      border:0;background:transparent;color:var(--grey);
+      padding:6px 10px;text-align:left;
+      transition:color .18s linear,background .18s linear}
+    .sw-toggle__label{font:500 9px/1.2 "Inter Tight","Helvetica Neue",Arial,sans-serif;
+      letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+    .sw-toggle__state{font:500 9px/1.2 "IBM Plex Mono",monospace;letter-spacing:.1em;
+      text-transform:uppercase;white-space:nowrap;color:var(--ink);
+      transition:color .18s linear}
+    /* pressed = the non-default state, so it earns the signal colour */
+    .sw-toggle[aria-pressed="true"] .sw-toggle__state{color:var(--red)}
+    .sw-toggle:hover{color:var(--ink)}
+    .sw-toggle:hover .sw-toggle__state{color:var(--red)}
+    .sw-toggle:focus-visible{outline:2px solid var(--red);outline-offset:-1px}
 
     /* ── Hero: headline cols 1–9, deck pushed to 10–12 ──────────── */
     .hero{padding:72px 0 0;align-items:start}
@@ -190,10 +208,11 @@
     .dialog{
       padding:0;border:0;max-width:none;
       width:min(760px, calc(100vw - 2 * var(--margin)));
-      background:var(--chrome-bg);color:var(--chrome-ink);
-      border-top:4px solid var(--chrome-red);
+      background:var(--paper);color:var(--ink);
+      border-top:4px solid var(--red);
     }
     .dialog::backdrop{background:rgba(17,17,17,.72)}
+    :root[data-theme="dark"] .dialog::backdrop{background:rgba(0,0,0,.80)}
     /* opacity only — the page's Motion rule forbids transforms */
     .dialog[open]{animation:dlg-in .18s linear}
     .dialog[open]::backdrop{animation:dlg-in .18s linear}
@@ -201,40 +220,53 @@
     .dialog__inner{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--col-gap);
       padding:28px var(--col-gap) 32px}
     .dialog__num{grid-column:1/13;font:500 11px/1 "IBM Plex Mono",monospace;
-      letter-spacing:.1em;color:var(--chrome-red)}
+      letter-spacing:.1em;color:var(--red)}
     .dialog__title{grid-column:1/10;margin-top:14px;
       font-size:clamp(46px,5vw,56px);font-weight:700;line-height:.9;
       letter-spacing:-.048em;text-transform:uppercase}
     .dialog__body{grid-column:1/9;margin-top:18px;font-size:15px;line-height:1.45}
     .dialog__meta{grid-column:9/13;margin-top:18px;
       font:400 11px/1.5 "IBM Plex Mono",monospace;letter-spacing:.08em;
-      color:var(--chrome-grey);text-transform:uppercase;border-top:2px solid var(--chrome-ink);padding-top:10px}
+      color:var(--grey);text-transform:uppercase;border-top:2px solid var(--ink);padding-top:10px}
     .dialog__close{grid-column:1/4;margin-top:28px;display:block;width:100%;
-      background:var(--chrome-red);color:var(--chrome-on-red);padding:18px 0;text-align:center;
+      background:var(--red);color:var(--chrome-on-red);padding:18px 0;text-align:center;
       font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
       transition:background .18s linear}
-    .dialog__close:hover{background:var(--chrome-ink);color:var(--chrome-bg)}
-    .dialog__close:focus-visible{outline:2px solid var(--chrome-red);outline-offset:3px}
+    .dialog__close:hover{background:var(--ink);color:var(--paper)}
+    .dialog__close:focus-visible{outline:2px solid var(--red);outline-offset:3px}
 
-    /* ── Footer: closes the demo the way the nav opens it — logo
-           block 1-4, metadata 4-9, links hard right 9-13.           */
-    .site-footer{position:relative;isolation:isolate;padding:0 0 44px;
-      color:var(--chrome-ink);transition:color .2s linear}
-    .site-footer::before{content:"";position:absolute;top:0;bottom:0;
-      left:calc(-1 * (var(--margin) + var(--rail)));right:calc(-1 * var(--margin));
-      background:var(--chrome-bg);z-index:-1;transition:background .2s linear}
-    .site-footer__rule{grid-column:1/13;height:4px;background:var(--chrome-ink);
+    /* ── Footer: closes the demo the way the nav opens it — mark
+           block 1-4, metadata 4-9, links hard right 9-13. align-items
+           centre so the 11px metadata and 12px links sit on a common
+           optical centre with the 20px mark instead of hanging from
+           its cap height with dead space underneath.                */
+    .site-footer{padding:0 0 40px;align-items:center;row-gap:0}
+    .site-footer__rule{grid-column:1/13;grid-row:1;height:4px;background:var(--ink);
       margin-bottom:26px;transition:background .2s linear}
-    .site-footer__mark{grid-column:1/4;font-size:20px;font-weight:700;
-      letter-spacing:-.04em;text-transform:uppercase}
-    .site-footer__meta{grid-column:4/9;font:400 11px/1.5 "IBM Plex Mono",monospace;
-      letter-spacing:.08em;color:var(--chrome-grey);text-transform:uppercase}
-    .site-footer__links{grid-column:9/13;display:flex;justify-content:flex-end;gap:32px}
+    .site-footer__mark{grid-column:1/4;grid-row:2;font-size:20px;font-weight:700;
+      letter-spacing:-.04em;text-transform:uppercase;line-height:1.1}
+    .site-footer__meta{grid-column:4/9;grid-row:2;font:400 11px/1.5 "IBM Plex Mono",monospace;
+      letter-spacing:.08em;color:var(--grey);text-transform:uppercase}
+    .site-footer__links{grid-column:9/13;grid-row:2;display:flex;justify-content:flex-end;
+      align-items:center;gap:32px}
     .site-footer__links a{font-size:12px;font-weight:500;letter-spacing:.1em;
       text-transform:uppercase;border-bottom:2px solid transparent;padding-bottom:3px;
       transition:color .18s linear,border-color .18s linear}
-    .site-footer__links a:hover{color:var(--chrome-red);border-bottom-color:var(--chrome-red)}
-    .site-footer__links a:focus-visible{outline:2px solid var(--chrome-red);outline-offset:3px}
+    .site-footer__links a:hover{color:var(--red);border-bottom-color:var(--red)}
+    .site-footer__links a:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+    /* ── Signature mark ────────────────────────────────────────────
+       Deliberately NOT part of this page's type system. Swiss Design
+       owns the grotesque and the mono; this is a hand, and it is the
+       same hand on all 29 pages. Do not restyle it per page.        */
+    .signature{grid-column:9/13;grid-row:3;justify-self:end;margin-top:22px;
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--ink);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .18s linear}
+    .signature:hover{border-bottom-color:var(--ink)}
+    .signature:focus-visible{outline:2px solid var(--red);outline-offset:4px}
 
     /* ── Grid overlay (press G) ─────────────────────────────────── */
     #overlay{position:fixed;inset:0;padding:0 var(--margin);
@@ -243,7 +275,7 @@
       transition:opacity .25s linear,padding-left .22s linear;z-index:50}
     #overlay.on{opacity:1}
     #overlay .grid{height:100%}
-    #overlay .grid span{background:rgba(211,31,22,.09);border-left:1px solid rgba(211,31,22,.3);height:100%}
+    #overlay .grid span{background:var(--overlay-tint);border-left:1px solid var(--overlay-line);height:100%}
 
     /* The hint is now two real buttons: one toggles the overlay, one
        turns the single-key shortcut off (WCAG 2.1.4). */
@@ -256,7 +288,7 @@
       padding:6px 9px;font:500 10px/1 "IBM Plex Mono",monospace;letter-spacing:.12em;
       text-transform:uppercase;transition:background .18s linear,color .18s linear}
     .hint button:hover{background:var(--ink);color:var(--paper)}
-    .hint button[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#ffffff}  /* light surface only: 5.28:1 */
+    .hint button[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:var(--chrome-on-red)}
     .hint button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 
     @media(max-width:860px){
@@ -271,27 +303,30 @@
       /* below 860px the rail would eat the measure, so the nav is
          always the top bar regardless of the stored preference */
       :root[data-nav="side"]{--rail:0px}
-      /* relative, not static: .nav::before is absolutely positioned and
-         must keep .nav as its containing block, or it sizes against the
-         viewport and overhangs the right edge by one --margin */
       [data-nav="side"] .nav{position:relative;width:auto;display:grid;
-        grid-template-columns:repeat(12,1fr);gap:var(--col-gap);
-        max-width:1400px;margin:0 auto;padding:28px 0 0;border-right:0;overflow:visible}
-      [data-nav="side"] .nav::before{display:block}
-      [data-nav="side"] .nav .logo{grid-column:1/13;margin-bottom:0}
-      [data-nav="side"] .nav ul{grid-column:1/13;flex-direction:row;gap:22px;order:0;margin-top:16px}
-      [data-nav="side"] .nav-controls{grid-column:1/13;flex-direction:row;
-        justify-content:flex-start;order:0;margin:16px 0 0}
-      [data-nav="side"] .nav-rule{grid-column:1/13;height:4px;margin-top:20px}
-      .nav .logo{grid-column:1/13}
-      .nav-controls{grid-column:1/13;justify-content:flex-start;margin-top:16px}
-      .nav ul{grid-column:1/13;justify-content:flex-start;gap:22px;margin-top:16px}
+        grid-template-columns:repeat(12,1fr);gap:var(--col-gap);row-gap:12px;
+        max-width:1400px;margin:0 auto;padding:28px 0 0;border-right:0;overflow:visible;
+        background:transparent}
+      [data-nav="side"] .nav .logo{grid-column:1/13;grid-row:1;margin-bottom:0}
+      [data-nav="side"] .nav ul{grid-column:1/13;grid-row:2;flex-direction:row;
+        justify-content:flex-start;gap:22px;order:0;margin-top:4px}
+      [data-nav="side"] .nav-controls{grid-column:1/13;grid-row:3;justify-self:start;
+        flex-direction:row;order:0;margin:4px 0 0;border:1px solid var(--rule)}
+      [data-nav="side"] .nav-controls .sw-toggle + .sw-toggle{border-left:1px solid var(--rule);border-top:0}
+      [data-nav="side"] .sw-toggle{justify-content:flex-start}
+      [data-nav="side"] .nav-rule{grid-column:1/13;grid-row:4;height:4px;margin-top:18px}
+      /* stacked: wordmark, links, then the control cluster, all flush left */
+      .nav .logo{grid-column:1/13;grid-row:1}
+      .nav ul{grid-column:1/13;grid-row:2;justify-content:flex-start;gap:22px;margin-top:4px}
+      .nav-controls{grid-column:1/13;grid-row:3;justify-self:start;margin-top:4px}
+      .nav-rule{grid-column:1/13;grid-row:4}
       .component__title{grid-column:1/7}
       .component__meta{grid-column:7/13;text-align:right}
       .component__trigger{grid-column:1/7;margin-top:28px}
-      .site-footer__mark{grid-column:1/7}
-      .site-footer__meta{grid-column:1/13;margin-top:14px}
-      .site-footer__links{grid-column:1/13;justify-content:flex-start;gap:24px;margin-top:18px}
+      .site-footer__mark{grid-column:1/7;grid-row:2}
+      .site-footer__meta{grid-column:1/13;grid-row:3;margin-top:14px}
+      .site-footer__links{grid-column:1/13;grid-row:4;justify-content:flex-start;gap:24px;margin-top:18px}
+      .signature{grid-column:1/13;grid-row:5;justify-self:start;margin-top:20px}
       .dialog__title{grid-column:1/13}
       .dialog__body,.dialog__meta{grid-column:1/13}
       .dialog__close{grid-column:1/7}
@@ -385,7 +420,7 @@
       } catch (e) { return fallback; }
     }
     root.setAttribute('data-nav',     read('atlas-swiss-nav',     ['top', 'side'],  'top'));
-    root.setAttribute('data-chrome',  read('atlas-swiss-chrome',  ['light', 'dark'], 'light'));
+    root.setAttribute('data-theme',   read('atlas-swiss-theme',   ['light', 'dark'], 'light'));
     root.setAttribute('data-gridkey', read('atlas-swiss-gridkey', ['on', 'off'],    'on'));
   })();
 </script>
@@ -400,9 +435,9 @@
         <span class="sw-toggle__label">Nav</span>
         <span class="sw-toggle__state" id="nav-toggle-state">Top</span>
       </button>
-      <button type="button" class="sw-toggle" id="chrome-toggle" aria-pressed="false">
-        <span class="sw-toggle__label">Chrome</span>
-        <span class="sw-toggle__state" id="chrome-toggle-state">Light</span>
+      <button type="button" class="sw-toggle" id="theme-toggle" aria-pressed="false">
+        <span class="sw-toggle__label">Theme</span>
+        <span class="sw-toggle__state" id="theme-toggle-state">Light</span>
       </button>
     </div>
 
@@ -469,6 +504,8 @@
       <!-- TODO: real repository URL lands in the separate GitHub-link pass -->
       <a href="#github-placeholder">GitHub</a>
     </nav>
+    <!-- TODO: replace with portfolio link -->
+    <a class="signature" href="#">Built with care</a>
   </footer>
 
   <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
@@ -598,22 +635,22 @@
     });
 
     /* ── 2. Light / dark chrome ─────────────────────────────────────
-       Only --chrome-* tokens change, and only the nav, footer and
-       dialog read them, so hero/cards/CTA are untouched either way. */
-    var chromeBtn   = document.getElementById('chrome-toggle');
-    var chromeState = document.getElementById('chrome-toggle-state');
+       data-theme flips the six --chrome-* values that every other
+       colour token on the page aliases, so the whole page themes. */
+    var themeBtn   = document.getElementById('theme-toggle');
+    var themeState = document.getElementById('theme-toggle-state');
 
-    function applyChrome(mode) {
-      root.setAttribute('data-chrome', mode);
-      chromeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
-      chromeState.textContent = mode === 'dark' ? 'Dark' : 'Light';
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeState.textContent = mode === 'dark' ? 'Dark' : 'Light';
     }
-    applyChrome(root.getAttribute('data-chrome') === 'dark' ? 'dark' : 'light');
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
 
-    chromeBtn.addEventListener('click', function () {
-      var next = root.getAttribute('data-chrome') === 'dark' ? 'light' : 'dark';
-      applyChrome(next);
-      store('atlas-swiss-chrome', next);
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      store('atlas-swiss-theme', next);
     });
 
     /* ── 3. Dialog ──────────────────────────────────────────────────
