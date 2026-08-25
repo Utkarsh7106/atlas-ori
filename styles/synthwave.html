@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Synthwave — Atlas</title>
+<meta name="description" content="Synthwave: sunset gradient, perspective grid horizon, chrome type and neon glow.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@500;700;900&family=Chakra+Petch:wght@400;600&display=swap" rel="stylesheet">
+<style>
+    /* ══ SYNTHWAVE / OUTRUN ═══════════════════════════════════════
+       1984 as it never was. A sunset you drive toward: warm graded
+       sky, a striped sun on the horizon, an infinite perspective
+       grid rushing underneath, and chrome type reflecting all of
+       it. Optimistic where cyberpunk is grim.                      */
+
+    :root{
+      --night:#160b2e;      /* upper sky            */
+      --dusk:#3d1157;       /* mid sky              */
+      --pink:#ff2d95;       /* primary neon         */
+      --orange:#ff7a18;     /* sun lower band       */
+      --yellow:#ffd166;     /* sun upper band       */
+      --cyan:#22e0ff;       /* grid + secondary     */
+      --ink:#0a0517;
+    }
+
+    body{
+      background:linear-gradient(180deg, #0a0517 0%, var(--night) 26%, var(--dusk) 62%, #6a1a63 82%, #b3246c 100%);
+      background-attachment:fixed;
+      color:#f4ecff;
+      font-family:"Chakra Petch",-apple-system,sans-serif;
+      overflow-x:hidden;
+      position:relative;
+      min-height:100vh;
+    }
+
+    /* ── The horizon: sun, glow line and the infinite grid ────── */
+    .scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+    .sun{position:absolute;left:50%;top:31%;transform:translateX(-50%);width:min(370px,56vw);
+      aspect-ratio:1;border-radius:50%;
+      background:linear-gradient(180deg, var(--yellow) 0%, #ff9d3c 42%, var(--pink) 100%);
+      filter:drop-shadow(0 0 90px rgba(255,45,149,.55));
+      -webkit-mask-image:linear-gradient(180deg,#000 0 52%,transparent 52%),
+        repeating-linear-gradient(180deg,#000 0 10px,transparent 10px 17px);
+      -webkit-mask-composite:source-over;
+      mask-image:linear-gradient(180deg,#000 0 52%,transparent 52%),
+        repeating-linear-gradient(180deg,#000 0 10px,transparent 10px 17px);
+      animation:pulse 4.6s ease-in-out infinite}
+    @keyframes pulse{0%,100%{filter:drop-shadow(0 0 90px rgba(255,45,149,.5))}
+      50%{filter:drop-shadow(0 0 130px rgba(255,45,149,.8))}}
+    .horizon{position:absolute;left:0;right:0;top:62%;height:2px;background:var(--cyan);
+      box-shadow:0 0 26px 6px rgba(34,224,255,.75)}
+    .grid{position:absolute;left:-50%;right:-50%;top:62%;bottom:-10%;
+      background-image:
+        repeating-linear-gradient(90deg, rgba(34,224,255,.55) 0 2px, transparent 2px 84px),
+        repeating-linear-gradient(0deg, rgba(255,45,149,.5) 0 2px, transparent 2px 62px);
+      transform:perspective(320px) rotateX(72deg);transform-origin:top center;
+      animation:rush 1.9s linear infinite}
+    @keyframes rush{from{background-position:0 0,0 0}to{background-position:0 0,0 62px}}
+
+    .wrap{max-width:1080px;margin:0 auto;padding:24px clamp(14px,3vw,26px) 60px;position:relative;z-index:2}
+
+    /* ── Nav ─────────────────────────────────────────────────── */
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+      padding:14px 20px;background:rgba(14,6,32,.55);border:1px solid rgba(34,224,255,.4);
+      box-shadow:0 0 26px rgba(34,224,255,.28), inset 0 0 26px rgba(255,45,149,.12)}
+    .logo{font-family:"Monoton",cursive;font-size:32px;line-height:1;color:#fff;letter-spacing:.04em;
+      text-shadow:0 0 8px #fff,0 0 22px var(--pink),0 0 44px var(--pink)}
+    .nav ul{display:flex;gap:8px}
+    .nav ul a{display:block;font-family:"Orbitron",sans-serif;font-size:12px;font-weight:700;
+      letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);padding:9px 16px;
+      border:1px solid rgba(34,224,255,.35);transition:color .25s ease,box-shadow .25s ease,border-color .25s ease}
+    .nav ul a:hover{color:#fff;border-color:var(--pink);
+      box-shadow:0 0 18px rgba(255,45,149,.7), inset 0 0 14px rgba(255,45,149,.35)}
+
+    /* ── Hero: chrome type over the sun ──────────────────────── */
+    .hero{padding:clamp(64px,13vh,132px) 10px clamp(50px,9vh,96px);text-align:center}
+    .hero h1{
+      font-family:"Orbitron",sans-serif;font-size:clamp(32px,6.4vw,74px);font-weight:900;
+      line-height:1.06;letter-spacing:.02em;text-transform:uppercase;max-width:16ch;margin:0 auto;
+      background:linear-gradient(180deg,#ffffff 0%,#e7f6ff 38%,#22e0ff 50%,#ff2d95 62%,#7a2ff7 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      filter:drop-shadow(0 3px 0 rgba(122,47,247,.9)) drop-shadow(0 0 26px rgba(255,45,149,.5));
+    }
+    /* A plate keeps the deck legible where it crosses the sun. */
+    .hero p{display:inline-block;margin-top:26px;font-size:17px;font-weight:600;letter-spacing:.1em;
+      color:#ffe9f7;text-shadow:0 0 16px rgba(255,45,149,.8);max-width:40ch;
+      background:rgba(12,5,26,.55);padding:10px 20px;border:1px solid rgba(255,45,149,.35)}
+    .btn{display:inline-block;margin-top:38px;font-family:"Orbitron",sans-serif;font-size:14px;font-weight:700;
+      letter-spacing:.26em;text-transform:uppercase;color:#fff;padding:16px 44px;
+      background:linear-gradient(180deg, rgba(255,45,149,.28), rgba(122,47,247,.28));
+      border:2px solid var(--pink);
+      box-shadow:0 0 22px rgba(255,45,149,.7), inset 0 0 22px rgba(255,45,149,.35);
+      text-shadow:0 0 12px rgba(255,255,255,.9);
+      transition:box-shadow .3s ease,transform .3s ease}
+    .btn:hover{transform:translateY(-3px);
+      box-shadow:0 0 40px rgba(255,45,149,.95), inset 0 0 30px rgba(255,45,149,.5)}
+
+    /* ── Features ────────────────────────────────────────────── */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .card{padding:30px 24px 32px;text-align:center;background:rgba(14,6,32,.6);
+      border:1px solid rgba(34,224,255,.34);
+      box-shadow:0 0 24px rgba(34,224,255,.2), inset 0 -32px 44px rgba(255,45,149,.12);
+      transition:transform .3s ease,box-shadow .3s ease}
+    .card:hover{transform:translateY(-6px);box-shadow:0 0 36px rgba(255,45,149,.5), inset 0 -32px 44px rgba(255,45,149,.24)}
+    .icon{display:inline-block;font-family:"Orbitron",sans-serif;font-size:10px;font-weight:700;
+      letter-spacing:.28em;text-transform:uppercase;color:var(--cyan);
+      text-shadow:0 0 14px rgba(34,224,255,.9);margin-bottom:16px}
+    .card h3{font-family:"Orbitron",sans-serif;font-size:23px;font-weight:700;text-transform:uppercase;
+      letter-spacing:.06em;margin-bottom:12px;color:#fff;
+      text-shadow:0 0 10px rgba(255,45,149,.9),0 2px 0 rgba(122,47,247,.9)}
+    .card p{font-size:15px;line-height:1.7;color:#e3d5ff}
+
+    /* ── CTA ─────────────────────────────────────────────────── */
+    .cta{margin-top:20px;padding:64px 24px 68px;text-align:center;
+      background:linear-gradient(180deg, rgba(255,45,149,.16), rgba(34,224,255,.10));
+      border:1px solid rgba(255,45,149,.45);box-shadow:0 0 40px rgba(255,45,149,.25)}
+    .cta h2{font-family:"Monoton",cursive;font-size:clamp(30px,5.4vw,62px);color:#fff;line-height:1.2;
+      text-shadow:0 0 10px #fff,0 0 28px var(--cyan),0 0 60px var(--cyan)}
+    .cta button{margin-top:30px;font-family:"Orbitron",sans-serif;font-size:14px;font-weight:700;
+      letter-spacing:.26em;text-transform:uppercase;color:var(--ink);background:var(--cyan);
+      padding:16px 40px;box-shadow:0 0 26px rgba(34,224,255,.8);
+      transition:background .3s ease,box-shadow .3s ease}
+    .cta button:hover{background:#fff;box-shadow:0 0 40px rgba(255,255,255,.95)}
+
+    @media(max-width:860px){.features{grid-template-columns:1fr}.logo{font-size:24px}}
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div class="scene" aria-hidden="true">
+    <div class="sun"></div>
+    <div class="horizon"></div>
+    <div class="grid"></div>
+  </div>
+
+  <div class="wrap">
+
+    <nav class="nav">
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <h1>Design is how it feels to use.</h1>
+      <p>A study in visual language, one style at a time.</p>
+      <a href="#" class="btn">Explore</a>
+    </header>
+
+    <section class="features">
+      <article class="card">
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+      </article>
+      <article class="card">
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+      </article>
+      <article class="card">
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+      </article>
+    </section>
+
+    <section class="cta">
+      <h2>Start building.</h2>
+      <button>Get in touch</button>
+    </section>
+
+  </div>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Synthwave">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Synthwave</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>A 2010s revival of imagined 1984: Miami Vice title cards, Outrun arcade cabinets and Tron, rebuilt around synth albums by Kavinsky and Com Truise.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#160b2e"></span><code>#160b2e</code> — upper night sky</li>
+              <li><span class="sw" style="--c:#3d1157"></span><code>#3d1157</code> — mid-sky dusk in the fixed gradient</li>
+              <li><span class="sw" style="--c:#ff2d95"></span><code>#ff2d95</code> — primary neon pink: glow, grid depth lines, borders</li>
+              <li><span class="sw" style="--c:#ff7a18"></span><code>#ff7a18</code> — sun's lower band</li>
+              <li><span class="sw" style="--c:#ffd166"></span><code>#ffd166</code> — sun's upper band</li>
+              <li><span class="sw" style="--c:#22e0ff"></span><code>#22e0ff</code> — grid cyan, horizon line and secondary CTA</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Three faces with fixed jobs: Monoton (a neon-tube face) for the logo and CTA heading, Orbitron 700–900 for headlines, card titles and buttons, Chakra Petch for body. All display is uppercase with positive tracking (0.02–0.28em) — synthwave type spreads rather than tightens. Hero at <code>clamp(32px, 6.4vw, 74px)</code>/900, card titles 23px, body 15–17px at 600 weight with 0.1em tracking. Nothing is set below 10px.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>Centre-aligned throughout on a 1080px column, because the composition is a one-point perspective and the vanishing point must stay on the axis. The scene layer is <code>position: fixed</code> with the sun at 26%, horizon at 62% and grid below it, so content scrolls over a stationary landscape. Generous viewport-relative hero padding keeps the headline sitting on the sun.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>An infinite perspective floor: <code>perspective(320px) rotateX(72deg)</code> on a two-axis repeating gradient, animated by shifting <code>background-position</code> so lines rush toward the viewer.</li>
+              <li>A striped sun built from a circular gradient plus a two-part <code>mask-image</code> that cuts horizontal slits into its lower half.</li>
+              <li>Chrome type: a five-stop vertical gradient through white, cyan, pink and violet with <code>background-clip: text</code>, hardened by a 3px violet drop-shadow.</li>
+              <li>Double-sided neon on every container — an outer glow plus an <code>inset</code> glow in the same hue.</li>
+              <li>A 2px cyan horizon line with a 26px/6px spread shadow, and a translucent plate behind the deck so type stays legible where it crosses the sun.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>The landscape never stops: the grid's horizontal lines scroll one 62px cell every 1.9s on a linear loop, giving continuous forward motion, while the sun's drop-shadow breathes between 90px and 130px on a 4.6s ease-in-out cycle. Interaction is warm and eased at 250–300ms — cards lift 6px and swap their glow from cyan to pink, the CTA button brightens to white. There is no JavaScript on this page; the CSS animations carry it.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Build the sky first as a fixed vertical gradient from near-black through violet to magenta, and place a striped sun and a cyan horizon line on it.</li>
+              <li>Add a perspective grid with <code>rotateX</code> between 70 and 75deg and animate its background-position so it rushes toward the viewer.</li>
+              <li>Centre everything — a one-point perspective demands the vanishing point stay on the axis.</li>
+              <li>Give display type a chrome gradient via <code>background-clip: text</code> and a hard offset shadow; track all caps outward, never inward.</li>
+              <li>Glow every container twice, outside and inset, in cyan or pink — and keep the mood warm and optimistic rather than grimy.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+</body>
+</html>

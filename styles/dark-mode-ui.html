@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dark Mode UI — Atlas</title>
+<meta name="description" content="Dark Mode UI: token-driven elevation, hairline borders, restrained accent, no glow.">
+<link rel="stylesheet" href="../assets/reset.css">
+<style>
+    /* ══ DARK MODE UI ═════════════════════════════════════════════
+       A product interface, not an atmosphere. Dark here is a set of
+       TOKENS with an elevation ladder, not a mood: never pure black,
+       never pure white text, never a glow. Everything is legible,
+       calm and functional — the discipline is the style.           */
+
+    :root[data-theme="dark"]{
+      --bg:#0b0d12;          /* app background, not #000        */
+      --surface-1:#12151c;   /* cards, nav                      */
+      --surface-2:#1a1f29;   /* raised: inputs, hover, chips    */
+      --border:rgba(255,255,255,.09);
+      --border-strong:rgba(255,255,255,.16);
+      --text:#e7eaf0;        /* ~#fff at 91% — never pure white */
+      --muted:#98a2b6;
+      --accent:#6d8fff;
+      --accent-quiet:rgba(109,143,255,.14);
+      --success:#3ddc97;
+      --shadow:0 1px 2px rgba(0,0,0,.6), 0 12px 28px -14px rgba(0,0,0,.9);
+    }
+    /* The same component set, one token block later. */
+    :root[data-theme="light"]{
+      --bg:#f6f7f9;
+      --surface-1:#ffffff;
+      --surface-2:#f0f2f6;
+      --border:rgba(12,16,26,.10);
+      --border-strong:rgba(12,16,26,.20);
+      --text:#12151c;
+      --muted:#5c6577;
+      --accent:#3559e0;
+      --accent-quiet:rgba(53,89,224,.10);
+      --success:#12855c;
+      --shadow:0 1px 2px rgba(16,24,40,.06), 0 12px 28px -16px rgba(16,24,40,.35);
+    }
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+      font-size:15px;
+      -webkit-font-smoothing:antialiased;
+      transition:background .25s ease,color .25s ease;
+    }
+    .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(16px,4vw,28px) 72px}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+    /* ── Nav ─────────────────────────────────────────────────── */
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+      background:var(--surface-1);border:1px solid var(--border);border-radius:12px;
+      padding:12px 16px;margin-top:24px;box-shadow:var(--shadow);
+      transition:background .25s ease,border-color .25s ease}
+    .logo{font-size:16px;font-weight:650;letter-spacing:-.01em;color:var(--text)}
+    .nav ul{display:flex;gap:2px}
+    .nav ul a{display:block;font-size:13.5px;font-weight:500;color:var(--muted);
+      padding:8px 13px;border-radius:8px;transition:background .15s ease,color .15s ease}
+    .nav ul a:hover{background:var(--surface-2);color:var(--text)}
+    .nav ul a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .hero{padding:88px 0 76px;max-width:44rem}
+    .pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:550;
+      color:var(--accent);background:var(--accent-quiet);border:1px solid var(--border);
+      padding:5px 11px;border-radius:999px;margin-bottom:24px}
+    .pill i{width:6px;height:6px;border-radius:50%;background:var(--success);display:block}
+    .hero h1{font-size:clamp(32px,4.6vw,52px);font-weight:650;line-height:1.1;letter-spacing:-.028em}
+    .hero p{margin-top:16px;font-size:17px;line-height:1.6;color:var(--muted);max-width:38ch}
+    .btn{display:inline-block;margin-top:32px;font-size:14px;font-weight:600;color:#fff;
+      background:var(--accent);padding:11px 22px;border-radius:9px;
+      box-shadow:0 1px 2px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.14);
+      transition:filter .15s ease,transform .15s ease}
+    .btn:hover{filter:brightness(1.08)}
+    .btn:active{transform:translateY(1px)}
+    .btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+    /* ── Features ────────────────────────────────────────────── */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .card{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;
+      padding:22px 20px 24px;box-shadow:var(--shadow);
+      transition:background .15s ease,border-color .15s ease,transform .15s ease}
+    .card:hover{border-color:var(--border-strong);transform:translateY(-2px)}
+    .icon{display:inline-flex;align-items:center;justify-content:center;
+      width:34px;height:34px;border-radius:9px;background:var(--surface-2);border:1px solid var(--border);
+      font-family:ui-monospace,monospace;font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+    .card h3{font-size:16px;font-weight:650;letter-spacing:-.012em;margin:16px 0 6px}
+    .card p{font-size:14px;line-height:1.6;color:var(--muted)}
+
+    /* ── CTA ─────────────────────────────────────────────────── */
+    .cta{margin-top:16px;background:var(--surface-1);border:1px solid var(--border);border-radius:12px;
+      padding:40px 28px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
+      box-shadow:var(--shadow);transition:background .25s ease,border-color .25s ease}
+    .cta h2{font-size:clamp(22px,2.8vw,30px);font-weight:650;letter-spacing:-.022em}
+    .cta button{font-size:14px;font-weight:600;color:var(--text);background:var(--surface-2);
+      border:1px solid var(--border-strong);padding:11px 22px;border-radius:9px;
+      transition:background .15s ease,border-color .15s ease}
+    .cta button:hover{background:var(--bg);border-color:var(--accent)}
+    .cta button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+    /* ── Theme switch (docs-style, deliberately outside the nav) ─ */
+    .switch{position:fixed;right:20px;bottom:20px;z-index:70;display:flex;align-items:center;gap:9px;
+      background:var(--surface-1);border:1px solid var(--border);border-radius:999px;padding:7px 9px 7px 14px;
+      box-shadow:var(--shadow);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+      color:var(--muted);transition:background .25s ease,border-color .25s ease}
+    .switch .track{width:38px;height:21px;border-radius:999px;background:var(--surface-2);
+      border:1px solid var(--border-strong);position:relative;transition:background .25s ease}
+    .switch .knob{position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;
+      background:var(--accent);transition:transform .25s cubic-bezier(.2,.8,.3,1)}
+    :root[data-theme="light"] .switch .knob{transform:translateX(17px)}
+
+    @media(max-width:860px){.features{grid-template-columns:1fr}.hero{padding:56px 0 48px}}
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <nav class="nav">
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <span class="pill"><i aria-hidden="true"></i> All systems operational</span>
+      <h1>Design is how it feels to use.</h1>
+      <p>A study in visual language, one style at a time.</p>
+      <a href="#" class="btn">Explore</a>
+    </header>
+
+    <section class="features">
+      <article class="card">
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+      </article>
+      <article class="card">
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+      </article>
+      <article class="card">
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+      </article>
+    </section>
+
+    <section class="cta">
+      <h2>Start building.</h2>
+      <button>Get in touch</button>
+    </section>
+
+  </div>
+
+  <button class="switch" id="switch" aria-label="Toggle colour theme">
+    <span class="mono" id="switch-label">Dark</span>
+    <span class="track" aria-hidden="true"><span class="knob"></span></span>
+  </button>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Dark Mode UI">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Dark Mode UI</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>2018 onward — system-level dark themes in iOS 13, Android 10 and macOS Mojave, codified by Material Design's dark theme guidance and the Linear/Vercel/GitHub generation of product interfaces.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#0b0d12"></span><code>#0b0d12</code> — app background, deliberately not pure black</li>
+              <li><span class="sw" style="--c:#12151c"></span><code>#12151c</code> — surface-1: nav, cards, CTA</li>
+              <li><span class="sw" style="--c:#1a1f29"></span><code>#1a1f29</code> — surface-2: hover, chips, secondary button</li>
+              <li><span class="sw" style="--c:#e7eaf0"></span><code>#e7eaf0</code> — primary text at ~91% white, never #ffffff</li>
+              <li><span class="sw" style="--c:#98a2b6"></span><code>#98a2b6</code> — secondary text, still above 4.5:1 on the background</li>
+              <li><span class="sw" style="--c:#6d8fff"></span><code>#6d8fff</code> — accent, desaturated for dark surfaces</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>The platform UI stack — <code>system-ui</code>, San Francisco, Segoe UI, Roboto — paired with <code>ui-monospace</code> (SF Mono, Menlo, Consolas) for the icon glyphs and the theme label. No webfont is loaded, because a product interface should paint on first frame. Weights are 500/600/650 only; true 700 bloats on dark backgrounds. Sizes come from a tight ramp: 12–13.5px labels, 14–15px body, 16px card titles, <code>clamp(32px, 4.6vw, 52px)</code> hero, with −0.012 to −0.028em tracking on headings.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>A 1080px application shell on a 4px spacing scale (8/16/22/40/88), with a consistent 16px gutter between all cards and sections. Content is flush left and the hero measure is capped at 44rem. Radii step with element size — 8–9px for controls, 12px for containers, 999px for pills — and every container carries a 1px hairline border rather than relying on shadow alone.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>An elevation ladder built from surface tints (bg → surface-1 → surface-2) instead of drop shadows, since shadows barely read on dark grounds.</li>
+              <li>Hairline borders at <code>rgba(255,255,255,.09)</code>, strengthening to <code>.16</code> on hover — the primary way edges are defined.</li>
+              <li>A desaturated accent plus a 14%-alpha "quiet" variant of the same hue for chip backgrounds.</li>
+              <li>An <code>inset 0 1px 0 rgba(255,255,255,.14)</code> top highlight on the primary button to imply a light source without a glow.</li>
+              <li>Explicit <code>:focus-visible</code> rings at 2px with 2–3px offset on every interactive element.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>Deliberately quiet: 150ms on hover states, 250ms on theme changes, nothing longer. JS drives a fixed docs-style theme switch — kept outside the nav so the navigation stays exactly three links — which flips <code>data-theme</code> on <code>&lt;html&gt;</code> between <code>dark</code> and <code>light</code>. Because every colour is a token, the entire page including the accent, borders and shadow recipe re-renders from one attribute; the choice is persisted to <code>localStorage</code> in a try/catch and restored on load.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Define every colour as a custom property under a <code>[data-theme]</code> selector, and write the light theme as a second token block over the same component CSS — never fork the components.</li>
+              <li>Never use pure black backgrounds or pure white text: start around <code>#0b0d12</code> and cap text at ~91% white to cut halation.</li>
+              <li>Build elevation from surface tints plus 1px hairline borders, not from shadows, and strengthen the border rather than the shadow on hover.</li>
+              <li>Desaturate the accent for dark surfaces and keep a low-alpha variant of it for chip and badge backgrounds.</li>
+              <li>Keep motion under 250ms, ship visible <code>:focus-visible</code> rings, and load no webfont — use the platform UI stack.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* One attribute drives every colour on the page. */
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('switch');
+    var label = document.getElementById('switch-label');
+
+    function apply(theme) {
+      root.setAttribute('data-theme', theme);
+      label.textContent = theme === 'dark' ? 'Dark' : 'Light';
+      try { localStorage.setItem('atlas-theme', theme); } catch (e) {}
+    }
+
+    try {
+      var saved = localStorage.getItem('atlas-theme');
+      if (saved === 'light' || saved === 'dark') apply(saved);
+    } catch (e) {}
+
+    btn.addEventListener('click', function () {
+      apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+  })();
+</script>
+</body>
+</html>
