@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scrapbook — Atlas</title>
+<meta name="description" content="Scrapbook: kraft paper, washi tape, torn edges, handwriting and typewriter type.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+    /* ══ SCRAPBOOK ════════════════════════════════════════════════
+       An analogue page: kraft board, paper cut-outs, washi tape,
+       biro handwriting and a tired typewriter. Every element is a
+       physical object that was placed by hand — slightly crooked,
+       casting a soft shadow, held down by tape.                    */
+
+    :root{
+      --kraft:#d8c3a5;    /* the board everything is stuck to */
+      --paper:#fdf6e8;    /* cut paper / index card           */
+      --ink:#2f3a4a;      /* biro navy                        */
+      --red:#c1483b;      /* margin rule, stamps, corrections  */
+      --sage:#8a9a7b;     /* muted craft green                */
+      --tape:rgba(238,214,140,.72);
+    }
+
+    body{
+      background:
+        radial-gradient(circle at 22% 18%, rgba(255,255,255,.30) 0, transparent 38%),
+        radial-gradient(circle at 78% 72%, rgba(120,90,50,.16) 0, transparent 42%),
+        repeating-linear-gradient(52deg, rgba(140,110,70,.05) 0 2px, transparent 2px 5px),
+        var(--kraft);
+      color:var(--ink);
+      font-family:"Special Elite",Courier,monospace;
+      padding:clamp(16px,3vw,34px);
+      overflow-x:hidden;
+    }
+    .board{max-width:1060px;margin:0 auto;position:relative}
+
+    /* ── Shared paper physics ────────────────────────────────── */
+    .paper{
+      background:var(--paper);
+      box-shadow:2px 4px 0 rgba(90,66,40,.22), 0 14px 24px -14px rgba(60,42,22,.6);
+      position:relative;
+    }
+    .tape{
+      position:absolute;width:112px;height:30px;background:var(--tape);
+      box-shadow:0 1px 3px rgba(80,60,30,.28);
+      border-left:1px dashed rgba(255,255,255,.55);border-right:1px dashed rgba(255,255,255,.55);
+      backdrop-filter:saturate(1.3);
+    }
+    .tape.tl{top:-14px;left:-18px;transform:rotate(-28deg)}
+    .tape.tr{top:-16px;right:-16px;transform:rotate(23deg)}
+    .tape.bl{bottom:-14px;left:26px;transform:rotate(8deg)}
+
+    /* ── Nav: a torn strip pinned to the top ─────────────────── */
+    .nav{
+      display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;
+      padding:16px 26px;transform:rotate(-.7deg);margin-bottom:44px;
+      clip-path:polygon(0 6%,4% 0,12% 7%,22% 1%,33% 8%,45% 2%,57% 9%,68% 2%,79% 8%,90% 1%,100% 7%,100% 94%,92% 100%,80% 93%,69% 99%,57% 92%,44% 99%,32% 92%,20% 99%,9% 93%,0 100%);
+    }
+    .logo{font-family:"Caveat",cursive;font-size:42px;font-weight:700;color:var(--ink);
+      transform:rotate(-2deg);text-shadow:1px 1px 0 rgba(255,255,255,.8)}
+    .nav ul{display:flex;gap:20px;flex-wrap:wrap}
+    .nav ul a{font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:3px 2px;
+      border-bottom:2px solid transparent;transition:border-color .2s ease,color .2s ease}
+    .nav ul a:hover{border-bottom-color:var(--red);color:var(--red)}
+
+    /* ── Hero: a big ruled sheet, taped down ─────────────────── */
+    .hero{
+      padding:52px 40px 46px 62px;transform:rotate(.8deg);margin-bottom:70px;
+      background-image:
+        linear-gradient(90deg, transparent 44px, rgba(193,72,59,.4) 44px 45px, transparent 45px),
+        repeating-linear-gradient(180deg, transparent 0 31px, rgba(47,58,74,.16) 31px 32px);
+      background-color:var(--paper);
+    }
+    .hero h1{font-family:"Caveat",cursive;font-weight:700;font-size:clamp(40px,7.6vw,84px);
+      line-height:1.02;max-width:15ch;color:var(--ink)}
+    .hero h1::after{content:"";display:block;width:58%;height:9px;margin-top:6px;
+      background:rgba(193,72,59,.32);transform:rotate(-.6deg) skewX(-12deg);border-radius:4px}
+    .hero p{margin-top:26px;font-size:14px;line-height:2;max-width:44ch;letter-spacing:.01em}
+
+    .btn{display:inline-block;margin-top:34px;font-family:"Caveat",cursive;font-size:27px;font-weight:700;
+      background:var(--sage);color:#fff5e6;padding:8px 30px;transform:rotate(-1.6deg);
+      box-shadow:3px 3px 0 rgba(60,45,25,.45);
+      clip-path:polygon(1% 8%,99% 0,100% 88%,50% 100%,0 92%);
+      transition:transform .18s ease,box-shadow .18s ease}
+    .btn:hover{transform:rotate(1.4deg) translateY(-3px);box-shadow:5px 7px 0 rgba(60,45,25,.45)}
+
+    .doodle{position:absolute;font-family:"Caveat",cursive;font-size:22px;color:var(--red);
+      transform:rotate(-9deg);pointer-events:none}
+
+    /* ── Features: three pinned cut-outs ─────────────────────── */
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:40px;margin-bottom:78px}
+    .card{padding:26px 22px 30px;cursor:grab;touch-action:none;transition:box-shadow .2s ease}
+    .card:nth-child(1){transform:rotate(-2.4deg)}
+    .card:nth-child(2){transform:rotate(1.6deg);background:#f6efdd}
+    .card:nth-child(3){transform:rotate(-1.1deg)}
+    .card:hover{box-shadow:3px 6px 0 rgba(90,66,40,.22), 0 24px 34px -18px rgba(60,42,22,.75);z-index:5}
+    .card:active{cursor:grabbing}
+    .icon{display:inline-block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+      color:var(--paper);background:var(--ink);padding:4px 10px;transform:rotate(-1.5deg)}
+    .card h3{font-family:"Caveat",cursive;font-size:38px;font-weight:700;margin:14px 0 4px;color:var(--red)}
+    .card p{font-size:13px;line-height:1.9;border-top:1px dashed rgba(47,58,74,.4);padding-top:12px}
+    .clip{position:absolute;top:-20px;right:22px;width:26px;height:52px;border:4px solid #9aa3ab;
+      border-radius:14px;border-bottom-color:transparent;box-shadow:1px 2px 2px rgba(0,0,0,.25)}
+
+    /* ── CTA: an index card stamped ──────────────────────────── */
+    .cta{padding:46px 30px;text-align:center;transform:rotate(-.6deg);margin-bottom:60px;
+      background:var(--paper);
+      background-image:repeating-linear-gradient(180deg, transparent 0 29px, rgba(47,58,74,.13) 29px 30px)}
+    .cta h2{font-family:"Caveat",cursive;font-size:clamp(38px,6vw,66px);font-weight:700}
+    .cta button{margin-top:22px;font-family:"Special Elite",monospace;font-size:14px;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--red);border:3px double var(--red);padding:11px 26px;
+      transform:rotate(1.2deg);opacity:.88;transition:transform .18s ease,opacity .18s ease}
+    .cta button:hover{transform:rotate(-2deg) scale(1.04);opacity:1}
+    .stamp{position:absolute;right:26px;top:20px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+      color:var(--red);border:2px solid var(--red);padding:8px 12px;transform:rotate(13deg);opacity:.6;
+      border-radius:4px}
+
+    @media(max-width:640px){
+      .hero{padding:40px 22px 38px 50px}
+      .logo{font-size:34px}
+    }
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div class="board">
+
+    <nav class="nav paper">
+      <span class="tape tl"></span>
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <span class="tape tr"></span>
+    </nav>
+
+    <header class="hero paper">
+      <span class="tape tl"></span>
+      <span class="tape bl"></span>
+      <h1>Design is how it feels to use.</h1>
+      <p>A study in visual language, one style at a time.</p>
+      <br>
+      <a href="#" class="btn">Explore</a>
+      <span class="doodle" style="right:44px;bottom:56px">↖ start here</span>
+    </header>
+
+    <section class="features">
+      <article class="card paper" data-drag>
+        <span class="clip"></span>
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+      </article>
+      <article class="card paper" data-drag>
+        <span class="tape tl"></span>
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+      </article>
+      <article class="card paper" data-drag>
+        <span class="clip"></span>
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+      </article>
+    </section>
+
+    <section class="cta paper">
+      <span class="tape tl"></span>
+      <span class="tape tr"></span>
+      <span class="stamp">Filed 2026</span>
+      <h2>Start building.</h2>
+      <button>Get in touch</button>
+    </section>
+
+  </div>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Scrapbook">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Scrapbook</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>Victorian commonplace books and 1990s craft-store scrapbooking, revived digitally through zine culture and Pinterest-era collage layouts.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#d8c3a5"></span><code>#d8c3a5</code> — kraft board, the surface everything is glued to</li>
+              <li><span class="sw" style="--c:#fdf6e8"></span><code>#fdf6e8</code> — cut paper and index cards</li>
+              <li><span class="sw" style="--c:#2f3a4a"></span><code>#2f3a4a</code> — biro navy for handwriting and body text</li>
+              <li><span class="sw" style="--c:#c1483b"></span><code>#c1483b</code> — faded red for margin rules, stamps, and doodles</li>
+              <li><span class="sw" style="--c:#8a9a7b"></span><code>#8a9a7b</code> — muted craft sage for the cut-out button</li>
+              <li><span class="sw" style="--c:#eed68c"></span><code>#eed68c</code> — washi tape at 72% opacity</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Caveat (handwriting) paired with Special Elite (worn typewriter) — no neutral sans anywhere. Caveat 700 takes every heading at large sizes: <code>clamp(40px, 7.6vw, 84px)</code> for the hero, 38px for card titles. Special Elite handles all body copy and labels at 13–14px with 1.9–2 line-height so text sits on the ruled lines, and 11px at 0.22em tracking for the stamped labels. Handwriting is always bigger than the typing — the annotation outranks the document.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>A 1060px board holds loosely stacked paper objects with 40–78px of kraft showing between them, and cards on an <code>auto-fit</code> minmax(240px) grid. Alignment is intentionally imperfect: every object carries its own rotation between −2.4deg and +1.6deg, and tape, clips, and stamps hang outside their parent's bounds using negative offsets.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>Torn-edge cut-outs built with a many-point <code>clip-path: polygon()</code> along the top and bottom of the nav strip.</li>
+              <li>Washi tape as absolutely positioned translucent rectangles rotated −28deg to +23deg, with dashed side edges.</li>
+              <li>Ruled and margined paper drawn purely with <code>repeating-linear-gradient</code> — 31px blue rules plus a single red vertical margin at 44px.</li>
+              <li>Two-part paper shadow: a hard 2px offset for thickness plus a soft blurred one for lift off the board.</li>
+              <li>Analogue props as pure CSS — a paperclip from a border-radius'd bordered box, a rotated double-ruled rubber stamp, a marker highlight made from a skewed translucent bar.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>The three cards are physically draggable: pointer events set <code>position</code> offsets so a card can be pulled anywhere on the board, gaining a lifted shadow and a raised z-index while held, with the cursor switching from <code>grab</code> to <code>grabbing</code>. On release each card keeps a small random re-rotation so it never lands perfectly straight. Hovers add lift only — paper does not glow, slide, or fade.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Start from a textured warm ground (kraft, linen, cork) and place every content block as a lighter paper rectangle on top of it — never let content touch the ground directly.</li>
+              <li>Rotate every object by ±0.5–3deg using distinct values, and never repeat the same angle twice in a row.</li>
+              <li>Pair one handwriting face with one typewriter face and set the handwriting larger than the body text.</li>
+              <li>Fasten each paper element with a visible physical device — tape, a paperclip, a staple, a pin — positioned with negative offsets so it overhangs the edge.</li>
+              <li>Give paper two shadows (a hard offset for thickness, a soft blur for lift) and draw rules, margins, and grain with repeating gradients rather than images.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* Cards are objects on a board: drag them, and they never land straight. */
+  (function () {
+    document.querySelectorAll('[data-drag]').forEach(function (card) {
+      var dx = 0, dy = 0, sx = 0, sy = 0, dragging = false;
+      var base = (Math.random() * 4 - 2).toFixed(2);
+      card.style.transform = 'rotate(' + base + 'deg)';
+
+      card.addEventListener('pointerdown', function (e) {
+        dragging = true;
+        sx = e.clientX - dx; sy = e.clientY - dy;
+        card.style.zIndex = 20;
+        card.setPointerCapture(e.pointerId);
+      });
+      card.addEventListener('pointermove', function (e) {
+        if (!dragging) return;
+        dx = e.clientX - sx; dy = e.clientY - sy;
+        card.style.transform = 'translate(' + dx + 'px,' + dy + 'px) rotate(' + base + 'deg) scale(1.03)';
+      });
+      card.addEventListener('pointerup', function () {
+        dragging = false;
+        base = (Math.random() * 5 - 2.5).toFixed(2);
+        card.style.transform = 'translate(' + dx + 'px,' + dy + 'px) rotate(' + base + 'deg)';
+        card.style.zIndex = 5;
+      });
+    });
+  })();
+</script>
+</body>
+</html>

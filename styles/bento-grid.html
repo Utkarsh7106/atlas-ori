@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bento Grid — Atlas</title>
+<meta name="description" content="Bento Grid: modular rounded tiles of unequal span packed edge to edge.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    /* ══ BENTO GRID ═══════════════════════════════════════════════
+       Every piece of content is a tile. Tiles differ in span, never
+       in gutter. The page has no "sections" — only a packed lattice
+       of soft rectangles on a recessed grey ground.                */
+
+    :root{
+      --ground:#edeef2;   /* recessed page background */
+      --tile:#ffffff;     /* default tile surface     */
+      --ink:#101014;      /* dark tile + headings     */
+      --muted:#6e7079;    /* body copy                */
+      --accent:#4f46e5;   /* one vivid tile + CTA     */
+      --tint:#dfe3ff;     /* accent-tinted tile       */
+      --r:22px;           /* the radius, used everywhere */
+      --gap:14px;
+      --shadow:0 1px 2px rgba(16,16,20,.05), 0 10px 26px -16px rgba(16,16,20,.35);
+    }
+
+    body{
+      background:var(--ground);
+      color:var(--ink);
+      font-family:"Plus Jakarta Sans",-apple-system,"Segoe UI",Roboto,sans-serif;
+      padding:var(--gap);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .bento{
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      grid-auto-rows:minmax(112px,auto);
+      gap:var(--gap);
+      max-width:1180px;
+      margin:0 auto;
+    }
+
+    /* ── The tile primitive ───────────────────────────────────── */
+    .tile{
+      background:var(--tile);
+      border-radius:var(--r);
+      padding:26px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      transition:transform .25s cubic-bezier(.2,.8,.3,1), box-shadow .25s ease;
+    }
+    .tile::after{ /* cursor spotlight */
+      content:"";position:absolute;inset:0;pointer-events:none;opacity:0;
+      transition:opacity .3s ease;
+      background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%), rgba(79,70,229,.10), transparent 60%);
+    }
+    .tile:hover{transform:translateY(-4px);box-shadow:0 2px 4px rgba(16,16,20,.06), 0 22px 44px -22px rgba(16,16,20,.5)}
+    .tile:hover::after{opacity:1}
+
+    .tile.dark{background:var(--ink);color:#fff}
+    .tile.dark::after{background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.10), transparent 60%)}
+    .tile.accent{background:var(--accent);color:#fff}
+    .tile.tint{background:var(--tint)}
+
+    /* ── Spans ────────────────────────────────────────────────── */
+    .t-nav{grid-column:span 6;flex-direction:row;align-items:center;justify-content:space-between;padding:18px 26px}
+    .t-hero{grid-column:span 4;grid-row:span 2;justify-content:flex-end;padding:34px}
+    .t-mark{grid-column:span 2;grid-row:span 2;padding:26px}
+    .t-card{grid-column:span 2}
+    .t-cta{grid-column:span 4;flex-direction:row;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .t-stat{grid-column:span 2}
+
+    /* ── Tile contents ───────────────────────────────────────── */
+    .logo{font-size:17px;font-weight:700;letter-spacing:-.02em}
+    .t-nav ul{display:flex;gap:6px}
+    .t-nav ul a{display:block;padding:8px 14px;border-radius:99px;font-size:13px;font-weight:500;color:var(--muted);
+      transition:background .2s ease,color .2s ease}
+    .t-nav ul a:hover{background:var(--ground);color:var(--ink)}
+
+    .t-hero h1{font-size:clamp(30px,3.9vw,50px);font-weight:700;line-height:1.04;letter-spacing:-.035em;max-width:13ch}
+    .t-hero p{margin-top:14px;color:var(--muted);font-size:16px;max-width:34ch}
+    .btn{display:inline-flex;align-items:center;gap:8px;margin-top:24px;align-self:flex-start;
+      background:var(--accent);color:#fff;border-radius:99px;padding:13px 24px;
+      font-size:14px;font-weight:600;transition:transform .2s ease,filter .2s ease}
+    .btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+    .btn span{transition:transform .2s ease}
+    .btn:hover span{transform:translateX(3px)}
+
+    .t-mark .lattice{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;flex:1;align-content:center}
+    .t-mark .lattice i{aspect-ratio:1;border-radius:7px;background:rgba(255,255,255,.16)}
+    .t-mark .lattice i:nth-child(3n){background:rgba(255,255,255,.42)}
+    .t-mark .lattice i:nth-child(7){background:#fff}
+    .t-mark .cap{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.65}
+
+    .icon{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+      color:var(--accent);background:var(--tint);border-radius:8px;padding:5px 9px;align-self:flex-start}
+    .t-card h3{font-size:19px;font-weight:700;letter-spacing:-.02em;margin:18px 0 6px}
+    .t-card p{font-size:14.5px;color:var(--muted);line-height:1.5}
+
+    .t-cta h2{font-size:clamp(24px,3vw,34px);font-weight:700;letter-spacing:-.03em}
+    .t-cta button{background:#fff;color:var(--ink);border-radius:99px;padding:14px 26px;font-size:14px;font-weight:600;
+      transition:transform .2s ease}
+    .t-cta button:hover{transform:translateY(-2px)}
+
+    .t-stat .bars{display:flex;align-items:flex-end;gap:6px;height:78px;margin-bottom:6px}
+    .t-stat .bars i{flex:1;background:var(--tint);border-radius:5px;transition:height .5s cubic-bezier(.2,.8,.3,1)}
+    .t-stat .num{font-size:30px;font-weight:700;letter-spacing:-.03em}
+    .t-stat .lbl{font-size:12px;color:var(--muted);font-weight:500}
+
+    @media(max-width:820px){
+      .bento{grid-template-columns:repeat(2,1fr)}
+      .t-nav,.t-hero,.t-mark,.t-cta{grid-column:span 2}
+      .t-hero{grid-row:span 1}
+      .t-mark{grid-row:span 1;min-height:180px}
+      .t-card,.t-stat{grid-column:span 2}
+    }
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <main class="bento">
+
+    <nav class="tile t-nav">
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="tile t-hero">
+      <h1>Design is how it feels to use.</h1>
+      <p>A study in visual language, one style at a time.</p>
+      <a href="#" class="btn">Explore <span>→</span></a>
+    </header>
+
+    <div class="tile dark t-mark" aria-hidden="true">
+      <div class="lattice"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <p class="cap">Modular</p>
+    </div>
+
+    <article class="tile t-card">
+      <span class="icon">Grid</span>
+      <h3>Structure</h3>
+      <p>Every element has a reason to be where it is.</p>
+    </article>
+
+    <article class="tile t-card">
+      <span class="icon">Split</span>
+      <h3>Contrast</h3>
+      <p>Tension between elements creates meaning.</p>
+    </article>
+
+    <article class="tile t-card">
+      <span class="icon">Pulse</span>
+      <h3>Rhythm</h3>
+      <p>Repetition and spacing set the pace.</p>
+    </article>
+
+    <section class="tile accent t-cta">
+      <h2>Start building.</h2>
+      <button>Get in touch</button>
+    </section>
+
+    <div class="tile t-stat" aria-hidden="true">
+      <div class="bars"><i style="height:24%"></i><i style="height:52%"></i><i style="height:38%"></i><i style="height:74%"></i><i style="height:46%"></i><i style="height:90%"></i></div>
+      <div>
+        <p class="num">6×</p>
+        <p class="lbl">columns, one gutter</p>
+      </div>
+    </div>
+
+  </main>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Bento Grid">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Bento Grid</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>Early 2020s product-marketing layout, named for the compartmented Japanese bento box and popularised by Apple keynote slides, Vercel, and Linear.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#edeef2"></span><code>#edeef2</code> — recessed page ground the tiles sit on</li>
+              <li><span class="sw" style="--c:#ffffff"></span><code>#ffffff</code> — default tile surface</li>
+              <li><span class="sw" style="--c:#101014"></span><code>#101014</code> — heading text and the one dark tile</li>
+              <li><span class="sw" style="--c:#6e7079"></span><code>#6e7079</code> — body copy inside tiles</li>
+              <li><span class="sw" style="--c:#4f46e5"></span><code>#4f46e5</code> — accent tile, primary button, icon chips</li>
+              <li><span class="sw" style="--c:#dfe3ff"></span><code>#dfe3ff</code> — accent tint for chips and chart bars</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Plus Jakarta Sans throughout (fallback: system UI stack) — a single geometric-humanist family, since the tiles already provide the variety. Weights: 700 for tile headings, 600 for buttons and chips, 500 for nav, 400 for body. Type is sized <em>per tile</em>, not per page: the hero tile takes <code>clamp(30px, 3.9vw, 50px)</code>, card tiles 19px, body 14.5–16px, chips and captions 11–12px uppercase at 0.1em. Headings run −0.02 to −0.035em tracking with tight 1.04 leading.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>One six-column CSS grid with <code>grid-auto-rows: minmax(112px, auto)</code> and a single uniform 14px gap; nothing on the page exists outside a tile, including the nav. Hierarchy comes from unequal spans — hero 4×2, dark mark 2×2, cards 2×1, CTA 4×1, stat 2×1 — so the lattice packs edge to edge with no section padding and no page-level whitespace beyond the gutter.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>A single generous radius token (22px) applied to every tile, with pill radii (99px) for buttons and 7–8px for elements nested inside tiles.</li>
+              <li>Two-part soft shadow — a 1px contact shadow plus a wide negative-spread ambient shadow — that lifts on hover.</li>
+              <li>Tiles carry meaning through surface, not border: white, dark, accent, and tint variants replace headings-as-dividers.</li>
+              <li>Non-content filler tiles (a dot lattice, a bar chart, a big numeral) used to complete the packing and set rhythm.</li>
+              <li><code>overflow: hidden</code> on every tile so gradients and lattices bleed to the rounded edge.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>JS tracks the pointer over each tile and writes <code>--mx</code>/<code>--my</code> custom properties, driving a 320px radial spotlight in the tile's <code>::after</code> that fades in on hover. CSS adds a −4px lift with a deepened shadow over 250ms, the CTA arrow slides 3px, and on load the stat tile's bars animate up from zero height with a staggered 60ms delay. All easing is <code>cubic-bezier(.2,.8,.3,1)</code>.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Put every piece of content inside a tile — navigation and CTAs included — and let the grid gutter be the only whitespace on the page.</li>
+              <li>Use one grid (4–6 columns), one gap value, and one auto-row height; vary only <code>span</code> to create hierarchy.</li>
+              <li>Give every tile the same large radius and the same two-layer soft shadow, then differentiate tiles by surface colour: white, dark, accent, tint.</li>
+              <li>Add one or two non-content tiles (chart, dot lattice, oversized numeral) so the lattice packs completely without stretched content.</li>
+              <li>Keep motion to the tile itself — a small lift plus a pointer-tracked spotlight — and never animate type or reflow the grid.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* Pointer-tracked spotlight per tile + bar chart intro. */
+  (function () {
+    document.querySelectorAll('.tile').forEach(function (tile) {
+      tile.addEventListener('pointermove', function (e) {
+        var r = tile.getBoundingClientRect();
+        tile.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+        tile.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+      });
+    });
+
+    var bars = document.querySelectorAll('.t-stat .bars i');
+    bars.forEach(function (b, i) {
+      var h = b.style.height;
+      b.style.height = '0%';
+      setTimeout(function () { b.style.height = h; }, 180 + i * 60);
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Swiss Design — Atlas</title>
+<meta name="description" content="Swiss / International Typographic Style: 12-column grid, Helvetica, flush-left, red accent.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+    /* ══ SWISS DESIGN (INTERNATIONAL TYPOGRAPHIC STYLE) ═══════════
+       Everything is subordinate to the 12-column grid. Objectivity
+       over expression: one grotesque, flush-left ragged-right,
+       mathematical spacing, one signal colour, geometric shapes as
+       information rather than decoration.                          */
+
+    :root{
+      --paper:#ffffff;
+      --ink:#111111;
+      --red:#e2231a;
+      --grey:#8a8a8a;
+      --rule:#dcdcdc;
+      --col-gap:24px;
+      --margin:clamp(20px,4vw,56px);
+    }
+
+    body{
+      background:var(--paper);
+      color:var(--ink);
+      font-family:"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-weight:400;
+      -webkit-font-smoothing:antialiased;
+      padding:0 var(--margin);
+    }
+
+    /* The grid every single element snaps to. */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:var(--col-gap);
+      max-width:1400px;
+      margin:0 auto;
+    }
+
+    /* ── Nav: logo left, links hard right, 4px black rule beneath ─ */
+    .nav{padding-top:28px;align-items:baseline}
+    .nav .logo{grid-column:1/4;font-size:20px;font-weight:700;letter-spacing:-.04em;text-transform:uppercase}
+    .nav ul{grid-column:8/13;display:flex;justify-content:flex-end;gap:32px}
+    .nav a{font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase}
+    .nav a:hover{color:var(--red)}
+    .nav-rule{grid-column:1/13;height:4px;background:var(--ink);margin-top:20px}
+
+    /* ── Hero: headline cols 1–9, deck pushed to 10–12 ──────────── */
+    .hero{padding:72px 0 0;align-items:start}
+    .hero h1{
+      grid-column:1/10;
+      font-size:clamp(46px,9.2vw,124px);
+      font-weight:700;
+      line-height:.88;
+      letter-spacing:-.048em;
+      text-transform:uppercase;
+    }
+    .hero .deck{grid-column:10/13;border-top:1px solid var(--ink);padding-top:10px}
+    .hero .deck p{font-size:13px;line-height:1.45;color:var(--ink)}
+    .hero .deck span{display:block;font:500 10px/1 "IBM Plex Mono",monospace;letter-spacing:.14em;color:var(--red);margin-bottom:8px}
+
+    .hero-lower{grid-column:1/13;display:grid;grid-template-columns:repeat(12,1fr);gap:var(--col-gap);
+      align-items:center;margin-top:56px;padding-bottom:88px}
+    .btn{
+      grid-column:1/4;
+      display:block;width:100%;
+      background:var(--red);color:var(--paper);
+      padding:20px 0;text-align:center;
+      font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+      transition:background .18s linear;
+    }
+    .btn:hover{background:var(--ink)}
+    .mark{grid-column:11/13;justify-self:end;width:84px;height:84px;border-radius:50%;background:var(--red)}
+    .meta{grid-column:5/9;font:400 11px/1.5 "IBM Plex Mono",monospace;letter-spacing:.08em;color:var(--grey);text-transform:uppercase}
+
+    /* ── Features: three 4-column fields, numbered ──────────────── */
+    .features{padding-bottom:96px}
+    .card{grid-column:span 4;border-top:2px solid var(--ink);padding-top:14px}
+    .card .num{font:500 11px/1 "IBM Plex Mono",monospace;color:var(--red);letter-spacing:.1em}
+    .icon{display:block;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);margin-top:26px}
+    .card h3{font-size:clamp(20px,2.2vw,28px);font-weight:700;letter-spacing:-.03em;text-transform:uppercase;margin:6px 0 12px;line-height:1}
+    .card p{font-size:15px;line-height:1.45;max-width:26ch}
+
+    /* ── CTA ────────────────────────────────────────────────────── */
+    .cta{border-top:4px solid var(--ink);padding:56px 0 96px;align-items:end}
+    .cta h2{grid-column:1/9;font-size:clamp(38px,7vw,88px);font-weight:700;line-height:.9;letter-spacing:-.048em;text-transform:uppercase}
+    .cta button{grid-column:10/13;background:var(--ink);color:var(--paper);padding:20px 0;width:100%;
+      font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;transition:background .18s linear}
+    .cta button:hover{background:var(--red)}
+
+    /* ── Grid overlay (press G) ─────────────────────────────────── */
+    #overlay{position:fixed;inset:0;padding:0 var(--margin);pointer-events:none;opacity:0;
+      transition:opacity .25s linear;z-index:50}
+    #overlay.on{opacity:1}
+    #overlay .grid{height:100%}
+    #overlay .grid span{background:rgba(226,35,26,.09);border-left:1px solid rgba(226,35,26,.3);height:100%}
+    .hint{position:fixed;left:var(--margin);bottom:16px;z-index:60;
+      font:500 10px/1 "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--grey)}
+    .hint b{color:var(--red)}
+
+    @media(max-width:860px){
+      .hero h1{grid-column:1/13}
+      .hero .deck{grid-column:1/13;margin-top:28px}
+      .card{grid-column:span 12}
+      .btn{grid-column:1/7}
+      .meta{grid-column:7/13;text-align:right}
+      .mark{display:none}
+      .cta h2{grid-column:1/13}
+      .cta button{grid-column:1/7;margin-top:32px}
+    }
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <nav class="nav grid">
+    <a href="#" class="logo">Atlas</a>
+    <ul>
+      <li><a href="#">Work</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="nav-rule"></div>
+  </nav>
+
+  <header class="hero grid">
+    <h1>Design is how it feels to use.</h1>
+    <div class="deck">
+      <span>001 / Statement</span>
+      <p>A study in visual language, one style at a time.</p>
+    </div>
+    <div class="hero-lower">
+      <a href="#" class="btn">Explore</a>
+      <p class="meta">12-column grid · 24px gutter</p>
+      <div class="mark" aria-hidden="true"></div>
+    </div>
+  </header>
+
+  <section class="features grid">
+    <article class="card">
+      <span class="num">01</span>
+      <span class="icon">Grid</span>
+      <h3>Structure</h3>
+      <p>Every element has a reason to be where it is.</p>
+    </article>
+    <article class="card">
+      <span class="num">02</span>
+      <span class="icon">Split</span>
+      <h3>Contrast</h3>
+      <p>Tension between elements creates meaning.</p>
+    </article>
+    <article class="card">
+      <span class="num">03</span>
+      <span class="icon">Pulse</span>
+      <h3>Rhythm</h3>
+      <p>Repetition and spacing set the pace.</p>
+    </article>
+  </section>
+
+  <section class="cta grid">
+    <h2>Start building.</h2>
+    <button>Get in touch</button>
+  </section>
+
+  <div id="overlay" aria-hidden="true"><div class="grid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+  <p class="hint">Press <b>G</b> for grid</p>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Swiss Design">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Swiss Design</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>Switzerland, 1950s–60s — the International Typographic Style of Josef Müller-Brockmann, Armin Hofmann and the Basel and Zürich schools.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#ffffff"></span><code>#ffffff</code> — page background</li>
+              <li><span class="sw" style="--c:#111111"></span><code>#111111</code> — type, 4px rules, secondary button</li>
+              <li><span class="sw" style="--c:#e2231a"></span><code>#e2231a</code> — single signal colour: CTA, numerals, circle mark</li>
+              <li><span class="sw" style="--c:#8a8a8a"></span><code>#8a8a8a</code> — metadata and small caption text</li>
+              <li><span class="sw" style="--c:#dcdcdc"></span><code>#dcdcdc</code> — light hairline where a 2px rule would be too loud</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Inter Tight as the Helvetica/Akzidenz-Grotesk stand-in (fallback: Helvetica Neue, Arial) paired with IBM Plex Mono for numerals, metadata, and grid labels only. Two weights carry the page: 700 for all display and 400–500 for body and labels. Display is set uppercase at −0.048em tracking and 0.88–0.9 line-height so words lock into solid blocks; captions and labels run 10–12px at +0.1 to +0.16em tracking. Nothing sits between 15px and 46px — the ramp is deliberately discontinuous.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>A 12-column grid with a 24px gutter governs every element, including the nav and the overlay; each block declares an explicit column span (headline 1–10, deck 10–13, cards span 4, CTA 1–9 with the button at 10–13). Alignment is flush left with a ragged right edge, and asymmetry — a wide headline against a narrow offset deck — supplies the tension that centring would kill.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>Heavy 4px black rules to open and close major sections, 2px rules to head each card.</li>
+              <li>Sequential numerals (01 / 02 / 03) set in mono red as an organising device.</li>
+              <li>A pure geometric mark — one red circle, 84px — placed on the grid as content, never as decoration.</li>
+              <li>Full-column-width solid colour buttons that fill their grid cell edge to edge rather than being sized by their label.</li>
+              <li>A toggleable red column overlay that exposes the underlying grid on demand.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>Mechanical, not easing-heavy. Pressing <code>G</code> (or clicking the hint) toggles a fixed 12-column red overlay via a class, fading in over 250ms linear; it also auto-reveals for 1.1s on first load to declare the system. Buttons and nav links swap between black and red on hover over 180ms linear. No transforms, no scroll animation — movement would contradict the objectivity of the style.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Declare a 12-column grid with a fixed gutter first, then place every element by explicit column span — never let a block size itself to its content.</li>
+              <li>Use one neo-grotesque (Helvetica, Inter Tight, Univers) plus one mono for numerals; cap yourself at two weights, 400 and 700.</li>
+              <li>Set all display type uppercase, flush left, at −0.04 to −0.05em tracking and under 0.9 line-height; never centre a headline.</li>
+              <li>Allow exactly one accent colour — a saturated red — and spend it only on the primary action, numerals, and one geometric mark.</li>
+              <li>Structure with rules of two weights (4px for sections, 2px for items) and build asymmetry by pairing a wide type block against a narrow offset column.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* Grid overlay: G toggles it; it also flashes once on load so the
+     system announces itself before the user touches anything. */
+  (function () {
+    var overlay = document.getElementById('overlay');
+    var hint = document.querySelector('.hint');
+    function toggle() { overlay.classList.toggle('on'); }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'g' || e.key === 'G') toggle();
+    });
+    hint.addEventListener('click', toggle);
+    overlay.classList.add('on');
+    setTimeout(function () { overlay.classList.remove('on'); }, 1100);
+  })();
+</script>
+</body>
+</html>

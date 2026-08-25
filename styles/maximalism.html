@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maximalism — Atlas</title>
+<meta name="description" content="Maximalism: more is more — clashing colour, layered pattern, three fighting typefaces.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Playfair+Display:ital,wght@1,700;1,900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    /* ══ MAXIMALISM ═══════════════════════════════════════════════
+       More is more. Every surface is patterned, every colour fights
+       the one beside it, three typefaces argue in the same headline,
+       and nothing sits at 0deg. Legibility is preserved only by hard
+       black outlines and huge type.                                */
+
+    :root{
+      --pink:#ff2d95;
+      --yellow:#ffe600;
+      --cyan:#00e5ff;
+      --purple:#6a00f4;
+      --lime:#b6ff00;
+      --black:#0b0b0b;
+    }
+
+    body{
+      background:
+        repeating-linear-gradient(45deg, rgba(255,255,255,.55) 0 14px, transparent 14px 28px),
+        repeating-conic-gradient(from 0deg at 50% 50%, var(--yellow) 0deg 90deg, var(--cyan) 90deg 180deg) 0 0/64px 64px,
+        var(--pink);
+      color:var(--black);
+      font-family:"Space Mono",monospace;
+      overflow-x:hidden;
+    }
+
+    .shell{max-width:1120px;margin:0 auto;padding:20px clamp(12px,3vw,28px) 0}
+
+    /* ── Marquee ─────────────────────────────────────────────── */
+    .marquee{background:var(--black);color:var(--lime);border-bottom:6px solid var(--black);
+      overflow:hidden;white-space:nowrap;padding:9px 0;font-weight:700;letter-spacing:.22em;font-size:13px;text-transform:uppercase}
+    .marquee span{display:inline-block;animation:slide 18s linear infinite}
+    @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+    /* ── Nav ─────────────────────────────────────────────────── */
+    .nav{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;
+      background:var(--yellow);border:5px solid var(--black);border-radius:26px;
+      padding:14px 20px;box-shadow:10px 10px 0 var(--purple);margin-top:22px}
+    .logo{font-family:"Archivo Black",sans-serif;font-size:34px;letter-spacing:-.02em;line-height:1;
+      color:var(--purple);text-shadow:2px 2px 0 var(--cyan),4px 4px 0 var(--black);transform:rotate(-3deg)}
+    .nav ul{display:flex;gap:10px;flex-wrap:wrap}
+    .nav ul a{display:block;background:var(--cyan);border:4px solid var(--black);border-radius:99px;
+      padding:8px 18px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;
+      box-shadow:4px 4px 0 var(--black);transition:transform .12s ease,background .12s ease}
+    .nav li:nth-child(2n) a{background:var(--lime)}
+    .nav ul a:hover{transform:rotate(4deg) scale(1.08);background:var(--pink);color:#fff}
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .hero{position:relative;margin:34px 0;padding:44px 26px;border:6px solid var(--black);border-radius:8px;
+      background:
+        radial-gradient(circle at 12% 20%, var(--lime) 0 60px, transparent 61px),
+        radial-gradient(circle at 88% 78%, var(--cyan) 0 90px, transparent 91px),
+        repeating-linear-gradient(-45deg, var(--purple) 0 22px, #5300c0 22px 44px);
+      box-shadow:14px 14px 0 var(--black), 26px 26px 0 var(--yellow);
+      text-align:center;overflow:hidden}
+    .hero h1{font-family:"Archivo Black",sans-serif;font-size:clamp(34px,7.6vw,86px);line-height:.92;
+      letter-spacing:-.03em;text-transform:uppercase;color:var(--yellow);
+      text-shadow:4px 4px 0 var(--pink), 8px 8px 0 var(--black);}
+    .hero h1 em{font-family:"Playfair Display",serif;font-style:italic;font-weight:900;text-transform:lowercase;
+      color:var(--cyan);text-shadow:4px 4px 0 var(--black)}
+    .hero p{margin:26px auto 0;max-width:34ch;background:#fff;border:4px solid var(--black);border-radius:60px;
+      padding:12px 22px;font-size:15px;font-weight:700;transform:rotate(-1.4deg);box-shadow:6px 6px 0 var(--pink)}
+
+    .btn{display:inline-block;margin-top:30px;font-family:"Archivo Black",sans-serif;font-size:22px;
+      text-transform:uppercase;letter-spacing:.04em;background:var(--lime);color:var(--black);
+      border:6px solid var(--black);border-radius:14px;padding:16px 42px;
+      box-shadow:9px 9px 0 var(--black),18px 18px 0 var(--pink);
+      transform:rotate(2deg);transition:transform .15s ease,box-shadow .15s ease;position:relative;z-index:2}
+    .btn:hover{transform:rotate(-3deg) scale(1.06);box-shadow:4px 4px 0 var(--black),9px 9px 0 var(--cyan)}
+
+    .sticker{position:absolute;font-family:"Archivo Black",sans-serif;font-size:13px;text-transform:uppercase;
+      background:var(--pink);color:#fff;border:4px solid var(--black);border-radius:99px;padding:8px 14px;
+      box-shadow:4px 4px 0 var(--black);animation:wob 3.2s ease-in-out infinite}
+    .s1{top:14px;right:16px;transform:rotate(11deg);background:var(--yellow);color:var(--black)}
+    .s2{bottom:18px;left:18px;transform:rotate(-9deg)}
+    @keyframes wob{0%,100%{translate:0 0}50%{translate:0 -7px}}
+
+    /* ── Features ────────────────────────────────────────────── */
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:26px;margin-bottom:40px}
+    .card{border:6px solid var(--black);border-radius:20px;padding:24px;position:relative;
+      box-shadow:10px 10px 0 var(--black);transition:transform .18s ease}
+    .card:nth-child(1){background:var(--cyan);transform:rotate(-2deg)}
+    .card:nth-child(2){background:var(--yellow);transform:rotate(1.5deg)}
+    .card:nth-child(3){background:var(--lime);transform:rotate(-1deg)}
+    .card:hover{transform:rotate(0deg) scale(1.04)}
+    .icon{display:inline-block;background:var(--black);color:var(--lime);font-weight:700;font-size:12px;
+      letter-spacing:.2em;text-transform:uppercase;padding:6px 12px;border-radius:6px;transform:rotate(-2deg)}
+    .card h3{font-family:"Archivo Black",sans-serif;font-size:34px;text-transform:uppercase;line-height:.95;
+      margin:16px 0 10px;color:var(--purple);text-shadow:3px 3px 0 #fff}
+    .card p{font-size:14.5px;font-weight:700;line-height:1.45;background:#fff;border:3px solid var(--black);
+      border-radius:12px;padding:10px 12px}
+
+    /* ── CTA ─────────────────────────────────────────────────── */
+    .cta{text-align:center;border:6px solid var(--black);border-radius:8px;padding:52px 22px;margin-bottom:46px;
+      background:repeating-linear-gradient(90deg, var(--pink) 0 30px, var(--purple) 30px 60px);
+      box-shadow:inset 0 0 0 10px var(--yellow), 14px 14px 0 var(--black)}
+    .cta h2{font-family:"Playfair Display",serif;font-style:italic;font-weight:900;
+      font-size:clamp(38px,7vw,76px);color:var(--yellow);text-shadow:5px 5px 0 var(--black)}
+    .cta button{margin-top:26px;font-family:"Archivo Black",sans-serif;font-size:19px;text-transform:uppercase;
+      background:#fff;border:6px solid var(--black);border-radius:99px;padding:15px 36px;
+      box-shadow:8px 8px 0 var(--cyan),16px 16px 0 var(--black);transition:transform .15s ease}
+    .cta button:hover{transform:translate(4px,4px) rotate(-2deg)}
+
+    /* pointer confetti */
+    .bit{position:fixed;width:14px;height:14px;pointer-events:none;z-index:99;border:3px solid var(--black)}
+
+    @media(max-width:640px){
+      .hero{box-shadow:8px 8px 0 var(--black),16px 16px 0 var(--yellow)}
+      .logo{font-size:24px}
+    }
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div class="marquee" aria-hidden="true"><span>MORE IS MORE ✦ MORE IS MORE ✦ MORE IS MORE ✦ MORE IS MORE ✦ MORE IS MORE ✦ MORE IS MORE ✦ MORE IS MORE ✦ MORE IS MORE ✦ </span></div>
+
+  <div class="shell">
+
+    <nav class="nav">
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <span class="sticker s1">100% Loud</span>
+      <h1>Design is <em>how</em> it feels to use.</h1>
+      <p>A study in visual language, one style at a time.</p>
+      <br>
+      <a href="#" class="btn">Explore</a>
+      <span class="sticker s2">No Rules!</span>
+    </header>
+
+    <section class="features">
+      <article class="card">
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+      </article>
+      <article class="card">
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+      </article>
+      <article class="card">
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+      </article>
+    </section>
+
+    <section class="cta">
+      <h2>Start building.</h2>
+      <button>Get in touch</button>
+    </section>
+
+  </div>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Maximalism">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Maximalism</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>A counter-reaction to flat minimalism, roughly 2018 onward — descended from Memphis Group (1981), rave flyers, and early personal-homepage excess.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#ff2d95"></span><code>#ff2d95</code> — hot pink page ground and shadow layer</li>
+              <li><span class="sw" style="--c:#ffe600"></span><code>#ffe600</code> — electric yellow for the nav bar and display type</li>
+              <li><span class="sw" style="--c:#00e5ff"></span><code>#00e5ff</code> — cyan for pills, offsets, and clashing text shadows</li>
+              <li><span class="sw" style="--c:#6a00f4"></span><code>#6a00f4</code> — purple stripes and heading fills</li>
+              <li><span class="sw" style="--c:#b6ff00"></span><code>#b6ff00</code> — lime for the primary button and marquee text</li>
+              <li><span class="sw" style="--c:#0b0b0b"></span><code>#0b0b0b</code> — the black outline that makes the chaos survivable</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Three families deliberately in conflict: Archivo Black for display and buttons, Playfair Display Black Italic for the CTA and one word inside the hero headline, Space Mono 700 for all body and UI text. Display runs uppercase at <code>clamp(34px, 7.6vw, 86px)</code> with 0.92 leading; body copy is bold 14–15px mono. There is no mid-range size — type is either shouting or fine print, and every headline carries stacked multi-colour text-shadows.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>A centred 1120px shell holds full-width blocks stacked vertically, but nothing inside them is axis-aligned: cards sit on <code>auto-fit</code> columns at −2deg, +1.5deg and −1deg, and stickers are absolutely positioned over the hero's corners. Spacing is generous and irregular (24–52px) precisely so the offset shadows have room to land.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>Layered backgrounds — a 45° stripe overlay on a conic checkerboard on a flat pink — so no surface is a single colour.</li>
+              <li>Doubled hard drop shadows (<code>14px 14px 0 black, 26px 26px 0 yellow</code>) with zero blur on every block.</li>
+              <li>Stacked text-shadows in three colours to give headlines a chromatic ghost.</li>
+              <li>Rotations between −3deg and +11deg on the logo, cards, pills, and stickers; nothing rests at 0deg.</li>
+              <li>A looping black-and-lime marquee ticker pinned above the nav, plus <code>inset</code> box-shadow used as a second internal border.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>Constant and unapologetic. The marquee translates −50% on an 18s linear loop; stickers bob 7px on a 3.2s ease-in-out loop. Hovering a nav pill rotates it 4deg and scales it 1.08; hovering a card snaps it back to 0deg and scales it 1.04; the button flips rotation and swaps its shadow stack. Clicking <em>Explore</em> or <em>Get in touch</em> fires a JS confetti burst of 18 hard-outlined squares that fall with randomised velocity and rotation, cleaned up after 1.2s.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Use at least five saturated colours with no neutral ground, and layer two or more patterns behind every major block.</li>
+              <li>Set three typefaces that disagree — a heavy grotesque, a high-contrast italic serif, and a mono — and mix them inside a single headline.</li>
+              <li>Outline everything in 4–6px black and give it a hard zero-blur drop shadow, doubled in a second colour on the largest blocks.</li>
+              <li>Rotate every element by ±1–11deg and let items overlap their containers rather than sitting inside them.</li>
+              <li>Keep something moving at all times — a marquee, a bob, or a hover that changes rotation — and stack multi-colour text-shadows so type reads even against pattern.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* Confetti on the two calls to action. More is more. */
+  (function () {
+    var colors = ['#ff2d95', '#ffe600', '#00e5ff', '#6a00f4', '#b6ff00', '#ffffff'];
+    function burst(x, y) {
+      for (var i = 0; i < 18; i++) {
+        var bit = document.createElement('i');
+        bit.className = 'bit';
+        bit.style.background = colors[i % colors.length];
+        bit.style.left = x + 'px';
+        bit.style.top = y + 'px';
+        bit.style.borderRadius = i % 3 === 0 ? '50%' : '2px';
+        document.body.appendChild(bit);
+        var dx = (Math.random() - 0.5) * 380;
+        var dy = -(120 + Math.random() * 260);
+        bit.animate(
+          [
+            { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+            { transform: 'translate(' + dx + 'px,' + (dy + 460) + 'px) rotate(' + (Math.random() * 900 - 450) + 'deg)', opacity: 0 }
+          ],
+          { duration: 1100 + Math.random() * 400, easing: 'cubic-bezier(.2,.7,.5,1)' }
+        );
+        setTimeout(function (n) { return function () { n.remove(); }; }(bit), 1500);
+      }
+    }
+    document.querySelectorAll('.btn, .cta button').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        var r = el.getBoundingClientRect();
+        burst(r.left + r.width / 2, r.top + r.height / 2);
+      });
+    });
+  })();
+</script>
+</body>
+</html>

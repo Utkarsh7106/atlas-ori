@@ -1,0 +1,52 @@
+/* ============================================================
+   reset.css — the ONLY shared stylesheet in this project.
+   Deliberately minimal: it normalises the browser, it does not
+   style anything. Every visual decision lives in the per-page
+   <style> block so each style page is self-contained and can be
+   read (by a human or an LLM) as a single complete artefact.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body,
+h1, h2, h3, h4, h5, h6,
+p, figure, blockquote, dl, dd, ol, ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* Lists are unstyled by default; the Design Points panel re-enables
+   disc/decimal markers explicitly where they carry meaning. */
+ul, ol { list-style: none; }
+
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+a { text-decoration: none; color: inherit; }
+
+img, picture, svg, video { max-width: 100%; display: block; }
+
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+}
+
+button { cursor: pointer; }
+
+hr { border: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

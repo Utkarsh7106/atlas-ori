@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Minimalism — Atlas</title>
+<meta name="description" content="Minimalism: reduction to essentials, hairline rules, one typeface, extreme whitespace.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+    /* ══ MINIMALISM ═══════════════════════════════════════════════
+       Rule of the page: remove until it breaks, then add one thing
+       back. No fills, no shadows, no radii, no colour. Hierarchy is
+       carried entirely by SIZE, WEIGHT and EMPTY SPACE.            */
+
+    :root{
+      --paper:#ffffff;   /* page background            */
+      --ink:#0a0a0a;     /* headings, logo, button     */
+      --muted:#737373;   /* body copy, nav links       */
+      --rule:#e5e5e5;    /* hairlines — the only lines */
+      --tint:#fafafa;    /* the single hover surface   */
+      --gap:clamp(96px,14vh,160px);
+    }
+
+    body{
+      background:var(--paper);
+      color:var(--ink);
+      font-family:"Inter",-apple-system,"Helvetica Neue",Arial,sans-serif;
+      font-weight:400;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .wrap{max-width:920px;margin:0 auto;padding:0 32px}
+
+    /* ── Nav ─────────────────────────────────────────────────── */
+    .nav{display:flex;justify-content:space-between;align-items:center;padding:40px 0}
+    .logo{font-size:15px;font-weight:500;letter-spacing:-.02em}
+    .nav ul{display:flex;gap:36px}
+    .nav ul a{font-size:14px;color:var(--muted);position:relative;padding-bottom:2px}
+    .nav ul a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+      background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.7,.3,1)}
+    .nav ul a:hover{color:var(--ink)}
+    .nav ul a:hover::after{transform:scaleX(1)}
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .hero{padding:var(--gap) 0}
+    .hero h1{
+      font-size:clamp(38px,6.4vw,68px);
+      font-weight:300;
+      line-height:1.06;
+      letter-spacing:-.038em;
+      max-width:14ch;
+    }
+    .hero p{margin-top:28px;font-size:17px;color:var(--muted);max-width:38ch;line-height:1.6}
+
+    .btn{
+      display:inline-block;margin-top:48px;
+      border:1px solid var(--ink);border-radius:0;
+      padding:15px 30px;
+      font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+      background:var(--paper);color:var(--ink);
+      transition:background .22s ease,color .22s ease;
+    }
+    .btn:hover{background:var(--ink);color:var(--paper)}
+
+    /* ── Features ────────────────────────────────────────────── */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:56px;padding-bottom:var(--gap)}
+    .card{border-top:1px solid var(--rule);padding-top:22px}
+    .icon{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+    .card h3{font-size:17px;font-weight:500;letter-spacing:-.01em;margin:14px 0 10px}
+    .card p{font-size:15px;color:var(--muted);line-height:1.62}
+
+    /* ── CTA ─────────────────────────────────────────────────── */
+    .cta{border-top:1px solid var(--rule);padding:var(--gap) 0}
+    .cta h2{font-size:clamp(28px,4.4vw,46px);font-weight:300;letter-spacing:-.035em}
+
+    /* ── Restrained reveal ───────────────────────────────────── */
+    .reveal{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+    .reveal.in{opacity:1;transform:none}
+
+    @media(max-width:720px){
+      .features{grid-template-columns:1fr;gap:36px}
+      .nav ul{gap:22px}
+      .wrap{padding:0 22px}
+    }
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <nav class="nav">
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero reveal">
+      <h1>Design is how it feels to use.</h1>
+      <p>A study in visual language, one style at a time.</p>
+      <a href="#" class="btn">Explore</a>
+    </header>
+
+    <section class="features">
+      <article class="card reveal">
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+      </article>
+      <article class="card reveal">
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+      </article>
+      <article class="card reveal">
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+      </article>
+    </section>
+
+    <section class="cta reveal">
+      <h2>Start building.</h2>
+      <button class="btn">Get in touch</button>
+    </section>
+
+  </div>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Minimalism">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Minimalism</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>1960s–70s minimal art and Dieter Rams' product design at Braun, carried into digital interfaces from the late 2000s onward.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#ffffff"></span><code>#ffffff</code> — page background, the dominant surface</li>
+              <li><span class="sw" style="--c:#0a0a0a"></span><code>#0a0a0a</code> — headings, logo, button fill on hover</li>
+              <li><span class="sw" style="--c:#737373"></span><code>#737373</code> — body copy and nav links</li>
+              <li><span class="sw" style="--c:#e5e5e5"></span><code>#e5e5e5</code> — 1px hairline rules, the only drawn lines</li>
+              <li><span class="sw" style="--c:#fafafa"></span><code>#fafafa</code> — reserved hover tint</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Inter for everything (fallback: Helvetica Neue, Arial) — deliberately unpaired; a second family would be one decision too many. Weights limited to 300 for display, 400 for body, 500 for labels and the logo. Sizing is a narrow ramp: 11px labels, 14–15px body, 17px card titles, and one large jump to <code>clamp(38px, 6.4vw, 68px)</code> for the hero. Display sizes get −0.038em tracking; body stays at 0.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>A single 920px centred column, all content flush left with a ragged right edge; no element is centred except the column itself. Vertical rhythm is one large token — <code>clamp(96px, 14vh, 160px)</code> — between sections and 8px multiples inside them, so whitespace, not boxes, does the grouping.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>1px hairline rules in <code>#e5e5e5</code> as the only separators — no cards, panels, or filled containers anywhere.</li>
+              <li>Zero border-radius and zero box-shadow; depth is never simulated.</li>
+              <li>Measure capped at 14ch for the headline and 38ch for body copy, forcing generous unused space at the right.</li>
+              <li>Uppercase 11px labels at 0.18em tracking as the sole ornamental device.</li>
+              <li>An outlined button that inverts to solid on hover — the page's single colour event.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>Restrained and short. Nav links grow a 1px underline from the left over 280ms (<code>scaleX</code> with a left transform-origin). The button crossfades background and text colour over 220ms. An <code>IntersectionObserver</code> reveals the hero, cards, and CTA once each with a 10px rise and fade over 600ms, then unobserves — nothing animates twice, nothing loops.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Use one typeface at no more than three weights, and never let a decorative face in.</li>
+              <li>Restrict colour to white, near-black, one grey for secondary text, and one lighter grey for rules — no accent hue at all.</li>
+              <li>Separate content with 1px hairlines or empty space only; forbid yourself borders on all four sides, fills, radii, and shadows.</li>
+              <li>Set every section's vertical padding from a single large spacing token (96–160px) so the page reads as air with text in it.</li>
+              <li>Establish hierarchy through size and weight jumps alone — if you are reaching for colour or a box to signal importance, delete something instead.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* Reveal each element once, then stop watching it. */
+  (function () {
+    var items = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    items.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+</body>
+</html>
