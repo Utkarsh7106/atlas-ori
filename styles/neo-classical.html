@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neo-classical — Atlas</title>
+<meta name="description" content="Neo-classical: symmetry, columns, small caps, marble and rule-bound proportion.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+    /* ══ NEO-CLASSICAL ════════════════════════════════════════════
+       Order, symmetry, proportion. The page is an elevation drawing
+       of a façade: a central axis, a colonnade of three equal bays,
+       an entablature above and a plinth below. Restraint is moral —
+       ornament is permitted only where structure justifies it.     */
+
+    :root{
+      --marble:#f4f1ea;    /* aged plaster ground     */
+      --stone:#e6e1d6;     /* slightly deeper stone   */
+      --ink:#1f1c17;       /* carved lettering        */
+      --sepia:#6b6250;     /* secondary text          */
+      --gilt:#a8894f;      /* restrained gold leaf    */
+      --line:#c9c0ac;      /* rule and column edges   */
+    }
+
+    body{
+      background:
+        radial-gradient(1200px 700px at 50% -10%, #fbf9f4 0%, transparent 65%),
+        repeating-linear-gradient(102deg, rgba(160,145,115,.045) 0 3px, transparent 3px 9px),
+        var(--marble);
+      color:var(--ink);
+      font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+      font-weight:400;
+      text-align:center;              /* the central axis governs everything */
+    }
+    .wrap{max-width:1000px;margin:0 auto;padding:0 28px}
+
+    /* ── Entablature (nav) ───────────────────────────────────── */
+    .nav{padding:34px 0 22px;border-bottom:1px solid var(--line);position:relative}
+    .nav::after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:1px;background:var(--line)}
+    .logo{display:block;font-family:"Cinzel",serif;font-size:34px;font-weight:600;
+      letter-spacing:.34em;text-indent:.34em;color:var(--ink);margin-bottom:16px}
+    .nav ul{display:flex;justify-content:center;gap:52px}
+    .nav ul a{font-family:"Cinzel",serif;font-size:11px;font-weight:400;letter-spacing:.26em;
+      text-transform:uppercase;color:var(--sepia);position:relative;padding-bottom:4px}
+    .nav ul a::after{content:"";position:absolute;left:50%;bottom:0;width:0;height:1px;background:var(--gilt);
+      transform:translateX(-50%);transition:width .45s cubic-bezier(.2,.7,.3,1)}
+    .nav ul a:hover{color:var(--ink)}
+    .nav ul a:hover::after{width:100%}
+
+    /* ── Pediment / hero ─────────────────────────────────────── */
+    .hero{padding:96px 0 88px;position:relative}
+    .hero .rosette{width:46px;height:46px;margin:0 auto 34px;border:1px solid var(--gilt);
+      transform:rotate(45deg);position:relative}
+    .hero .rosette::before{content:"";position:absolute;inset:9px;border:1px solid var(--gilt);opacity:.6}
+    .hero h1{font-size:clamp(38px,6vw,74px);font-weight:300;line-height:1.14;letter-spacing:.005em;
+      max-width:16ch;margin:0 auto}
+    .hero h1 em{font-style:italic;font-weight:400}
+    .rule{width:120px;height:1px;background:var(--line);margin:36px auto;position:relative}
+    .rule::before,.rule::after{content:"";position:absolute;top:-2px;width:5px;height:5px;
+      background:var(--gilt);transform:rotate(45deg)}
+    .rule::before{left:-3px}
+    .rule::after{right:-3px}
+    .hero p{font-size:19px;color:var(--sepia);font-style:italic;max-width:38ch;margin:0 auto}
+
+    .btn{display:inline-block;margin-top:44px;font-family:"Cinzel",serif;font-size:11px;font-weight:600;
+      letter-spacing:.3em;text-indent:.3em;text-transform:uppercase;color:var(--ink);
+      border:1px solid var(--ink);padding:17px 44px;background:transparent;
+      transition:background .45s ease,color .45s ease,letter-spacing .45s ease}
+    .btn:hover{background:var(--ink);color:var(--marble)}
+
+    /* ── Colonnade: three equal bays divided by columns ──────── */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line)}
+    .card{padding:56px 34px 60px;position:relative}
+    .card + .card{border-left:1px solid var(--line)}
+    .icon{display:block;font-family:"Cinzel",serif;font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+      color:var(--gilt);margin-bottom:20px}
+    .card h3{font-family:"Cinzel",serif;font-size:19px;font-weight:400;letter-spacing:.16em;
+      text-transform:uppercase;margin-bottom:18px}
+    .card h3::first-letter{font-size:1.5em;color:var(--gilt)}
+    .card p{font-size:17px;color:var(--sepia);line-height:1.65;max-width:26ch;margin:0 auto}
+    .card::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+      width:1px;height:22px;background:var(--gilt);opacity:.5}
+
+    /* ── Plinth / CTA ────────────────────────────────────────── */
+    .cta{padding:96px 0 104px;background:linear-gradient(180deg, transparent, rgba(200,190,165,.28));
+      margin-top:0}
+    .cta h2{font-family:"Cinzel",serif;font-size:clamp(28px,4.2vw,48px);font-weight:400;
+      letter-spacing:.12em;text-transform:uppercase}
+    .cta button{margin-top:34px;font-family:"Cinzel",serif;font-size:11px;font-weight:600;
+      letter-spacing:.3em;text-indent:.3em;text-transform:uppercase;color:var(--marble);
+      background:var(--ink);border:1px solid var(--ink);padding:17px 42px;
+      transition:background .45s ease,color .45s ease}
+    .cta button:hover{background:transparent;color:var(--ink)}
+
+    @media(max-width:820px){
+      .features{grid-template-columns:1fr}
+      .card + .card{border-left:none;border-top:1px solid var(--line)}
+      .nav ul{gap:28px}
+    }
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <nav class="nav">
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <div class="rosette" aria-hidden="true"></div>
+      <h1>Design is how it <em>feels</em> to use.</h1>
+      <div class="rule" aria-hidden="true"></div>
+      <p>A study in visual language, one style at a time.</p>
+      <a href="#" class="btn">Explore</a>
+    </header>
+
+    <section class="features">
+      <article class="card">
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+      </article>
+      <article class="card">
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+      </article>
+      <article class="card">
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+      </article>
+    </section>
+
+  </div>
+
+  <section class="cta">
+    <h2>Start building.</h2>
+    <br>
+    <button>Get in touch</button>
+  </section>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Neo-classical">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Neo-classical</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>Late 18th to early 19th century — the revival of Greek and Roman order following the excavations at Pompeii and Herculaneum, in architecture, typography (Bodoni, Didot) and civic design.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#f4f1ea"></span><code>#f4f1ea</code> — aged plaster page ground</li>
+              <li><span class="sw" style="--c:#e6e1d6"></span><code>#e6e1d6</code> — deeper stone for the plinth gradient</li>
+              <li><span class="sw" style="--c:#1f1c17"></span><code>#1f1c17</code> — carved lettering, near-black warm brown</li>
+              <li><span class="sw" style="--c:#6b6250"></span><code>#6b6250</code> — sepia secondary text</li>
+              <li><span class="sw" style="--c:#a8894f"></span><code>#a8894f</code> — restrained gilt, used only for small ornament</li>
+              <li><span class="sw" style="--c:#c9c0ac"></span><code>#c9c0ac</code> — hairline rules and column divisions</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Cinzel (a Roman inscriptional capital) for the logo, nav, card titles and CTA, paired with Cormorant Garamond for all running text. Every Cinzel setting is uppercase with wide 0.12–0.34em letter-spacing plus a matching <code>text-indent</code> so the optical centring stays true. Cormorant runs light — 300 for the hero at <code>clamp(38px, 6vw, 74px)</code>, 400 italic for the subheading at 19px, 400 for body at 17px. Weight never exceeds 600, and italic carries emphasis instead of bold.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>Everything is centred on a single vertical axis; there is no flush-left content anywhere on the page. A 1000px wrapper divides into three equal bays — a literal colonnade — separated by 1px vertical rules, with the nav acting as entablature and a full-bleed gradient CTA as plinth. Vertical spacing follows large symmetrical intervals (56px, 88px, 96px) so the composition reads as an elevation drawing.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>A doubled hairline beneath the nav — one border plus an offset <code>::after</code> — imitating a cornice moulding.</li>
+              <li>A rotated square rosette with a nested inner square as the pediment ornament, in gilt at 1px.</li>
+              <li>A 120px centred rule terminated by small gilt lozenges at each end, used as a section caesura.</li>
+              <li>Enlarged gilt <code>::first-letter</code> on each card title, echoing an illuminated capital without leaving the classical register.</li>
+              <li>A faint 102° plaster grain drawn with a repeating gradient, plus a light-from-above radial wash on the ground.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>Slow and symmetrical, 450ms on every transition. Nav links grow a gilt underline outward from the centre (<code>left: 50%</code> with a translate, width 0 → 100%), never from one side, so the axis is preserved. Buttons invert fill and text colour. There is no JavaScript on this page at all — the style predates the machine, and nothing here needs it.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Centre everything on one vertical axis and keep the composition bilaterally symmetrical — no asymmetric or flush-left blocks.</li>
+              <li>Pair an inscriptional Roman capital (Cinzel, Trajan) for titles with an old-style serif (Cormorant, Garamond) for text, and set all capitals at 0.12–0.34em tracking with a matching text-indent.</li>
+              <li>Keep the palette to warm stone neutrals plus one restrained gilt, and spend the gilt only on ornament smaller than 46px.</li>
+              <li>Divide content into equal bays separated by 1px vertical rules, and frame the page with an entablature above and a plinth below.</li>
+              <li>Use italic rather than bold for emphasis, keep weights at or below 600, and let motion be slow, centred, and symmetrical.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+</body>
+</html>

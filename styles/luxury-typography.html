@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Luxury Typography — Atlas</title>
+<meta name="description" content="Luxury Typography: didone display at scale, hairlines, champagne accents, extreme tracking.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+    /* ══ LUXURY TYPOGRAPHY ════════════════════════════════════════
+       The house style of a fashion or fragrance maison. There is no
+       ornament — refinement comes from SCALE CONTRAST (a 120px
+       didone against 9px capitals at 0.42em), hairlines, and the
+       confidence to leave two thirds of the page empty.            */
+
+    :root{
+      --ivory:#f7f4ef;
+      --ink:#12100e;
+      --champagne:#b09a72;
+      --grey:#8b857c;
+      --hair:#ddd7cc;
+    }
+
+    body{
+      background:var(--ivory);
+      color:var(--ink);
+      font-family:"Jost",-apple-system,"Helvetica Neue",Arial,sans-serif;
+      font-weight:300;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+    .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(22px,5vw,64px)}
+
+    /* The unit of small type: 9px capitals, tracked to breathing point. */
+    .caps{font-family:"Jost",sans-serif;font-size:9px;font-weight:400;letter-spacing:.42em;
+      text-indent:.42em;text-transform:uppercase;color:var(--grey)}
+
+    /* ── Nav ─────────────────────────────────────────────────── */
+    .nav{display:flex;justify-content:space-between;align-items:center;padding:44px 0 22px;
+      border-bottom:1px solid var(--hair)}
+    .logo{font-family:"Bodoni Moda",Didot,"Times New Roman",serif;font-size:25px;font-weight:400;
+      letter-spacing:.46em;text-indent:.46em;text-transform:uppercase;color:var(--ink)}
+    .nav ul{display:flex;gap:46px}
+    .nav ul a{font-size:9px;font-weight:400;letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;
+      color:var(--grey);position:relative;padding-bottom:5px;transition:color .6s ease}
+    .nav ul a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--champagne);
+      transform:scaleX(0);transform-origin:right;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+    .nav ul a:hover{color:var(--ink)}
+    .nav ul a:hover::after{transform:scaleX(1);transform-origin:left}
+
+    /* ── Hero: asymmetric, label column against display column ── */
+    .hero{display:grid;grid-template-columns:minmax(120px,1fr) 4.4fr;gap:clamp(20px,5vw,72px);
+      padding:clamp(72px,13vh,150px) 0 clamp(60px,10vh,120px);align-items:start}
+    .hero .label{padding-top:14px}
+    .hero h1{
+      font-family:"Bodoni Moda",Didot,"Times New Roman",serif;
+      font-size:clamp(42px,8.4vw,116px);
+      font-weight:400;line-height:.98;letter-spacing:-.012em;max-width:13ch;
+    }
+    .hero h1 em{font-style:italic;color:var(--champagne)}
+    .hero .word{display:inline-block;opacity:0;transform:translateY(14px);
+      transition:opacity 1s ease,transform 1s cubic-bezier(.16,1,.3,1)}
+    .hero .word.in{opacity:1;transform:none}
+    .hero .deck{margin-top:46px;display:flex;align-items:baseline;gap:26px;flex-wrap:wrap}
+    .hero .deck p{font-size:15px;font-weight:300;color:var(--grey);letter-spacing:.06em;max-width:34ch;line-height:1.75}
+
+    .btn{display:inline-block;margin-top:52px;font-size:9px;font-weight:400;letter-spacing:.42em;
+      text-indent:.42em;text-transform:uppercase;color:var(--ink);padding-bottom:9px;
+      border-bottom:1px solid var(--ink);transition:color .6s ease,border-color .6s ease,padding .6s ease}
+    .btn:hover{color:var(--champagne);border-color:var(--champagne);padding-left:14px;padding-right:14px}
+
+    /* ── Features: three columns under one hairline ──────────── */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,5vw,80px);
+      border-top:1px solid var(--hair);padding:64px 0 clamp(70px,11vh,130px)}
+    .card .num{font-family:"Bodoni Moda",serif;font-style:italic;font-size:15px;color:var(--champagne);
+      display:block;margin-bottom:26px}
+    .icon{display:block;font-size:9px;font-weight:400;letter-spacing:.42em;text-indent:.42em;
+      text-transform:uppercase;color:var(--grey);margin-bottom:16px}
+    .card h3{font-family:"Bodoni Moda",serif;font-size:30px;font-weight:400;letter-spacing:-.01em;margin-bottom:16px}
+    .card p{font-size:14.5px;font-weight:300;color:var(--grey);line-height:1.85;letter-spacing:.04em;max-width:26ch}
+
+    /* ── CTA: the one black field ────────────────────────────── */
+    /* The one black field, broken out of the measure to the full viewport. */
+    .cta{background:var(--ink);color:var(--ivory);
+      width:100vw;margin-left:calc(50% - 50vw);
+      padding:clamp(80px,14vh,160px) clamp(22px,5vw,64px)}
+    .cta-inner{max-width:1180px;margin:0 auto;display:grid;
+      grid-template-columns:minmax(120px,1fr) 4.4fr;gap:clamp(20px,5vw,72px);align-items:center}
+    .cta .caps{color:rgba(247,244,239,.5)}
+    .cta h2{font-family:"Bodoni Moda",serif;font-size:clamp(34px,6.4vw,88px);font-weight:400;
+      line-height:1;letter-spacing:-.012em}
+    .cta button{margin-top:44px;font-family:"Jost",sans-serif;font-size:9px;font-weight:400;
+      letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;color:var(--ivory);
+      padding-bottom:9px;border-bottom:1px solid rgba(247,244,239,.6);
+      transition:color .6s ease,border-color .6s ease,padding .6s ease}
+    .cta button:hover{color:var(--champagne);border-color:var(--champagne);padding-left:14px;padding-right:14px}
+
+    @media(max-width:860px){
+      .hero,.cta-inner{grid-template-columns:1fr}
+      .features{grid-template-columns:1fr;gap:52px}
+      .nav ul{gap:22px}
+    }
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <nav class="nav">
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <div class="label"><span class="caps">Maison</span></div>
+      <div>
+        <h1 id="headline">Design is how it <em>feels</em> to use.</h1>
+        <div class="deck">
+          <span class="caps">No. 001</span>
+          <p>A study in visual language, one style at a time.</p>
+        </div>
+        <a href="#" class="btn">Explore</a>
+      </div>
+    </header>
+
+    <section class="features">
+      <article class="card">
+        <span class="num">I</span>
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+      </article>
+      <article class="card">
+        <span class="num">II</span>
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+      </article>
+      <article class="card">
+        <span class="num">III</span>
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+      </article>
+    </section>
+
+    <section class="cta">
+      <div class="cta-inner">
+        <div><span class="caps">Enquiries</span></div>
+        <div>
+          <h2>Start building.</h2>
+          <button>Get in touch</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Luxury Typography">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Luxury Typography</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>The house style of European fashion and fragrance maisons — descended from Bodoni and Didot's 1790s didones by way of mid-century Vogue, and standard for luxury web identity since roughly 2015.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#f7f4ef"></span><code>#f7f4ef</code> — ivory page ground, warmer than white</li>
+              <li><span class="sw" style="--c:#12100e"></span><code>#12100e</code> — near-black ink and the single black field</li>
+              <li><span class="sw" style="--c:#b09a72"></span><code>#b09a72</code> — champagne, the only accent, on italics and hovers</li>
+              <li><span class="sw" style="--c:#8b857c"></span><code>#8b857c</code> — warm grey for all secondary text</li>
+              <li><span class="sw" style="--c:#ddd7cc"></span><code>#ddd7cc</code> — hairline rules</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Bodoni Moda (optical-size didone) for all display, paired with Jost at 300–400 for every piece of small text. The style lives in the gap between them: the headline runs <code>clamp(42px, 8.4vw, 116px)</code> at 0.98 leading while labels sit at 9px with 0.42em letter-spacing and a matching text-indent — a ratio of roughly 13:1 with nothing in between except 30px card titles. Body is 14.5–15px at 1.75–1.85 line-height. Italic in champagne is the only emphasis; bold is never used.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>An asymmetric two-track grid — <code>minmax(120px, 1fr)</code> for a label column against <code>4.4fr</code> for content — repeated in the hero and the CTA, so a small tracked capital always sits opposite a large serif. Vertical padding is viewport-relative and enormous (<code>clamp(72px, 13vh, 150px)</code>), and the headline is capped at 13ch so at least a third of the page stays empty.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>Extreme letter-spacing (0.42–0.46em) on 9px capitals, always paired with an equal <code>text-indent</code> so the trailing space does not break alignment.</li>
+              <li>Buttons as tracked capitals over a 1px underline — no fill, no radius, no box.</li>
+              <li>Roman numerals in champagne italic as section markers instead of digits.</li>
+              <li>One full-bleed black field, escaped from the wrapper with negative margins, used exactly once on the page.</li>
+              <li>Underlines that wipe out to the right and back in from the left on hover, over 700ms.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>JS splits the headline into individual words wrapped in <code>.word</code> spans and reveals them in sequence — 14px rise plus fade, 1s each on <code>cubic-bezier(.16, 1, .3, 1)</code>, staggered 90ms apart — so the line assembles itself rather than appearing. Hovers are unusually slow at 600–700ms; buttons gain 14px of horizontal padding as their rule recolours to champagne, so the type appears to breathe outward.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Set one didone (Bodoni, Didot) for display and one geometric sans at 300 weight for everything else — never a third face.</li>
+              <li>Create hierarchy from scale contrast alone: display above 90px against 9px capitals tracked to 0.42em, with almost nothing in the middle of the ramp.</li>
+              <li>Pair every large element with a small tracked label in an opposing narrow column; never centre the composition.</li>
+              <li>Keep the palette to ivory, near-black and one metallic accent used only on italics and hover states — no third colour, no ornament, no border radius.</li>
+              <li>Leave at least a third of the page empty and slow all motion to 600ms or more; luxury reads as unhurried.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* The headline assembles itself, word by word. */
+  (function () {
+    var h = document.getElementById('headline');
+    var nodes = [].slice.call(h.childNodes);
+    h.textContent = '';
+
+    nodes.forEach(function (node) {
+      var isEm = node.nodeType === 1 && node.tagName === 'EM';
+      var text = node.textContent;
+      text.split(/(\s+)/).forEach(function (chunk) {
+        if (!chunk) return;
+        if (/^\s+$/.test(chunk)) { h.appendChild(document.createTextNode(' ')); return; }
+        var span = document.createElement(isEm ? 'em' : 'span');
+        span.className = 'word';
+        span.textContent = chunk;
+        h.appendChild(span);
+      });
+    });
+
+    var words = h.querySelectorAll('.word');
+    words.forEach(function (w, i) {
+      setTimeout(function () { w.classList.add('in'); }, 120 + i * 90);
+    });
+  })();
+</script>
+</body>
+</html>

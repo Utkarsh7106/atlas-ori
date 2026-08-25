@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gothic — Atlas</title>
+<meta name="description" content="Gothic: blackletter, lancet arches, stone and stained glass, vertical ascent.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Cinzel:wght@400&display=swap" rel="stylesheet">
+<style>
+    /* ══ GOTHIC ═══════════════════════════════════════════════════
+       The cathedral, not the parlour. Everything points UP: lancet
+       arches, tall thin columns of tracery, vertical proportions.
+       Dark stone, bone-white text, and colour admitted only through
+       stained glass. Austere where Victorian is upholstered.       */
+
+    :root{
+      --night:#0b0a0d;      /* nave darkness        */
+      --stone:#16141a;      /* pier / panel stone   */
+      --stone-hi:#221f28;   /* lit stone            */
+      --bone:#e9e3d6;       /* limewash lettering   */
+      --oxblood:#7a1f2b;    /* stained glass red    */
+      --sapphire:#2b3a6b;   /* stained glass blue   */
+      --gold:#b39355;       /* tarnished tracery    */
+    }
+
+    body{
+      background:
+        radial-gradient(circle at 50% 0%, rgba(179,147,85,.10) 0%, transparent 45%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.014) 0 1px, transparent 1px 3px),
+        repeating-linear-gradient(0deg, rgba(0,0,0,.5) 0 2px, transparent 2px 6px),
+        var(--night);
+      color:var(--bone);
+      font-family:"EB Garamond",Georgia,serif;
+      text-align:center;
+      overflow-x:hidden;
+      position:relative;
+    }
+    /* Torchlight follows the cursor and wakes the stone. */
+    #torch{position:fixed;inset:0;z-index:1;pointer-events:none;
+      background:radial-gradient(340px circle at var(--tx,50%) var(--ty,20%), rgba(232,227,214,.075), transparent 70%)}
+    .vignette{position:fixed;inset:0;z-index:2;pointer-events:none;
+      box-shadow:inset 0 0 240px 60px rgba(0,0,0,.92)}
+    .wrap{max-width:980px;margin:0 auto;padding:0 24px 40px;position:relative;z-index:3}
+
+    /* ── Nav: a rood screen of vertical tracery ──────────────── */
+    .nav{padding:30px 0 24px;border-bottom:1px solid rgba(179,147,85,.35);position:relative}
+    .nav::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;
+      background:rgba(179,147,85,.18)}
+    .logo{display:block;font-family:"UnifrakturMaguntia",serif;font-size:46px;color:var(--bone);
+      line-height:1;text-shadow:0 0 26px rgba(179,147,85,.35)}
+    .nav ul{display:flex;justify-content:center;gap:0;margin-top:16px}
+    .nav ul li{padding:0 30px;border-left:1px solid rgba(179,147,85,.22)}
+    .nav ul li:first-child{border-left:none}
+    .nav ul a{font-family:"Cinzel",serif;font-size:11px;letter-spacing:.3em;text-indent:.3em;
+      text-transform:uppercase;color:rgba(233,227,214,.6);transition:color .5s ease,text-shadow .5s ease}
+    .nav ul a:hover{color:var(--gold);text-shadow:0 0 14px rgba(179,147,85,.6)}
+
+    /* ── Rose window ─────────────────────────────────────────── */
+    .rose{width:118px;height:118px;margin:44px auto 30px;border-radius:50%;
+      border:1px solid rgba(179,147,85,.55);position:relative;
+      background:conic-gradient(var(--oxblood) 0 30deg, var(--sapphire) 30deg 60deg,
+        var(--oxblood) 60deg 90deg, var(--sapphire) 90deg 120deg, var(--oxblood) 120deg 150deg,
+        var(--sapphire) 150deg 180deg, var(--oxblood) 180deg 210deg, var(--sapphire) 210deg 240deg,
+        var(--oxblood) 240deg 270deg, var(--sapphire) 270deg 300deg, var(--oxblood) 300deg 330deg,
+        var(--sapphire) 330deg 360deg);
+      box-shadow:0 0 46px rgba(122,31,43,.5), inset 0 0 22px rgba(0,0,0,.75);
+      opacity:.85}
+    .rose::before{content:"";position:absolute;inset:26px;border-radius:50%;background:var(--night);
+      border:1px solid rgba(179,147,85,.5)}
+    .rose::after{content:"";position:absolute;inset:46px;border-radius:50%;background:var(--gold);opacity:.5}
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .hero{padding:0 0 84px}
+    .hero h1{font-family:"UnifrakturMaguntia",serif;font-size:clamp(34px,5.6vw,68px);line-height:1.16;
+      max-width:15ch;margin:0 auto;color:var(--bone);text-shadow:0 0 34px rgba(179,147,85,.24)}
+    .hero p{margin-top:26px;font-size:19px;font-style:italic;color:rgba(233,227,214,.66);
+      max-width:36ch;margin-left:auto;margin-right:auto}
+    .btn{display:inline-block;margin-top:40px;font-family:"Cinzel",serif;font-size:11px;
+      letter-spacing:.34em;text-indent:.34em;text-transform:uppercase;color:var(--bone);
+      padding:18px 44px;background:var(--stone);border:1px solid rgba(179,147,85,.5);
+      clip-path:polygon(50% 0%, 100% 16%, 100% 100%, 0 100%, 0 16%);
+      transition:background .5s ease,color .5s ease,box-shadow .5s ease}
+    .btn:hover{background:var(--oxblood);color:#fff;box-shadow:0 0 32px rgba(122,31,43,.6)}
+
+    /* ── Features: three lancet arches ───────────────────────── */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;padding-bottom:78px}
+    .card{background:linear-gradient(180deg, var(--stone-hi), var(--stone) 42%, var(--night));
+      border:1px solid rgba(179,147,85,.26);border-top:none;
+      /* a lancet: two curved shoulders meeting at a point, approximated in 13 vertices */
+      clip-path:polygon(50% 0%, 62% 3%, 74% 9%, 85% 17%, 93% 25%, 100% 34%, 100% 100%,
+        0 100%, 0 34%, 7% 25%, 15% 17%, 26% 9%, 38% 3%);
+      padding:88px 24px 42px;transition:background .5s ease}
+    .card:hover{background:linear-gradient(180deg, #2b2733, var(--stone) 42%, var(--night))}
+    .icon{display:block;font-family:"Cinzel",serif;font-size:10px;letter-spacing:.3em;
+      text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+    .card h3{font-family:"UnifrakturMaguntia",serif;font-size:31px;margin-bottom:14px;color:var(--bone)}
+    .card p{font-size:16.5px;line-height:1.7;color:rgba(233,227,214,.62);max-width:24ch;margin:0 auto}
+
+    /* ── CTA ─────────────────────────────────────────────────── */
+    .cta{padding:82px 24px 90px;border-top:1px solid rgba(179,147,85,.3);position:relative}
+    .cta::before{content:"";position:absolute;top:-1px;left:50%;transform:translateX(-50%) rotate(45deg);
+      width:14px;height:14px;background:var(--night);border-top:1px solid rgba(179,147,85,.55);
+      border-right:1px solid rgba(179,147,85,.55)}
+    .cta h2{font-family:"UnifrakturMaguntia",serif;font-size:clamp(32px,5vw,58px);
+      text-shadow:0 0 30px rgba(179,147,85,.26)}
+    .cta button{margin-top:32px;font-family:"Cinzel",serif;font-size:11px;letter-spacing:.34em;
+      text-indent:.34em;text-transform:uppercase;color:var(--night);background:var(--gold);
+      padding:18px 42px;clip-path:polygon(50% 0%, 100% 16%, 100% 100%, 0 100%, 0 16%);
+      transition:background .5s ease,color .5s ease}
+    .cta button:hover{background:var(--bone);color:var(--oxblood)}
+
+    @media(max-width:820px){
+      .features{grid-template-columns:1fr}
+      .nav ul li{padding:0 16px}
+      .logo{font-size:36px}
+    }
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div id="torch" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <div class="wrap">
+
+    <nav class="nav">
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <div class="rose" aria-hidden="true"></div>
+      <h1>Design is how it feels to use.</h1>
+      <p>A study in visual language, one style at a time.</p>
+      <br>
+      <a href="#" class="btn">Explore</a>
+    </header>
+
+    <section class="features">
+      <article class="card">
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+      </article>
+      <article class="card">
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+      </article>
+      <article class="card">
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+      </article>
+    </section>
+
+    <section class="cta">
+      <h2>Start building.</h2>
+      <br>
+      <button>Get in touch</button>
+    </section>
+
+  </div>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Gothic">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Gothic</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>12th–16th century European cathedral architecture and blackletter manuscript hands, filtered through the 19th-century Gothic Revival of Pugin and Ruskin.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#0b0a0d"></span><code>#0b0a0d</code> — nave darkness, the page ground</li>
+              <li><span class="sw" style="--c:#16141a"></span><code>#16141a</code> — stone panels and arch fills</li>
+              <li><span class="sw" style="--c:#e9e3d6"></span><code>#e9e3d6</code> — bone limewash for all lettering</li>
+              <li><span class="sw" style="--c:#7a1f2b"></span><code>#7a1f2b</code> — stained-glass oxblood, used only in glass and on hover</li>
+              <li><span class="sw" style="--c:#2b3a6b"></span><code>#2b3a6b</code> — stained-glass sapphire in the rose window</li>
+              <li><span class="sw" style="--c:#b39355"></span><code>#b39355</code> — tarnished gold tracery, rules and small caps</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>UnifrakturMaguntia (a textura blackletter) for the logo, headline, card titles and CTA, paired with EB Garamond for running text and Cinzel small caps for navigation and buttons. Blackletter is never tracked and never set below 27px because the dense verticals close up; Cinzel capitals run 10–11px at a very wide 0.30–0.34em. Body is 16.5–19px, italic in the deck, at 1.7 line-height so the light column of text contrasts the dark ground.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>Centred on a single axis inside a 980px wrapper, with proportions deliberately vertical: cards carry 88px of top padding above their content so the arch has height to rise through, and sections are separated by 78–90px. Nav items are divided by 1px vertical rules rather than gaps, forming a rood screen of thin columns.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>Lancet arches cut with a 13-vertex <code>clip-path: polygon()</code> whose shoulders curve inward to meet at a point, with a shallower 5-vertex gable on buttons.</li>
+              <li>A rose window built from a 12-stop <code>conic-gradient</code> with two concentric inset rings and an outward oxblood glow.</li>
+              <li>Stone drawn with a 1px vertical striation gradient over 2px horizontal courses, both at very low alpha.</li>
+              <li>A heavy <code>inset 0 0 240px 60px</code> vignette that crushes the edges of the page to black.</li>
+              <li>A rotated 14px square straddling the CTA's top border as a crocket, marking the apex of the section.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>A fixed torchlight layer tracks the pointer: JS writes <code>--tx</code>/<code>--ty</code> and a 340px radial wash at 7.5% bone lifts the stone wherever the cursor rests, leaving the rest of the nave dark. Transitions are long — 500ms — for a heavy, architectural feel: arches lighten their stone gradient on hover, buttons fill with oxblood and gain a red glow, nav capitals warm to gold.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Make the page vertical: pointed <code>clip-path</code> arches on every container (curve the shoulders with extra vertices — a plain triangle reads as a house, not a cathedral), tall top padding, and sections divided by thin vertical rules rather than horizontal bands.</li>
+              <li>Set display type in blackletter at 27px or larger with no letter-spacing, and pair it with an old-style serif for text and Roman capitals for navigation.</li>
+              <li>Keep the ground near-black with a heavy inset vignette, and let bone-white type be the only bright value.</li>
+              <li>Admit colour only as "stained glass" — deep oxblood and sapphire inside one ornamental element and on hover states, never as a page-wide fill.</li>
+              <li>Use long 500ms transitions and a single soft light source that reveals texture; nothing should snap or bounce.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* One light source in a dark nave. */
+  (function () {
+    var torch = document.getElementById('torch');
+    window.addEventListener('pointermove', function (e) {
+      torch.style.setProperty('--tx', e.clientX + 'px');
+      torch.style.setProperty('--ty', e.clientY + 'px');
+    });
+  })();
+</script>
+</body>
+</html>
