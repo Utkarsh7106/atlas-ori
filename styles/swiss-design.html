@@ -91,9 +91,9 @@
     /* ── CTA ────────────────────────────────────────────────────── */
     .cta{border-top:4px solid var(--ink);padding:56px 0 96px;align-items:end}
     .cta h2{grid-column:1/9;font-size:clamp(38px,7vw,88px);font-weight:700;line-height:.9;letter-spacing:-.048em;text-transform:uppercase}
-    .cta button{grid-column:10/13;background:var(--ink);color:var(--paper);padding:20px 0;width:100%;
+    .cta .cta-btn{display:inline-block;grid-column:10/13;background:var(--ink);color:var(--paper);padding:20px 0;width:100%;
       font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;transition:background .18s linear}
-    .cta button:hover{background:var(--red)}
+    .cta .cta-btn:hover{background:var(--red)}
 
     /* ── Grid overlay (press G) ─────────────────────────────────── */
     #overlay{position:fixed;inset:0;padding:0 var(--margin);pointer-events:none;opacity:0;
@@ -113,7 +113,7 @@
       .meta{grid-column:7/13;text-align:right}
       .mark{display:none}
       .cta h2{grid-column:1/13}
-      .cta button{grid-column:1/7;margin-top:32px}
+      .cta .cta-btn{grid-column:1/7;margin-top:32px}
     }
 
     /* ══ DESIGN POINTS — documentation panel ═══════════════════════
@@ -152,7 +152,7 @@
 <body>
 
   <nav class="nav grid">
-    <a href="#" class="logo">Atlas</a>
+    <a href="../index.html" class="logo">Atlas</a>
     <ul>
       <li><a href="#">Work</a></li>
       <li><a href="#">About</a></li>
@@ -197,7 +197,8 @@
 
   <section class="cta grid">
     <h2>Start building.</h2>
-    <button>Get in touch</button>
+    <!-- TODO: replace with real contact -->
+    <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
   </section>
 
   <div id="overlay" aria-hidden="true"><div class="grid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>

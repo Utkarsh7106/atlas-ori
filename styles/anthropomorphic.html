@@ -133,11 +133,11 @@
     .cta{margin-top:26px;padding:56px 30px 60px;text-align:center;background:var(--plum);color:#fff;
       border:3px solid var(--ink);border-radius:40px;box-shadow:0 10px 0 0 var(--ink)}
     .cta h2{font-family:"Fredoka",sans-serif;font-size:clamp(30px,4.6vw,50px);font-weight:600}
-    .cta button{margin-top:26px;font-family:"Fredoka",sans-serif;font-size:18px;font-weight:600;color:var(--ink);
+    .cta .cta-btn{display:inline-block;margin-top:26px;font-family:"Fredoka",sans-serif;font-size:18px;font-weight:600;color:var(--ink);
       background:var(--sunny);border:3px solid var(--ink);border-radius:999px;padding:14px 34px;
       box-shadow:0 7px 0 0 var(--ink);transition:transform .16s ease,box-shadow .16s ease}
-    .cta button:hover{transform:translateY(-3px);box-shadow:0 10px 0 0 var(--ink)}
-    .cta button:active{transform:translateY(5px);box-shadow:0 2px 0 0 var(--ink)}
+    .cta .cta-btn:hover{transform:translateY(-3px);box-shadow:0 10px 0 0 var(--ink)}
+    .cta .cta-btn:active{transform:translateY(5px);box-shadow:0 2px 0 0 var(--ink)}
 
     @media(max-width:860px){
       .hero{grid-template-columns:1fr}
@@ -182,7 +182,7 @@
   <div class="wrap">
 
     <nav class="nav">
-      <a href="#" class="logo">
+      <a href="../index.html" class="logo">
         <span class="face" data-face aria-hidden="true">
           <span class="eyes"><i class="eye"></i><i class="eye"></i></span>
           <span class="mouth"></span>
@@ -253,7 +253,8 @@
 
     <section class="cta">
       <h2>Start building.</h2>
-      <button>Get in touch</button>
+      <!-- TODO: replace with real contact -->
+      <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
   </div>

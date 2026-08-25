@@ -113,10 +113,10 @@
       background:var(--paper);
       background-image:repeating-linear-gradient(180deg, transparent 0 29px, rgba(47,58,74,.13) 29px 30px)}
     .cta h2{font-family:"Caveat",cursive;font-size:clamp(38px,6vw,66px);font-weight:700}
-    .cta button{margin-top:22px;font-family:"Special Elite",monospace;font-size:14px;letter-spacing:.12em;
+    .cta .cta-btn{display:inline-block;margin-top:22px;font-family:"Special Elite",monospace;font-size:14px;letter-spacing:.12em;
       text-transform:uppercase;color:var(--red);border:3px double var(--red);padding:11px 26px;
       transform:rotate(1.2deg);opacity:.88;transition:transform .18s ease,opacity .18s ease}
-    .cta button:hover{transform:rotate(-2deg) scale(1.04);opacity:1}
+    .cta .cta-btn:hover{transform:rotate(-2deg) scale(1.04);opacity:1}
     .stamp{position:absolute;right:26px;top:20px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
       color:var(--red);border:2px solid var(--red);padding:8px 12px;transform:rotate(13deg);opacity:.6;
       border-radius:4px}
@@ -165,7 +165,7 @@
 
     <nav class="nav paper">
       <span class="tape tl"></span>
-      <a href="#" class="logo">Atlas</a>
+      <a href="../index.html" class="logo">Atlas</a>
       <ul>
         <li><a href="#">Work</a></li>
         <li><a href="#">About</a></li>
@@ -210,7 +210,8 @@
       <span class="tape tr"></span>
       <span class="stamp">Filed 2026</span>
       <h2>Start building.</h2>
-      <button>Get in touch</button>
+      <!-- TODO: replace with real contact -->
+      <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
   </div>

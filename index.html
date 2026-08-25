@@ -54,7 +54,10 @@
   .card a:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
   .card a:focus-visible .go{opacity:1;transform:none}
 
-  footer{border-top:1px solid var(--rule);padding:32px 0 64px;font-size:13px;color:var(--muted)}
+  footer{border-top:1px solid var(--rule);padding:32px 0 64px;font-size:13px;color:var(--muted);
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  footer a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+  footer a:hover{color:var(--muted)}
   footer code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;
     background:var(--tint);padding:2px 6px;border-radius:3px}
 
@@ -345,8 +348,9 @@
     </ul>
 
     <footer>
-      Hand-written HTML, CSS and vanilla JavaScript. The only shared stylesheet is
-      <code>assets/reset.css</code>; every other rule lives in its own page.
+      <span>Hand-written HTML, CSS and vanilla JavaScript. The only shared stylesheet is
+      <code>assets/reset.css</code>; every other rule lives in its own page.</span>
+      <a href="https://github.com/Utkarsh7106/website-designs">Source on GitHub</a>
     </footer>
 
   </div>

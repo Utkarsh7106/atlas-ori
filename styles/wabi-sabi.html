@@ -109,11 +109,11 @@
     .cta .mark{font-family:"Shippori Mincho",serif;font-size:12px;letter-spacing:.26em;color:var(--clay)}
     .cta h2{font-family:"Shippori Mincho",serif;font-size:clamp(28px,4.2vw,50px);font-weight:400;
       letter-spacing:.03em;line-height:1.5}
-    .cta button{margin-top:44px;font-family:"Shippori Mincho",serif;font-size:13px;letter-spacing:.3em;
+    .cta .cta-btn{display:inline-block;margin-top:44px;font-family:"Shippori Mincho",serif;font-size:13px;letter-spacing:.3em;
       text-indent:.3em;color:var(--paper);background:var(--sumi);padding:17px 42px;
       border-radius:51% 49% 48% 52%/47% 53% 47% 53%;
       transition:opacity 1.2s ease,border-radius 1.6s ease}
-    .cta button:hover{opacity:.78;border-radius:47% 53% 52% 48%/53% 47% 53% 47%}
+    .cta .cta-btn:hover{opacity:.78;border-radius:47% 53% 52% 48%/53% 47% 53% 47%}
 
     @media(max-width:860px){
       .hero,.cta{grid-template-columns:1fr}
@@ -160,7 +160,7 @@
   <div class="wrap">
 
     <nav class="nav fade">
-      <a href="#" class="logo">Atlas</a>
+      <a href="../index.html" class="logo">Atlas</a>
       <ul>
         <li><a href="#">Work</a></li>
         <li><a href="#">About</a></li>
@@ -202,7 +202,8 @@
       <span class="mark">結</span>
       <div>
         <h2>Start building.</h2>
-        <button>Get in touch</button>
+        <!-- TODO: replace with real contact -->
+        <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
       </div>
     </section>
 

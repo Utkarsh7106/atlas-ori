@@ -105,11 +105,11 @@
     /* ── CTA ─────────────────────────────────────────────────── */
     .cta{margin-top:44px;padding:60px 40px;text-align:center;border-radius:48px}
     .cta h2{font-family:"Baloo 2",cursive;font-size:clamp(30px,4.4vw,50px);font-weight:700;color:#fff}
-    .cta button{margin-top:26px;padding:18px 42px;border-radius:32px;
+    .cta .cta-btn{display:inline-block;margin-top:26px;padding:18px 42px;border-radius:32px;
       font-family:"Baloo 2",cursive;font-size:19px;font-weight:700;color:var(--text);
       transition:transform .32s cubic-bezier(.34,1.56,.64,1)}
-    .cta button:hover{transform:translateY(-6px) scale(1.05)}
-    .cta button.squish{transform:translateY(3px) scale(1.06,.9)}
+    .cta .cta-btn:hover{transform:translateY(-6px) scale(1.05)}
+    .cta .cta-btn.squish{transform:translateY(3px) scale(1.06,.9)}
 
     @media(max-width:820px){.features{grid-template-columns:1fr}.hero{padding:46px 24px}}
 
@@ -155,7 +155,7 @@
   <div class="wrap">
 
     <nav class="nav clay">
-      <a href="#" class="logo">Atlas</a>
+      <a href="../index.html" class="logo">Atlas</a>
       <ul>
         <li><a href="#">Work</a></li>
         <li><a href="#">About</a></li>
@@ -190,7 +190,8 @@
 
     <section class="cta clay-purple">
       <h2>Start building.</h2>
-      <button class="clay-yellow" data-squish>Get in touch</button>
+      <!-- TODO: replace with real contact -->
+      <a href="mailto:hello@example.com" class="clay-yellow cta-btn" data-squish>Get in touch</a>
     </section>
 
   </div>
@@ -279,7 +280,8 @@
   (function () {
     document.querySelectorAll('[data-squish]').forEach(function (el) {
       el.addEventListener('click', function (e) {
-        e.preventDefault();
+        /* only swallow the click for placeholder links; let real hrefs navigate */
+        if (el.getAttribute('href') === '#') e.preventDefault();
         el.classList.add('squish');
         setTimeout(function () { el.classList.remove('squish'); }, 260);
       });

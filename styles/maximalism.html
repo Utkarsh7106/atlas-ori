@@ -107,10 +107,10 @@
       box-shadow:inset 0 0 0 10px var(--yellow), 14px 14px 0 var(--black)}
     .cta h2{font-family:"Playfair Display",serif;font-style:italic;font-weight:900;
       font-size:clamp(38px,7vw,76px);color:var(--yellow);text-shadow:5px 5px 0 var(--black)}
-    .cta button{margin-top:26px;font-family:"Archivo Black",sans-serif;font-size:19px;text-transform:uppercase;
+    .cta .cta-btn{display:inline-block;margin-top:26px;font-family:"Archivo Black",sans-serif;font-size:19px;text-transform:uppercase;
       background:#fff;border:6px solid var(--black);border-radius:99px;padding:15px 36px;
       box-shadow:8px 8px 0 var(--cyan),16px 16px 0 var(--black);transition:transform .15s ease}
-    .cta button:hover{transform:translate(4px,4px) rotate(-2deg)}
+    .cta .cta-btn:hover{transform:translate(4px,4px) rotate(-2deg)}
 
     /* pointer confetti */
     .bit{position:fixed;width:14px;height:14px;pointer-events:none;z-index:99;border:3px solid var(--black)}
@@ -160,7 +160,7 @@
   <div class="shell">
 
     <nav class="nav">
-      <a href="#" class="logo">Atlas</a>
+      <a href="../index.html" class="logo">Atlas</a>
       <ul>
         <li><a href="#">Work</a></li>
         <li><a href="#">About</a></li>
@@ -197,7 +197,8 @@
 
     <section class="cta">
       <h2>Start building.</h2>
-      <button>Get in touch</button>
+      <!-- TODO: replace with real contact -->
+      <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
   </div>
@@ -306,9 +307,10 @@
         setTimeout(function (n) { return function () { n.remove(); }; }(bit), 1500);
       }
     }
-    document.querySelectorAll('.btn, .cta button').forEach(function (el) {
+    document.querySelectorAll('.btn, .cta .cta-btn').forEach(function (el) {
       el.addEventListener('click', function (e) {
-        e.preventDefault();
+        /* only swallow the click for placeholder links; let real hrefs navigate */
+        if (el.getAttribute('href') === '#') e.preventDefault();
         var r = el.getBoundingClientRect();
         burst(r.left + r.width / 2, r.top + r.height / 2);
       });

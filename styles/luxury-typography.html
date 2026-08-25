@@ -92,11 +92,11 @@
     .cta .caps{color:rgba(247,244,239,.5)}
     .cta h2{font-family:"Bodoni Moda",serif;font-size:clamp(34px,6.4vw,88px);font-weight:400;
       line-height:1;letter-spacing:-.012em}
-    .cta button{margin-top:44px;font-family:"Jost",sans-serif;font-size:9px;font-weight:400;
+    .cta .cta-btn{display:inline-block;margin-top:44px;font-family:"Jost",sans-serif;font-size:9px;font-weight:400;
       letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;color:var(--ivory);
       padding-bottom:9px;border-bottom:1px solid rgba(247,244,239,.6);
       transition:color .6s ease,border-color .6s ease,padding .6s ease}
-    .cta button:hover{color:var(--champagne);border-color:var(--champagne);padding-left:14px;padding-right:14px}
+    .cta .cta-btn:hover{color:var(--champagne);border-color:var(--champagne);padding-left:14px;padding-right:14px}
 
     @media(max-width:860px){
       .hero,.cta-inner{grid-template-columns:1fr}
@@ -142,7 +142,7 @@
   <div class="wrap">
 
     <nav class="nav">
-      <a href="#" class="logo">Atlas</a>
+      <a href="../index.html" class="logo">Atlas</a>
       <ul>
         <li><a href="#">Work</a></li>
         <li><a href="#">About</a></li>
@@ -188,7 +188,8 @@
         <div><span class="caps">Enquiries</span></div>
         <div>
           <h2>Start building.</h2>
-          <button>Get in touch</button>
+          <!-- TODO: replace with real contact -->
+          <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
         </div>
       </div>
     </section>

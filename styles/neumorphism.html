@@ -89,11 +89,11 @@
     .cta{margin-top:38px;padding:56px 40px;text-align:center;border-radius:34px}
     .cta h2{font-size:clamp(26px,3.6vw,40px);font-weight:600;color:var(--text);
       text-shadow:1px 1px 1px var(--light), -1px -1px 1px rgba(163,177,198,.55)}
-    .cta button{margin-top:28px;padding:17px 40px;border-radius:18px;font-size:15px;font-weight:600;
+    .cta .cta-btn{display:inline-block;margin-top:28px;padding:17px 40px;border-radius:18px;font-size:15px;font-weight:600;
       color:var(--accent);background:var(--surface);
       box-shadow:-6px -6px 14px var(--light), 7px 7px 15px var(--dark);
       transition:box-shadow .22s ease}
-    .cta button:active{box-shadow:inset -5px -5px 11px var(--light), inset 6px 6px 13px var(--dark)}
+    .cta .cta-btn:active{box-shadow:inset -5px -5px 11px var(--light), inset 6px 6px 13px var(--dark)}
 
     @media(max-width:820px){.features{grid-template-columns:1fr}.hero{padding:46px 26px}}
 
@@ -135,7 +135,7 @@
   <div class="wrap">
 
     <nav class="nav out">
-      <a href="#" class="logo">Atlas</a>
+      <a href="../index.html" class="logo">Atlas</a>
       <ul>
         <li><a href="#">Work</a></li>
         <li><a href="#">About</a></li>
@@ -169,7 +169,8 @@
 
     <section class="cta out">
       <h2>Start building.</h2>
-      <button>Get in touch</button>
+      <!-- TODO: replace with real contact -->
+      <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
   </div>

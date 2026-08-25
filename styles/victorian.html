@@ -101,11 +101,11 @@
     .cta{margin:16px 0 26px;padding:52px 30px 56px;background:var(--forest);border-color:var(--gilt)}
     .cta::before,.cta::after{color:var(--gilt)}
     .cta h2{font-family:"Abril Fatface",serif;font-size:clamp(30px,4.6vw,52px);color:var(--cream)}
-    .cta button{margin-top:26px;font-family:"Playfair Display",serif;font-size:13px;font-weight:700;
+    .cta .cta-btn{display:inline-block;margin-top:26px;font-family:"Playfair Display",serif;font-size:13px;font-weight:700;
       letter-spacing:.28em;text-indent:.28em;text-transform:uppercase;color:var(--forest);
       background:var(--gilt);border:2px double var(--cream);padding:14px 38px;
       transition:background .3s ease,color .3s ease}
-    .cta button:hover{background:var(--cream);color:var(--burgundy)}
+    .cta .cta-btn:hover{background:var(--cream);color:var(--burgundy)}
 
     .lamp{transition:opacity .12s linear}
 
@@ -149,7 +149,7 @@
   <div class="wrap">
 
     <nav class="nav frame">
-      <a href="#" class="logo">Atlas</a>
+      <a href="../index.html" class="logo">Atlas</a>
       <span class="est">— Purveyors of Visual Language, Est. MDCCCLXXXVII —</span>
       <ul>
         <li><a href="#">Work</a></li>
@@ -189,7 +189,8 @@
     <section class="cta frame">
       <span class="fleuron lamp" aria-hidden="true">❧</span>
       <h2>Start building.</h2>
-      <button>Get in touch</button>
+      <!-- TODO: replace with real contact -->
+      <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
   </div>

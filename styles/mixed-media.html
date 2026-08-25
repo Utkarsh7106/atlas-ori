@@ -130,11 +130,11 @@
       letter-spacing:.02em;line-height:.9}
     .cta h2 em{font-family:"Libre Baskerville",serif;font-style:italic;font-weight:400;font-size:.5em;
       background:var(--riso-yellow);color:var(--xerox);padding:2px 10px;display:inline-block;transform:rotate(-2deg)}
-    .cta button{position:relative;z-index:2;margin-top:28px;font-family:"DM Sans",sans-serif;font-size:13px;
+    .cta .cta-btn{display:inline-block;position:relative;z-index:2;margin-top:28px;font-family:"DM Sans",sans-serif;font-size:13px;
       font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--xerox);background:var(--news);
       padding:14px 32px;box-shadow:6px 6px 0 var(--riso-pink);transform:rotate(-1deg);
       transition:box-shadow .16s steps(2)}
-    .cta button:hover{box-shadow:2px 2px 0 var(--riso-yellow)}
+    .cta .cta-btn:hover{box-shadow:2px 2px 0 var(--riso-yellow)}
 
     @media(max-width:860px){.features{grid-template-columns:1fr}}
 
@@ -176,7 +176,7 @@
   <div class="wrap">
 
     <nav class="nav">
-      <a href="#" class="logo">Atlas</a>
+      <a href="../index.html" class="logo">Atlas</a>
       <ul>
         <li><a href="#">Work</a></li>
         <li><a href="#">About</a></li>
@@ -224,7 +224,8 @@
     <section class="cta">
       <span class="screen halftone" aria-hidden="true"></span>
       <h2>Start <em>building.</em></h2>
-      <button>Get in touch</button>
+      <!-- TODO: replace with real contact -->
+      <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
   </div>

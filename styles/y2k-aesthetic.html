@@ -119,13 +119,13 @@
       background:linear-gradient(180deg,#ffffff 5%,#ffc2e4 28%,#b81f70 49%,#ff8fcf 51%,#ffffff 59%,#d9358f 82%,#ffe6f4 100%);
       -webkit-background-clip:text;background-clip:text;color:transparent;
       filter:drop-shadow(0 2px 0 #fff) drop-shadow(0 3px 3px rgba(160,30,110,.4))}
-    .cta button{margin-top:26px;font-family:Verdana,sans-serif;font-size:14px;font-weight:700;
+    .cta .cta-btn{display:inline-block;margin-top:26px;font-family:Verdana,sans-serif;font-size:14px;font-weight:700;
       letter-spacing:.14em;text-transform:uppercase;color:#5a0f3c;padding:16px 42px;border-radius:999px;
       background:linear-gradient(180deg,#ffffff,#ffd9ef 46%,#ff9fd6 54%,#fff0f8);
       border:1px solid #e0409f;
       box-shadow:inset 0 2px 0 #fff, inset 0 -10px 16px rgba(200,40,130,.28), 0 8px 18px -6px rgba(200,40,130,.6);
       transition:filter .2s ease,transform .2s ease}
-    .cta button:hover{filter:brightness(1.08) saturate(1.2);transform:translateY(-2px)}
+    .cta .cta-btn:hover{filter:brightness(1.08) saturate(1.2);transform:translateY(-2px)}
 
     /* sparkle trail */
     .spark{position:fixed;pointer-events:none;z-index:70;font-size:13px;color:#fff;
@@ -171,7 +171,7 @@
   <div class="wrap">
 
     <nav class="nav plastic">
-      <a href="#" class="logo">Atlas</a>
+      <a href="../index.html" class="logo">Atlas</a>
       <ul>
         <li><a href="#">Work</a></li>
         <li><a href="#">About</a></li>
@@ -205,7 +205,8 @@
 
     <section class="cta plastic">
       <h2>Start building.</h2>
-      <button>Get in touch</button>
+      <!-- TODO: replace with real contact -->
+      <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
   </div>

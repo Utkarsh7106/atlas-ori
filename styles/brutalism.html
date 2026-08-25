@@ -68,10 +68,10 @@
 
     /* ── CTA ─────────────────────────────────────────────────── */
     .cta h2{font-size:36px;font-weight:700;margin-bottom:10px;font-family:inherit}
-    .cta button{font-family:inherit;font-size:16px;color:var(--link);text-decoration:underline;display:inline}
-    .cta button::before{content:"[ "}
-    .cta button::after{content:" ]"}
-    .cta button:hover{background:var(--alert);color:var(--paper)}
+    .cta .cta-btn{font-family:inherit;font-size:16px;color:var(--link);text-decoration:underline;display:inline}
+    .cta .cta-btn::before{content:"[ "}
+    .cta .cta-btn::after{content:" ]"}
+    .cta .cta-btn:hover{background:var(--alert);color:var(--paper)}
 
     /* ── Structural annotations: the page describes itself ───── */
     .tag{font-family:"Courier New",Courier,monospace;font-size:11px;color:var(--ink);
@@ -117,7 +117,7 @@
 
   <nav class="nav">
     <span class="tag">&lt;nav&gt;</span>
-    <a href="#" class="logo">Atlas</a>
+    <a href="../index.html" class="logo">Atlas</a>
     <ul>
       <li><a href="#">Work</a></li>
       <li><a href="#">About</a></li>
@@ -155,7 +155,8 @@
   <section class="cta">
     <span class="tag">&lt;section id="cta"&gt;</span>
     <h2>Start building.</h2>
-    <p><button>Get in touch</button></p>
+    <p><!-- TODO: replace with real contact -->
+<a href="mailto:hello@example.com" class="cta-btn">Get in touch</a></p>
     <p class="blink" id="cursor">READY_</p>
   </section>
 

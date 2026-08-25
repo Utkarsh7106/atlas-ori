@@ -119,11 +119,11 @@
       border:1px solid rgba(255,45,149,.45);box-shadow:0 0 40px rgba(255,45,149,.25)}
     .cta h2{font-family:"Monoton",cursive;font-size:clamp(30px,5.4vw,62px);color:#fff;line-height:1.2;
       text-shadow:0 0 10px #fff,0 0 28px var(--cyan),0 0 60px var(--cyan)}
-    .cta button{margin-top:30px;font-family:"Orbitron",sans-serif;font-size:14px;font-weight:700;
+    .cta .cta-btn{display:inline-block;margin-top:30px;font-family:"Orbitron",sans-serif;font-size:14px;font-weight:700;
       letter-spacing:.26em;text-transform:uppercase;color:var(--ink);background:var(--cyan);
       padding:16px 40px;box-shadow:0 0 26px rgba(34,224,255,.8);
       transition:background .3s ease,box-shadow .3s ease}
-    .cta button:hover{background:#fff;box-shadow:0 0 40px rgba(255,255,255,.95)}
+    .cta .cta-btn:hover{background:#fff;box-shadow:0 0 40px rgba(255,255,255,.95)}
 
     @media(max-width:860px){.features{grid-template-columns:1fr}.logo{font-size:24px}}
 
@@ -171,7 +171,7 @@
   <div class="wrap">
 
     <nav class="nav">
-      <a href="#" class="logo">Atlas</a>
+      <a href="../index.html" class="logo">Atlas</a>
       <ul>
         <li><a href="#">Work</a></li>
         <li><a href="#">About</a></li>
@@ -205,7 +205,8 @@
 
     <section class="cta">
       <h2>Start building.</h2>
-      <button>Get in touch</button>
+      <!-- TODO: replace with real contact -->
+      <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
   </div>

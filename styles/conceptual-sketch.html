@@ -115,11 +115,11 @@
     .cta h2{font-size:clamp(30px,4.6vw,52px)}
     .cta h2::after{content:"";display:block;width:220px;height:8px;margin:6px auto 0;
       background:repeating-linear-gradient(-8deg, var(--red) 0 14px, transparent 14px 20px);opacity:.55}
-    .cta button{margin-top:26px;font-family:"Architects Daughter",cursive;font-size:19px;color:var(--paper);
+    .cta .cta-btn{display:inline-block;margin-top:26px;font-family:"Architects Daughter",cursive;font-size:19px;color:var(--paper);
       background:var(--graphite);padding:13px 36px;border:2px solid var(--graphite);
       border-radius:15px 255px 15px 225px/225px 15px 255px 15px;
       transition:transform .2s ease}
-    .cta button:hover{transform:rotate(-1.5deg) scale(1.03)}
+    .cta .cta-btn:hover{transform:rotate(-1.5deg) scale(1.03)}
 
     @media(max-width:860px){
       .hero{grid-template-columns:1fr}
@@ -165,7 +165,7 @@
   <div class="wrap">
 
     <nav class="nav drawn">
-      <a href="#" class="logo">Atlas</a>
+      <a href="../index.html" class="logo">Atlas</a>
       <ul>
         <li><a href="#">Work</a></li>
         <li><a href="#">About</a></li>
@@ -211,7 +211,8 @@
 
     <section class="cta drawn">
       <h2>Start building.</h2>
-      <button>Get in touch</button>
+      <!-- TODO: replace with real contact -->
+      <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
       <span class="note" style="left:6%;bottom:18px" aria-hidden="true">final copy pending</span>
     </section>
 
@@ -300,7 +301,7 @@
   /* Nothing drawn by hand repeats. Re-roll every corner on load. */
   (function () {
     function r(min, max) { return Math.round(min + Math.random() * (max - min)); }
-    document.querySelectorAll('.drawn, .btn, .icon, .placeholder, .cta button').forEach(function (el) {
+    document.querySelectorAll('.drawn, .btn, .icon, .placeholder, .cta .cta-btn').forEach(function (el) {
       var a = [r(200, 275), r(10, 22), r(200, 260), r(10, 22)];
       var b = [r(10, 22), r(200, 265), r(10, 22), r(200, 275)];
       el.style.borderRadius = a.join('px ') + 'px / ' + b.join('px ') + 'px';

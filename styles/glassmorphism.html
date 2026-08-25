@@ -105,10 +105,10 @@
     .cta{margin-top:22px;padding:58px 44px;border-radius:32px;display:flex;
       justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
     .cta h2{font-size:clamp(28px,4.2vw,48px);font-weight:300;letter-spacing:-.03em}
-    .cta button{padding:15px 34px;border-radius:99px;font-size:15px;font-weight:700;color:#1a0b2e;
+    .cta .cta-btn{display:inline-block;padding:15px 34px;border-radius:99px;font-size:15px;font-weight:700;color:#1a0b2e;
       background:rgba(255,255,255,.9);box-shadow:0 10px 26px -12px rgba(0,0,0,.8);
       transition:background .3s ease,transform .3s ease}
-    .cta button:hover{background:#fff;transform:translateY(-2px)}
+    .cta .cta-btn:hover{background:#fff;transform:translateY(-2px)}
 
     @media(max-width:820px){.features{grid-template-columns:1fr}.hero{padding:52px 26px}}
 
@@ -157,7 +157,7 @@
   <div class="wrap">
 
     <nav class="nav glass">
-      <a href="#" class="logo">Atlas</a>
+      <a href="../index.html" class="logo">Atlas</a>
       <ul>
         <li><a href="#">Work</a></li>
         <li><a href="#">About</a></li>
@@ -192,7 +192,8 @@
 
     <section class="cta glass">
       <h2>Start building.</h2>
-      <button>Get in touch</button>
+      <!-- TODO: replace with real contact -->
+      <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
   </div>
