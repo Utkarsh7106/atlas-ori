@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wabi Sabi — Atlas</title>
+<meta name="description" content="Wabi Sabi: imperfection, asymmetry and ma — earthen tones, irregular edges, kintsugi seams.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&family=Karla:wght@300;400&display=swap" rel="stylesheet">
+<style>
+    /* ══ WABI SABI ════════════════════════════════════════════════
+       侘寂 — beauty in imperfection, impermanence and incompleteness.
+       Warm earthen matter, hand-formed edges, deliberate asymmetry,
+       and 間 (ma): the emptiness between things treated as the most
+       important element on the page.                               */
+
+    :root{
+      --plaster:#e9e3d7;   /* lime-washed wall        */
+      --paper:#f2ede2;     /* washi                   */
+      --clay:#bda98f;      /* unglazed earthenware    */
+      --ash:#6f6a60;       /* secondary text          */
+      --sumi:#33302a;      /* ink                     */
+      --moss:#7d8471;      /* aged bronze-green       */
+      --kintsugi:#a9884f;  /* gold repair seam        */
+    }
+
+    body{
+      background:
+        radial-gradient(85% 55% at 22% 8%, rgba(255,253,247,.75) 0%, transparent 60%),
+        radial-gradient(60% 45% at 88% 78%, rgba(189,169,143,.22) 0%, transparent 62%),
+        repeating-linear-gradient(74deg, rgba(120,105,80,.035) 0 1px, transparent 1px 4px),
+        repeating-linear-gradient(4deg, rgba(120,105,80,.028) 0 1px, transparent 1px 6px),
+        var(--plaster);
+      color:var(--sumi);
+      font-family:"Karla",-apple-system,sans-serif;
+      font-weight:300;
+    }
+    /* Deliberately off-centre: the column sits left of true centre. */
+    .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(20px,5vw,48px) 120px}
+
+    .fade{opacity:0;transform:translateY(8px);transition:opacity 2.4s ease,transform 2.4s ease}
+    .fade.in{opacity:1;transform:none}
+
+    /* ── Nav ─────────────────────────────────────────────────── */
+    .nav{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;
+      padding:56px 0 22px;border-bottom:1px solid rgba(51,48,42,.16)}
+    .logo{font-family:"Shippori Mincho",serif;font-size:26px;font-weight:400;letter-spacing:.24em;
+      text-indent:.24em;color:var(--sumi)}
+    .nav ul{display:flex;gap:38px}
+    .nav ul a{font-size:12px;font-weight:400;letter-spacing:.18em;text-transform:lowercase;color:var(--ash);
+      transition:color 1.1s ease}
+    .nav ul a:hover{color:var(--sumi)}
+
+    /* ── Hero: asymmetric, 60/40 with the weight on the left ─── */
+    .hero{display:grid;grid-template-columns:1.42fr .58fr;gap:clamp(24px,6vw,90px);
+      padding:clamp(90px,17vh,190px) 0 clamp(70px,12vh,140px);align-items:center}
+    .hero h1{font-family:"Shippori Mincho",serif;font-size:clamp(32px,4.8vw,58px);font-weight:400;
+      line-height:1.62;letter-spacing:.02em;max-width:17ch}
+    /* the kintsugi seam: a repaired break through the headline block */
+    .seam{position:relative;padding-left:34px}
+    .seam::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;
+      background:linear-gradient(180deg, transparent, var(--kintsugi) 12%, var(--kintsugi) 46%,
+        transparent 50%, var(--kintsugi) 56%, var(--kintsugi) 88%, transparent);
+      opacity:.85}
+    .hero p{margin-top:34px;font-size:15px;line-height:2.1;color:var(--ash);max-width:32ch;padding-left:34px}
+    .btn{display:inline-block;margin-top:52px;margin-left:34px;font-family:"Shippori Mincho",serif;
+      font-size:13px;letter-spacing:.3em;text-indent:.3em;color:var(--sumi);
+      padding:16px 40px;background:transparent;
+      border:1px solid rgba(51,48,42,.4);
+      /* a hand-formed rim, not a rectangle */
+      border-radius:48% 52% 47% 53%/54% 46% 55% 45%;
+      transition:background 1.2s ease,color 1.2s ease,border-radius 1.6s ease}
+    .btn:hover{background:var(--sumi);color:var(--paper);border-radius:52% 48% 53% 47%/46% 55% 45% 54%}
+
+    /* ensō — an ink circle left open */
+    .enso{width:min(210px,42vw);aspect-ratio:1;justify-self:end;
+      border:7px solid var(--sumi);border-radius:50%;
+      border-right-color:transparent;border-bottom-color:rgba(51,48,42,.35);
+      transform:rotate(-24deg);opacity:.72;
+      animation:turn 90s linear infinite}
+    @keyframes turn{to{transform:rotate(336deg)}}
+
+    /* ── Features: three uneven vessels ──────────────────────── */
+    .features{display:grid;grid-template-columns:1.06fr .92fr 1.02fr;gap:clamp(22px,4vw,58px);
+      padding-bottom:clamp(80px,13vh,150px)}
+    .card{padding-top:30px;border-top:1px solid rgba(51,48,42,.16)}
+    .card:nth-child(1){margin-top:0}
+    .card:nth-child(2){margin-top:46px}      /* nothing lines up */
+    .card:nth-child(3){margin-top:18px}
+    .vessel{width:62px;height:52px;background:var(--clay);margin-bottom:26px;
+      border-radius:44% 56% 38% 62%/62% 58% 42% 38%;position:relative;opacity:.9}
+    .card:nth-child(2) .vessel{background:var(--moss);border-radius:56% 44% 60% 40%/40% 56% 44% 60%;
+      width:54px;height:58px}
+    .card:nth-child(3) .vessel{background:var(--ash);border-radius:38% 62% 52% 48%/58% 42% 58% 42%;
+      width:70px;height:46px}
+    .vessel::after{content:"";position:absolute;left:18%;right:26%;top:44%;height:1px;
+      background:var(--kintsugi);transform:rotate(-9deg)}
+    .icon{display:block;font-size:10px;letter-spacing:.26em;text-transform:lowercase;color:var(--clay);
+      margin-bottom:14px}
+    .card h3{font-family:"Shippori Mincho",serif;font-size:22px;font-weight:400;letter-spacing:.08em;
+      margin-bottom:16px}
+    .card p{font-size:14.5px;line-height:2.05;color:var(--ash)}
+
+    /* ── CTA ─────────────────────────────────────────────────── */
+    .cta{padding:clamp(80px,13vh,160px) 0 0;border-top:1px solid rgba(51,48,42,.16);
+      display:grid;grid-template-columns:.44fr 1.56fr;gap:clamp(20px,5vw,80px);align-items:start}
+    .cta .mark{font-family:"Shippori Mincho",serif;font-size:12px;letter-spacing:.26em;color:var(--clay)}
+    .cta h2{font-family:"Shippori Mincho",serif;font-size:clamp(28px,4.2vw,50px);font-weight:400;
+      letter-spacing:.03em;line-height:1.5}
+    .cta button{margin-top:44px;font-family:"Shippori Mincho",serif;font-size:13px;letter-spacing:.3em;
+      text-indent:.3em;color:var(--paper);background:var(--sumi);padding:17px 42px;
+      border-radius:51% 49% 48% 52%/47% 53% 47% 53%;
+      transition:opacity 1.2s ease,border-radius 1.6s ease}
+    .cta button:hover{opacity:.78;border-radius:47% 53% 52% 48%/53% 47% 53% 47%}
+
+    @media(max-width:860px){
+      .hero,.cta{grid-template-columns:1fr}
+      .features{grid-template-columns:1fr}
+      .card{margin-top:0!important}
+      .enso{justify-self:start;margin-top:48px}
+    }
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <nav class="nav fade">
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <div class="fade">
+        <h1 class="seam">Design is how it feels to use.</h1>
+        <p>A study in visual language, one style at a time.</p>
+        <a href="#" class="btn">Explore</a>
+      </div>
+      <div class="enso fade" aria-hidden="true"></div>
+    </header>
+
+    <section class="features">
+      <article class="card fade">
+        <div class="vessel" aria-hidden="true"></div>
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+      </article>
+      <article class="card fade">
+        <div class="vessel" aria-hidden="true"></div>
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+      </article>
+      <article class="card fade">
+        <div class="vessel" aria-hidden="true"></div>
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+      </article>
+    </section>
+
+    <section class="cta fade">
+      <span class="mark">結</span>
+      <div>
+        <h2>Start building.</h2>
+        <button>Get in touch</button>
+      </div>
+    </section>
+
+  </div>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Wabi Sabi">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Wabi Sabi</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>Japan, 15th–16th century — the tea aesthetic of Murata Jukō and Sen no Rikyū, valuing the weathered, asymmetric and incomplete over the new and symmetrical.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#e9e3d7"></span><code>#e9e3d7</code> — lime-washed plaster wall, the page ground</li>
+              <li><span class="sw" style="--c:#33302a"></span><code>#33302a</code> — sumi ink for type; warm, never black</li>
+              <li><span class="sw" style="--c:#6f6a60"></span><code>#6f6a60</code> — ash grey for body copy</li>
+              <li><span class="sw" style="--c:#bda98f"></span><code>#bda98f</code> — unglazed clay for vessels and small labels</li>
+              <li><span class="sw" style="--c:#7d8471"></span><code>#7d8471</code> — aged bronze-green</li>
+              <li><span class="sw" style="--c:#a9884f"></span><code>#a9884f</code> — kintsugi gold, used only along breaks</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Shippori Mincho — a Japanese mincho with visibly uneven stroke weight — for all headings, paired with Karla Light for body. Nothing is set above 500 weight. Line-height is unusually generous (1.62 on the headline, 2.05–2.1 on body) so the space between lines carries as much presence as the type. Headings are tracked slightly open (0.02–0.3em) with matching <code>text-indent</code>; body sits at 14.5–15px. Nav labels are lowercase, not capitals — capitals assert, and this style does not.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>Asymmetry is systematic. The hero is 1.42fr / 0.58fr, the cards 1.06 / 0.92 / 1.02fr, and the CTA 0.44 / 1.56fr — no two columns share a width. The three cards are pushed down by 0px, 46px and 18px so their tops never align. Vertical space is enormous and viewport-relative (<code>clamp(90px, 17vh, 190px)</code>), because 間 — the interval — is the composition's main material.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>Hand-formed rims: buttons and vessels use eight-value asymmetric <code>border-radius</code> (<code>48% 52% 47% 53% / 54% 46% 55% 45%</code>) so no edge is a true arc.</li>
+              <li>A kintsugi seam — a 2px gold gradient with a gap in it — running down the headline, repairing a break rather than hiding it.</li>
+              <li>An ensō: a circle drawn with one border side removed and another faded, left deliberately open.</li>
+              <li>Plaster texture from two low-alpha repeating gradients at 74° and 4°, never a flat fill.</li>
+              <li>Clay vessels of three different silhouettes, each cracked by a single hairline gold line.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>Slow to the point of near-stillness. An <code>IntersectionObserver</code> fades each block in over 2.4s with an 8px rise, staggered 220ms apart, and unobserves so nothing repeats. Hovers take 1.1–1.6s: the button's asymmetric radius morphs to a <em>different</em> asymmetric radius, as though the vessel were re-thrown. The ensō rotates once every 90 seconds — slow enough that motion is felt rather than seen.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Give no two columns the same width and no two sibling blocks the same vertical offset — asymmetry must be systematic, not occasional.</li>
+              <li>Never use a true circle or a plain rectangle: every rounded form takes an eight-value asymmetric <code>border-radius</code>.</li>
+              <li>Treat empty space as the main material — viewport-relative section padding and line-heights around 2.</li>
+              <li>Use warm earthen neutrals with a single metallic that appears only along cracks and breaks; keep ink warm, never <code>#000</code>.</li>
+              <li>Make everything slow: 1.1–2.4s transitions, and let imperfection change rather than resolve — a morphing irregular edge, not a snap to a perfect one.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* Everything arrives slowly, and only once. */
+  (function () {
+    var items = document.querySelectorAll('.fade');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var i = [].indexOf.call(items, e.target);
+        setTimeout(function () { e.target.classList.add('in'); }, (i % 4) * 220);
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.12 });
+    items.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+</body>
+</html>

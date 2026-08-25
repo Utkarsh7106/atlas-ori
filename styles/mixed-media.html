@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mixed Media — Atlas</title>
+<meta name="description" content="Mixed Media: halftone, riso overprint, xerox grain, torn cutouts and ransom-note type.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,700;1,400&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    /* ══ MIXED MEDIA ══════════════════════════════════════════════
+       Several PROCESSES colliding on one surface: halftone screen,
+       riso overprint, photocopy grain, torn paper, painted mark and
+       cut-out type. No single material is allowed to dominate, and
+       every layer shows the seam where it meets the next.          */
+
+    :root{
+      --news:#ece7dd;      /* newsprint stock        */
+      --xerox:#141414;     /* photocopy black        */
+      --riso-pink:#ff4f79;
+      --riso-blue:#0f4cf0;
+      --riso-yellow:#ffd400;
+      --tape:rgba(226,222,206,.86);
+    }
+
+    body{
+      background:
+        /* photocopy grain */
+        repeating-linear-gradient(0deg, rgba(20,20,20,.05) 0 1px, transparent 1px 2px),
+        repeating-linear-gradient(90deg, rgba(20,20,20,.035) 0 1px, transparent 1px 3px),
+        var(--news);
+      color:var(--xerox);
+      font-family:"DM Sans",-apple-system,sans-serif;
+      overflow-x:hidden;
+      padding:0 clamp(12px,3vw,26px);
+    }
+    .wrap{max-width:1080px;margin:0 auto;padding:22px 0 80px;position:relative}
+
+    /* Halftone screen, laid over blocks in multiply. */
+    .halftone{
+      background-image:radial-gradient(var(--xerox) 34%, transparent 36%);
+      background-size:6px 6px;
+      mix-blend-mode:multiply;
+    }
+    /* Riso plates overprint rather than stack. */
+    .plate{mix-blend-mode:multiply}
+
+    /* ── Nav: a strip of printed tape ────────────────────────── */
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+      background:var(--xerox);color:var(--news);padding:12px 22px;transform:rotate(-.5deg);
+      clip-path:polygon(0 8%,3% 0,14% 6%,26% 1%,39% 7%,52% 1%,64% 7%,77% 1%,89% 6%,100% 0,100% 92%,88% 100%,
+        76% 93%,63% 99%,50% 92%,37% 99%,25% 93%,12% 99%,0 92%);
+      box-shadow:6px 7px 0 rgba(20,20,20,.16)}
+    .logo{font-family:"Bebas Neue",sans-serif;font-size:34px;letter-spacing:.06em;line-height:1;
+      color:var(--riso-yellow)}
+    .nav ul{display:flex;gap:6px}
+    .nav ul a{display:block;font-family:"DM Sans",sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--xerox);background:var(--news);padding:6px 14px;
+      transition:background .16s steps(2),transform .16s steps(2)}
+    .nav li:nth-child(1) a{transform:rotate(-2deg)}
+    .nav li:nth-child(2) a{transform:rotate(1.6deg);background:var(--riso-yellow)}
+    .nav li:nth-child(3) a{transform:rotate(-1deg)}
+    .nav ul a:hover{background:var(--riso-pink);color:var(--news);transform:rotate(3deg)}
+
+    /* ── Hero: ransom-note headline over layered plates ──────── */
+    .hero{position:relative;margin-top:26px;padding:56px 30px 60px;background:var(--news);
+      box-shadow:0 0 0 2px var(--xerox), 12px 14px 0 rgba(20,20,20,.14);overflow:hidden}
+    .hero .screen{position:absolute;inset:0;opacity:.16;pointer-events:none}
+    .blot{position:absolute;pointer-events:none}
+    .blot.pink{width:290px;height:230px;background:var(--riso-pink);right:-40px;top:-56px;
+      border-radius:56% 44% 38% 62%/48% 58% 42% 52%;opacity:.85}
+    .blot.blue{width:200px;height:180px;background:var(--riso-blue);left:-52px;bottom:-48px;
+      border-radius:42% 58% 60% 40%/58% 40% 60% 42%;opacity:.8}
+    .blot.yellow{width:150px;height:150px;background:var(--riso-yellow);left:44%;top:-52px;border-radius:50%;opacity:.9}
+
+    /* font-size:0 collapses the whitespace between cuttings; because of that every
+       child must carry an ABSOLUTE size (em and ch would resolve against zero). */
+    .hero h1{position:relative;z-index:2;font-size:0;line-height:1;max-width:820px}
+    .hero h1 .w{display:inline-block;font-size:clamp(30px,5.6vw,66px);line-height:.96;margin:0 8px 8px 0;
+      padding:2px 8px;vertical-align:middle}
+    .w1{font-family:"Bebas Neue",sans-serif;background:var(--xerox);color:var(--news);transform:rotate(-2.4deg)}
+    .w2{font-family:"Libre Baskerville",serif;font-style:italic;font-weight:400;font-size:clamp(22px,4.1vw,48px);
+      background:var(--riso-yellow);transform:rotate(1.8deg)}
+    .w3{font-family:"DM Sans",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:-.03em;
+      background:var(--news);box-shadow:0 0 0 3px var(--xerox);transform:rotate(-1deg)}
+    .w4{font-family:"Bebas Neue",sans-serif;background:var(--riso-pink);color:var(--news);transform:rotate(2.6deg)}
+    .w5{font-family:"Libre Baskerville",serif;font-weight:700;font-size:clamp(19px,3.5vw,41px);
+      background:var(--riso-blue);color:var(--news);transform:rotate(-1.8deg)}
+    .w6{font-family:"Bebas Neue",sans-serif;color:var(--xerox);border-bottom:5px solid var(--riso-pink);
+      transform:rotate(.8deg)}
+
+    .hero p{position:relative;z-index:2;margin-top:26px;font-family:"Libre Baskerville",serif;font-size:14px;
+      line-height:1.8;max-width:38ch;background:var(--news);padding:12px 16px;
+      box-shadow:0 0 0 2px var(--xerox);transform:rotate(-.6deg)}
+    .btn{position:relative;z-index:2;display:inline-block;margin-top:32px;font-family:"Bebas Neue",sans-serif;
+      font-size:24px;letter-spacing:.1em;color:var(--news);background:var(--xerox);padding:10px 40px;
+      box-shadow:7px 7px 0 var(--riso-pink);transform:rotate(-1.4deg);
+      transition:box-shadow .16s steps(2),transform .16s steps(2)}
+    .btn:hover{box-shadow:3px 3px 0 var(--riso-blue);transform:rotate(1.4deg)}
+
+    /* ── Features: three cuttings, each a different process ──── */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:22px}
+    .card{position:relative;padding:26px 20px 30px;background:var(--news);
+      box-shadow:0 0 0 2px var(--xerox), 9px 10px 0 rgba(20,20,20,.14);overflow:hidden}
+    .card:nth-child(1){transform:rotate(-1.1deg)}
+    .card:nth-child(2){transform:rotate(.7deg)}
+    .card:nth-child(3){transform:rotate(-.4deg)}
+    .card .screen{position:absolute;inset:0;opacity:.2;pointer-events:none}
+    .card:nth-child(1) .wash{position:absolute;inset:auto -20% -30% -20%;height:120px;background:var(--riso-yellow);
+      border-radius:50%;opacity:.75}
+    .card:nth-child(2) .wash{position:absolute;inset:-30% -20% auto -20%;height:130px;background:var(--riso-blue);
+      border-radius:50%;opacity:.6}
+    .card:nth-child(3) .wash{position:absolute;inset:auto -30% -40% 30%;height:150px;background:var(--riso-pink);
+      border-radius:50%;opacity:.7}
+    .icon{position:relative;z-index:2;display:inline-block;font-family:"DM Sans",sans-serif;font-size:10px;
+      font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:var(--xerox);color:var(--news);
+      padding:4px 10px;transform:rotate(-1.6deg)}
+    .card h3{position:relative;z-index:2;font-family:"Bebas Neue",sans-serif;font-size:40px;letter-spacing:.02em;
+      margin:14px 0 6px;line-height:.92}
+    .card p{position:relative;z-index:2;font-family:"Libre Baskerville",serif;font-size:12.5px;line-height:1.85}
+
+    /* ── CTA ─────────────────────────────────────────────────── */
+    .cta{margin-top:22px;padding:56px 26px 60px;text-align:center;position:relative;overflow:hidden;
+      background:var(--riso-blue);color:var(--news);transform:rotate(.4deg);
+      box-shadow:0 0 0 2px var(--xerox), 12px 14px 0 rgba(20,20,20,.16)}
+    .cta .screen{position:absolute;inset:0;opacity:.3;pointer-events:none}
+    .cta h2{position:relative;z-index:2;font-family:"Bebas Neue",sans-serif;font-size:clamp(40px,8vw,92px);
+      letter-spacing:.02em;line-height:.9}
+    .cta h2 em{font-family:"Libre Baskerville",serif;font-style:italic;font-weight:400;font-size:.5em;
+      background:var(--riso-yellow);color:var(--xerox);padding:2px 10px;display:inline-block;transform:rotate(-2deg)}
+    .cta button{position:relative;z-index:2;margin-top:28px;font-family:"DM Sans",sans-serif;font-size:13px;
+      font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--xerox);background:var(--news);
+      padding:14px 32px;box-shadow:6px 6px 0 var(--riso-pink);transform:rotate(-1deg);
+      transition:box-shadow .16s steps(2)}
+    .cta button:hover{box-shadow:2px 2px 0 var(--riso-yellow)}
+
+    @media(max-width:860px){.features{grid-template-columns:1fr}}
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <nav class="nav">
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <span class="blot pink plate" aria-hidden="true"></span>
+      <span class="blot blue plate" aria-hidden="true"></span>
+      <span class="blot yellow plate" aria-hidden="true"></span>
+      <span class="screen halftone" aria-hidden="true"></span>
+      <h1>
+        <span class="w w1">Design</span> <span class="w w2">is</span> <span class="w w3">how</span> <span class="w w4">it</span> <span class="w w5">feels</span> <span class="w w6">to use.</span>
+      </h1>
+      <p>A study in visual language, one style at a time.</p>
+      <br>
+      <a href="#" class="btn">Explore</a>
+    </header>
+
+    <section class="features">
+      <article class="card">
+        <span class="wash plate" aria-hidden="true"></span>
+        <span class="screen halftone" aria-hidden="true"></span>
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+      </article>
+      <article class="card">
+        <span class="wash plate" aria-hidden="true"></span>
+        <span class="screen halftone" aria-hidden="true"></span>
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+      </article>
+      <article class="card">
+        <span class="wash plate" aria-hidden="true"></span>
+        <span class="screen halftone" aria-hidden="true"></span>
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+      </article>
+    </section>
+
+    <section class="cta">
+      <span class="screen halftone" aria-hidden="true"></span>
+      <h2>Start <em>building.</em></h2>
+      <button>Get in touch</button>
+    </section>
+
+  </div>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Mixed Media">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Mixed Media</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>Dada and Cubist papier collé (1912–20s) by way of punk photocopy zines (1976 onward) and the contemporary riso-print revival — several reproduction processes deliberately colliding on one sheet.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#ece7dd"></span><code>#ece7dd</code> — newsprint stock, the base sheet</li>
+              <li><span class="sw" style="--c:#141414"></span><code>#141414</code> — photocopy black for type, keylines and the halftone screen</li>
+              <li><span class="sw" style="--c:#ff4f79"></span><code>#ff4f79</code> — riso fluorescent pink plate</li>
+              <li><span class="sw" style="--c:#0f4cf0"></span><code>#0f4cf0</code> — riso blue plate</li>
+              <li><span class="sw" style="--c:#ffd400"></span><code>#ffd400</code> — riso yellow plate</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Three families used simultaneously and per-word rather than per-role: Bebas Neue (condensed poster), Libre Baskerville (book serif, roman and italic) and DM Sans (grotesque). The hero headline is a ransom note — each word gets its own face, size multiplier, background plate and rotation, so <em>is</em> is a smaller italic serif on yellow while <em>Design</em> is condensed caps knocked out of black. Body is 12.5–14px Baskerville at 1.8; labels are 10–13px DM Sans bold at 0.12–0.2em.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>A 1080px sheet holding cuttings pasted at slight angles (−2.4deg to +2.6deg) with a 22px gutter. Depth is explicit: coloured plates sit at the bottom, the halftone screen over them, and all type at <code>z-index: 2</code> — every block declares its stacking order because the style is about layers meeting.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>A 6px halftone screen — <code>radial-gradient(#141414 34%, transparent 36%)</code> — laid over blocks in <code>mix-blend-mode: multiply</code>.</li>
+              <li>Riso overprint: irregular colour blots also set to <code>multiply</code>, so where pink crosses blue a third colour appears rather than one hiding the other.</li>
+              <li>Photocopy grain from two fine repeating gradients at 3.5–5% alpha across the whole page.</li>
+              <li>Torn edges cut with a many-vertex <code>clip-path</code> on the nav strip, plus 2px keylines and hard offset shadows on every cutting.</li>
+              <li>Painted washes made from oversized ellipses with asymmetric <code>border-radius</code>, bleeding past their container's edge.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>All transitions use <code>steps(2)</code>, so state changes jump like a two-pass print rather than easing. JS handles misregistration: hovering a card offsets its coloured plate by a randomised −6 to +6px on both axes, as if that plate went through the press out of alignment, and it snaps back on leave. Clicking <em>Explore</em> re-shuffles the rotation of every ransom-note word, re-pasting the headline.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Combine at least three different reproduction processes — halftone, flat riso plate, photocopy grain, torn paper — and let each one stay visible.</li>
+              <li>Set colour plates to <code>mix-blend-mode: multiply</code> so overlaps make new colours; never let one plate simply cover another.</li>
+              <li>Build headlines as ransom notes: change typeface, size, background and angle on every word.</li>
+              <li>Give every cutting a 2px keyline, a hard offset shadow and a small rotation, and let washes bleed past the edges.</li>
+              <li>Keep motion mechanical — <code>steps()</code> transitions and misregistration offsets — because the subject is printing, not animation.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* Misregistration on hover; re-paste the ransom note on click. */
+  (function () {
+    document.querySelectorAll('.card').forEach(function (card) {
+      var plate = card.querySelector('.wash');
+      if (!plate) return;
+      card.addEventListener('pointerenter', function () {
+        var x = (Math.random() * 12 - 6).toFixed(1);
+        var y = (Math.random() * 12 - 6).toFixed(1);
+        plate.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+      });
+      card.addEventListener('pointerleave', function () { plate.style.transform = 'none'; });
+    });
+
+    var words = document.querySelectorAll('.hero h1 .w');
+    document.querySelector('.btn').addEventListener('click', function (e) {
+      e.preventDefault();
+      words.forEach(function (w) {
+        w.style.transform = 'rotate(' + (Math.random() * 6 - 3).toFixed(2) + 'deg)';
+      });
+    });
+  })();
+</script>
+</body>
+</html>

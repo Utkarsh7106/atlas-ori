@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Surrealism — Atlas</title>
+<meta name="description" content="Surrealism: dream logic, impossible scale, melting type and objects that refuse to behave.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+    /* ══ SURREALISM ═══════════════════════════════════════════════
+       Dream logic applied to an interface. Everything is rendered
+       plausibly — soft light, real shadows, believable materials —
+       but the RELATIONSHIPS are wrong: scale is impossible, shadows
+       fall the wrong way, objects float, and the page resists the
+       cursor instead of obeying it.                                */
+
+    :root{
+      --sky:#a8c4d8;        /* Magritte daylight sky   */
+      --sky-deep:#7ba0bd;
+      --sand:#e8d9c3;       /* Dalí desert floor       */
+      --flesh:#e5b5a0;      /* uncanny warm            */
+      --ink:#1c2733;
+      --shadow:#5a6b7d;
+      --cloud:#f6f2ea;
+    }
+
+    body{
+      background:
+        radial-gradient(120% 70% at 50% 0%, #cfe0ec 0%, var(--sky) 34%, var(--sky-deep) 62%, var(--sand) 100%);
+      background-attachment:fixed;
+      color:var(--ink);
+      font-family:"Cormorant Garamond",Georgia,serif;
+      min-height:100vh;
+      overflow-x:hidden;
+      cursor:crosshair;
+    }
+    .wrap{max-width:1060px;margin:0 auto;padding:0 clamp(16px,4vw,32px) 90px;position:relative;z-index:2}
+
+    /* Clouds drifting inside a hard-edged frame — sky where it should not be. */
+    .cloud{position:fixed;border-radius:50%;background:var(--cloud);filter:blur(18px);opacity:.75;z-index:0;
+      animation:float 26s ease-in-out infinite}
+    .c1{width:260px;height:88px;top:12%;left:-60px}
+    .c2{width:340px;height:110px;top:44%;right:-90px;animation-duration:34s;animation-direction:reverse}
+    .c3{width:200px;height:70px;bottom:14%;left:22%;animation-duration:21s}
+    @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(70px,-26px)}}
+
+    /* ── Nav: hangs from nothing, casts a shadow onto the sky ─── */
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+      background:var(--cloud);padding:16px 26px;margin-top:52px;border-radius:2px;
+      box-shadow:26px 40px 40px -22px rgba(28,39,51,.55);
+      transform:rotate(-1.2deg)}
+    .logo{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:500;letter-spacing:.02em;
+      font-style:italic}
+    .nav ul{display:flex;gap:26px}
+    .nav ul a{font-family:"Inter",sans-serif;font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+      color:var(--shadow);display:inline-block;transition:transform .5s cubic-bezier(.2,.7,.3,1),color .5s ease}
+    .nav ul a:hover{color:var(--ink);transform:translateY(-14px) rotate(-6deg)}
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .hero{padding:88px 0 60px;position:relative}
+    .hero h1{font-size:clamp(40px,7.4vw,92px);font-weight:300;line-height:1.02;max-width:14ch;
+      color:var(--cloud);text-shadow:0 26px 30px rgba(28,39,51,.4)}
+    /* one word is enormous, one is tiny — impossible scale */
+    .hero h1 .big{font-size:1.5em;font-style:italic;display:inline-block;line-height:.8}
+    .hero h1 .small{font-size:.34em;vertical-align:.9em;letter-spacing:.2em;font-family:"Inter",sans-serif;
+      font-weight:400;color:var(--ink)}
+    .hero p{margin-top:40px;font-family:"Inter",sans-serif;font-size:14px;letter-spacing:.06em;
+      color:var(--ink);max-width:34ch;background:var(--cloud);padding:14px 18px;display:inline-block;
+      box-shadow:-22px 26px 34px -18px rgba(28,39,51,.6);transform:rotate(.8deg)}
+
+    /* the button drifts away from the pointer */
+    .btn{display:inline-block;margin-top:46px;font-family:"Inter",sans-serif;font-size:12px;
+      letter-spacing:.3em;text-transform:uppercase;color:var(--cloud);background:var(--ink);
+      padding:18px 46px;border-radius:999px;
+      box-shadow:0 30px 34px -18px rgba(28,39,51,.75);
+      transition:transform .9s cubic-bezier(.16,1,.3,1)}
+
+    /* an eye that follows you, and a door in the sky */
+    .eye{position:absolute;right:6%;top:96px;width:112px;height:112px;border-radius:50%;
+      background:var(--cloud);box-shadow:inset 0 -10px 22px rgba(28,39,51,.28), 0 24px 30px -14px rgba(28,39,51,.5);
+      display:flex;align-items:center;justify-content:center}
+    .iris{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 40% 35%, #4f7ea3, #1c2733 68%);
+      transition:transform .12s linear}
+    .door{position:absolute;left:52%;bottom:-30px;width:74px;height:118px;background:var(--ink);
+      border-radius:3px 3px 0 0;box-shadow:18px 22px 26px -14px rgba(28,39,51,.6);transform:rotate(2deg)}
+    .door::after{content:"";position:absolute;right:9px;top:56%;width:6px;height:6px;border-radius:50%;background:var(--flesh)}
+
+    /* ── Features: objects at wrong scales, wrong shadows ────── */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;margin-top:120px;align-items:start}
+    .card{background:var(--cloud);padding:30px 24px 34px;position:relative}
+    .card:nth-child(1){transform:rotate(-2deg) translateY(26px);box-shadow:-30px 34px 34px -20px rgba(28,39,51,.55)}
+    .card:nth-child(2){transform:rotate(1.4deg);box-shadow:0 -26px 34px -20px rgba(28,39,51,.5)}
+    .card:nth-child(3){transform:rotate(-.6deg) translateY(-22px);box-shadow:34px 30px 34px -20px rgba(28,39,51,.55)}
+    .icon{display:block;font-family:"Inter",sans-serif;font-size:10px;letter-spacing:.3em;
+      text-transform:uppercase;color:var(--flesh);margin-bottom:14px}
+    .card h3{font-size:34px;font-weight:300;font-style:italic;margin-bottom:10px}
+    .card p{font-family:"Inter",sans-serif;font-size:13.5px;line-height:1.8;color:var(--shadow)}
+    .card::after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:var(--flesh);
+      right:-8px;top:-8px}
+
+    /* ── CTA: melting ────────────────────────────────────────── */
+    .cta{margin-top:110px;text-align:center;position:relative}
+    .cta h2{font-size:clamp(38px,7vw,86px);font-weight:300;color:var(--cloud);
+      text-shadow:0 22px 26px rgba(28,39,51,.42)}
+    .cta h2 span{display:inline-block;transform-origin:top center}
+    .cta button{margin-top:38px;font-family:"Inter",sans-serif;font-size:12px;letter-spacing:.3em;
+      text-transform:uppercase;color:var(--ink);background:var(--flesh);padding:18px 44px;border-radius:999px;
+      box-shadow:0 28px 30px -16px rgba(28,39,51,.6);
+      transition:border-radius .8s ease,transform .8s ease}
+    .cta button:hover{border-radius:60% 40% 55% 45% / 50% 55% 45% 50%;transform:scale(1.06) rotate(-2deg)}
+
+    @media(max-width:860px){
+      .features{grid-template-columns:1fr;margin-top:80px}
+      .card{transform:none!important}
+      .eye,.door{display:none}
+    }
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <span class="cloud c1" aria-hidden="true"></span>
+  <span class="cloud c2" aria-hidden="true"></span>
+  <span class="cloud c3" aria-hidden="true"></span>
+
+  <div class="wrap">
+
+    <nav class="nav">
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <div class="eye" aria-hidden="true"><span class="iris" id="iris"></span></div>
+      <h1>Design is <span class="small">how</span> it <span class="big">feels</span> to use.</h1>
+      <p>A study in visual language, one style at a time.</p>
+      <br>
+      <a href="#" class="btn" id="btn">Explore</a>
+      <span class="door" aria-hidden="true"></span>
+    </header>
+
+    <section class="features">
+      <article class="card">
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+      </article>
+      <article class="card">
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+      </article>
+      <article class="card">
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+      </article>
+    </section>
+
+    <section class="cta">
+      <h2 id="melt">Start building.</h2>
+      <button>Get in touch</button>
+    </section>
+
+  </div>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Surrealism">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Surrealism</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>Paris, 1924 — André Breton's manifesto, realised visually by Magritte's daylight skies and Dalí's deserts; adopted into graphic design as photographic collage with impossible relationships.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#a8c4d8"></span><code>#a8c4d8</code> — Magritte daylight sky, the page ground</li>
+              <li><span class="sw" style="--c:#7ba0bd"></span><code>#7ba0bd</code> — deeper sky toward the horizon</li>
+              <li><span class="sw" style="--c:#e8d9c3"></span><code>#e8d9c3</code> — desert sand at the bottom of the gradient</li>
+              <li><span class="sw" style="--c:#e5b5a0"></span><code>#e5b5a0</code> — uncanny flesh tone for the small impossible objects</li>
+              <li><span class="sw" style="--c:#f6f2ea"></span><code>#f6f2ea</code> — cloud white for every floating plane</li>
+              <li><span class="sw" style="--c:#1c2733"></span><code>#1c2733</code> — deep blue-black for type, the door and cast shadows</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Cormorant Garamond at 300 for display, Inter at 400–500 for all small text — a deliberately calm, plausible pairing so the strangeness comes from arrangement rather than lettering. Inside a single headline the scale breaks: one word at 1.5em italic, another at 0.34em raised on a 0.9em baseline shift and tracked to 0.2em, sitting in a line already set at <code>clamp(40px, 7.4vw, 92px)</code>. Body is 13.5–14px at 1.8 with 0.06em tracking.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>A conventional 1060px column that the content then disobeys: cards on a normal three-column grid are individually rotated −2 to +1.4deg and pushed +26px, 0 and −22px vertically so the row never settles, and absolutely positioned objects (an eye, a door) hang off the hero's edges. The grid exists precisely so that breaking it reads as intentional.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>Contradictory shadows — one card casts down-left, one casts <em>upward</em>, one casts down-right — so no single light source can exist.</li>
+              <li>Long, soft, far-offset shadows (<code>26px 40px 40px -22px</code>) that make flat planes float above the sky.</li>
+              <li>Impossible scale inside one line of type, with a tiny sans word wedged into a large serif headline.</li>
+              <li>Blurred cloud ellipses drifting on 21–34s loops behind the content, with one reversed.</li>
+              <li>Objects that belong to another picture entirely: a door standing in the sky, a floating eye, small flesh-toned spheres pinned to card corners.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>The page refuses to behave. JS makes the eye's iris track the pointer within an 11px radius, so it watches the visitor. The <em>Explore</em> button flees: when the pointer comes within 130px it translates up to 90px away over 900ms on <code>cubic-bezier(.16,1,.3,1)</code>, returning only when the cursor leaves. The CTA heading is split into per-character spans that melt on hover — each letter stretches to <code>scaleY(1.9)</code> and slides down with a staggered delay. Nav links leap 14px upward and rotate −6deg. The cursor itself is a crosshair.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Render everything plausibly — believable light, real cast shadows, ordinary typefaces — and put the strangeness in the relationships, not the rendering.</li>
+              <li>Break exactly one rule per element: wrong scale, wrong shadow direction, wrong context, wrong obedience — never all four at once.</li>
+              <li>Give shadows contradictory directions across sibling elements so the viewer cannot locate a light source.</li>
+              <li>Float every plane: long soft offset shadows and small rotations, so nothing sits on the page.</li>
+              <li>Make at least one interaction disobey the user — an element that flees, watches, or melts — because surrealism is about the loss of control, not decoration.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* Three disobediences: the eye watches, the button flees, the words melt. */
+  (function () {
+    var iris = document.getElementById('iris');
+    var eye = iris ? iris.parentElement : null;
+    if (eye) {
+      window.addEventListener('pointermove', function (e) {
+        var r = eye.getBoundingClientRect();
+        var dx = e.clientX - (r.left + r.width / 2);
+        var dy = e.clientY - (r.top + r.height / 2);
+        var a = Math.atan2(dy, dx);
+        var d = Math.min(11, Math.hypot(dx, dy) / 16);
+        iris.style.transform = 'translate(' + Math.cos(a) * d + 'px,' + Math.sin(a) * d + 'px)';
+      });
+    }
+
+    var btn = document.getElementById('btn');
+    window.addEventListener('pointermove', function (e) {
+      var r = btn.getBoundingClientRect();
+      var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      var dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+      if (dist < 130) {
+        var a = Math.atan2(cy - e.clientY, cx - e.clientX);
+        btn.style.transform = 'translate(' + Math.cos(a) * 90 + 'px,' + Math.sin(a) * 60 + 'px)';
+      } else if (dist > 240) {
+        btn.style.transform = 'translate(0,0)';
+      }
+    });
+
+    var melt = document.getElementById('melt');
+    var text = melt.textContent;
+    melt.textContent = '';
+    text.split('').forEach(function (ch, i) {
+      var s = document.createElement('span');
+      s.textContent = ch === ' ' ? ' ' : ch;
+      s.style.transition = 'transform .7s cubic-bezier(.2,.7,.3,1) ' + (i * 40) + 'ms';
+      melt.appendChild(s);
+    });
+    var spans = melt.querySelectorAll('span');
+    melt.addEventListener('pointerenter', function () {
+      spans.forEach(function (s, i) {
+        s.style.transform = 'scaleY(' + (1.4 + (i % 4) * 0.18) + ') translateY(' + (6 + (i % 5) * 5) + 'px)';
+      });
+    });
+    melt.addEventListener('pointerleave', function () {
+      spans.forEach(function (s) { s.style.transform = 'none'; });
+    });
+  })();
+</script>
+</body>
+</html>
