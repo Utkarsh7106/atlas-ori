@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anthropomorphic — Atlas</title>
+<meta name="description" content="Anthropomorphic: interface elements given faces, expressions and body language.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    /* ══ ANTHROPOMORPHIC ══════════════════════════════════════════
+       The interface is a cast of characters. Components have faces,
+       expressions and body language; they blink when idle, react
+       when addressed, and hold their own limbs. Personality is the
+       design system — the shapes exist to carry an expression.     */
+
+    :root{
+      --cream:#fff6ec;
+      --ink:#2c2340;         /* eyes, outlines, text     */
+      --coral:#ff7a59;
+      --teal:#3ec2b3;
+      --sunny:#ffc94d;
+      --plum:#6c4ef0;
+      --blush:rgba(255,122,89,.42);
+    }
+
+    body{
+      background:
+        radial-gradient(circle at 12% 8%, rgba(255,201,77,.30) 0 160px, transparent 260px),
+        radial-gradient(circle at 90% 72%, rgba(62,194,179,.26) 0 180px, transparent 300px),
+        var(--cream);
+      background-attachment:fixed;
+      color:var(--ink);
+      font-family:"Nunito",-apple-system,sans-serif;
+      font-weight:600;
+      overflow-x:hidden;
+    }
+    .wrap{max-width:1060px;margin:0 auto;padding:0 clamp(16px,4vw,30px) 90px}
+
+    /* ── The face component — reused by every character ──────── */
+    .face{position:relative;display:flex;flex-direction:column;align-items:center;gap:9px}
+    .eyes{display:flex;gap:var(--eye-gap,16px)}
+    .eye{width:var(--eye,15px);height:var(--eye,15px);border-radius:50%;background:var(--ink);
+      transform-origin:center;transition:transform .09s ease}
+    .face.blinking .eye{transform:scaleY(.14)}
+    .face.happy .eye{transform:scaleY(.34) translateY(-2px)}
+    .mouth{width:var(--mouth,30px);height:var(--mouth-h,16px);
+      border:3px solid var(--ink);border-top:none;
+      border-radius:0 0 999px 999px;transition:all .22s cubic-bezier(.34,1.56,.64,1)}
+    .face.happy .mouth{width:calc(var(--mouth,30px) * 1.35);height:calc(var(--mouth-h,16px) * 1.5)}
+    .blush{position:absolute;top:var(--blush-top,10px);width:14px;height:8px;border-radius:50%;
+      background:var(--blush);opacity:0;transition:opacity .3s ease}
+    .blush.l{left:calc(50% - var(--blush-x,44px))}
+    .blush.r{left:calc(50% + var(--blush-x,44px) - 14px)}
+    .face.happy .blush{opacity:1}
+
+    /* ── Nav ─────────────────────────────────────────────────── */
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+      background:#fff;border:3px solid var(--ink);border-radius:26px;padding:12px 18px;margin-top:26px;
+      box-shadow:0 6px 0 0 var(--ink)}
+    .logo{display:inline-flex;align-items:center;gap:9px;font-family:"Fredoka",sans-serif;font-size:26px;
+      font-weight:700;color:var(--ink)}
+    .logo .face{--eye:8px;--eye-gap:9px;--mouth:15px;--mouth-h:8px;gap:5px;
+      width:44px;height:44px;justify-content:center;background:var(--sunny);
+      border:3px solid var(--ink);border-radius:50%}
+    .logo .mouth{border-width:2.5px}
+    .nav ul{display:flex;gap:7px}
+    .nav ul a{display:block;font-size:14px;font-weight:700;color:var(--ink);padding:9px 17px;border-radius:999px;
+      border:2px solid transparent;transition:transform .28s cubic-bezier(.34,1.56,.64,1),background .2s ease,border-color .2s ease}
+    .nav ul a:hover{background:var(--sunny);border-color:var(--ink);transform:translateY(-3px) rotate(-3deg)}
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .hero{display:grid;grid-template-columns:1.3fr .7fr;gap:34px;align-items:center;
+      margin-top:24px;padding:52px 40px 56px;background:#fff;border:3px solid var(--ink);border-radius:40px;
+      box-shadow:0 10px 0 0 var(--ink)}
+    .hero h1{font-family:"Fredoka",sans-serif;font-size:clamp(32px,5vw,56px);font-weight:600;line-height:1.1;
+      max-width:15ch}
+    /* the deck is something the character is saying */
+    .bubble{position:relative;display:inline-block;margin-top:22px;background:var(--sunny);
+      border:3px solid var(--ink);border-radius:22px;padding:13px 20px;font-size:16px;font-weight:700;
+      max-width:36ch}
+    .bubble::after{content:"";position:absolute;left:34px;bottom:-14px;width:18px;height:18px;
+      background:var(--sunny);border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);
+      transform:rotate(45deg) skew(6deg,6deg)}
+    .btn{display:inline-block;margin-top:34px;font-family:"Fredoka",sans-serif;font-size:19px;font-weight:600;
+      color:#fff;background:var(--coral);border:3px solid var(--ink);border-radius:999px;padding:14px 38px;
+      box-shadow:0 7px 0 0 var(--ink);
+      transition:transform .16s ease,box-shadow .16s ease}
+    .btn:hover{transform:translateY(-3px);box-shadow:0 10px 0 0 var(--ink)}
+    .btn:active{transform:translateY(5px);box-shadow:0 2px 0 0 var(--ink)}
+
+    /* the mascot: a body with arms that wave */
+    .mascot{--eye:19px;--eye-gap:24px;--mouth:44px;--mouth-h:24px;--blush-x:52px;--blush-top:34px;
+      position:relative;width:178px;height:178px;justify-self:center;justify-content:center;
+      background:var(--teal);border:3px solid var(--ink);border-radius:46% 46% 42% 42%/48% 48% 40% 40%;
+      animation:breathe 3.4s ease-in-out infinite}
+    @keyframes breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-7px) scale(1.02)}}
+    .arm{position:absolute;top:52%;width:44px;height:13px;background:var(--teal);
+      border:3px solid var(--ink);border-radius:999px}
+    .arm.l{left:-40px;transform-origin:right center;animation:wave 1.5s ease-in-out infinite}
+    .arm.r{right:-40px;transform-origin:left center;transform:rotate(-10deg)}
+    @keyframes wave{0%,100%{transform:rotate(8deg)}50%{transform:rotate(-34deg)}}
+    .foot{position:absolute;bottom:-13px;width:38px;height:16px;background:var(--teal);
+      border:3px solid var(--ink);border-radius:999px}
+    .foot.l{left:26px}
+    .foot.r{right:26px}
+
+    /* ── Features: three characters ──────────────────────────── */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:26px}
+    .card{background:#fff;border:3px solid var(--ink);border-radius:34px;padding:30px 24px 34px;text-align:center;
+      box-shadow:0 8px 0 0 var(--ink);
+      transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+    .card:hover{transform:translateY(-8px) rotate(-1.5deg)}
+    .critter{--eye:13px;--eye-gap:17px;--mouth:26px;--mouth-h:14px;--blush-x:38px;--blush-top:22px;
+      width:96px;height:96px;margin:0 auto 20px;justify-content:center;
+      border:3px solid var(--ink);position:relative}
+    .card:nth-child(1) .critter{background:var(--coral);border-radius:50% 50% 44% 44%/54% 54% 46% 46%}
+    .card:nth-child(2) .critter{background:var(--sunny);border-radius:44% 56% 50% 50%/50% 50% 52% 48%}
+    .card:nth-child(3) .critter{background:var(--plum);border-radius:52% 48% 46% 54%/46% 54% 48% 52%}
+    .card:nth-child(3) .critter .eye{background:#fff}
+    .card:nth-child(3) .critter .mouth{border-color:#fff}
+    .ear{position:absolute;top:-15px;width:20px;height:24px;border:3px solid var(--ink);border-radius:50% 50% 0 0}
+    .ear.l{left:16px;background:inherit;transform:rotate(-14deg)}
+    .ear.r{right:16px;background:inherit;transform:rotate(14deg)}
+    .icon{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--ink);background:var(--cream);border:2px solid var(--ink);border-radius:999px;padding:4px 12px}
+    .card h3{font-family:"Fredoka",sans-serif;font-size:25px;font-weight:600;margin:14px 0 8px}
+    .card p{font-size:15px;font-weight:600;line-height:1.6;color:#5b5170}
+
+    /* ── CTA ─────────────────────────────────────────────────── */
+    .cta{margin-top:26px;padding:56px 30px 60px;text-align:center;background:var(--plum);color:#fff;
+      border:3px solid var(--ink);border-radius:40px;box-shadow:0 10px 0 0 var(--ink)}
+    .cta h2{font-family:"Fredoka",sans-serif;font-size:clamp(30px,4.6vw,50px);font-weight:600}
+    .cta button{margin-top:26px;font-family:"Fredoka",sans-serif;font-size:18px;font-weight:600;color:var(--ink);
+      background:var(--sunny);border:3px solid var(--ink);border-radius:999px;padding:14px 34px;
+      box-shadow:0 7px 0 0 var(--ink);transition:transform .16s ease,box-shadow .16s ease}
+    .cta button:hover{transform:translateY(-3px);box-shadow:0 10px 0 0 var(--ink)}
+    .cta button:active{transform:translateY(5px);box-shadow:0 2px 0 0 var(--ink)}
+
+    @media(max-width:860px){
+      .hero{grid-template-columns:1fr}
+      .features{grid-template-columns:1fr}
+    }
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <nav class="nav">
+      <a href="#" class="logo">
+        <span class="face" data-face aria-hidden="true">
+          <span class="eyes"><i class="eye"></i><i class="eye"></i></span>
+          <span class="mouth"></span>
+        </span>
+        Atlas
+      </a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <div>
+        <h1>Design is how it feels to use.</h1>
+        <p class="bubble">A study in visual language, one style at a time.</p>
+        <br>
+        <a href="#" class="btn">Explore</a>
+      </div>
+      <div class="face mascot" data-face aria-hidden="true">
+        <i class="arm l"></i>
+        <i class="arm r"></i>
+        <span class="blush l"></span>
+        <span class="blush r"></span>
+        <span class="eyes"><i class="eye"></i><i class="eye"></i></span>
+        <span class="mouth"></span>
+        <i class="foot l"></i>
+        <i class="foot r"></i>
+      </div>
+    </header>
+
+    <section class="features">
+      <article class="card">
+        <div class="face critter" data-face aria-hidden="true">
+          <i class="ear l"></i><i class="ear r"></i>
+          <span class="blush l"></span><span class="blush r"></span>
+          <span class="eyes"><i class="eye"></i><i class="eye"></i></span>
+          <span class="mouth"></span>
+        </div>
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+      </article>
+      <article class="card">
+        <div class="face critter" data-face aria-hidden="true">
+          <i class="ear l"></i><i class="ear r"></i>
+          <span class="blush l"></span><span class="blush r"></span>
+          <span class="eyes"><i class="eye"></i><i class="eye"></i></span>
+          <span class="mouth"></span>
+        </div>
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+      </article>
+      <article class="card">
+        <div class="face critter" data-face aria-hidden="true">
+          <i class="ear l"></i><i class="ear r"></i>
+          <span class="blush l"></span><span class="blush r"></span>
+          <span class="eyes"><i class="eye"></i><i class="eye"></i></span>
+          <span class="mouth"></span>
+        </div>
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+      </article>
+    </section>
+
+    <section class="cta">
+      <h2>Start building.</h2>
+      <button>Get in touch</button>
+    </section>
+
+  </div>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Anthropomorphic">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Anthropomorphic</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>Character-led interface design — Clippy (1997) and the Japanese <em>kawaii</em> mascot tradition, matured into Mailchimp's Freddie and Duolingo's Duo as brand systems built on a personality rather than a logo.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#fff6ec"></span><code>#fff6ec</code> — warm cream ground</li>
+              <li><span class="sw" style="--c:#2c2340"></span><code>#2c2340</code> — ink for every outline, eye and pupil</li>
+              <li><span class="sw" style="--c:#ff7a59"></span><code>#ff7a59</code> — coral character and primary button</li>
+              <li><span class="sw" style="--c:#3ec2b3"></span><code>#3ec2b3</code> — teal, the hero mascot's body</li>
+              <li><span class="sw" style="--c:#ffc94d"></span><code>#ffc94d</code> — sunny yellow for speech bubbles and accents</li>
+              <li><span class="sw" style="--c:#6c4ef0"></span><code>#6c4ef0</code> — plum character and CTA field</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Fredoka 600 for display, card titles and buttons, Nunito 600–700 for body and labels — both rounded-terminal faces, because angular letterforms would contradict the characters' silhouettes. Nothing is set below 600 weight: friendliness reads as sturdiness, not thinness. Hero at <code>clamp(32px, 5vw, 56px)</code>/1.1, card titles 25px, body 15–16px, labels 11px uppercase at 0.14em.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>A 1060px column of large-radius panels (26–40px) with a 24–26px gutter, and a 1.3fr / 0.7fr hero that reserves a real slot for the mascot rather than treating it as decoration. Cards are centre-aligned so each character faces the reader head-on, and every panel has bottom-heavy padding to leave room for feet and body language.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>One reusable <code>.face</code> component — eyes, mouth and blush — scaled per character by custom properties (<code>--eye</code>, <code>--mouth</code>, <code>--blush-x</code>) rather than duplicated CSS.</li>
+              <li>Mouths drawn as a bottom-only 3px border with a 999px bottom radius, so a single width/height change becomes a different expression.</li>
+              <li>Asymmetric eight-value <code>border-radius</code> bodies, each character a different silhouette, with ears, arms and feet as separate bordered elements.</li>
+              <li>A flat <code>0 7px 0 0</code> ink shadow on every panel and button — the ground line a character stands on, never a blur.</li>
+              <li>A speech bubble with a rotated, skewed square tail carrying the page's subheading, so the copy is spoken rather than set.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>Idle life first: JS blinks each face independently on a randomised 2.4–7s timer by adding a <code>blinking</code> class for 130ms, and every character has its own offset so they never blink in unison. The mascot breathes on a 3.4s loop and waves one arm from −34deg to +8deg on a 1.5s loop. Reaction second: hovering a card adds <code>happy</code>, which squints the eyes, widens the mouth by 1.35× and fades in the blush over 220ms with spring easing, while the card lifts 8px and tilts −1.5deg. Buttons depress into their flat shadow on <code>:active</code>.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Build one parametric face component (eyes, mouth, blush) and scale it with custom properties so every character is the same system at a different size.</li>
+              <li>Give each character a distinct asymmetric silhouette and at least one appendage — ears, arms, feet — that exists outside the body's bounding box.</li>
+              <li>Outline everything in a single dark ink and drop it onto a flat, blur-free shadow so characters stand on a ground line.</li>
+              <li>Animate idle behaviour before interaction: randomised, unsynchronised blinking is what separates a character from a sticker.</li>
+              <li>Make hover an emotional response — squint, smile, blush — not a visual effect, and pair rounded typefaces at 600 weight or heavier with it.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* Characters are alive when nobody is looking at them. */
+  (function () {
+    document.querySelectorAll('[data-face]').forEach(function (face) {
+      (function loop() {
+        setTimeout(function () {
+          face.classList.add('blinking');
+          setTimeout(function () { face.classList.remove('blinking'); }, 130);
+          loop();
+        }, 2400 + Math.random() * 4600);
+      })();
+    });
+
+    /* Cards react to being addressed. */
+    document.querySelectorAll('.card').forEach(function (card) {
+      var face = card.querySelector('[data-face]');
+      if (!face) return;
+      card.addEventListener('pointerenter', function () { face.classList.add('happy'); });
+      card.addEventListener('pointerleave', function () { face.classList.remove('happy'); });
+    });
+
+    var hero = document.querySelector('.hero');
+    var mascot = document.querySelector('.mascot');
+    if (hero && mascot) {
+      hero.addEventListener('pointerenter', function () { mascot.classList.add('happy'); });
+      hero.addEventListener('pointerleave', function () { mascot.classList.remove('happy'); });
+    }
+  })();
+</script>
+</body>
+</html>

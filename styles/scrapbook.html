@@ -34,8 +34,10 @@
       color:var(--ink);
       font-family:"Special Elite",Courier,monospace;
       padding:clamp(16px,3vw,34px);
-      overflow-x:hidden;
     }
+    /* tape and clips hang past their parents by design — clip at the viewport
+       on both html and body so a phone never scrolls sideways. */
+    html,body{overflow-x:hidden}
     .board{max-width:1060px;margin:0 auto;position:relative}
 
     /* ── Shared paper physics ────────────────────────────────── */

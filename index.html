@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atlas — 29 Design Styles</title>
+<meta name="description" content="One page of identical content rendered in 29 distinct visual languages, each documented for replication.">
+<link rel="stylesheet" href="assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* index.html is deliberately neutral: it is a contents page, not a
+     twenty-ninth style. Nothing here should compete with the pages. */
+  :root{
+    --paper:#ffffff;
+    --ink:#111114;
+    --muted:#6b6b73;
+    --rule:#e6e6ea;
+    --tint:#f7f7f9;
+  }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,40px)}
+
+  header.top{padding:clamp(64px,12vh,120px) 0 44px;border-bottom:1px solid var(--rule)}
+  .kicker{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  header.top h1{margin-top:20px;font-size:clamp(34px,5.2vw,60px);font-weight:600;
+    letter-spacing:-.035em;line-height:1.04;max-width:20ch}
+  header.top p{margin-top:20px;font-size:17px;line-height:1.6;color:var(--muted);max-width:62ch}
+  .meta{display:flex;gap:28px;flex-wrap:wrap;margin-top:32px;font-size:13px;color:var(--muted)}
+  .meta b{color:var(--ink);font-weight:600}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0;
+    border-left:1px solid var(--rule);margin:0 0 90px}
+  .card{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .card a{display:flex;flex-direction:column;height:100%;padding:26px 24px 24px;
+    transition:background .18s ease}
+  .card a:hover{background:var(--tint)}
+  .num{font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--muted);
+    font-variant-numeric:tabular-nums}
+  .swatches{display:flex;gap:4px;margin:16px 0 18px}
+  .swatches i{width:22px;height:22px;border-radius:4px;background:var(--c);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.10)}
+  .card h2{font-size:19px;font-weight:600;letter-spacing:-.018em;margin-bottom:8px}
+  .card p{font-size:14px;line-height:1.55;color:var(--muted);flex:1}
+  .go{margin-top:18px;font-size:12.5px;font-weight:500;color:var(--ink);opacity:0;
+    transform:translateX(-4px);transition:opacity .18s ease,transform .18s ease}
+  .card a:hover .go{opacity:1;transform:none}
+  .card a:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+  .card a:focus-visible .go{opacity:1;transform:none}
+
+  footer{border-top:1px solid var(--rule);padding:32px 0 64px;font-size:13px;color:var(--muted)}
+  footer code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;
+    background:var(--tint);padding:2px 6px;border-radius:3px}
+
+  @media(max-width:560px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <header class="top">
+      <p class="kicker">Atlas — a study in visual language</p>
+      <h1>The same page, twenty-nine times.</h1>
+      <p>Every page below carries identical content — the same navigation, the same headline, the same three
+        cards, the same call to action. Only the visual language changes. Each one ends with a Design Points
+        section documenting its palette, typography, layout logic, signature techniques, motion and five rules
+        for rebuilding the style somewhere else.</p>
+      <div class="meta">
+        <span><b>29</b> styles</span>
+        <span><b>0</b> frameworks</span>
+        <span><b>0</b> build steps</span>
+        <span>One <code style="font-family:ui-monospace,monospace">&lt;style&gt;</code> block per page</span>
+      </div>
+    </header>
+
+    <ul class="grid">
+      <li class="card">
+        <a href="styles/minimalism.html">
+          <span class="num">01</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#ffffff"></i><i style="--c:#0a0a0a"></i><i style="--c:#737373"></i><i style="--c:#e5e5e5"></i><i style="--c:#fafafa"></i></span>
+          <h2>Minimalism</h2>
+          <p>Reduction to essentials — hairlines, one typeface, extreme whitespace.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/maximalism.html">
+          <span class="num">02</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#ff2d95"></i><i style="--c:#ffe600"></i><i style="--c:#00e5ff"></i><i style="--c:#6a00f4"></i><i style="--c:#b6ff00"></i></span>
+          <h2>Maximalism</h2>
+          <p>More is more: clashing colour, layered pattern, three fighting typefaces.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/swiss-design.html">
+          <span class="num">03</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#ffffff"></i><i style="--c:#111111"></i><i style="--c:#e2231a"></i><i style="--c:#8a8a8a"></i><i style="--c:#dcdcdc"></i></span>
+          <h2>Swiss Design</h2>
+          <p>A 12-column grid, one grotesque, one red, and nothing accidental.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/brutalism.html">
+          <span class="num">04</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#ffffff"></i><i style="--c:#000000"></i><i style="--c:#0000ee"></i><i style="--c:#551a8b"></i><i style="--c:#ff0000"></i></span>
+          <h2>Brutalism</h2>
+          <p>The honest document: default links, Times New Roman, no comfort.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/surrealism.html">
+          <span class="num">05</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#a8c4d8"></i><i style="--c:#7ba0bd"></i><i style="--c:#e8d9c3"></i><i style="--c:#e5b5a0"></i><i style="--c:#f6f2ea"></i></span>
+          <h2>Surrealism</h2>
+          <p>Plausible rendering, impossible relationships — and a page that disobeys.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/neo-brutalism.html">
+          <span class="num">06</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#fdf6e3"></i><i style="--c:#101010"></i><i style="--c:#ffd93d"></i><i style="--c:#ff6b6b"></i><i style="--c:#7bf1a8"></i></span>
+          <h2>Neo-Brutalism</h2>
+          <p>Raw brutalism after a design system: flat blocks, 4px outlines, hard shadows.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/neo-classical.html">
+          <span class="num">07</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#f4f1ea"></i><i style="--c:#e6e1d6"></i><i style="--c:#1f1c17"></i><i style="--c:#6b6250"></i><i style="--c:#a8894f"></i></span>
+          <h2>Neo-classical</h2>
+          <p>Symmetry, colonnade and restraint, with gilt spent only on ornament.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/neumorphism.html">
+          <span class="num">08</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#e0e5ec"></i><i style="--c:#ffffff"></i><i style="--c:#a3b1c6"></i><i style="--c:#4a5568"></i><i style="--c:#8494ab"></i></span>
+          <h2>Neumorphism</h2>
+          <p>One surface, one colour — depth from a single paired shadow.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/scrapbook.html">
+          <span class="num">09</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#d8c3a5"></i><i style="--c:#fdf6e8"></i><i style="--c:#2f3a4a"></i><i style="--c:#c1483b"></i><i style="--c:#8a9a7b"></i></span>
+          <h2>Scrapbook</h2>
+          <p>Kraft board, washi tape, torn edges and things you can drag around.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/glassmorphism.html">
+          <span class="num">10</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#0d0b1f"></i><i style="--c:#7b2ff7"></i><i style="--c:#f107a3"></i><i style="--c:#00d4ff"></i><i style="--c:#ffffff"></i></span>
+          <h2>Glassmorphism</h2>
+          <p>Frosted panes that need something saturated behind them to exist.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/claymorphism.html">
+          <span class="num">11</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#dcd6ff"></i><i style="--c:#ffe3f1"></i><i style="--c:#8b7cf6"></i><i style="--c:#ff8fab"></i><i style="--c:#ffd166"></i></span>
+          <h2>Claymorphism</h2>
+          <p>Inflated pastel forms with inner highlights and fat coloured shadows.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/bento-grid.html">
+          <span class="num">12</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#edeef2"></i><i style="--c:#ffffff"></i><i style="--c:#101014"></i><i style="--c:#6e7079"></i><i style="--c:#4f46e5"></i></span>
+          <h2>Bento Grid</h2>
+          <p>Everything is a tile; hierarchy is span, and the gutter is the whitespace.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/pixel-art.html">
+          <span class="num">13</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#1a1c2c"></i><i style="--c:#29366f"></i><i style="--c:#ffcd75"></i><i style="--c:#b13e53"></i><i style="--c:#38b764"></i></span>
+          <h2>Pixel Art</h2>
+          <p>A 16-colour console screen where every dimension is a multiple of one pixel.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/conceptual-sketch.html">
+          <span class="num">14</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#fcfcfa"></i><i style="--c:#e3e7ec"></i><i style="--c:#d2d8e0"></i><i style="--c:#2b2b2b"></i><i style="--c:#3f6fd8"></i></span>
+          <h2>Conceptual Sketch</h2>
+          <p>Graph paper, hand-drawn boxes, dimension lines and unresolved redlines.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/luxury-typography.html">
+          <span class="num">15</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#f7f4ef"></i><i style="--c:#12100e"></i><i style="--c:#b09a72"></i><i style="--c:#8b857c"></i><i style="--c:#ddd7cc"></i></span>
+          <h2>Luxury Typography</h2>
+          <p>A 13:1 scale ratio, one metallic accent, and a third of the page empty.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/editorial-design.html">
+          <span class="num">16</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#fbfaf7"></i><i style="--c:#16161a"></i><i style="--c:#c8322b"></i><i style="--c:#6d6b66"></i><i style="--c:#d9d5cc"></i></span>
+          <h2>Editorial Design</h2>
+          <p>Magazine furniture: standfirst, byline, pull quote, folio, printed rulework.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/y2k-aesthetic.html">
+          <span class="num">17</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#bfe4ff"></i><i style="--c:#c8a2ff"></i><i style="--c:#ff7ac6"></i><i style="--c:#2aa3ff"></i><i style="--c:#dfe6f0"></i></span>
+          <h2>Y2K Aesthetic</h2>
+          <p>Aqua gel, chrome word art, holographic foil and a sparkle trail.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/ethereal.html">
+          <span class="num">18</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#fbfaff"></i><i style="--c:#e9e4fb"></i><i style="--c:#fde8f0"></i><i style="--c:#e0f4f7"></i><i style="--c:#4a4266"></i></span>
+          <h2>Ethereal</h2>
+          <p>No containers at all — aurora veils, hairline serif and drifting motes.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/bohemian.html">
+          <span class="num">19</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#f3e7d8"></i><i style="--c:#c56b4a"></i><i style="--c:#d9a441"></i><i style="--c:#c98b8b"></i><i style="--c:#7a7f52"></i></span>
+          <h2>Bohemian</h2>
+          <p>Adobe arches, woven ground, block-print borders and hand-knotted fringe.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/dark-mode-ui.html">
+          <span class="num">20</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#0b0d12"></i><i style="--c:#12151c"></i><i style="--c:#1a1f29"></i><i style="--c:#e7eaf0"></i><i style="--c:#98a2b6"></i></span>
+          <h2>Dark Mode UI</h2>
+          <p>Dark as a token system: surface tints, hairlines, no glow, real focus rings.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/cyberpunk.html">
+          <span class="num">21</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#07070c"></i><i style="--c:#0e1018"></i><i style="--c:#00fff5"></i><i style="--c:#ff2e88"></i><i style="--c:#ffb700"></i></span>
+          <h2>Cyberpunk</h2>
+          <p>Rain-slick neon signage, HUD chrome and information density as atmosphere.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/anthropomorphic.html">
+          <span class="num">22</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#fff6ec"></i><i style="--c:#2c2340"></i><i style="--c:#ff7a59"></i><i style="--c:#3ec2b3"></i><i style="--c:#ffc94d"></i></span>
+          <h2>Anthropomorphic</h2>
+          <p>Components with faces that blink when idle and react when addressed.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/victorian.html">
+          <span class="num">23</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#f3e7cf"></i><i style="--c:#5d1f2b"></i><i style="--c:#24402f"></i><i style="--c:#c39a4b"></i><i style="--c:#8d6c2c"></i></span>
+          <h2>Victorian</h2>
+          <p>Damask, gilt double rules and a playbill that changes face every line.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/cybercore.html">
+          <span class="num">24</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#000000"></i><i style="--c:#00ff41"></i><i style="--c:#0a3d17"></i><i style="--c:#b6ffcb"></i><i style="--c:#ff003c"></i></span>
+          <h2>Cybercore</h2>
+          <p>One phosphor green, ASCII frames, channel-split glitch, steps() only.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/synthwave.html">
+          <span class="num">25</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#160b2e"></i><i style="--c:#3d1157"></i><i style="--c:#ff2d95"></i><i style="--c:#ff7a18"></i><i style="--c:#ffd166"></i></span>
+          <h2>Synthwave</h2>
+          <p>A striped sun, a cyan horizon and a grid rushing toward the viewer.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/graffiti.html">
+          <span class="num">26</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#3c3c40"></i><i style="--c:#0c0c0e"></i><i style="--c:#12c8ff"></i><i style="--c:#ffd400"></i><i style="--c:#ff2f3c"></i></span>
+          <h2>Graffiti</h2>
+          <p>Aerosol on concrete: outlines, overspray, drips and a handstyle over the top.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/gothic.html">
+          <span class="num">27</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#0b0a0d"></i><i style="--c:#16141a"></i><i style="--c:#e9e3d6"></i><i style="--c:#7a1f2b"></i><i style="--c:#2b3a6b"></i></span>
+          <h2>Gothic</h2>
+          <p>Lancet arches, blackletter, stained glass and one light in a dark nave.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/mixed-media.html">
+          <span class="num">28</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#ece7dd"></i><i style="--c:#141414"></i><i style="--c:#ff4f79"></i><i style="--c:#0f4cf0"></i><i style="--c:#ffd400"></i></span>
+          <h2>Mixed Media</h2>
+          <p>Halftone, riso overprint and photocopy grain colliding on one sheet.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+      <li class="card">
+        <a href="styles/wabi-sabi.html">
+          <span class="num">29</span>
+          <span class="swatches" aria-hidden="true"><i style="--c:#e9e3d7"></i><i style="--c:#33302a"></i><i style="--c:#6f6a60"></i><i style="--c:#bda98f"></i><i style="--c:#7d8471"></i></span>
+          <h2>Wabi Sabi</h2>
+          <p>Systematic asymmetry, hand-formed edges, kintsugi seams and generous emptiness.</p>
+          <span class="go" aria-hidden="true">View style &rarr;</span>
+        </a>
+      </li>
+    </ul>
+
+    <footer>
+      Hand-written HTML, CSS and vanilla JavaScript. The only shared stylesheet is
+      <code>assets/reset.css</code>; every other rule lives in its own page.
+    </footer>
+
+  </div>
+
+</body>
+</html>

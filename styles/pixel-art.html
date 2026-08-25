@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pixel Art — Atlas</title>
+<meta name="description" content="Pixel Art: 16-colour palette, chunky pixel borders, dithering and box-shadow sprites.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    /* ══ PIXEL ART ════════════════════════════════════════════════
+       A 16-colour console screen. Everything snaps to a 4px pixel:
+       borders are drawn as chamfered box-shadow steps, gradients are
+       replaced by dithering, sprites are box-shadow bitmaps, and
+       every animation uses steps() because there are no in-betweens.*/
+
+    :root{
+      --px:4px;              /* THE pixel. all geometry is a multiple */
+      --void:#1a1c2c;
+      --deep:#29366f;
+      --red:#b13e53;
+      --orange:#ef7d57;
+      --yellow:#ffcd75;
+      --green:#38b764;
+      --cyan:#41a6f6;
+      --slate:#566c86;
+      --white:#f4f4f4;
+    }
+
+    body{
+      background:
+        /* dithered sky: a 2px checker over a two-tone field */
+        repeating-conic-gradient(rgba(65,166,246,.10) 0% 25%, transparent 0% 50%) 0 0/8px 8px,
+        linear-gradient(180deg, var(--deep) 0%, var(--void) 62%);
+      background-attachment:fixed;
+      color:var(--white);
+      font-family:"Silkscreen","Press Start 2P",monospace;
+      font-size:14px;
+      line-height:1.7;
+      image-rendering:pixelated;
+      -webkit-font-smoothing:none;
+    }
+    .wrap{max-width:1040px;margin:0 auto;padding:calc(var(--px)*6) clamp(12px,3vw,24px) calc(var(--px)*20)}
+
+    /* A chamfered pixel border, drawn entirely with box-shadow steps.
+       No border-radius exists in a tile engine. */
+    .panel{
+      background:var(--void);
+      box-shadow:
+        0 calc(var(--px)*-1) 0 0 var(--white),
+        0 var(--px) 0 0 var(--white),
+        calc(var(--px)*-1) 0 0 0 var(--white),
+        var(--px) 0 0 0 var(--white),
+        0 calc(var(--px)*-2) 0 0 var(--slate),
+        0 calc(var(--px)*2) 0 0 var(--slate),
+        calc(var(--px)*-2) 0 0 0 var(--slate),
+        calc(var(--px)*2) 0 0 0 var(--slate);
+      position:relative;
+    }
+
+    /* ── Nav: a menu bar ─────────────────────────────────────── */
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+      padding:calc(var(--px)*4) calc(var(--px)*5);margin:calc(var(--px)*3) 0 calc(var(--px)*8)}
+    .logo{font-family:"Press Start 2P",monospace;font-size:20px;line-height:1;color:var(--yellow);
+      text-shadow:var(--px) var(--px) 0 var(--red)}
+    .nav ul{display:flex;gap:calc(var(--px)*6)}
+    .nav ul a{font-family:"Press Start 2P",monospace;font-size:10px;color:var(--white);
+      position:relative;padding-left:calc(var(--px)*4);text-transform:uppercase}
+    .nav ul a::before{content:"\25B6";position:absolute;left:0;color:var(--yellow);opacity:0}
+    .nav ul a:hover{color:var(--yellow)}
+    .nav ul a:hover::before{opacity:1;animation:blink .6s steps(1) infinite}
+    @keyframes blink{50%{opacity:0}}
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .hero{display:grid;grid-template-columns:1fr auto;gap:calc(var(--px)*8);align-items:center;
+      padding:calc(var(--px)*10) calc(var(--px)*7) calc(var(--px)*11)}
+    .hero h1{font-family:"Press Start 2P",monospace;font-size:clamp(16px,2.9vw,30px);line-height:1.62;
+      color:var(--white);text-shadow:var(--px) var(--px) 0 var(--deep);max-width:18ch}
+    .hero h1 em{font-style:normal;color:var(--yellow);text-shadow:var(--px) var(--px) 0 var(--red)}
+    .hero p{margin-top:calc(var(--px)*6);font-size:15px;color:var(--cyan);max-width:42ch}
+    .hero p::before{content:"* "}
+
+    .btn{display:inline-block;margin-top:calc(var(--px)*7);font-family:"Press Start 2P",monospace;font-size:12px;
+      text-transform:uppercase;color:var(--void);background:var(--green);
+      padding:calc(var(--px)*3) calc(var(--px)*7);
+      box-shadow:0 var(--px) 0 0 #1f7a42, var(--px) 0 0 0 #1f7a42,
+        0 calc(var(--px)*-1) 0 0 #6ee49a, calc(var(--px)*-1) 0 0 0 #6ee49a,
+        calc(var(--px)*2) calc(var(--px)*2) 0 0 rgba(0,0,0,.55);
+      transition:none}
+    .btn:active{transform:translate(var(--px),var(--px))}
+
+    /* the sprite is drawn from a bitmap by JS, using box-shadow */
+    /* The sprite draws right/down from a 1-pixel box, so its footprint is
+       reserved with margin rather than width. --spx scales the whole bitmap. */
+    #sprite{--spx:7px;width:var(--spx);height:var(--spx);
+      margin:0 calc(var(--spx)*12) calc(var(--spx)*11) calc(var(--spx)*2);
+      animation:bob 1s steps(2) infinite}
+    @keyframes bob{50%{transform:translateY(calc(var(--px)*-1))}}
+
+    /* ── Features: three item slots ──────────────────────────── */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--px)*6);
+      margin-top:calc(var(--px)*8)}
+    .card{padding:calc(var(--px)*6) calc(var(--px)*5) calc(var(--px)*7);
+      transition:none}
+    .card:hover{background:#22253a}
+    .icon{display:inline-block;font-family:"Press Start 2P",monospace;font-size:8px;text-transform:uppercase;
+      color:var(--void);background:var(--cyan);padding:calc(var(--px)*1) calc(var(--px)*2)}
+    .card:nth-child(2) .icon{background:var(--orange)}
+    .card:nth-child(3) .icon{background:var(--yellow)}
+    .card h3{font-family:"Press Start 2P",monospace;font-size:14px;margin:calc(var(--px)*4) 0 calc(var(--px)*3);
+      color:var(--white);text-shadow:var(--px) var(--px) 0 var(--deep)}
+    .card p{font-size:14px;color:var(--slate);line-height:1.75}
+    /* dither bar: the pixel way to make a gradient */
+    .dither{height:calc(var(--px)*3);margin-top:calc(var(--px)*5);
+      background:repeating-conic-gradient(var(--cyan) 0% 25%, transparent 0% 50%) 0 0/8px 8px}
+    .card:nth-child(2) .dither{background:repeating-conic-gradient(var(--orange) 0% 25%, transparent 0% 50%) 0 0/8px 8px}
+    .card:nth-child(3) .dither{background:repeating-conic-gradient(var(--yellow) 0% 25%, transparent 0% 50%) 0 0/8px 8px}
+
+    /* ── CTA ─────────────────────────────────────────────────── */
+    .cta{margin-top:calc(var(--px)*8);padding:calc(var(--px)*11) calc(var(--px)*6) calc(var(--px)*12);
+      text-align:center;background:var(--deep)}
+    .cta h2{font-family:"Press Start 2P",monospace;font-size:clamp(15px,2.7vw,28px);line-height:1.6;
+      color:var(--yellow);text-shadow:var(--px) var(--px) 0 var(--red)}
+    .cta button{margin-top:calc(var(--px)*7);font-family:"Press Start 2P",monospace;font-size:12px;
+      text-transform:uppercase;color:var(--void);background:var(--yellow);
+      padding:calc(var(--px)*3) calc(var(--px)*6);
+      box-shadow:0 var(--px) 0 0 #b8913f, var(--px) 0 0 0 #b8913f,
+        0 calc(var(--px)*-1) 0 0 #ffe6b0, calc(var(--px)*-1) 0 0 0 #ffe6b0,
+        calc(var(--px)*2) calc(var(--px)*2) 0 0 rgba(0,0,0,.55)}
+    .cta button:active{transform:translate(var(--px),var(--px))}
+    .press{margin-top:calc(var(--px)*6);font-family:"Press Start 2P",monospace;font-size:9px;color:var(--slate);
+      animation:blink 1.1s steps(1) infinite}
+
+    @media(max-width:860px){
+      .features{grid-template-columns:1fr}
+      .hero{grid-template-columns:1fr}
+      #sprite{display:none}
+    }
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <nav class="nav panel">
+      <a href="#" class="logo">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero panel">
+      <div>
+        <h1>Design is <em>how</em> it feels to use.</h1>
+        <p>A study in visual language, one style at a time.</p>
+        <br>
+        <a href="#" class="btn">Explore</a>
+      </div>
+      <div id="sprite" aria-hidden="true"></div>
+    </header>
+
+    <section class="features">
+      <article class="card panel">
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+        <div class="dither" aria-hidden="true"></div>
+      </article>
+      <article class="card panel">
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+        <div class="dither" aria-hidden="true"></div>
+      </article>
+      <article class="card panel">
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+        <div class="dither" aria-hidden="true"></div>
+      </article>
+    </section>
+
+    <section class="cta panel">
+      <h2>Start building.</h2>
+      <button>Get in touch</button>
+      <p class="press" aria-hidden="true">- press start -</p>
+    </section>
+
+  </div>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Pixel Art">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Pixel Art</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>1977–1995 console and arcade hardware — Atari VCS through the SNES — where limited memory forced fixed palettes and tile grids; revived deliberately by indie games from the late 2000s.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#1a1c2c"></span><code>#1a1c2c</code> — void, the darkest value and panel fill</li>
+              <li><span class="sw" style="--c:#29366f"></span><code>#29366f</code> — deep blue for the sky and CTA field</li>
+              <li><span class="sw" style="--c:#ffcd75"></span><code>#ffcd75</code> — yellow: logo, highlights, CTA button</li>
+              <li><span class="sw" style="--c:#b13e53"></span><code>#b13e53</code> — red used only as the 4px text drop-pixel</li>
+              <li><span class="sw" style="--c:#38b764"></span><code>#38b764</code> — green primary action</li>
+              <li><span class="sw" style="--c:#41a6f6"></span><code>#41a6f6</code> — cyan for body accents and dithering</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Press Start 2P for all display and UI, Silkscreen for body — two genuine bitmap faces, with <code>-webkit-font-smoothing: none</code> so the browser cannot anti-alias them. Sizes are restricted to multiples that land on whole pixels: 8, 9, 10, 12, 14 and 20px, with the hero at <code>clamp(16px, 2.9vw, 30px)</code>. Line-height is unusually loose (1.6–1.75) because bitmap capitals have no descender room. Every heading carries a single 4px hard shadow — one pixel of offset, never a blur.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>One custom property, <code>--px: 4px</code>, defines the pixel, and <em>every</em> dimension on the page is <code>calc(var(--px) * n)</code> — padding, gaps, margins, shadow offsets. Nothing uses an arbitrary value, so the whole layout snaps to a 4px lattice. Panels sit on a three-column grid with a 24px (6px) gutter, and the hero splits content against a sprite slot.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>Chamfered borders drawn as eight stacked <code>box-shadow</code> steps (white inner ring, slate outer ring) — no <code>border</code>, no <code>border-radius</code> anywhere.</li>
+              <li>Dithering instead of gradients: a <code>repeating-conic-gradient</code> checker on an 8px tile, used for the sky and for card meters.</li>
+              <li>Buttons lit as bevels — lighter pixel on the top and left, darker on the bottom and right, plus a 2-pixel cast shadow.</li>
+              <li>A sprite generated in JS from an ASCII bitmap and rendered as a single element's <code>box-shadow</code> list.</li>
+              <li><code>image-rendering: pixelated</code> and disabled font smoothing so nothing on the page is ever interpolated.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>Every animation uses <code>steps()</code> — there are no in-between frames on this hardware. JS parses a 12×12 character bitmap into 100+ <code>box-shadow</code> offsets to draw the sprite, which bobs one pixel on a 1s <code>steps(2)</code> loop at a 7px sprite scale. Hovering a nav item reveals a blinking ▶ menu cursor at <code>steps(1)</code>, the <em>press start</em> line blinks on a 1.1s cycle, and buttons translate exactly one pixel down-right on <code>:active</code>. Hover transitions are explicitly <code>none</code>: a tile either is or is not highlighted.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Define one pixel unit as a custom property and express every dimension as a multiple of it — no arbitrary values anywhere.</li>
+              <li>Ban <code>border-radius</code>, blur and anti-aliasing: draw borders and bevels with stacked hard <code>box-shadow</code> steps and disable font smoothing.</li>
+              <li>Fix a small palette (8–16 colours) and replace every gradient with a dither pattern.</li>
+              <li>Use genuine bitmap typefaces at whole-pixel sizes only, with single hard-offset text shadows.</li>
+              <li>Make all motion <code>steps()</code> and all hover states instant — interpolation is the one thing that instantly breaks the illusion.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* A sprite is a bitmap. Render it as one element's box-shadow list. */
+  (function () {
+    var PX = 7;
+    var palette = { k: '#1a1c2c', y: '#ffcd75', r: '#b13e53', o: '#ef7d57', w: '#f4f4f4', c: '#41a6f6' };
+    /* 12 x 12 — a compass star, the Atlas mark */
+    var bitmap = [
+      '.....kk.....',
+      '....kyyk....',
+      '....kyyk....',
+      '..kkkyykkk..',
+      '.kyyyyyyyyk.',
+      'kyyoorroyyyk',
+      'kyyoorroyyyk',
+      '.kyyyyyyyyk.',
+      '..kkkyykkk..',
+      '....kyyk....',
+      '....kyyk....',
+      '.....kk.....'
+    ];
+    var shadows = [];
+    bitmap.forEach(function (row, y) {
+      row.split('').forEach(function (ch, x) {
+        if (ch === '.') return;
+        shadows.push((x * PX) + 'px ' + (y * PX) + 'px 0 0 ' + (palette[ch] || palette.w));
+      });
+    });
+    var el = document.getElementById('sprite');
+    if (el) el.style.boxShadow = shadows.join(',');
+  })();
+</script>
+</body>
+</html>

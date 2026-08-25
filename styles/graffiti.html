@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Graffiti — Atlas</title>
+<meta name="description" content="Graffiti: concrete wall, aerosol overspray, drips, bubble letters, handstyle tags and slaps.">
+<link rel="stylesheet" href="../assets/reset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Permanent+Marker&family=Oswald:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+    /* ══ GRAFFITI ═════════════════════════════════════════════════
+       Aerosol on concrete. The wall comes first: cold grey, grainy,
+       blotched. Then layers in the order they were put up — throwie
+       fill, black outline, white highlight, overspray halo, drips,
+       and a handstyle tag over the top of everything.              */
+
+    :root{
+      --wall:#3c3c40;
+      --wall-lo:#2b2b2f;
+      --concrete:#4a4a4f;
+      --red:#ff2f3c;
+      --yellow:#ffd400;
+      --cyan:#12c8ff;
+      --violet:#a83bff;
+      --lime:#5cff54;
+      --black:#0c0c0e;
+      --chalk:#f2f2ef;
+    }
+
+    body{
+      background:
+        /* pitting and blotches in the render */
+        radial-gradient(circle at 18% 22%, rgba(255,255,255,.05) 0 2px, transparent 3px) 0 0/37px 41px,
+        radial-gradient(circle at 62% 71%, rgba(0,0,0,.22) 0 3px, transparent 4px) 0 0/53px 47px,
+        repeating-linear-gradient(97deg, rgba(0,0,0,.12) 0 2px, transparent 2px 7px),
+        repeating-linear-gradient(3deg, rgba(255,255,255,.03) 0 1px, transparent 1px 5px),
+        linear-gradient(168deg, var(--concrete) 0%, var(--wall) 46%, var(--wall-lo) 100%);
+      color:var(--chalk);
+      font-family:"Oswald",-apple-system,sans-serif;
+      font-weight:300;
+      overflow-x:hidden;
+      position:relative;
+    }
+    .wrap{max-width:1120px;margin:0 auto;padding:0 clamp(14px,3vw,28px) 90px;position:relative;z-index:2}
+
+    /* aerosol halo — every painted thing overspray onto the wall */
+    .spray{filter:drop-shadow(0 0 14px rgba(0,0,0,.55))}
+
+    /* ── Nav: a slapped-up sticker row ───────────────────────── */
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:26px 0 18px}
+    .logo{font-family:"Bungee",sans-serif;font-size:44px;line-height:1;color:var(--yellow);
+      -webkit-text-stroke:5px var(--black);paint-order:stroke fill;
+      text-shadow:0 0 22px rgba(255,212,0,.45), 6px 7px 0 rgba(0,0,0,.55);
+      transform:rotate(-3deg);display:inline-block}
+    .nav ul{display:flex;gap:10px}
+    .nav ul a{display:block;font-family:"Oswald",sans-serif;font-size:14px;font-weight:700;letter-spacing:.16em;
+      text-transform:uppercase;color:var(--black);background:var(--chalk);padding:8px 16px;
+      border:3px solid var(--black);box-shadow:4px 5px 0 rgba(0,0,0,.5);
+      transition:background .12s linear,transform .12s linear,color .12s linear}
+    .nav li:nth-child(1) a{transform:rotate(2deg)}
+    .nav li:nth-child(2) a{transform:rotate(-2.4deg);background:var(--cyan)}
+    .nav li:nth-child(3) a{transform:rotate(1.4deg)}
+    .nav ul a:hover{background:var(--red);color:var(--chalk);transform:rotate(-4deg) scale(1.06)}
+
+    /* ── Hero: the piece ─────────────────────────────────────── */
+    .hero{position:relative;padding:52px 0 66px}
+    .hero h1{font-family:"Bungee",sans-serif;font-size:clamp(38px,8vw,104px);line-height:.94;
+      text-transform:uppercase;max-width:12ch;color:var(--cyan);
+      -webkit-text-stroke:9px var(--black);paint-order:stroke fill;
+      text-shadow:9px 11px 0 rgba(0,0,0,.55), 0 0 40px rgba(18,200,255,.35);
+      transform:rotate(-1.4deg)}
+    .hero h1 em{font-style:normal;color:var(--yellow);text-shadow:9px 11px 0 rgba(0,0,0,.55),0 0 40px rgba(255,212,0,.4)}
+
+    /* drips hang off the piece */
+    .drips{position:relative;height:0;margin-top:-8px}
+    .drips i{position:absolute;top:-6px;width:9px;border-radius:0 0 60% 60%;background:var(--cyan);
+      box-shadow:0 0 10px rgba(18,200,255,.5);transform-origin:top center}
+    .drips i::after{content:"";position:absolute;left:-3px;bottom:-8px;width:15px;height:15px;border-radius:50%;
+      background:inherit}
+
+    .hero p{margin-top:46px;font-family:"Oswald",sans-serif;font-size:17px;font-weight:300;letter-spacing:.04em;
+      color:var(--chalk);max-width:40ch;background:rgba(12,12,14,.66);padding:12px 18px;
+      border-left:6px solid var(--lime);transform:rotate(.6deg)}
+    .btn{display:inline-block;margin-top:34px;font-family:"Bungee",sans-serif;font-size:20px;
+      letter-spacing:.04em;text-transform:uppercase;color:var(--black);background:var(--lime);
+      padding:14px 40px;border:4px solid var(--black);box-shadow:7px 8px 0 rgba(0,0,0,.6);
+      transform:rotate(-2deg);transition:transform .12s linear,box-shadow .12s linear}
+    .btn:hover{transform:rotate(2deg) scale(1.04);box-shadow:3px 4px 0 rgba(0,0,0,.6)}
+
+    /* handstyle tag over the top of everything */
+    .tag{position:absolute;font-family:"Permanent Marker",cursive;font-size:34px;color:var(--violet);
+      text-shadow:2px 3px 0 rgba(0,0,0,.6);pointer-events:none;opacity:.92}
+    .tag.t1{right:4%;top:66px;transform:rotate(-11deg)}
+    .tag.t2{right:14%;bottom:8px;transform:rotate(7deg);color:var(--red);font-size:26px}
+
+    /* ── Features: three throwies ────────────────────────────── */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:26px}
+    .card{position:relative;padding:26px 22px 32px;background:rgba(12,12,14,.55);
+      border:4px solid var(--black);box-shadow:8px 9px 0 rgba(0,0,0,.55);overflow:visible}
+    .card:nth-child(1){transform:rotate(-1.2deg);border-top:10px solid var(--red)}
+    .card:nth-child(2){transform:rotate(.9deg);border-top:10px solid var(--yellow)}
+    .card:nth-child(3){transform:rotate(-.5deg);border-top:10px solid var(--violet)}
+    .icon{display:inline-block;font-family:"Oswald",sans-serif;font-size:11px;font-weight:700;letter-spacing:.24em;
+      text-transform:uppercase;color:var(--black);background:var(--chalk);padding:4px 11px;
+      border:2px solid var(--black);transform:rotate(-1.8deg)}
+    .card h3{font-family:"Bungee",sans-serif;font-size:34px;line-height:1;text-transform:uppercase;margin:16px 0 10px;
+      color:var(--chalk);-webkit-text-stroke:5px var(--black);paint-order:stroke fill;
+      text-shadow:4px 5px 0 rgba(0,0,0,.5)}
+    .card:nth-child(1) h3{color:var(--red)}
+    .card:nth-child(2) h3{color:var(--yellow)}
+    .card:nth-child(3) h3{color:var(--violet)}
+    .card p{font-size:15.5px;font-weight:300;line-height:1.6;color:#d9d9d4}
+    .card .drip{position:absolute;left:26px;bottom:-2px;width:8px;height:0;border-radius:0 0 60% 60%;
+      background:var(--red);transition:height .55s cubic-bezier(.3,.9,.4,1)}
+    .card:nth-child(2) .drip{background:var(--yellow);left:auto;right:34px}
+    .card:nth-child(3) .drip{background:var(--violet);left:52%}
+    .card:hover .drip{height:44px}
+
+    /* ── CTA: a stencil ──────────────────────────────────────── */
+    .cta{margin-top:34px;padding:58px 26px 62px;text-align:center;position:relative;
+      background:repeating-linear-gradient(135deg, rgba(255,255,255,.045) 0 12px, transparent 12px 24px),
+        rgba(12,12,14,.62);
+      border:5px dashed rgba(242,242,239,.5)}
+    .cta h2{font-family:"Bungee",sans-serif;font-size:clamp(34px,6.6vw,80px);text-transform:uppercase;
+      color:var(--chalk);-webkit-text-stroke:8px var(--black);paint-order:stroke fill;
+      text-shadow:8px 9px 0 rgba(0,0,0,.6), 0 0 34px rgba(242,242,239,.28)}
+    .cta button{margin-top:28px;font-family:"Bungee",sans-serif;font-size:18px;text-transform:uppercase;
+      color:var(--chalk);background:var(--red);padding:14px 36px;border:4px solid var(--black);
+      box-shadow:6px 7px 0 rgba(0,0,0,.6);transform:rotate(1.4deg);
+      transition:transform .12s linear,background .12s linear}
+    .cta button:hover{background:var(--violet);transform:rotate(-2deg) scale(1.05)}
+
+    /* aerosol particles */
+    .dot{position:fixed;border-radius:50%;pointer-events:none;z-index:80}
+
+    @media(max-width:860px){.features{grid-template-columns:1fr}.tag{display:none}}
+
+    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
+       Intentionally neutral and IDENTICAL on all 29 style pages.
+       It is reference material, not part of the styled demo above. */
+    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
+    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
+      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:860px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
+    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:#52525b;margin:0}
+    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
+    .dp-back:hover{color:#18181b}
+    .dp{margin:0}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row:first-child{border-top:0;padding-top:0}
+    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:#3f3f46}
+    .dp dd{margin:0;color:#27272a}
+    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dd > ul{list-style:disc}
+    .dp dd > ol{list-style:decimal}
+    .dp li{margin-bottom:7px}
+    .dp li:last-child{margin-bottom:0}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp-palette{list-style:none!important;padding-left:0!important}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
+      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <nav class="nav">
+      <a href="#" class="logo spray">Atlas</a>
+      <ul>
+        <li><a href="#">Work</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <span class="tag t1" aria-hidden="true">est. now</span>
+      <h1 class="spray">Design is <em>how</em> it feels to use.</h1>
+      <div class="drips" id="drips" aria-hidden="true"></div>
+      <p>A study in visual language, one style at a time.</p>
+      <br>
+      <a href="#" class="btn" id="spraybtn">Explore</a>
+      <span class="tag t2" aria-hidden="true">one shot</span>
+    </header>
+
+    <section class="features">
+      <article class="card">
+        <span class="icon">Grid</span>
+        <h3>Structure</h3>
+        <p>Every element has a reason to be where it is.</p>
+        <span class="drip" aria-hidden="true"></span>
+      </article>
+      <article class="card">
+        <span class="icon">Split</span>
+        <h3>Contrast</h3>
+        <p>Tension between elements creates meaning.</p>
+        <span class="drip" aria-hidden="true"></span>
+      </article>
+      <article class="card">
+        <span class="icon">Pulse</span>
+        <h3>Rhythm</h3>
+        <p>Repetition and spacing set the pace.</p>
+        <span class="drip" aria-hidden="true"></span>
+      </article>
+    </section>
+
+    <section class="cta">
+      <h2>Start building.</h2>
+      <button>Get in touch</button>
+    </section>
+
+  </div>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Graffiti">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <a class="dp-back" href="../index.html">← All styles</a>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Graffiti</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>New York and Philadelphia, late 1960s–70s — handstyle tags on subway cars evolving into throw-ups and full-colour pieces, and a global visual language by the 1980s.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#3c3c40"></span><code>#3c3c40</code> — concrete wall, the surface everything is painted on</li>
+              <li><span class="sw" style="--c:#0c0c0e"></span><code>#0c0c0e</code> — outline black, on every letterform without exception</li>
+              <li><span class="sw" style="--c:#12c8ff"></span><code>#12c8ff</code> — cyan fill of the main piece</li>
+              <li><span class="sw" style="--c:#ffd400"></span><code>#ffd400</code> — yellow second fill and the logo</li>
+              <li><span class="sw" style="--c:#ff2f3c"></span><code>#ff2f3c</code> — red throwie and CTA button</li>
+              <li><span class="sw" style="--c:#a83bff"></span><code>#a83bff</code> — violet handstyle tag over the top</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Bungee for all piece lettering (a heavy display face that survives a 9px stroke), Permanent Marker for handstyle tags, Oswald Light/Bold for body and labels. Display runs <code>clamp(38px, 8vw, 104px)</code> uppercase at 0.94 leading, always with <code>-webkit-text-stroke</code> and <code>paint-order: stroke fill</code> so the outline sits behind the fill rather than eating it. Body stays a modest 15.5–17px, because on a wall the letters are the artwork and the text is just information.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>A 1120px wall with content stacked flush left and every element rotated between −3deg and +2deg — a wall is painted in passes, not laid out. Cards sit on a normal three-column grid with a 24px gutter but each carries a different rotation and a different 10px colour cap, and tags are absolutely positioned over the top of everything as the last layer.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>Letterforms built in layers: colour fill, <code>-webkit-text-stroke</code> black outline, hard offset shadow, and a wide same-hue glow for aerosol overspray.</li>
+              <li>A five-layer concrete wall — two blotch patterns on offset tiles, two directional grains, and a diagonal base gradient.</li>
+              <li>Drips as elements with a rounded bottom plus a circular <code>::after</code> bead, animating their height downward on hover.</li>
+              <li>Nav links as slapped stickers: chalk-white boxes, 3px black borders, hard shadows, each at a different angle.</li>
+              <li>A stencil block outlined in 5px dashed chalk with a 135° hatch, standing in for spray-through card.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>JS generates the drip row under the piece — 11 drips at randomised x positions under the painted letters, heights (14–58px) and widths — so the paint runs differently on every load. Clicking <em>Explore</em> fires an aerosol burst: 60 particles of random size and hue scattered in a cone with randomised opacity, fading over 900ms and cleaning up after themselves. Card hovers run a fresh drip down 44px over 550ms. All hover transitions are 120ms linear — spray paint does not ease.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Paint the wall first — a grainy, blotched, unevenly lit concrete ground — because graffiti on a flat colour reads as clip art.</li>
+              <li>Outline every letterform in heavy black using <code>-webkit-text-stroke</code> with <code>paint-order: stroke fill</code>, then add a hard offset shadow and a soft same-hue glow for overspray.</li>
+              <li>Rotate everything ±1–3deg and let layers sit in the order they were applied, with handstyle tags on top of finished work.</li>
+              <li>Use four or five saturated aerosol colours against grey; never tint the wall itself.</li>
+              <li>Add drips and randomise them per load — paint that runs identically every time reads as a font, not a can.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  /* Paint runs differently every time you paint. */
+  (function () {
+    var wrapEl = document.getElementById('drips');
+    for (var i = 0; i < 11; i++) {
+      var d = document.createElement('i');
+      d.style.left = (3 + Math.random() * 44).toFixed(1) + '%';
+      d.style.height = (14 + Math.random() * 44).toFixed(0) + 'px';
+      d.style.width = (6 + Math.random() * 6).toFixed(0) + 'px';
+      d.style.opacity = (0.65 + Math.random() * 0.35).toFixed(2);
+      wrapEl.appendChild(d);
+    }
+
+    var colors = ['#12c8ff', '#ffd400', '#ff2f3c', '#a83bff', '#5cff54', '#f2f2ef'];
+    document.getElementById('spraybtn').addEventListener('click', function (e) {
+      e.preventDefault();
+      var r = this.getBoundingClientRect();
+      var ox = r.left + r.width / 2, oy = r.top + r.height / 2;
+      for (var i = 0; i < 60; i++) {
+        var p = document.createElement('span');
+        p.className = 'dot';
+        var s = 2 + Math.random() * 7;
+        p.style.width = p.style.height = s + 'px';
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.left = ox + 'px';
+        p.style.top = oy + 'px';
+        p.style.opacity = (0.25 + Math.random() * 0.6).toFixed(2);
+        document.body.appendChild(p);
+        var ang = -Math.PI / 2 + (Math.random() - 0.5) * 1.9;
+        var dist = 40 + Math.random() * 190;
+        p.animate(
+          [
+            { transform: 'translate(0,0)' },
+            { transform: 'translate(' + Math.cos(ang) * dist + 'px,' + Math.sin(ang) * dist + 'px)', opacity: 0 }
+          ],
+          { duration: 700 + Math.random() * 400, easing: 'cubic-bezier(.15,.8,.4,1)' }
+        );
+        setTimeout(function (n) { return function () { n.remove(); }; }(p), 1150);
+      }
+    });
+  })();
+</script>
+</body>
+</html>
