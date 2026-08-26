@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Playfair+Display:ital,wght@1,700;1,900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Playfair+Display:ital,wght@1,700;1,900&family=Space+Mono:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ MAXIMALISM ═══════════════════════════════════════════════
        More is more. Every surface is patterned, every colour fights
@@ -17,22 +17,63 @@
        black outlines and huge type.                                */
 
     :root{
-      --pink:#ff2d95;
-      --yellow:#ffe600;
-      --cyan:#00e5ff;
-      --purple:#6a00f4;
-      --lime:#b6ff00;
-      --black:#0b0b0b;
+      /* The six loud hues ARE the identity, so they do not move between
+         themes — the documented palette stays true in both. What moves is
+         the WHITE: the wash over the patterned ground, the white callout
+         boxes, and the white halo behind card titles. Those are the
+         hard-coded values that would blow out on a dark ground. */
+      --th-pink:#ff2d95;
+      --th-yellow:#ffe600;
+      --th-cyan:#00e5ff;
+      --th-purple:#6a00f4;
+      --th-lime:#b6ff00;
+      --th-black:#0b0b0b;
+      --th-veil:rgba(255,255,255,.55);  /* diagonal wash over the ground */
+      --th-surface:#ffffff;             /* callout boxes             */
+      --th-on-surface:#0b0b0b;          /* text inside them          */
+      --th-surface-line:#0b0b0b;        /* their outline             */
+      --th-halo:#ffffff;                /* ghost behind card titles  */
+      --th-surface-accent:#6a00f4;      /* accent text ON the surface */
+
+      --pink:var(--th-pink);
+      --yellow:var(--th-yellow);
+      --cyan:var(--th-cyan);
+      --purple:var(--th-purple);
+      --lime:var(--th-lime);
+      --black:var(--th-black);
+      --veil:var(--th-veil);
+      --surface:var(--th-surface);
+      --on-surface:var(--th-on-surface);
+      --surface-line:var(--th-surface-line);
+      --halo:var(--th-halo);
+      --surface-accent:var(--th-surface-accent);
+
+      --rail:0px;   /* the one token the nav mode drives */
+    }
+
+    :root[data-theme="dark"]{
+      --th-veil:rgba(5,5,9,.74);   /* the same wash, inverted: the pattern
+                                      survives, the glare does not */
+      --th-surface:#101014;
+      --th-on-surface:#f4f4f5;     /* 17.27:1 on the surface */
+      --th-surface-line:#f4f4f5;   /* a black outline round a near-black
+                                      box on a dark ground is invisible */
+      --th-halo:#0b0b0b;
+      /* purple on the dark surface is 2.64:1 — the accent that sits on a
+         surface has to move even though the six hues do not */
+      --th-surface-accent:#00e5ff;
     }
 
     body{
       background:
-        repeating-linear-gradient(45deg, rgba(255,255,255,.55) 0 14px, transparent 14px 28px),
+        repeating-linear-gradient(45deg, var(--veil) 0 14px, transparent 14px 28px),
         repeating-conic-gradient(from 0deg at 50% 50%, var(--yellow) 0deg 90deg, var(--cyan) 90deg 180deg) 0 0/64px 64px,
         var(--pink);
       color:var(--black);
       font-family:"Space Mono",monospace;
       overflow-x:hidden;
+      padding-left:var(--rail);
+      transition:padding-left .18s ease;
     }
 
     .shell{max-width:1120px;margin:0 auto;padding:20px clamp(12px,3vw,28px) 0}
@@ -54,7 +95,42 @@
       padding:8px 18px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;
       box-shadow:4px 4px 0 var(--black);transition:transform .12s ease,background .12s ease}
     .nav li:nth-child(2n) a{background:var(--lime)}
-    .nav ul a:hover{transform:rotate(4deg) scale(1.08);background:var(--pink);color:#fff}
+    .nav ul a:hover{transform:rotate(4deg) scale(1.08);background:var(--pink);color:var(--black)}
+
+    /* ── Controls ────────────────────────────────────────────────
+       Pills, like everything else that can be clicked here, but
+       smaller and on the surface colour so they read as utility
+       rather than as a fourth nav destination. Pressed = a loud
+       colour change, which is how this page signals anything. */
+    .controls{display:flex;flex-wrap:wrap;gap:10px}
+    .ctl{display:inline-flex;align-items:baseline;gap:7px;
+      font-family:"Space Mono",monospace;font-weight:700;font-size:11px;
+      text-transform:uppercase;letter-spacing:.08em;
+      background:var(--surface);color:var(--on-surface);
+      border:4px solid var(--surface-line);border-radius:99px;padding:7px 14px;
+      box-shadow:4px 4px 0 var(--surface-line);transform:rotate(-2deg);
+      transition:transform .12s ease,background .12s ease,box-shadow .12s ease,
+                 color .12s ease,border-color .12s ease}
+    .ctl + .ctl{transform:rotate(1.5deg)}
+    .ctl[aria-pressed="true"]{background:var(--lime);color:var(--black);
+      border-color:var(--black);box-shadow:4px 4px 0 var(--black)}
+    .ctl:hover{transform:rotate(3deg) scale(1.06)}
+    .ctl:focus-visible{outline:4px solid var(--cyan);outline-offset:3px}
+
+    /* ── Sidebar mode ────────────────────────────────────────────
+       The same nav element, re-placed. z-index 90 clears
+       .design-points (80) and stays under the confetti (99). */
+    :root[data-nav="side"]{--rail:264px}
+    [data-nav="side"] .nav{
+      position:fixed;left:0;top:0;bottom:0;width:var(--rail);
+      flex-direction:column;align-items:flex-start;justify-content:flex-start;
+      gap:20px;margin-top:0;padding:24px 18px;
+      border-width:5px 5px 5px 0;border-radius:0 26px 26px 0;
+      box-shadow:10px 0 0 var(--purple);
+      overflow-y:auto;z-index:90}
+    [data-nav="side"] .nav ul{flex-direction:column;align-items:flex-start;gap:10px}
+    [data-nav="side"] .controls{flex-direction:column;align-items:flex-start}
+    [data-nav="side"] .marquee{padding-left:var(--rail)}
 
     /* ── Hero ────────────────────────────────────────────────── */
     .hero{position:relative;margin:34px 0;padding:44px 26px;border:6px solid var(--black);border-radius:8px;
@@ -62,14 +138,15 @@
         radial-gradient(circle at 12% 20%, var(--lime) 0 60px, transparent 61px),
         radial-gradient(circle at 88% 78%, var(--cyan) 0 90px, transparent 91px),
         repeating-linear-gradient(-45deg, var(--purple) 0 22px, #5300c0 22px 44px);
-      box-shadow:14px 14px 0 var(--black), 26px 26px 0 var(--yellow);
+      box-shadow:14px 14px 0 var(--black);
       text-align:center;overflow:hidden}
     .hero h1{font-family:"Archivo Black",sans-serif;font-size:clamp(34px,7.6vw,86px);line-height:.92;
       letter-spacing:-.03em;text-transform:uppercase;color:var(--yellow);
       text-shadow:4px 4px 0 var(--pink), 8px 8px 0 var(--black);}
     .hero h1 em{font-family:"Playfair Display",serif;font-style:italic;font-weight:900;text-transform:lowercase;
       color:var(--cyan);text-shadow:4px 4px 0 var(--black)}
-    .hero p{margin:26px auto 0;max-width:34ch;background:#fff;border:4px solid var(--black);border-radius:60px;
+    .hero p{margin:26px auto 0;max-width:34ch;background:var(--surface);color:var(--on-surface);
+      border:4px solid var(--surface-line);border-radius:60px;
       padding:12px 22px;font-size:15px;font-weight:700;transform:rotate(-1.4deg);box-shadow:6px 6px 0 var(--pink)}
 
     .btn{display:inline-block;margin-top:30px;font-family:"Archivo Black",sans-serif;font-size:22px;
@@ -80,7 +157,7 @@
     .btn:hover{transform:rotate(-3deg) scale(1.06);box-shadow:4px 4px 0 var(--black),9px 9px 0 var(--cyan)}
 
     .sticker{position:absolute;font-family:"Archivo Black",sans-serif;font-size:13px;text-transform:uppercase;
-      background:var(--pink);color:#fff;border:4px solid var(--black);border-radius:99px;padding:8px 14px;
+      background:var(--pink);color:var(--black);border:4px solid var(--black);border-radius:99px;padding:8px 14px;
       box-shadow:4px 4px 0 var(--black);animation:wob 3.2s ease-in-out infinite}
     .s1{top:14px;right:16px;transform:rotate(11deg);background:var(--yellow);color:var(--black)}
     .s2{bottom:18px;left:18px;transform:rotate(-9deg)}
@@ -97,61 +174,192 @@
     .icon{display:inline-block;background:var(--black);color:var(--lime);font-weight:700;font-size:12px;
       letter-spacing:.2em;text-transform:uppercase;padding:6px 12px;border-radius:6px;transform:rotate(-2deg)}
     .card h3{font-family:"Archivo Black",sans-serif;font-size:34px;text-transform:uppercase;line-height:.95;
-      margin:16px 0 10px;color:var(--purple);text-shadow:3px 3px 0 #fff}
-    .card p{font-size:14.5px;font-weight:700;line-height:1.45;background:#fff;border:3px solid var(--black);
+      margin:16px 0 10px;color:var(--purple);text-shadow:3px 3px 0 var(--halo)}
+    .card p{font-size:14.5px;font-weight:700;line-height:1.45;background:var(--surface);
+      color:var(--on-surface);border:3px solid var(--surface-line);
       border-radius:12px;padding:10px 12px}
 
     /* ── CTA ─────────────────────────────────────────────────── */
     .cta{text-align:center;border:6px solid var(--black);border-radius:8px;padding:52px 22px;margin-bottom:46px;
-      background:repeating-linear-gradient(90deg, var(--pink) 0 30px, var(--purple) 30px 60px);
+      background:repeating-linear-gradient(90deg, var(--black) 0 30px, var(--purple) 30px 60px);
       box-shadow:inset 0 0 0 10px var(--yellow), 14px 14px 0 var(--black)}
     .cta h2{font-family:"Playfair Display",serif;font-style:italic;font-weight:900;
       font-size:clamp(38px,7vw,76px);color:var(--yellow);text-shadow:5px 5px 0 var(--black)}
     .cta .cta-btn{display:inline-block;margin-top:26px;font-family:"Archivo Black",sans-serif;font-size:19px;text-transform:uppercase;
-      background:#fff;border:6px solid var(--black);border-radius:99px;padding:15px 36px;
-      box-shadow:8px 8px 0 var(--cyan),16px 16px 0 var(--black);transition:transform .15s ease}
+      background:var(--surface);color:var(--on-surface);
+      border:6px solid var(--surface-line);border-radius:99px;padding:15px 36px;
+      box-shadow:8px 8px 0 var(--cyan),16px 16px 0 var(--surface-line);transition:transform .15s ease}
     .cta .cta-btn:hover{transform:translate(4px,4px) rotate(-2deg)}
+
+    /* ── Component reference ─────────────────────────────────── */
+    .component{border:6px solid var(--black);border-radius:8px;padding:34px 22px;margin-bottom:46px;
+      background:repeating-linear-gradient(-45deg, var(--cyan) 0 26px, var(--lime) 26px 52px);
+      box-shadow:12px 12px 0 var(--black);text-align:center}
+    .component__label{display:inline-block;background:var(--black);color:var(--lime);font-weight:700;
+      font-size:12px;letter-spacing:.2em;text-transform:uppercase;padding:6px 12px;border-radius:6px;
+      transform:rotate(-2deg)}
+    .component__title{font-family:"Archivo Black",sans-serif;font-size:clamp(26px,4.4vw,44px);
+      text-transform:uppercase;line-height:.95;margin:16px 0 12px;color:var(--purple);
+      text-shadow:3px 3px 0 var(--halo)}
+    .component__note{max-width:44ch;margin:0 auto;font-size:14.5px;font-weight:700;line-height:1.45;
+      background:var(--surface);color:var(--on-surface);border:3px solid var(--surface-line);
+      border-radius:12px;padding:10px 12px}
+
+    /* ── Dialog ──────────────────────────────────────────────────
+       Native <dialog>: the browser supplies the focus trap, Escape
+       and the inert background. Outlined, rotated and shadow-stacked
+       like every other block on the page — nothing rests at 0deg. */
+    .dialog{width:min(560px,calc(100vw - 44px));padding:0;background:transparent;border:0;overflow:visible}
+    .dialog::backdrop{background:rgba(11,11,11,.72)}
+    .dialog[open]{animation:dlg-in .16s ease}
+    @keyframes dlg-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+    .dialog__inner{background:var(--yellow);border:6px solid var(--black);border-radius:18px;
+      padding:30px 26px;transform:rotate(-1.2deg);box-shadow:12px 12px 0 var(--black),24px 24px 0 var(--pink)}
+    .dialog__label{display:inline-block;background:var(--black);color:var(--lime);font-weight:700;
+      font-size:12px;letter-spacing:.2em;text-transform:uppercase;padding:6px 12px;border-radius:6px}
+    .dialog__title{font-family:"Archivo Black",sans-serif;font-size:30px;text-transform:uppercase;
+      line-height:.95;margin:14px 0 12px;color:var(--purple);text-shadow:3px 3px 0 var(--halo)}
+    .dialog__body p{font-size:14.5px;font-weight:700;line-height:1.45;
+      background:var(--surface);color:var(--on-surface);border:3px solid var(--surface-line);
+      border-radius:12px;padding:10px 12px}
+    .dialog__meta{margin-top:14px;font-size:11px;font-weight:700;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--black)}
+
+    /* ── Footer ──────────────────────────────────────────────────
+       Another outlined, off-axis block — the page closes the way it
+       opens. Grid so the signature keeps its own row at its own width. */
+    .site-footer{border:6px solid var(--black);border-radius:26px;padding:26px 22px;margin-bottom:46px;
+      background:var(--yellow);box-shadow:12px 12px 0 var(--purple);
+      display:grid;grid-template-columns:auto 1fr;gap:18px 22px;align-items:center}
+    .site-footer__mark{font-family:"Archivo Black",sans-serif;font-size:26px;line-height:1;
+      color:var(--purple);text-shadow:2px 2px 0 var(--cyan),4px 4px 0 var(--black);
+      transform:rotate(-3deg);grid-column:1;grid-row:1}
+    .site-footer__links{display:flex;flex-wrap:wrap;gap:10px;grid-column:2;grid-row:1;justify-self:end}
+    .site-footer__links a{display:block;background:var(--cyan);border:4px solid var(--black);
+      border-radius:99px;padding:8px 18px;font-weight:700;font-size:13px;text-transform:uppercase;
+      letter-spacing:.05em;box-shadow:4px 4px 0 var(--black);
+      transition:transform .12s ease,background .12s ease}
+    .site-footer__links a:nth-child(2n){background:var(--lime)}
+    .site-footer__links a:hover{transform:rotate(4deg) scale(1.08);background:var(--pink);color:var(--black)}
+    .site-footer__links a:focus-visible{outline:4px solid var(--purple);outline-offset:3px}
+
+    /* ── Signature mark ──────────────────────────────────────────
+       Copied verbatim from styles/swiss-design.html and deliberately
+       NOT adapted to this page. Maximalism owns three shouting
+       typefaces; this is a hand, and it is the same hand on every
+       page. No rotation, no shadow stack, no outline. Do not
+       restyle it. Only the focus ring differs, to stay visible
+       against this page's grounds. */
+    .signature{grid-column:1/-1;grid-row:2;justify-self:start;
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--black);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .18s linear}
+    .signature:hover{border-bottom-color:var(--black)}
+    .signature:focus-visible{outline:2px solid var(--purple);outline-offset:4px}
 
     /* pointer confetti */
     .bit{position:fixed;width:14px;height:14px;pointer-events:none;z-index:99;border:3px solid var(--black)}
 
     @media(max-width:640px){
-      .hero{box-shadow:8px 8px 0 var(--black),16px 16px 0 var(--yellow)}
+      .hero{box-shadow:8px 8px 0 var(--black)}
       .logo{font-size:24px}
+
+      /* A fixed 264px rail cannot share a 320px viewport with six-pixel
+         borders, so side mode collapses to the stacked top nav. --rail
+         is the single token behind the offset, so zeroing it undoes it.
+
+         Un-fixing .nav is safe here: the only absolutely-positioned
+         elements on this page are .sticker (containing block .hero,
+         which keeps position:relative) and .bit (position:fixed, no
+         containing block at all). Nothing depends on .nav or .shell
+         being positioned — and .hero's position:relative must stay. */
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;width:auto;
+        flex-direction:row;margin-top:22px;padding:14px 20px;
+        border-width:5px;border-radius:26px;box-shadow:10px 10px 0 var(--purple);
+        overflow:visible}
+      [data-nav="side"] .nav ul{flex-direction:row}
+      [data-nav="side"] .controls{flex-direction:row}
+      [data-nav="side"] .marquee{padding-left:0}
+      .site-footer{grid-template-columns:1fr}
+      .site-footer__mark,.site-footer__links,.signature{grid-column:1;justify-self:start}
+      .site-footer__links{grid-row:2}
+      .signature{grid-row:3}
     }
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
-    .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    /* ══ DESIGN POINTS ═════════════════════════════════════════════
+       Rebuilt in this page's own language: outlined, off-axis, shadow
+       stacked, three arguing typefaces. Content is unchanged — only its
+       presentation is this page's. */
+    .dp-divider{height:0;border-top:6px solid var(--black);margin:0}
+    .design-points{position:relative;z-index:80;
+      background:
+        repeating-linear-gradient(45deg, var(--veil) 0 14px, transparent 14px 28px),
+        var(--purple);
+      color:var(--on-surface);padding:64px 22px 90px;
+      font-family:"Space Mono",monospace;font-size:14.5px;line-height:1.55;
+      letter-spacing:0;text-transform:none;text-align:left;font-style:normal;font-weight:400}
+    .dp-inner{max-width:1120px;margin:0 auto}
+    .dp-kicker{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;
+      background:var(--yellow);border:6px solid var(--black);border-radius:26px;
+      padding:14px 20px;box-shadow:10px 10px 0 var(--cyan);margin-bottom:34px;transform:rotate(-1deg)}
+    .design-points h2{font-family:"Archivo Black",sans-serif;font-size:26px;letter-spacing:-.02em;
+      line-height:1;text-transform:uppercase;color:var(--purple);
+      text-shadow:2px 2px 0 var(--cyan),4px 4px 0 var(--black);margin:0}
+    .dp-back{display:block;background:var(--lime);border:4px solid var(--black);border-radius:99px;
+      padding:8px 18px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;
+      color:var(--black);box-shadow:4px 4px 0 var(--black);transition:transform .12s ease,background .12s ease}
+    .dp-back:hover{transform:rotate(4deg) scale(1.08);background:var(--pink)}
+    .dp-back:focus-visible{outline:4px solid var(--cyan);outline-offset:3px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
-    .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
+    .dp-row{display:grid;grid-template-columns:200px 1fr;gap:18px;
+      background:var(--surface);color:var(--on-surface);
+      border:5px solid var(--surface-line);border-radius:16px;padding:18px 20px;margin-bottom:20px;
+      box-shadow:8px 8px 0 var(--surface-line)}
+    .dp-row:nth-child(2n){transform:rotate(-.5deg)}
+    .dp-row:nth-child(2n+1){transform:rotate(.4deg)}
+    .dp dt{font-family:"Archivo Black",sans-serif;font-size:15px;letter-spacing:.02em;line-height:1.2;
+      text-transform:uppercase;color:var(--surface-accent)}
+    .dp dd{margin:0;color:var(--on-surface);font-weight:700}
     .dp dd > ul,.dp dd > ol{padding-left:20px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
-    .dp li{margin-bottom:7px}
+    .dp li{margin-bottom:8px}
     .dp li:last-child{margin-bottom:0}
-    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp em{font-family:"Playfair Display",serif;font-style:italic;font-weight:900}
+    .dp code{font-family:"Space Mono",monospace;font-size:13px;font-weight:700;
+      background:var(--yellow);color:var(--black);border:2px solid var(--black);
+      padding:0 5px;border-radius:5px}
     .dp-palette{list-style:none!important;padding-left:0!important}
-    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
-    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+    .sw{display:inline-block;width:15px;height:15px;border-radius:4px;
+      border:3px solid var(--surface-line);vertical-align:-3px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){
+      .dp-row{grid-template-columns:1fr;gap:8px}
+      .design-points{padding:52px 18px 72px}
+    }
 </style>
+<script>
+  /* Applied before first paint so a stored preference never flashes the
+     default first. Storage is behind try/catch: private mode, quota or
+     blocked cookies fall through to the default rather than throwing.
+
+     'atlas-theme' is the sitewide key, shared with index.html and the
+     other pages that offer a theme control. 'atlas-max-nav' is scoped to
+     this page, because the sidebar belongs to this page alone. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }
+    }
+    root.setAttribute('data-nav',   read('atlas-max-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',   ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -166,6 +374,16 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">
+          <span class="ctl__label">Nav</span>
+          <span class="ctl__value" id="nav-toggle-value">Top</span>
+        </button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">
+          <span class="ctl__label">Theme</span>
+          <span class="ctl__value" id="theme-toggle-value">Light</span>
+        </button>
+      </div>
     </nav>
 
     <header class="hero">
@@ -201,7 +419,39 @@
       <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
+    <section class="component" aria-labelledby="component-title">
+      <span class="component__label">Dialog</span>
+      <h2 class="component__title" id="component-title">Component reference</h2>
+      <p class="component__note">A modal built on the native dialog element — focus trapped,
+        Escape to close, background inert.</p>
+      <button type="button" class="btn" id="dialog-open">Open dialog</button>
+    </section>
+
+    <footer class="site-footer">
+      <p class="site-footer__mark">Atlas</p>
+      <nav class="site-footer__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <div class="dialog__inner">
+      <span class="dialog__label">Dialog</span>
+      <h2 class="dialog__title" id="dialog-title">Component reference</h2>
+      <div class="dialog__body">
+        <p>A modal built on the native dialog element. The browser traps focus inside it,
+        closes it on Escape, and makes everything behind it inert. Clicking the backdrop
+        closes it, and focus returns to the button that opened it.</p>
+      </div>
+      <p class="dialog__meta">Native &lt;dialog&gt; · showModal()</p>
+      <button type="button" class="btn dialog__close" id="dialog-close">Close</button>
+    </div>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -220,7 +470,7 @@
 
         <div class="dp-row" data-field="era-origin">
           <dt>Era / Origin</dt>
-          <dd>A counter-reaction to flat minimalism, roughly 2018 onward — descended from Memphis Group (1981), rave flyers, and early personal-homepage excess.</dd>
+          <dd>2020s "loud" SaaS and marketing-site design — Gumroad's 2022 rebrand, Figma and Linear's campaign pages, the neo-brutalist template wave — which is what this page's actual technique is: stacked zero-blur shadows, a deliberately broken type scale, saturated fills behind hard black outlines. That idiom is a counter-reaction to flat minimalism from roughly 2018 onward, and it descends in turn from Memphis Group (1981), rave flyers, and early personal-homepage excess.</dd>
         </div>
 
         <div class="dp-row" data-field="color-palette">
@@ -262,7 +512,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>Constant and unapologetic. The marquee translates −50% on an 18s linear loop; stickers bob 7px on a 3.2s ease-in-out loop. Hovering a nav pill rotates it 4deg and scales it 1.08; hovering a card snaps it back to 0deg and scales it 1.04; the button flips rotation and swaps its shadow stack. Clicking <em>Explore</em> or <em>Get in touch</em> fires a JS confetti burst of 18 hard-outlined squares that fall with randomised velocity and rotation, cleaned up after 1.2s.</dd>
+          <dd>Constant and unapologetic. The marquee translates −50% on an 18s linear loop; stickers bob 7px on a 3.2s ease-in-out loop. Hovering a nav pill rotates it 4deg and scales it 1.08; hovering a card snaps it back to 0deg and scales it 1.04; the button flips rotation and swaps its shadow stack. Clicking <em>Explore</em> or <em>Get in touch</em> fires a JS confetti burst of 18 hard-outlined squares that fall with randomised velocity and rotation, cleaned up after 1.2s — the burst is driven by the Web Animations API rather than CSS, so it is guarded explicitly and skipped when <code>prefers-reduced-motion</code> is set. Two pill controls sit in the nav: one moves the nav between a top bar and a fixed left rail by changing a single <code>--rail</code> token, the other flips <code>data-theme</code> so the whole page re-resolves through a handful of colour tokens; both persist to <code>localStorage</code> and turn lime when pressed. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background; it rises 10px over 160ms and returns focus to its trigger.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -283,8 +533,87 @@
   </section>
 
 <script>
+  (function () {
+    var root = document.documentElement;
+
+    /* Storage is best-effort: a failure must never break a control. */
+    function store(key, value) {
+      try { localStorage.setItem(key, value); }
+      catch (e) { /* private mode / quota */ }
+    }
+
+    /* ── 1. Nav: top bar <-> fixed left rail ────────────────────────
+       One element, re-placed. State lives in data-nav on <html> and the
+       reflow is CSS driven by --rail.
+
+       aria-pressed, not aria-expanded: this switches between two
+       persistent layouts. Nothing is disclosed or hidden, so an
+       expanded/collapsed relationship would be a lie to a screen reader. */
+    var navBtn   = document.getElementById('nav-toggle');
+    var navValue = document.getElementById('nav-toggle-value');
+
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navValue.textContent = mode === 'side' ? 'Side' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next);
+      store('atlas-max-nav', next);
+    });
+
+    /* ── 2. Light / dark, whole page ────────────────────────────────
+       The six loud hues do not move; data-theme flips the wash over the
+       ground, the white callout surfaces, their outline and the halo
+       behind card titles, which every declaration already resolves through. */
+    var themeBtn   = document.getElementById('theme-toggle');
+    var themeValue = document.getElementById('theme-toggle-value');
+
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeValue.textContent = mode === 'dark' ? 'Dark' : 'Light';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      store('atlas-theme', next);
+    });
+
+    /* ── 3. Dialog ──────────────────────────────────────────────────
+       Native showModal() gives the focus trap, Escape and the inert
+       background. Only backdrop-click and an explicit focus return are
+       added on top. */
+    var dlg      = document.getElementById('dialog');
+    var openBtn  = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function () { dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
+  })();
+</script>
+
+<script>
   /* Confetti on the two calls to action. More is more. */
   (function () {
+    /* The burst is Web Animations API, not CSS, so the sitewide
+       prefers-reduced-motion rule in reset.css cannot mute it — it has to
+       be checked here. Queried live rather than cached so a preference
+       changed mid-session is honoured. */
+    var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+    function motionOK() { return !(reduce && reduce.matches); }
+
     var colors = ['#ff2d95', '#ffe600', '#00e5ff', '#6a00f4', '#b6ff00', '#ffffff'];
     function burst(x, y) {
       for (var i = 0; i < 18; i++) {
@@ -307,10 +636,12 @@
         setTimeout(function (n) { return function () { n.remove(); }; }(bit), 1500);
       }
     }
-    document.querySelectorAll('.btn, .cta .cta-btn').forEach(function (el) {
+    document.querySelectorAll('a.btn, .cta .cta-btn').forEach(function (el) {
       el.addEventListener('click', function (e) {
         /* only swallow the click for placeholder links; let real hrefs navigate */
         if (el.getAttribute('href') === '#') e.preventDefault();
+        /* reduced motion: acknowledge the click without the burst */
+        if (!motionOK()) { return; }
         var r = el.getBoundingClientRect();
         burst(r.left + r.width / 2, r.top + r.height / 2);
       });
