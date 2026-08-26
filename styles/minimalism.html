@@ -249,7 +249,18 @@
       margin-bottom:44px}
     .design-points h2{font:500 11px/1.4 "Inter",-apple-system,"Helvetica Neue",Arial,sans-serif;
       letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0}
+    /* The two links are peers, so they get the same treatment and are
+       separated by space rather than a divider — this page groups with
+       whitespace, never with a box or a rule. */
+    .dp-links{display:flex;align-items:baseline;gap:28px}
+    .dp-skill,
     .dp-back{font-size:14px;color:var(--muted);position:relative;padding-bottom:2px}
+    .dp-skill::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+      background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.7,.3,1)}
+    .dp-skill:hover{color:var(--ink)}
+    .dp-skill:hover::after{transform:scaleX(1)}
+    .dp-skill:focus-visible,
+    .dp-back:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
     .dp-back::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
       background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.7,.3,1)}
     .dp-back:hover{color:var(--ink)}
@@ -398,7 +409,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <span class="dp-links">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </span>
       </div>
       <dl class="dp">
 

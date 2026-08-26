@@ -351,9 +351,19 @@
       gap:var(--col-gap);align-items:end;margin-bottom:44px}
     /* the one display-size heading in the panel — inside the page's
        ramp (nothing between 15px and 46px), below the CTA's 88px */
-    .design-points h2{grid-column:1/10;margin:0;
+    .design-points h2{grid-column:1/7;margin:0;
       font:700 clamp(46px,5.4vw,68px)/.9 "Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;
       letter-spacing:-.048em;text-transform:uppercase;color:var(--ink)}
+    /* mono, because the page reserves IBM Plex Mono for metadata and
+       grid labels — which is what a file handle is. 2px rule = the
+       item-rule weight, one step below the 4px section rule. */
+    .dp-skill{grid-column:7/10;justify-self:end;align-self:end;
+      font:500 11px/1 "IBM Plex Mono",monospace;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--grey);text-decoration:none;
+      border-bottom:2px solid var(--rule);padding-bottom:4px;
+      transition:color .18s linear,border-color .18s linear}
+    .dp-skill:hover{color:var(--red);border-bottom-color:var(--red)}
+    .dp-skill:focus-visible{outline:2px solid var(--red);outline-offset:3px}
     .dp-back{grid-column:10/13;justify-self:end;
       font:500 12px/1 "Inter Tight","Helvetica Neue",Arial,sans-serif;letter-spacing:.1em;
       text-transform:uppercase;color:var(--ink);text-decoration:none;
@@ -400,6 +410,7 @@
 
     @media(max-width:860px){
       .design-points h2{grid-column:1/13}
+      .dp-skill{grid-column:1/13;justify-self:start;margin-top:18px}
       .dp-back{grid-column:1/13;justify-self:start;margin-top:18px}
       .dp dt{grid-column:1/13}
       .dp dd{grid-column:1/13;margin-top:14px}
@@ -533,6 +544,8 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
+        <!-- TODO: link to generated SKILL.md -->
+        <a class="dp-skill" href="#">Download skill</a>
         <a class="dp-back" href="../index.html">← All styles</a>
       </div>
       <dl class="dp">

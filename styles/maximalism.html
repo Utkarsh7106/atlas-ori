@@ -308,6 +308,15 @@
     .design-points h2{font-family:"Archivo Black",sans-serif;font-size:26px;letter-spacing:-.02em;
       line-height:1;text-transform:uppercase;color:var(--purple);
       text-shadow:2px 2px 0 var(--cyan),4px 4px 0 var(--black);margin:0}
+    /* one more pill — cyan, counter-rotated, its own hard shadow.
+       Nothing on this page rests at 0deg. */
+    .dp-skill{display:block;background:var(--cyan);border:4px solid var(--black);border-radius:99px;
+      padding:8px 18px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;
+      color:var(--black);box-shadow:4px 4px 0 var(--black);transform:rotate(2deg);
+      transition:transform .12s ease,background .12s ease}
+    .dp-skill:hover{transform:rotate(-4deg) scale(1.08);background:var(--yellow)}
+    .dp-skill:focus-visible{outline:4px solid var(--purple);outline-offset:3px}
+    .dp-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
     .dp-back{display:block;background:var(--lime);border:4px solid var(--black);border-radius:99px;
       padding:8px 18px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;
       color:var(--black);box-shadow:4px 4px 0 var(--black);transition:transform .12s ease,background .12s ease}
@@ -459,7 +468,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
