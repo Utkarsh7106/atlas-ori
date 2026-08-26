@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ GLASSMORPHISM ════════════════════════════════════════════
        Panels are frosted glass: semi-transparent, backdrop-blurred,
@@ -16,17 +16,81 @@
        only works if there is something SATURATED and MOVING behind
        the glass for it to distort.                                 */
 
+    /* The three orb hues are FIXED across themes. They are the saturated
+       field the whole premise depends on — "glass with nothing behind it
+       reads as flat grey" — and the documented palette names them by hex.
+       What moves is the void they sit on and the glass recipe itself,
+       because a pane tuned for one ground does not hold on another. */
     :root{
-      --void:#0d0b1f;               /* deep ground behind the orbs */
-      --orb-a:#7b2ff7;              /* violet   */
-      --orb-b:#f107a3;              /* magenta  */
-      --orb-c:#00d4ff;              /* cyan     */
-      --glass:rgba(255,255,255,.10);
-      --glass-strong:rgba(255,255,255,.16);
-      --edge:rgba(255,255,255,.28);
+      --th-void:#0d0b1f;            /* deep ground behind the orbs */
+      --th-glass:rgba(255,255,255,.10);
+      /* NOT the documented value. Signature Techniques pins the pane fill
+         at .10 and the border at .28, so neither moves; --glass-strong is
+         the control/hover fill and is free. Raised so a button reads as a
+         control against the pane it sits on, including where both are over
+         a bright orb — at .16 the Explore button's edge measured 2.83:1. */
+      --th-glass-strong:rgba(255,255,255,.24);
+      --th-edge:rgba(255,255,255,.28);
+      --th-muted:rgba(255,255,255,.72);
+      --th-hi:rgba(255,255,255,.35); /* inset top highlight        */
+      --th-streak:rgba(255,255,255,.22);
+      --th-grain:rgba(255,255,255,.09);
+      --th-drop:rgba(0,0,0,.6);      /* pane drop shadow           */
+      --th-btn-hi:rgba(255,255,255,.4);
+      --th-btn-drop:rgba(0,0,0,.7);
+      --th-solid:rgba(255,255,255,.9); /* the one opaque pill      */
+      --th-on-solid:#1a0b2e;
+      /* Minimum-contrast floor. Composited UNDER the white glass fill, so
+         it is a no-op wherever the ground is already dark — scrim over the
+         void is the void — and only bites where an orb is bright behind a
+         pane. The open orb field between panes is untouched. */
+      --th-scrim:rgba(13,11,31,.68);
+
+      --orb-a:#7b2ff7;              /* violet   — fixed */
+      --orb-b:#f107a3;              /* magenta  — fixed */
+      --orb-c:#00d4ff;              /* cyan     — fixed */
       --text:#ffffff;
-      --muted:rgba(255,255,255,.72);
+
+      --void:var(--th-void);
+      --glass:var(--th-glass);
+      --glass-strong:var(--th-glass-strong);
+      --edge:var(--th-edge);
+      --muted:var(--th-muted);
+      --hi:var(--th-hi);
+      --streak:var(--th-streak);
+      --grain:var(--th-grain);
+      --drop:var(--th-drop);
+      --btn-hi:var(--th-btn-hi);
+      --btn-drop:var(--th-btn-drop);
+      --solid:var(--th-solid);
+      --on-solid:var(--th-on-solid);
+      --scrim:var(--th-scrim);
+
       --r:24px;
+      --rail:0px;                   /* the one token the nav mode drives */
+    }
+
+    /* Dark mode deepens the ground and RAISES the glass alpha. That is the
+       whole point: the same .10 white over a deeper void yields a smaller
+       luminance step, so the panes would stop reading as sheets and start
+       reading as flat dark cards. The panes stay translucent — you still
+       see the orb field shift through them — they are just pitched to hold
+       the same separation over a darker backdrop. */
+    :root[data-theme="dark"]{
+      --th-void:#05040e;
+      --th-glass:rgba(255,255,255,.14);
+      --th-glass-strong:rgba(255,255,255,.30);
+      --th-edge:rgba(255,255,255,.34);
+      --th-muted:rgba(255,255,255,.78);
+      --th-hi:rgba(255,255,255,.42);
+      --th-streak:rgba(255,255,255,.26);
+      --th-grain:rgba(255,255,255,.11);
+      --th-drop:rgba(0,0,0,.78);
+      --th-btn-hi:rgba(255,255,255,.48);
+      --th-btn-drop:rgba(0,0,0,.85);
+      --th-solid:rgba(255,255,255,.94);
+      --th-on-solid:#0b0418;
+      --th-scrim:rgba(5,4,14,.72);
     }
 
     body{
@@ -36,7 +100,9 @@
       font-weight:400;
       min-height:100vh;
       padding:0 clamp(16px,4vw,40px);
+      padding-left:calc(clamp(16px,4vw,40px) + var(--rail));
       overflow-x:hidden;
+      transition:background .3s ease;
     }
 
     /* The saturated field that the glass distorts. */
@@ -46,26 +112,31 @@
     .o2{width:460px;height:460px;background:var(--orb-b);top:34%;right:-80px}
     .o3{width:420px;height:420px;background:var(--orb-c);bottom:-120px;left:26%}
     .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.35;
-      background-image:radial-gradient(rgba(255,255,255,.09) 1px, transparent 1px);
+      background-image:radial-gradient(var(--grain) 1px, transparent 1px);
       background-size:3px 3px}
 
     .wrap{max-width:1060px;margin:0 auto;padding:32px 0 84px;position:relative;z-index:2}
 
     /* ── The glass recipe ────────────────────────────────────── */
     .glass{
-      background:var(--glass);
+      /* two layers: the white glass fill on top, the contrast floor beneath.
+         Order matters — the first background layer paints above the second. */
+      background:
+        linear-gradient(var(--glass), var(--glass)),
+        linear-gradient(var(--scrim), var(--scrim));
       backdrop-filter:blur(18px) saturate(160%);
       -webkit-backdrop-filter:blur(18px) saturate(160%);
       border:1px solid var(--edge);
       border-radius:var(--r);
-      box-shadow:0 18px 40px -18px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.35);
+      box-shadow:0 18px 40px -18px var(--drop), inset 0 1px 0 var(--hi);
       position:relative;
       overflow:hidden;
+      transition:background .3s ease,border-color .3s ease,box-shadow .3s ease;
     }
     /* A specular streak across the top of each pane. */
     .glass::before{
       content:"";position:absolute;inset:0;pointer-events:none;
-      background:linear-gradient(160deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 42%);
+      background:linear-gradient(160deg, var(--streak) 0%, rgba(255,255,255,0) 42%);
     }
 
     /* ── Nav ─────────────────────────────────────────────────── */
@@ -86,10 +157,11 @@
       font-size:15px;font-weight:700;color:#fff;
       background:var(--glass-strong);border:1px solid var(--edge);
       backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.4), 0 10px 24px -12px rgba(0,0,0,.7);
+      box-shadow:inset 0 1px 0 var(--btn-hi), 0 10px 24px -12px var(--btn-drop);
       transition:background .3s ease,transform .3s ease,box-shadow .3s ease}
-    .btn:hover{background:rgba(255,255,255,.26);transform:translateY(-2px);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 16px 30px -14px rgba(0,0,0,.8)}
+    .btn:hover{background:var(--glass-strong);filter:brightness(1.35);transform:translateY(-2px);
+      box-shadow:inset 0 1px 0 var(--btn-hi), 0 16px 30px -14px var(--btn-drop)}
+    .btn:focus-visible,.nav ul a:focus-visible{outline:2px solid var(--text);outline-offset:3px}
 
     /* ── Features ────────────────────────────────────────────── */
     .features{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:22px}
@@ -97,7 +169,10 @@
     .card:hover{transform:translateY(-6px);background:var(--glass-strong)}
     .icon{display:inline-block;padding:6px 13px;border-radius:99px;font-size:11px;font-weight:700;
       letter-spacing:.12em;text-transform:uppercase;color:#fff;
-      background:rgba(255,255,255,.14);border:1px solid var(--edge)}
+      /* the dim fill, not --glass-strong: this chip carries white text, so
+         lightening it works against legibility — the border is what makes
+         it read as a chip. */
+      background:var(--glass);border:1px solid var(--edge)}
     .card h3{font-size:22px;font-weight:700;letter-spacing:-.02em;margin:20px 0 8px}
     .card p{font-size:14.5px;color:var(--muted);line-height:1.6}
 
@@ -105,45 +180,200 @@
     .cta{margin-top:22px;padding:58px 44px;border-radius:32px;display:flex;
       justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
     .cta h2{font-size:clamp(28px,4.2vw,48px);font-weight:300;letter-spacing:-.03em}
-    .cta .cta-btn{display:inline-block;padding:15px 34px;border-radius:99px;font-size:15px;font-weight:700;color:#1a0b2e;
-      background:rgba(255,255,255,.9);box-shadow:0 10px 26px -12px rgba(0,0,0,.8);
+    .cta .cta-btn{display:inline-block;padding:15px 34px;border-radius:99px;font-size:15px;font-weight:700;
+      color:var(--on-solid);background:var(--solid);box-shadow:0 10px 26px -12px var(--btn-drop);
       transition:background .3s ease,transform .3s ease}
     .cta .cta-btn:hover{background:#fff;transform:translateY(-2px)}
+    .cta .cta-btn:focus-visible{outline:2px solid var(--text);outline-offset:3px}
 
-    @media(max-width:820px){.features{grid-template-columns:1fr}.hero{padding:52px 26px}}
+    /* ── Controls ────────────────────────────────────────────────
+       Small glass pills — the page's own recipe at chip scale, since
+       every surface here is a pane. Pressed raises the fill the same
+       way a pane does on hover, rather than introducing a new signal. */
+    .controls{display:flex;gap:8px;flex-wrap:wrap}
+    .ctl{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:12px;
+      font-size:13px;font-weight:500;color:var(--muted);
+      background:transparent;border:1px solid transparent;
+      transition:background .3s ease,color .3s ease,border-color .3s ease,transform .15s ease}
+    .ctl__v{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text)}
+    .ctl[aria-pressed="true"]{background:var(--glass-strong);border-color:var(--edge);color:var(--text)}
+    .ctl:hover{background:var(--glass-strong);border-color:var(--edge);color:var(--text)}
+    .ctl:focus-visible{outline:2px solid var(--text);outline-offset:3px}
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
-    .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    /* ── Sidebar mode ────────────────────────────────────────────
+       The same nav pane, stood on end. The orb layer is z-index 0 and
+       grain 1, content 2; .design-points is 80, so the rail takes 90. */
+    :root[data-nav="side"]{--rail:224px}
+    [data-nav="side"] .nav{
+      position:fixed;left:clamp(16px,4vw,40px);top:22px;bottom:22px;
+      width:calc(var(--rail) - 22px);
+      flex-direction:column;align-items:stretch;justify-content:flex-start;gap:20px;
+      overflow-y:auto;z-index:90}
+    [data-nav="side"] .nav ul{flex-direction:column;gap:6px}
+    [data-nav="side"] .controls{flex-direction:column;gap:6px}
+    [data-nav="side"] .ctl{justify-content:space-between}
+
+    /* ── Component reference ─────────────────────────────────── */
+    .component{margin-top:22px;padding:38px 44px;border-radius:32px;display:flex;
+      justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+    .component h2{font-size:clamp(22px,3vw,30px);font-weight:300;letter-spacing:-.03em}
+    .component p{margin-top:10px;font-size:14.5px;color:var(--muted);line-height:1.6;max-width:46ch}
+
+    /* ── Dialog ──────────────────────────────────────────────────
+       Native <dialog>: focus trap, Escape and inert background from the
+       browser. It is one more pane — same recipe, same floor — floated
+       off the stack rather than out of it. */
+    .dialog{width:min(540px,calc(100vw - 32px));padding:38px 34px;color:var(--text);
+      font-family:"Manrope",-apple-system,"Segoe UI",sans-serif;border:1px solid var(--edge);
+      border-radius:32px;
+      background:
+        linear-gradient(var(--glass-strong), var(--glass-strong)),
+        linear-gradient(var(--scrim), var(--scrim)),
+        linear-gradient(var(--void), var(--void));
+      box-shadow:0 30px 60px -24px var(--btn-drop), inset 0 1px 0 var(--hi)}
+    .dialog::backdrop{background:rgba(6,4,16,.66)}
+    :root[data-theme="dark"] .dialog::backdrop{background:rgba(0,0,0,.78)}
+    .dialog h2{font-size:26px;font-weight:300;letter-spacing:-.03em;margin-top:18px}
+    .dialog p{margin-top:14px;font-size:14.5px;color:var(--muted);line-height:1.6}
+    .dialog__close{display:inline-block;margin-top:26px;padding:13px 30px;border-radius:99px;
+      font-size:14px;font-weight:700;color:var(--text);
+      background:var(--glass-strong);border:1px solid var(--edge);
+      box-shadow:inset 0 1px 0 var(--btn-hi);
+      transition:background .3s ease,transform .3s ease}
+    .dialog__close:hover{filter:brightness(1.35);transform:translateY(-2px)}
+    .dialog__close:focus-visible{outline:2px solid var(--text);outline-offset:3px}
+
+    /* ── Footer ──────────────────────────────────────────────────
+       The nav inverted: the nav puts the mark left and the links right,
+       so the footer puts the links left and the mark — here the
+       signature — right. Same pane, same 22px gap, closing the stack. */
+    .site-footer{margin-top:22px;display:flex;justify-content:space-between;align-items:center;
+      gap:16px;flex-wrap:wrap;padding:20px 22px;border-radius:18px}
+    .site-footer__links{display:flex;gap:8px;flex-wrap:wrap}
+    .site-footer__links a{display:block;padding:9px 18px;border-radius:12px;font-size:14px;font-weight:500;
+      color:var(--muted);border:1px solid transparent;
+      transition:background .3s ease,color .3s ease,border-color .3s ease}
+    .site-footer__links a:hover{background:var(--glass-strong);border-color:var(--edge);color:var(--text)}
+    .site-footer__links a:focus-visible{outline:2px solid var(--text);outline-offset:3px}
+
+    /* ── Signature mark ──────────────────────────────────────────
+       Copied verbatim from styles/swiss-design.html and deliberately NOT
+       adapted. This page owns Manrope, the 24px radius and the glass
+       recipe; the signature is a hand, and it is the same hand on every
+       page. No pane, no border, no blur. Do not restyle it. Checked for
+       the specificity trap that caught Brutalism: the footer link rule is
+       scoped to ".site-footer__links a", and the signature is a sibling of
+       that nav rather than inside it, so it is structurally out of reach. */
+    .signature{
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--text);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .18s linear}
+    .signature:hover{border-bottom-color:var(--text)}
+    .signature:focus-visible{outline:2px solid var(--text);outline-offset:4px}
+
+    /* press feedback — this page shipped with no :active state at all.
+       Driven from pointer events because Chromium withholds :active on
+       touch until it knows the gesture is not a scroll. Placed after the
+       rules it extends. */
+    /* the press overrides the page's slower 300ms hover timing — feedback
+       has to land inside the tap, not after it */
+    .btn.is-pressed,.cta .cta-btn.is-pressed,.dialog__close.is-pressed{
+      transform:translateY(1px) scale(.98);transition-duration:.1s}
+    .ctl.is-pressed,.nav ul a.is-pressed,
+    .site-footer__links a.is-pressed,.dp-skill.is-pressed,.dp-back.is-pressed{
+      transform:scale(.96);transition-duration:.1s}
+
+    @media(max-width:820px){
+      .features{grid-template-columns:1fr}
+      .hero{padding:52px 26px}
+
+      /* A fixed 224px rail cannot share a 320px viewport with 32px pane
+         padding, so side mode folds back into the stack. --rail is the
+         single token behind the offset.
+
+         position:relative — NOT static. Every .glass pane carries an
+         absolutely-positioned ::before holding the specular streak, and
+         the pane is its containing block; making .nav static here would
+         hand that streak the viewport instead. */
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:relative;left:auto;top:auto;bottom:auto;
+        width:auto;flex-direction:row;align-items:center;justify-content:space-between;
+        gap:16px;overflow:hidden}
+      [data-nav="side"] .nav ul{flex-direction:row;gap:8px}
+      [data-nav="side"] .controls{flex-direction:row;gap:8px}
+      [data-nav="side"] .ctl{justify-content:flex-start}
+    }
+
+    /* ══ DESIGN POINTS ═════════════════════════════════════════════
+       Rebuilt in this page's own language: the panel is a pane like every
+       other, on the same orb field, with the same recipe and the same
+       contrast floor. Rows are inner panes at a lighter fill so the stack
+       still reads as parallel sheets. Content unchanged — only presentation. */
+    .dp-divider{height:0;border:none;margin:0}
+    .design-points{position:relative;z-index:80;color:var(--text);
+      background:transparent;padding:0 clamp(16px,4vw,40px) 84px;
+      padding-left:calc(clamp(16px,4vw,40px) + var(--rail));
+      font-family:"Manrope",-apple-system,"Segoe UI",sans-serif;
+      font-size:14.5px;line-height:1.6;letter-spacing:0;text-transform:none;
+      text-align:left;font-style:normal;font-weight:400}
+    .dp-inner{max-width:1060px;margin:0 auto;padding:38px 44px;border-radius:32px;
+      border:1px solid var(--edge);position:relative;overflow:hidden;
+      background:
+        linear-gradient(var(--glass), var(--glass)),
+        linear-gradient(var(--scrim), var(--scrim));
+      backdrop-filter:blur(18px) saturate(160%);
+      -webkit-backdrop-filter:blur(18px) saturate(160%);
+      box-shadow:0 18px 40px -18px var(--drop), inset 0 1px 0 var(--hi)}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;
+      margin-bottom:26px}
+    .design-points h2{font-size:26px;font-weight:300;letter-spacing:-.03em;margin:0;color:var(--text)}
+    .dp-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .dp-skill,.dp-back{display:block;padding:9px 18px;border-radius:12px;font-size:13px;font-weight:500;
+      color:var(--muted);border:1px solid transparent;
+      transition:background .3s ease,color .3s ease,border-color .3s ease,transform .15s ease}
+    .dp-skill{background:var(--glass-strong);border-color:var(--edge);color:var(--text)}
+    .dp-skill:hover{filter:brightness(1.3)}
+    .dp-back:hover{background:var(--glass-strong);border-color:var(--edge);color:var(--text)}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:2px solid var(--text);outline-offset:3px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
-    .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:22px;align-items:start;
+      padding:20px 22px;border-radius:18px;margin-bottom:14px;
+      background:var(--glass);border:1px solid var(--edge)}
+    .dp-row:last-child{margin-bottom:0}
+    .dp dt{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text)}
+    .dp dd{margin:0;color:var(--muted)}
     .dp dd > ul,.dp dd > ol{padding-left:20px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
     .dp li{margin-bottom:7px}
     .dp li:last-child{margin-bottom:0}
     .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+      background:var(--glass);color:var(--text);padding:1px 6px;border-radius:6px}
     .dp-palette{list-style:none!important;padding-left:0!important}
-    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
-    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:4px;
+      border:1px solid var(--edge);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:820px){
+      .dp-inner{padding:28px 22px}
+      .dp-row{grid-template-columns:1fr;gap:10px}
+    }
 </style>
+<script>
+  /* Applied before first paint so a stored preference never flashes the
+     default first. Storage is behind try/catch. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }
+    }
+    root.setAttribute('data-nav',   read('atlas-glass-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',     ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -163,6 +393,10 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">Nav <span class="ctl__v" id="nav-toggle-value">Top</span></button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">Theme <span class="ctl__v" id="theme-toggle-value">Light</span></button>
+      </div>
     </nav>
 
     <header class="hero glass">
@@ -196,7 +430,33 @@
       <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
+    <section class="component glass" aria-labelledby="component-title">
+      <div>
+        <h2 id="component-title">Component reference</h2>
+        <p>A modal built on the native dialog element — focus trapped, Escape to close,
+          background inert.</p>
+      </div>
+      <button type="button" class="btn" id="dialog-open">Open dialog</button>
+    </section>
+
+    <footer class="site-footer glass">
+      <nav class="site-footer__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <h2 id="dialog-title">Component reference</h2>
+    <p>A modal built on the native dialog element. The browser traps focus inside it,
+      closes it on Escape, and makes everything behind it inert. Clicking the backdrop
+      closes it, and focus returns to the button that opened it.</p>
+    <button type="button" class="dialog__close" id="dialog-close">Close</button>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -204,7 +464,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -256,7 +520,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>JS reads pointer position and translates each orb by its own <code>data-depth</code> factor (+26, −34, +18), so the field behind the glass parallaxes as the cursor moves and every pane's refraction shifts with it; movement is damped by lerping toward the target each frame in <code>requestAnimationFrame</code>. Panes lift −6px and raise their fill alpha on hover over 350ms; buttons brighten and lift 2px.</dd>
+          <dd>JS reads pointer position and translates each orb by its own <code>data-depth</code> factor (+26, −34, +18), so the field behind the glass parallaxes as the cursor moves and every pane's refraction shifts with it; movement is damped by lerping toward the target each frame in <code>requestAnimationFrame</code>. Because that loop is script-driven rather than CSS, it is guarded by a <code>matchMedia</code> check and the orbs are left at rest when <code>prefers-reduced-motion</code> is set. Panes lift −6px and raise their fill alpha on hover over 350ms; buttons brighten and lift 2px, and every control takes a pointer-driven pressed state held briefly so a touch tap registers. Two glass pill controls sit in the nav: one stands that same nav pane on end as a fixed rail through a single <code>--rail</code> token, the other flips <code>data-theme</code>, which deepens the void and raises the glass alpha together so the panes keep reading as sheets rather than flattening into dark cards. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -277,17 +541,94 @@
   </section>
 
 <script>
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    /* aria-pressed, not aria-expanded: two persistent layouts, nothing
+       disclosed or hidden. */
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'Rail' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-glass-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode === 'dark' ? 'Dark' : 'Light';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function () { dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
+
+    /* Press feedback that survives a touch tap. */
+    var PRESSABLE = '.btn, .ctl, .nav ul a, .cta .cta-btn, .site-footer__links a, .dp-skill, .dp-back, .dialog__close';
+    var MIN_HOLD = 150;
+    document.querySelectorAll(PRESSABLE).forEach(function (el) {
+      var at = 0, timer = null;
+      function down() { clearTimeout(timer); at = Date.now(); el.classList.add('is-pressed'); }
+      function up() {
+        var left = Math.max(0, MIN_HOLD - (Date.now() - at));
+        clearTimeout(timer);
+        timer = setTimeout(function () { el.classList.remove('is-pressed'); }, left);
+      }
+      el.addEventListener('pointerdown', down);
+      el.addEventListener('pointerup', up);
+      el.addEventListener('pointercancel', up);
+      el.addEventListener('pointerleave', up);
+    });
+  })();
+</script>
+
+<script>
   /* Parallax the light sources so the refraction through the glass moves. */
   (function () {
+    /* A requestAnimationFrame loop is not a CSS animation, so the sitewide
+       prefers-reduced-motion rule in reset.css cannot touch it. Queried
+       live so a preference changed mid-session is honoured — the loop
+       simply parks the orbs at rest and stops updating. */
+    var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
     var orbs = [].slice.call(document.querySelectorAll('.orb'));
     var tx = 0, ty = 0, cx = 0, cy = 0;
 
     window.addEventListener('pointermove', function (e) {
+      if (reduce && reduce.matches) { return; }
       tx = (e.clientX / window.innerWidth - 0.5) * 2;
       ty = (e.clientY / window.innerHeight - 0.5) * 2;
     });
 
     (function frame() {
+      if (reduce && reduce.matches) {
+        orbs.forEach(function (o) { o.style.transform = 'none'; });
+        requestAnimationFrame(frame);
+        return;
+      }
       cx += (tx - cx) * 0.06;
       cy += (ty - cy) * 0.06;
       orbs.forEach(function (o) {
