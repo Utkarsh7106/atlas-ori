@@ -1,0 +1,11 @@
+# Working docs from build/audit passes. These are deliverables for the
+# chat thread, not part of the site — they are sent directly rather than
+# committed. README.md is the exception: it documents the project for
+# anyone who lands on the repo, so it stays tracked.
+#
+# Add a line here for each new working doc; deliberately not a glob, so
+# nothing gets silently excluded.
+ATLAS_CODEBASE_REPORT.md
+PHASE2_SWISS_DESIGN_PATTERN.md
+PHASE2_REVISION.md
+PHASE_HOMEPAGE_CHROME.md
