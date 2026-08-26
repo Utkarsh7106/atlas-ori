@@ -8,26 +8,73 @@
 <link rel="stylesheet" href="assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
   /* index.html is deliberately neutral: it is a contents page, not a
      twenty-ninth style. Nothing here should compete with the pages. */
+  /* Theming works the way it does on styles/swiss-design.html: the page
+     keeps its existing colour declarations and [data-theme="dark"] simply
+     redefines the five tokens they already resolve through. No colour rule
+     below this block is theme-aware, and none needs to be. */
   :root{
+    color-scheme:light;
     --paper:#ffffff;
     --ink:#111114;
     --muted:#6b6b73;
     --rule:#e6e6ea;
     --tint:#f7f7f9;
+    --swatch-ring:rgba(0,0,0,.10);
+    /* --rule is a 1.24:1 hairline — fine for dividing content, too faint to
+       be a control's identifying boundary. --control-edge is the same idea
+       held above the 3:1 that WCAG 1.4.11 asks of one. */
+    --control-edge:#8a8a92;
+  }
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --paper:#111114;
+    --ink:#f2f2f4;
+    --muted:#9a9aa4;
+    --rule:#2f2f37;
+    --tint:#1a1a20;
+    /* the light ring vanishes on a dark ground, and swatch 01/04/24 are
+       near-black — the ring is what keeps them from dissolving. */
+    --swatch-ring:rgba(255,255,255,.16);
+    --control-edge:#6c6c74;
   }
   body{
     background:var(--paper);
     color:var(--ink);
     font-family:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased;
+    transition:background-color .2s ease,color .2s ease;
   }
   .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,40px)}
 
-  header.top{padding:clamp(64px,12vh,120px) 0 44px;border-bottom:1px solid var(--rule)}
+  /* ── Top bar ──────────────────────────────────────────────────────
+     Two elements only. Not a <nav> and not a second <header>: it holds
+     no links and header.top is already this page's banner landmark. */
+  .site-nav{display:flex;align-items:center;justify-content:space-between;
+    gap:16px;padding:22px 0 0}
+  .wordmark{font-size:17px;font-weight:600;letter-spacing:-.02em;color:var(--ink)}
+
+  .theme-toggle{display:inline-flex;align-items:center;gap:10px;padding:6px 2px}
+  .theme-toggle__text{font-size:13px;font-weight:500;color:var(--ink)}
+  .theme-toggle__switch{position:relative;flex:none;width:34px;height:20px;
+    border:1px solid var(--control-edge);border-radius:999px;background:var(--tint);
+    transition:background-color .18s ease,border-color .18s ease}
+  .theme-toggle__knob{position:absolute;top:2px;left:2px;width:14px;height:14px;
+    border-radius:50%;background:var(--muted);
+    transition:transform .18s ease,background-color .18s ease}
+  .theme-toggle[aria-pressed="true"] .theme-toggle__switch{background:var(--ink);
+    border-color:var(--ink)}
+  .theme-toggle[aria-pressed="true"] .theme-toggle__knob{transform:translateX(16px);
+    background:var(--paper)}
+  .theme-toggle:hover .theme-toggle__switch{border-color:var(--ink)}
+  .theme-toggle:focus-visible{outline:2px solid var(--ink);outline-offset:3px;
+    border-radius:4px}
+
+  header.top{padding:clamp(44px,8vh,88px) 0 44px;border-bottom:1px solid var(--rule);
+    transition:border-color .2s ease}
   .kicker{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
   header.top h1{margin-top:20px;font-size:clamp(34px,5.2vw,60px);font-weight:600;
     letter-spacing:-.035em;line-height:1.04;max-width:20ch}
@@ -36,8 +83,9 @@
   .meta b{color:var(--ink);font-weight:600}
 
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0;
-    border-left:1px solid var(--rule);margin:0 0 90px}
-  .card{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+    border-left:1px solid var(--rule);margin:0 0 90px;transition:border-color .2s ease}
+  .card{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    transition:border-color .2s ease}
   .card a{display:flex;flex-direction:column;height:100%;padding:26px 24px 24px;
     transition:background .18s ease}
   .card a:hover{background:var(--tint)}
@@ -45,7 +93,7 @@
     font-variant-numeric:tabular-nums}
   .swatches{display:flex;gap:4px;margin:16px 0 18px}
   .swatches i{width:22px;height:22px;border-radius:4px;background:var(--c);
-    box-shadow:inset 0 0 0 1px rgba(0,0,0,.10)}
+    box-shadow:inset 0 0 0 1px var(--swatch-ring);transition:box-shadow .2s ease}
   .card h2{font-size:19px;font-weight:600;letter-spacing:-.018em;margin-bottom:8px}
   .card p{font-size:14px;line-height:1.55;color:var(--muted);flex:1}
   .go{margin-top:18px;font-size:12.5px;font-weight:500;color:var(--ink);opacity:0;
@@ -54,19 +102,78 @@
   .card a:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
   .card a:focus-visible .go{opacity:1;transform:none}
 
-  footer{border-top:1px solid var(--rule);padding:32px 0 64px;font-size:13px;color:var(--muted);
-    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
-  footer a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
-  footer a:hover{color:var(--muted)}
-  footer code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;
-    background:var(--tint);padding:2px 6px;border-radius:3px}
+  /* ── Footer ───────────────────────────────────────────────────────
+     1fr / auto / 1fr so the centre zone is centred against the page,
+     not against whatever the two side links happen to measure. */
+  .site-footer{border-top:1px solid var(--rule);padding:30px 0 60px;
+    display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;
+    transition:border-color .2s ease}
+  .site-footer__link{font-size:13px;font-weight:500;color:var(--ink);
+    border-bottom:1px solid var(--control-edge);padding-bottom:2px;
+    transition:border-color .18s ease}
+  .site-footer__link:hover{border-bottom-color:var(--ink)}
+  .site-footer__link:focus-visible{outline:2px solid var(--ink);outline-offset:3px;
+    border-bottom-color:transparent}
+  .site-footer__link:first-child{justify-self:start}
+  .site-footer__link:last-child{justify-self:end}
 
-  @media(max-width:560px){.grid{grid-template-columns:1fr}}
+  /* ── Signature mark ───────────────────────────────────────────────
+     Treatment copied verbatim from styles/swiss-design.html. It is the
+     same hand on every page and is deliberately outside whatever type
+     system surrounds it — here, outside Inter. Do not restyle it.
+     Only the focus ring differs: this page has no accent token, so it
+     uses --ink like every other focus ring here. */
+  .signature{justify-self:center;
+    font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+    font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+    text-transform:none;color:var(--ink);
+    border-bottom:1px solid transparent;padding-bottom:1px;
+    transition:border-color .18s linear}
+  .signature:hover{border-bottom-color:var(--ink)}
+  .signature:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+
+  @media(max-width:560px){
+    .grid{grid-template-columns:1fr}
+    /* three zones will not sit across 280px of content; stack them and
+       let the signature keep the middle. */
+    .site-footer{grid-template-columns:1fr;justify-items:center;gap:22px;
+      text-align:center}
+    .site-footer__link:first-child,
+    .site-footer__link:last-child{justify-self:center}
+  }
 </style>
+<script>
+  /* Applied before first paint so a stored preference never flashes light
+     first. Same defensive try/catch as styles/swiss-design.html: any storage
+     failure (private mode, quota, blocked cookies) falls through to the
+     default rather than throwing.
+
+     The key is styles/swiss-design.html's existing 'atlas-swiss-theme',
+     reused verbatim so the preference survives navigating between the
+     homepage and that style page. The name is page-scoped and will want
+     renaming to 'atlas-theme' when the other pages gain the toggle — that
+     is a coordinated rename across every page, not a change to make here. */
+  (function () {
+    try {
+      var v = localStorage.getItem('atlas-swiss-theme');
+      if (v === 'dark' || v === 'light') {
+        document.documentElement.setAttribute('data-theme', v);
+      }
+    } catch (e) { /* leave the light default in place */ }
+  })();
+</script>
 </head>
 <body>
 
   <div class="wrap">
+
+    <div class="site-nav">
+      <span class="wordmark">Atlas</span>
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">
+        <span class="theme-toggle__switch" aria-hidden="true"><span class="theme-toggle__knob"></span></span>
+        <span class="theme-toggle__text">Dark mode</span>
+      </button>
+    </div>
 
     <header class="top">
       <p class="kicker">Atlas — a study in visual language</p>
@@ -347,13 +454,43 @@
       </li>
     </ul>
 
-    <footer>
-      <span>Hand-written HTML, CSS and vanilla JavaScript. The only shared stylesheet is
-      <code>assets/reset.css</code>; every other rule lives in its own page.</span>
-      <a href="https://github.com/Utkarsh7106/website-designs">Source on GitHub</a>
+    <footer class="site-footer">
+      <!-- TODO: LinkedIn link -->
+      <a class="site-footer__link" href="#">Contact me</a>
+      <!-- TODO: portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+      <a class="site-footer__link" href="https://github.com/Utkarsh7106">GitHub</a>
     </footer>
 
   </div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn  = document.getElementById('theme-toggle');
+
+    /* Storage is best-effort: a failure must never break the control. */
+    function store(value) {
+      try { localStorage.setItem('atlas-swiss-theme', value); }
+      catch (e) { /* private mode / quota */ }
+    }
+
+    /* All the visual work is CSS resolving through the five root tokens, so
+       the sitewide prefers-reduced-motion rule in reset.css mutes every
+       transition this triggers without any per-page handling. */
+    function apply(mode) {
+      root.setAttribute('data-theme', mode);
+      btn.setAttribute('aria-pressed', String(mode === 'dark'));
+    }
+    apply(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      apply(next);
+      store(next);
+    });
+  })();
+</script>
 
 </body>
 </html>
