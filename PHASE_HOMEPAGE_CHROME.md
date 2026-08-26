@@ -111,7 +111,9 @@ and the link:
    `index.html:353` and **nowhere else**. The new footer's GitHub link points
    at the profile, as specified, so nothing on the site now links to the source.
    If a source link should survive, the natural homes are the hero `.meta` row
-   or a `README.md` (the repo currently has none).
+   or `README.md`, which already documents the project's structure and is
+   the most natural home for a source link — it currently carries no URL at
+   all.
 2. **The "hand-written, one shared stylesheet" sentence** was the only place
    the project's central constraint was stated to a reader. The same claim
    survives as a code comment in `assets/reset.css:1–7`, which readers of the
