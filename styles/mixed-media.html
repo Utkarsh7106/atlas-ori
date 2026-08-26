@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,700;1,400&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,700;1,400&family=DM+Sans:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ MIXED MEDIA ══════════════════════════════════════════════
        Several PROCESSES colliding on one surface: halftone screen,
@@ -16,57 +16,161 @@
        cut-out type. No single material is allowed to dominate, and
        every layer shows the seam where it meets the next.          */
 
+    /* The three riso inks are FIXED across themes. They are spot inks —
+       the Colour Palette names all three by hex and the whole overprint
+       logic is built on them — so they behave the way Bento Grid's accent
+       does. What moves is the STOCK and the toner: dark mode is the same
+       three inks pulled on black stock, which is a thing riso studios
+       actually do, rather than an inversion of the artwork.
+
+       Text that sits ON an ink is therefore also fixed, per ink: the pink
+       and yellow plates take dark type, the blue and the toner block take
+       light. Those pairings do not move because the inks do not. */
+    /* INKS ARE FIXED; ONLY THE STOCK MOVES.
+
+       This page is ink on paper, so the theme changes the paper, not the
+       artwork: dark mode is the same inks pulled on black stock, which is
+       something riso studios actually do. Every ink keeps its documented
+       hex — the three riso plates and the photocopy black alike — so the
+       Colour Palette field stays literally true in both.
+
+       The first cut of this had --xerox doing two jobs, as the solid black
+       INK (tape strip, stamped chips, the first ransom cutting) and as the
+       colour of TYPE PRINTED ON THE STOCK. That works while the stock is
+       newsprint and breaks the moment it is not: flipping it for dark put
+       light type on the fixed yellow plate at 1.16:1. The two roles are
+       separate tokens now. */
     :root{
-      --news:#ece7dd;      /* newsprint stock        */
-      --xerox:#141414;     /* photocopy black        */
+      /* ---- inks: fixed in both stocks ---- */
+      --xerox:#141414;        /* photocopy black, as a solid ink */
       --riso-pink:#ff4f79;
       --riso-blue:#0f4cf0;
       --riso-yellow:#ffd400;
-      --tape:rgba(226,222,206,.86);
+      --on-warm:#141414;      /* type on the pink and yellow plates */
+      --on-cool:#ece7dd;      /* type on the blue plate and the black ink */
+
+      /* ---- stock, and everything that must read against it ---- */
+      --th-stock:#ece7dd;     /* newsprint            */
+      --th-body-ink:#141414;  /* type printed on it   */
+      --th-keyline:#141414;   /* a cutting's 2px edge */
+      --th-tape:rgba(226,222,206,.86);
+      --th-grain-a:rgba(20,20,20,.05);
+      --th-grain-b:rgba(20,20,20,.035);
+      --th-offset:rgba(20,20,20,.16);
+      --th-offset-s:rgba(20,20,20,.14);
+      --th-blend:multiply;
+
+      /* Ink density of the three painted washes. On pale stock a plate can
+         run near-solid and the dark body ink still reads through it; on
+         black stock the same plate screens up into a bright patch and the
+         light ink drowns. A printer's answer to that is not to drop the
+         plate but to screen it back, so the hue stays and the density
+         falls. These are those screen percentages. */
+      --th-wash-y:.75;        /* yellow, card 1 */
+      --th-wash-b:.6;         /* blue,   card 2 */
+      --th-wash-p:.7;         /* pink,   card 3 */
+
+      /* Trim on the small cuttings. On newsprint a pale stamp separates
+         itself from the black tape strip on sight; on black stock the
+         stamp's fill and the strip's ink land within 1.03:1 of each other
+         and the cutting vanishes, leaving bare text where the collage
+         should be. Photocopy black and black stock cannot be pulled apart
+         by tone — any stock light enough to clear 3:1 against #141414 is
+         a mid grey, not black — so the page uses the answer it already
+         documents: every cutting gets a 2px keyline. Only the black stock
+         needs it. */
+      --th-chip-edge:transparent;
+
+      --stock:var(--th-stock);
+      --body-ink:var(--th-body-ink);
+      --keyline:var(--th-keyline);
+      --tape:var(--th-tape);
+      --grain-a:var(--th-grain-a);
+      --grain-b:var(--th-grain-b);
+      --offset:var(--th-offset);
+      --offset-s:var(--th-offset-s);
+      --blend:var(--th-blend);
+      --wash-y:var(--th-wash-y);
+      --wash-b:var(--th-wash-b);
+      --wash-p:var(--th-wash-p);
+      --chip-edge:var(--th-chip-edge);
+
+      --rail:0px;             /* the one token the nav mode drives */
+    }
+
+    /* Black stock. One documented literal changes here and it is worth
+       naming: Signature Techniques pins the screen and the blots to
+       mix-blend-mode:multiply. Multiply over black stock resolves to black
+       — the screen and every plate would simply disappear. The reason the
+       field gives for multiply is "so where pink crosses blue a third
+       colour appears rather than one hiding the other", and on dark stock
+       `screen` is the operator that does exactly that. The technique is
+       preserved; the operator follows the stock. Flagged in
+       PHASE3_MIXED_MEDIA.md for a one-line amendment. */
+    :root[data-theme="dark"]{
+      --th-stock:#17140f;
+      --th-body-ink:#ece7dd;
+      --th-keyline:#ece7dd;
+      --th-tape:rgba(38,34,27,.9);
+      --th-grain-a:rgba(236,231,221,.05);
+      --th-grain-b:rgba(236,231,221,.035);
+      --th-offset:rgba(236,231,221,.14);
+      --th-offset-s:rgba(236,231,221,.12);
+      --th-blend:screen;
+      --th-wash-y:.22;
+      --th-wash-b:.52;
+      --th-wash-p:.36;
+      --th-chip-edge:#ece7dd;
     }
 
     body{
       background:
         /* photocopy grain */
-        repeating-linear-gradient(0deg, rgba(20,20,20,.05) 0 1px, transparent 1px 2px),
-        repeating-linear-gradient(90deg, rgba(20,20,20,.035) 0 1px, transparent 1px 3px),
-        var(--news);
-      color:var(--xerox);
+        repeating-linear-gradient(0deg, var(--grain-a) 0 1px, transparent 1px 2px),
+        repeating-linear-gradient(90deg, var(--grain-b) 0 1px, transparent 1px 3px),
+        var(--stock);
+      color:var(--body-ink);
       font-family:"DM Sans",-apple-system,sans-serif;
       overflow-x:hidden;
       padding:0 clamp(12px,3vw,26px);
+      /* the one token the nav mode drives — 0 with the tape across the
+         head, the strip's width with it down the left margin, so the
+         whole sheet moves clear of it rather than sitting under it */
+      padding-left:calc(clamp(12px,3vw,26px) + var(--rail));
     }
     .wrap{max-width:1080px;margin:0 auto;padding:22px 0 80px;position:relative}
 
     /* Halftone screen, laid over blocks in multiply. */
     .halftone{
-      background-image:radial-gradient(var(--xerox) 34%, transparent 36%);
+      background-image:radial-gradient(var(--body-ink) 34%, transparent 36%);
       background-size:6px 6px;
-      mix-blend-mode:multiply;
+      mix-blend-mode:var(--blend);
     }
     /* Riso plates overprint rather than stack. */
-    .plate{mix-blend-mode:multiply}
+    .plate{mix-blend-mode:var(--blend)}
 
     /* ── Nav: a strip of printed tape ────────────────────────── */
     .nav{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
-      background:var(--xerox);color:var(--news);padding:12px 22px;transform:rotate(-.5deg);
+      background:var(--xerox);color:var(--on-cool);padding:12px 22px;transform:rotate(-.5deg);
       clip-path:polygon(0 8%,3% 0,14% 6%,26% 1%,39% 7%,52% 1%,64% 7%,77% 1%,89% 6%,100% 0,100% 92%,88% 100%,
         76% 93%,63% 99%,50% 92%,37% 99%,25% 93%,12% 99%,0 92%);
-      box-shadow:6px 7px 0 rgba(20,20,20,.16)}
+      box-shadow:6px 7px 0 var(--offset)}
     .logo{font-family:"Bebas Neue",sans-serif;font-size:34px;letter-spacing:.06em;line-height:1;
       color:var(--riso-yellow)}
     .nav ul{display:flex;gap:6px}
     .nav ul a{display:block;font-family:"DM Sans",sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;
-      text-transform:uppercase;color:var(--xerox);background:var(--news);padding:6px 14px;
+      text-transform:uppercase;color:var(--body-ink);background:var(--stock);padding:6px 14px;
+      box-shadow:0 0 0 2px var(--chip-edge);
       transition:background .16s steps(2),transform .16s steps(2)}
     .nav li:nth-child(1) a{transform:rotate(-2deg)}
-    .nav li:nth-child(2) a{transform:rotate(1.6deg);background:var(--riso-yellow)}
+    .nav li:nth-child(2) a{transform:rotate(1.6deg);background:var(--riso-yellow);color:var(--on-warm)}
     .nav li:nth-child(3) a{transform:rotate(-1deg)}
-    .nav ul a:hover{background:var(--riso-pink);color:var(--news);transform:rotate(3deg)}
+    /* --on-warm, not --news: paper on the fluorescent pink is 2.56:1. */
+    .nav ul a:hover{background:var(--riso-pink);color:var(--on-warm);transform:rotate(3deg)}
 
     /* ── Hero: ransom-note headline over layered plates ──────── */
-    .hero{position:relative;margin-top:26px;padding:56px 30px 60px;background:var(--news);
-      box-shadow:0 0 0 2px var(--xerox), 12px 14px 0 rgba(20,20,20,.14);overflow:hidden}
+    .hero{position:relative;margin-top:26px;padding:56px 30px 60px;background:var(--stock);
+      box-shadow:0 0 0 2px var(--keyline), 12px 14px 0 var(--offset-s);overflow:hidden}
     .hero .screen{position:absolute;inset:0;opacity:.16;pointer-events:none}
     .blot{position:absolute;pointer-events:none}
     .blot.pink{width:290px;height:230px;background:var(--riso-pink);right:-40px;top:-56px;
@@ -80,96 +184,275 @@
     .hero h1{position:relative;z-index:2;font-size:0;line-height:1;max-width:820px}
     .hero h1 .w{display:inline-block;font-size:clamp(30px,5.6vw,66px);line-height:.96;margin:0 8px 8px 0;
       padding:2px 8px;vertical-align:middle}
-    .w1{font-family:"Bebas Neue",sans-serif;background:var(--xerox);color:var(--news);transform:rotate(-2.4deg)}
+    .w1{font-family:"Bebas Neue",sans-serif;background:var(--xerox);color:var(--on-cool);transform:rotate(-2.4deg);
+      box-shadow:0 0 0 2px var(--chip-edge)}
     .w2{font-family:"Libre Baskerville",serif;font-style:italic;font-weight:400;font-size:clamp(22px,4.1vw,48px);
-      background:var(--riso-yellow);transform:rotate(1.8deg)}
+      background:var(--riso-yellow);color:var(--on-warm);transform:rotate(1.8deg)}
     .w3{font-family:"DM Sans",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:-.03em;
-      background:var(--news);box-shadow:0 0 0 3px var(--xerox);transform:rotate(-1deg)}
-    .w4{font-family:"Bebas Neue",sans-serif;background:var(--riso-pink);color:var(--news);transform:rotate(2.6deg)}
+      background:var(--stock);box-shadow:0 0 0 3px var(--keyline);transform:rotate(-1deg)}
+    /* the pink cutting takes dark type, like the yellow one — paper on
+       this ink measures 2.56:1, under the 3:1 large type needs. */
+    .w4{font-family:"Bebas Neue",sans-serif;background:var(--riso-pink);color:var(--on-warm);transform:rotate(2.6deg)}
     .w5{font-family:"Libre Baskerville",serif;font-weight:700;font-size:clamp(19px,3.5vw,41px);
-      background:var(--riso-blue);color:var(--news);transform:rotate(-1.8deg)}
-    .w6{font-family:"Bebas Neue",sans-serif;color:var(--xerox);border-bottom:5px solid var(--riso-pink);
+      background:var(--riso-blue);color:var(--on-cool);transform:rotate(-1.8deg)}
+    .w6{font-family:"Bebas Neue",sans-serif;color:var(--body-ink);border-bottom:5px solid var(--riso-pink);
       transform:rotate(.8deg)}
 
     .hero p{position:relative;z-index:2;margin-top:26px;font-family:"Libre Baskerville",serif;font-size:14px;
-      line-height:1.8;max-width:38ch;background:var(--news);padding:12px 16px;
-      box-shadow:0 0 0 2px var(--xerox);transform:rotate(-.6deg)}
+      line-height:1.8;max-width:38ch;background:var(--stock);padding:12px 16px;
+      box-shadow:0 0 0 2px var(--keyline);transform:rotate(-.6deg)}
     .btn{position:relative;z-index:2;display:inline-block;margin-top:32px;font-family:"Bebas Neue",sans-serif;
-      font-size:24px;letter-spacing:.1em;color:var(--news);background:var(--xerox);padding:10px 40px;
-      box-shadow:7px 7px 0 var(--riso-pink);transform:rotate(-1.4deg);
+      font-size:24px;letter-spacing:.1em;color:var(--on-cool);background:var(--xerox);padding:10px 40px;
+      box-shadow:0 0 0 2px var(--chip-edge), 7px 7px 0 var(--riso-pink);transform:rotate(-1.4deg);
       transition:box-shadow .16s steps(2),transform .16s steps(2)}
-    .btn:hover{box-shadow:3px 3px 0 var(--riso-blue);transform:rotate(1.4deg)}
+    .btn:hover{box-shadow:0 0 0 2px var(--chip-edge), 3px 3px 0 var(--riso-blue);transform:rotate(1.4deg)}
 
     /* ── Features: three cuttings, each a different process ──── */
     .features{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:22px}
-    .card{position:relative;padding:26px 20px 30px;background:var(--news);
-      box-shadow:0 0 0 2px var(--xerox), 9px 10px 0 rgba(20,20,20,.14);overflow:hidden}
+    .card{position:relative;padding:26px 20px 30px;background:var(--stock);
+      box-shadow:0 0 0 2px var(--keyline), 9px 10px 0 var(--offset-s);overflow:hidden}
     .card:nth-child(1){transform:rotate(-1.1deg)}
     .card:nth-child(2){transform:rotate(.7deg)}
     .card:nth-child(3){transform:rotate(-.4deg)}
     .card .screen{position:absolute;inset:0;opacity:.2;pointer-events:none}
     .card:nth-child(1) .wash{position:absolute;inset:auto -20% -30% -20%;height:120px;background:var(--riso-yellow);
-      border-radius:50%;opacity:.75}
+      border-radius:50%;opacity:var(--wash-y)}
     .card:nth-child(2) .wash{position:absolute;inset:-30% -20% auto -20%;height:130px;background:var(--riso-blue);
-      border-radius:50%;opacity:.6}
+      border-radius:50%;opacity:var(--wash-b)}
     .card:nth-child(3) .wash{position:absolute;inset:auto -30% -40% 30%;height:150px;background:var(--riso-pink);
-      border-radius:50%;opacity:.7}
+      border-radius:50%;opacity:var(--wash-p)}
     .icon{position:relative;z-index:2;display:inline-block;font-family:"DM Sans",sans-serif;font-size:10px;
-      font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:var(--xerox);color:var(--news);
-      padding:4px 10px;transform:rotate(-1.6deg)}
+      font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:var(--xerox);color:var(--on-cool);
+      padding:4px 10px;transform:rotate(-1.6deg);box-shadow:0 0 0 2px var(--chip-edge)}
     .card h3{position:relative;z-index:2;font-family:"Bebas Neue",sans-serif;font-size:40px;letter-spacing:.02em;
       margin:14px 0 6px;line-height:.92}
     .card p{position:relative;z-index:2;font-family:"Libre Baskerville",serif;font-size:12.5px;line-height:1.85}
 
     /* ── CTA ─────────────────────────────────────────────────── */
     .cta{margin-top:22px;padding:56px 26px 60px;text-align:center;position:relative;overflow:hidden;
-      background:var(--riso-blue);color:var(--news);transform:rotate(.4deg);
-      box-shadow:0 0 0 2px var(--xerox), 12px 14px 0 rgba(20,20,20,.16)}
+      background:var(--riso-blue);color:var(--on-cool);transform:rotate(.4deg);
+      box-shadow:0 0 0 2px var(--keyline), 12px 14px 0 var(--offset)}
     .cta .screen{position:absolute;inset:0;opacity:.3;pointer-events:none}
     .cta h2{position:relative;z-index:2;font-family:"Bebas Neue",sans-serif;font-size:clamp(40px,8vw,92px);
       letter-spacing:.02em;line-height:.9}
     .cta h2 em{font-family:"Libre Baskerville",serif;font-style:italic;font-weight:400;font-size:.5em;
-      background:var(--riso-yellow);color:var(--xerox);padding:2px 10px;display:inline-block;transform:rotate(-2deg)}
+      background:var(--riso-yellow);color:var(--on-warm);padding:2px 10px;display:inline-block;transform:rotate(-2deg)}
     .cta .cta-btn{display:inline-block;position:relative;z-index:2;margin-top:28px;font-family:"DM Sans",sans-serif;font-size:13px;
-      font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--xerox);background:var(--news);
-      padding:14px 32px;box-shadow:6px 6px 0 var(--riso-pink);transform:rotate(-1deg);
+      font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--body-ink);background:var(--stock);
+      padding:14px 32px;box-shadow:0 0 0 2px var(--chip-edge), 6px 6px 0 var(--riso-pink);transform:rotate(-1deg);
       transition:box-shadow .16s steps(2)}
-    .cta .cta-btn:hover{box-shadow:2px 2px 0 var(--riso-yellow)}
+    .cta .cta-btn:hover{box-shadow:0 0 0 2px var(--chip-edge), 2px 2px 0 var(--riso-yellow)}
 
-    @media(max-width:860px){.features{grid-template-columns:1fr}}
+    /* ── Controls ────────────────────────────────────────────────
+       Two more cuttings pasted onto the tape strip: the same DM Sans
+       stamp the nav links use, off-axis, in the inks already on the
+       sheet. Pressed swaps the plate rather than tinting it, which is
+       what a second pass through the press would actually do. */
+    .controls{display:flex;gap:6px;flex-wrap:wrap}
+    .ctl{display:block;font-family:"DM Sans",sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--body-ink);background:var(--stock);padding:6px 12px;
+      transform:rotate(1.2deg);box-shadow:0 0 0 2px var(--chip-edge);
+      transition:background .16s steps(2),color .16s steps(2),transform .16s steps(2)}
+    .ctl + .ctl{transform:rotate(-1.8deg)}
+    .ctl__v{font-family:"Bebas Neue",sans-serif;font-size:14px;letter-spacing:.06em;line-height:1}
+    .ctl[aria-pressed="true"]{background:var(--riso-yellow);color:var(--on-warm)}
+    .ctl:hover{background:var(--riso-pink);color:var(--on-warm);transform:rotate(-3deg)}
+    .ctl:focus-visible,.nav ul a:focus-visible,.btn:focus-visible,
+    .cta .cta-btn:focus-visible{outline:3px solid var(--riso-blue);outline-offset:3px}
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
-    .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    /* ── Sidebar mode ────────────────────────────────────────────
+       The tape strip pasted down the left margin instead of across the
+       head. Nothing on this page uses z-index above the local 2 on type,
+       and .design-points is 80, so the strip takes 90. */
+    :root[data-nav="side"]{--rail:214px}
+    [data-nav="side"] .nav{
+      position:fixed;left:clamp(12px,3vw,26px);top:22px;bottom:22px;
+      width:calc(var(--rail) - 26px);
+      flex-direction:column;align-items:stretch;justify-content:flex-start;gap:16px;
+      overflow-y:auto;z-index:90;transform:rotate(-.4deg);
+      /* The tear is a clip-path tuned for a short, wide strip: its teeth
+         are 8% of the height, which on a 60px bar is 5px. Stood on end
+         that same 8% is ~76px and bites straight through the wordmark.
+         Side mode takes the identical polygon transposed onto the long
+         edges — the same tape torn down its sides instead of across its
+         ends. */
+      clip-path:polygon(8% 0,0 3%,6% 14%,1% 26%,7% 39%,1% 52%,7% 64%,1% 77%,6% 89%,0 100%,92% 100%,
+        100% 88%,93% 76%,99% 63%,92% 50%,99% 37%,93% 25%,99% 12%,92% 0)}
+    [data-nav="side"] .nav ul{flex-direction:column;gap:6px}
+    [data-nav="side"] .controls{flex-direction:column;gap:6px}
+
+    /* ── Component reference ─────────────────────────────────── */
+    .component{position:relative;margin-top:22px;padding:34px 26px 38px;background:var(--stock);
+      box-shadow:0 0 0 2px var(--keyline), 9px 10px 0 var(--offset-s);overflow:hidden;
+      transform:rotate(.5deg)}
+    .component .screen{position:absolute;inset:0;opacity:.18;pointer-events:none}
+    .component h2{position:relative;z-index:2;font-family:"Bebas Neue",sans-serif;font-size:40px;
+      letter-spacing:.02em;line-height:.92;margin-bottom:8px}
+    .component p{position:relative;z-index:2;font-family:"Libre Baskerville",serif;font-size:12.5px;
+      line-height:1.85;max-width:46ch}
+
+    /* ── Dialog ──────────────────────────────────────────────────
+       Native <dialog>: focus trap, Escape and inert background from the
+       browser. One more cutting — 2px keyline, hard offset, pasted
+       off-axis, with its own screen laid over it. */
+    .dialog{width:min(520px,calc(100vw - 34px));padding:34px 26px 32px;border:0;
+      background:var(--stock);color:var(--body-ink);position:relative;overflow:hidden;
+      font-family:"DM Sans",-apple-system,sans-serif;transform:rotate(-.7deg);
+      box-shadow:0 0 0 2px var(--keyline), 12px 14px 0 var(--offset)}
+    .dialog::backdrop{background:rgba(20,20,20,.72)}
+    :root[data-theme="dark"] .dialog::backdrop{background:rgba(0,0,0,.82)}
+    .dialog .screen{position:absolute;inset:0;opacity:.16;pointer-events:none}
+    .dialog__label{position:relative;z-index:2;display:inline-block;font-family:"DM Sans",sans-serif;
+      font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+      background:var(--xerox);color:var(--on-cool);padding:4px 10px;transform:rotate(-1.6deg);
+      box-shadow:0 0 0 2px var(--chip-edge)}
+    .dialog h2{position:relative;z-index:2;font-family:"Bebas Neue",sans-serif;font-size:38px;
+      letter-spacing:.02em;line-height:.92;margin:14px 0 8px}
+    .dialog p{position:relative;z-index:2;font-family:"Libre Baskerville",serif;font-size:12.5px;line-height:1.85}
+    .dialog__close{position:relative;z-index:2;display:inline-block;margin-top:24px;
+      font-family:"Bebas Neue",sans-serif;font-size:22px;letter-spacing:.1em;
+      color:var(--on-cool);background:var(--xerox);padding:8px 32px;
+      box-shadow:0 0 0 2px var(--chip-edge), 6px 6px 0 var(--riso-pink);transform:rotate(-1.2deg);
+      transition:box-shadow .16s steps(2),transform .16s steps(2)}
+    .dialog__close:hover{box-shadow:0 0 0 2px var(--chip-edge), 2px 2px 0 var(--riso-blue);transform:rotate(1.2deg)}
+    .dialog__close:focus-visible{outline:3px solid var(--riso-blue);outline-offset:3px}
+
+    /* ── Footer ──────────────────────────────────────────────────
+       The nav strip inverted: the nav is a torn tape bar with the mark
+       left and the links right, so the footer is the same bar with the
+       links left and the mark — here the signature — right, and the tear
+       running along its top edge instead of its bottom. */
+    .site-footer{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+      margin-top:22px;background:var(--xerox);color:var(--on-cool);padding:14px 22px;
+      transform:rotate(.5deg);
+      clip-path:polygon(0 0,12% 7%,25% 1%,38% 8%,50% 1%,63% 8%,76% 1%,88% 7%,100% 0,100% 100%,
+        89% 94%,77% 100%,64% 93%,52% 99%,39% 93%,26% 100%,14% 94%,0 100%);
+      box-shadow:6px 7px 0 var(--offset)}
+    .site-footer__links{display:flex;gap:6px;flex-wrap:wrap}
+    .site-footer__links a{display:block;font-family:"DM Sans",sans-serif;font-size:12px;font-weight:700;
+      letter-spacing:.12em;text-transform:uppercase;color:var(--body-ink);background:var(--stock);
+      padding:6px 14px;transform:rotate(-1.4deg);box-shadow:0 0 0 2px var(--chip-edge);
+      transition:background .16s steps(2),color .16s steps(2),transform .16s steps(2)}
+    .site-footer__links a:nth-child(2){transform:rotate(1.8deg)}
+    .site-footer__links a:hover{background:var(--riso-yellow);color:var(--on-warm);transform:rotate(2.6deg)}
+    .site-footer__links a:focus-visible{outline:3px solid var(--riso-pink);outline-offset:3px}
+
+    /* ── Signature mark ──────────────────────────────────────────
+       Copied verbatim from styles/swiss-design.html and deliberately NOT
+       adapted. This page owns Bebas, Baskerville and DM Sans, and pastes
+       everything off-axis; the signature is a hand, and it is the same
+       hand on every page. No rotation, no keyline, no offset. Do not
+       restyle it. Checked for the trap that caught Brutalism: the footer
+       link rule is scoped to ".site-footer__links a" and the signature is
+       a sibling of that nav, not a descendant. */
+    .signature{
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--on-cool);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .18s linear}
+    .signature:hover{border-bottom-color:var(--on-cool)}
+    .signature:focus-visible{outline:3px solid var(--riso-yellow);outline-offset:4px}
+
+    /* Press feedback. This page had no :active state at all; its own
+       timing is 160ms in steps(2), which is fast enough, so the pressed
+       state simply reuses it. Placed after the rules it extends. */
+    .btn.is-pressed,.cta .cta-btn.is-pressed,.dialog__close.is-pressed{
+      transform:rotate(0deg) translate(3px,3px);
+      box-shadow:0 0 0 2px var(--chip-edge), 1px 1px 0 var(--riso-blue)}
+    .ctl.is-pressed,.nav ul a.is-pressed,.site-footer__links a.is-pressed,
+    .dp-skill.is-pressed,.dp-back.is-pressed{
+      background:var(--riso-blue);color:var(--on-cool);transform:rotate(-2.4deg)}
+
+    @media(max-width:860px){
+      .features{grid-template-columns:1fr}
+
+      /* A fixed 214px strip cannot share a 320px sheet, so side mode
+         pastes the tape back across the head. --rail is the single token
+         behind the offset.
+
+         position:relative is NOT restored here because .nav never had it
+         — the nav has no absolutely-positioned children. Every other
+         block on this page does (.hero, .card, .cta, .component and the
+         dialog each hold a .screen and/or .plate at inset:0), and none of
+         them is touched by this override; their position:relative is
+         load-bearing and must stay. */
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;left:auto;top:auto;bottom:auto;
+        width:auto;flex-direction:row;align-items:center;justify-content:space-between;
+        gap:14px;overflow:visible;transform:rotate(-.5deg);
+        /* the strip is lying down again, so the tear goes back across its
+           long edges rather than down its ends */
+        clip-path:polygon(0 8%,3% 0,14% 6%,26% 1%,39% 7%,52% 1%,64% 7%,77% 1%,89% 6%,100% 0,100% 92%,88% 100%,
+          76% 93%,63% 99%,50% 92%,37% 99%,25% 93%,12% 99%,0 92%)}
+      [data-nav="side"] .nav ul{flex-direction:row;gap:6px}
+      [data-nav="side"] .controls{flex-direction:row;gap:6px}
+    }
+
+    /* ══ DESIGN POINTS ═════════════════════════════════════════════
+       Rebuilt in this page's own language: the panel is one more sheet,
+       each row a cutting with a 2px keyline and a hard offset, pasted
+       square rather than off-axis so the reference matter stays readable.
+       Field names take the stamped chip the cards use for their icons.
+       Content unchanged; only its presentation. */
+    .dp-divider{height:0;border:none;margin:0}
+    .design-points{position:relative;z-index:80;background:var(--stock);color:var(--body-ink);
+      padding:52px clamp(12px,3vw,26px) 76px;
+      font-family:"Libre Baskerville",serif;font-size:12.5px;line-height:1.85;
+      letter-spacing:0;text-transform:none;text-align:left;font-style:normal;font-weight:400}
+    .dp-inner{max-width:1080px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+      background:var(--xerox);color:var(--on-cool);padding:14px 22px;margin-bottom:22px;
+      box-shadow:6px 7px 0 var(--offset)}
+    .design-points h2{font-family:"Bebas Neue",sans-serif;font-size:34px;letter-spacing:.06em;
+      line-height:1;margin:0;color:var(--riso-yellow)}
+    .dp-actions{display:flex;gap:6px;flex-wrap:wrap}
+    .dp-skill,.dp-back{display:block;font-family:"DM Sans",sans-serif;font-size:12px;font-weight:700;
+      letter-spacing:.12em;text-transform:uppercase;color:var(--body-ink);background:var(--stock);
+      padding:6px 14px;box-shadow:0 0 0 2px var(--chip-edge);
+      transition:background .16s steps(2),color .16s steps(2),transform .16s steps(2)}
+    .dp-skill{background:var(--riso-yellow);color:var(--on-warm)}
+    .dp-skill:hover{background:var(--riso-pink);color:var(--on-warm)}
+    .dp-back:hover{background:var(--riso-pink);color:var(--on-warm)}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:3px solid var(--riso-blue);outline-offset:3px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
-    .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
+    .dp-row{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start;
+      background:var(--stock);padding:18px 20px;margin-bottom:16px;
+      box-shadow:0 0 0 2px var(--keyline), 6px 7px 0 var(--offset-s)}
+    .dp-row:last-child{margin-bottom:0}
+    .dp dt{display:inline-block;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;
+      letter-spacing:.2em;text-transform:uppercase;background:var(--xerox);color:var(--on-cool);
+      padding:4px 10px;justify-self:start}
+    .dp dd{margin:0;color:var(--body-ink);overflow-wrap:anywhere}
     .dp dd > ul,.dp dd > ol{padding-left:20px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
     .dp li{margin-bottom:7px}
     .dp li:last-child{margin-bottom:0}
-    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;
+      background:var(--riso-yellow);color:var(--on-warm);padding:1px 5px;overflow-wrap:anywhere}
     .dp-palette{list-style:none!important;padding-left:0!important}
-    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
-    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:0;
+      border:2px solid var(--keyline);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:860px){
+      .dp-row{grid-template-columns:1fr;gap:10px}
+    }
 </style>
+<script>
+  /* Applied before first paint so a stored preference never flashes the
+     default first. Storage is behind try/catch. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }
+    }
+    root.setAttribute('data-nav',   read('atlas-mixed-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',     ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -182,6 +465,10 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">Nav <span class="ctl__v" id="nav-toggle-value">Head</span></button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">Stock <span class="ctl__v" id="theme-toggle-value">News</span></button>
+      </div>
     </nav>
 
     <header class="hero">
@@ -228,7 +515,35 @@
       <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
+    <section class="component" aria-labelledby="component-title">
+      <span class="screen halftone" aria-hidden="true"></span>
+      <h2 id="component-title">Component reference</h2>
+      <p>A modal built on the native dialog element — focus trapped, Escape to close,
+        background inert.</p>
+      <br>
+      <a href="#" class="btn" id="dialog-open">Open dialog</a>
+    </section>
+
+    <footer class="site-footer">
+      <nav class="site-footer__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <span class="screen halftone" aria-hidden="true"></span>
+    <span class="dialog__label">Dialog</span>
+    <h2 id="dialog-title">Component reference</h2>
+    <p>A modal built on the native dialog element. The browser traps focus inside it,
+      closes it on Escape, and makes everything behind it inert. Clicking the sheet
+      behind closes it, and focus returns to the button that opened it.</p>
+    <button type="button" class="dialog__close" id="dialog-close">Close</button>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -236,7 +551,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -288,7 +607,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>All transitions use <code>steps(2)</code>, so state changes jump like a two-pass print rather than easing. JS handles misregistration: hovering a card offsets its coloured plate by a randomised −6 to +6px on both axes, as if that plate went through the press out of alignment, and it snaps back on leave. Clicking <em>Explore</em> re-shuffles the rotation of every ransom-note word, re-pasting the headline.</dd>
+          <dd>All transitions use <code>steps(2)</code>, so state changes jump like a two-pass print rather than easing — including the pressed state on every control, which reuses that same 160ms step so a touch tap is answered inside the tap. JS handles misregistration: hovering a card offsets its coloured plate by a randomised −6 to +6px on both axes, as if that plate went through the press out of alignment, and it snaps back on leave; the plate is a decorative <code>aria-hidden</code> layer, so no type ever moves. Clicking <em>Explore</em> re-shuffles the rotation of every ransom-note word, re-pasting the headline. Both are one-shot writes driven by a discrete event rather than animation loops, so nothing keeps moving on its own; the CSS steps that carry them are muted by the sitewide reduced-motion rule. Two stamped controls are pasted onto the tape strip: one moves that strip from the head of the sheet to the left margin through a single <code>--rail</code> token, the other changes the stock — the same three riso inks pulled on black stock instead of newsprint, with the overprint operator following the stock so plates still build a third colour where they cross rather than hiding one another; on black stock the painted washes are screened back to a lower ink density and every small cutting takes the 2px keyline the larger ones already carry, because a black cutting on black stock has no edge of its own. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -309,7 +628,79 @@
   </section>
 
 <script>
-  /* Misregistration on hover; re-paste the ransom note on click. */
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    /* aria-pressed, not aria-expanded: two persistent layouts, nothing
+       disclosed or hidden. */
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'Margin' : 'Head';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-mixed-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode === 'dark' ? 'Black' : 'News';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function (e) { e.preventDefault(); dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
+
+    /* Press feedback that survives a touch tap. */
+    var PRESSABLE = '.ctl, .nav ul a, .btn, .cta .cta-btn, .site-footer__links a, .dp-skill, .dp-back, .dialog__close';
+    var MIN_HOLD = 150;
+    document.querySelectorAll(PRESSABLE).forEach(function (el) {
+      var at = 0, timer = null;
+      function down() { clearTimeout(timer); at = Date.now(); el.classList.add('is-pressed'); }
+      function up() {
+        var left = Math.max(0, MIN_HOLD - (Date.now() - at));
+        clearTimeout(timer);
+        timer = setTimeout(function () { el.classList.remove('is-pressed'); }, left);
+      }
+      el.addEventListener('pointerdown', down);
+      el.addEventListener('pointerup', up);
+      el.addEventListener('pointercancel', up);
+      el.addEventListener('pointerleave', up);
+    });
+  })();
+</script>
+
+<script>
+  /* Misregistration on hover; re-paste the ransom note on click.
+
+     Both are one-shot writes on a discrete event — no lerp, no
+     requestAnimationFrame — so neither keeps moving after input stops and
+     neither needs a matchMedia guard; the CSS steps() that carry them are
+     muted by the sitewide reduced-motion rule. The plate the hover moves
+     is a decorative aria-hidden layer; no type is ever displaced. */
   (function () {
     document.querySelectorAll('.card').forEach(function (card) {
       var plate = card.querySelector('.wash');
@@ -323,7 +714,7 @@
     });
 
     var words = document.querySelectorAll('.hero h1 .w');
-    document.querySelector('.btn').addEventListener('click', function (e) {
+    document.querySelector('.hero .btn').addEventListener('click', function (e) {
       e.preventDefault();
       words.forEach(function (w) {
         w.style.transform = 'rotate(' + (Math.random() * 6 - 3).toFixed(2) + 'deg)';
