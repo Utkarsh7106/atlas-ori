@@ -81,6 +81,11 @@
   header.top p{margin-top:20px;font-size:17px;line-height:1.6;color:var(--muted);max-width:62ch}
   .meta{display:flex;gap:28px;flex-wrap:wrap;margin-top:32px;font-size:13px;color:var(--muted)}
   .meta b{color:var(--ink);font-weight:600}
+  .meta a{color:var(--ink);font-weight:500;border-bottom:1px solid var(--control-edge);
+    padding-bottom:1px;transition:border-color .18s ease}
+  .meta a:hover{border-bottom-color:var(--ink)}
+  .meta a:focus-visible{outline:2px solid var(--ink);outline-offset:3px;
+    border-bottom-color:transparent}
 
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0;
     border-left:1px solid var(--rule);margin:0 0 90px;transition:border-color .2s ease}
@@ -148,14 +153,14 @@
      failure (private mode, quota, blocked cookies) falls through to the
      default rather than throwing.
 
-     The key is styles/swiss-design.html's existing 'atlas-swiss-theme',
-     reused verbatim so the preference survives navigating between the
-     homepage and that style page. The name is page-scoped and will want
-     renaming to 'atlas-theme' when the other pages gain the toggle — that
-     is a coordinated rename across every page, not a change to make here. */
+     'atlas-theme' is the sitewide preference key, shared verbatim by every
+     page that offers a theme control, so the choice survives navigating
+     between them. Values are 'light' and 'dark', matching the data-theme
+     attribute they set. Any page gaining a toggle should read and write
+     this key rather than introduce its own. */
   (function () {
     try {
-      var v = localStorage.getItem('atlas-swiss-theme');
+      var v = localStorage.getItem('atlas-theme');
       if (v === 'dark' || v === 'light') {
         document.documentElement.setAttribute('data-theme', v);
       }
@@ -187,6 +192,7 @@
         <span><b>0</b> frameworks</span>
         <span><b>0</b> build steps</span>
         <span>One <code style="font-family:ui-monospace,monospace">&lt;style&gt;</code> block per page</span>
+        <span><a href="https://github.com/Utkarsh7106/atlas">Source</a></span>
       </div>
     </header>
 
@@ -471,7 +477,7 @@
 
     /* Storage is best-effort: a failure must never break the control. */
     function store(value) {
-      try { localStorage.setItem('atlas-swiss-theme', value); }
+      try { localStorage.setItem('atlas-theme', value); }
       catch (e) { /* private mode / quota */ }
     }
 

@@ -420,7 +420,7 @@
       } catch (e) { return fallback; }
     }
     root.setAttribute('data-nav',     read('atlas-swiss-nav',     ['top', 'side'],  'top'));
-    root.setAttribute('data-theme',   read('atlas-swiss-theme',   ['light', 'dark'], 'light'));
+    root.setAttribute('data-theme',   read('atlas-theme',         ['light', 'dark'], 'light'));
     root.setAttribute('data-gridkey', read('atlas-swiss-gridkey', ['on', 'off'],    'on'));
   })();
 </script>
@@ -501,8 +501,7 @@
     <p class="site-footer__meta">Swiss Design · 12-column grid · 24px gutter</p>
     <nav class="site-footer__links" aria-label="Footer">
       <a href="../index.html">All styles</a>
-      <!-- TODO: real repository URL lands in the separate GitHub-link pass -->
-      <a href="#github-placeholder">GitHub</a>
+      <a href="https://github.com/Utkarsh7106/atlas">GitHub</a>
     </nav>
     <!-- TODO: replace with portfolio link -->
     <a class="signature" href="#">Built with care</a>
@@ -650,7 +649,7 @@
     themeBtn.addEventListener('click', function () {
       var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       applyTheme(next);
-      store('atlas-swiss-theme', next);
+      store('atlas-theme', next);
     });
 
     /* ── 3. Dialog ──────────────────────────────────────────────────
