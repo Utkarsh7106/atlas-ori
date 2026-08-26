@@ -8,20 +8,46 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ MINIMALISM ═══════════════════════════════════════════════
        Rule of the page: remove until it breaks, then add one thing
        back. No fills, no shadows, no radii, no colour. Hierarchy is
-       carried entirely by SIZE, WEIGHT and EMPTY SPACE.            */
+       carried entirely by SIZE, WEIGHT and EMPTY SPACE.
+
+       Everything added in Phase 3 obeys those rules rather than
+       importing a generic control aesthetic: the toggles are the
+       page's own 11px/.18em uppercase label, the dialog is a hairline
+       box, the footer is a hairline rule with air under it.        */
 
     :root{
-      --paper:#ffffff;   /* page background            */
-      --ink:#0a0a0a;     /* headings, logo, button     */
-      --muted:#737373;   /* body copy, nav links       */
-      --rule:#e5e5e5;    /* hairlines — the only lines */
-      --tint:#fafafa;    /* the single hover surface   */
+      /* --th-* are the source of truth. Every palette variable below
+         is an ALIAS onto them, and custom properties resolve lazily,
+         so redefining these five under [data-theme="dark"] re-resolves
+         every colour declaration on the page without editing one. */
+      --th-paper:#ffffff;
+      --th-ink:#0a0a0a;
+      --th-muted:#5c5c5c;   /* 6.69:1 on paper (was #737373, 4.74:1) */
+      --th-rule:#e5e5e5;
+      --th-tint:#fafafa;
+
+      --paper:var(--th-paper);   /* page background            */
+      --ink:var(--th-ink);       /* headings, logo, button     */
+      --muted:var(--th-muted);   /* body copy, nav links       */
+      --rule:var(--th-rule);     /* hairlines — the only lines */
+      --tint:var(--th-tint);     /* the single hover surface   */
+
       --gap:clamp(96px,14vh,160px);
+      --rail:0px;                /* the one token the nav mode drives */
+    }
+
+    :root[data-theme="dark"]{
+      --th-paper:#0a0a0a;
+      --th-ink:#f5f5f5;     /* 18.16:1 on paper */
+      --th-muted:#a3a3a3;   /*  7.85:1 on paper, 7.30:1 on tint */
+      --th-rule:#2a2a2a;    /*  1.38:1 — a hairline, matched to the
+                                1.26:1 the light rule carries */
+      --th-tint:#141414;
     }
 
     body{
@@ -30,19 +56,54 @@
       font-family:"Inter",-apple-system,"Helvetica Neue",Arial,sans-serif;
       font-weight:400;
       -webkit-font-smoothing:antialiased;
+      /* the rail offsets the whole page, Design Points included */
+      padding-left:var(--rail);
+      transition:padding-left .28s ease,background-color .28s ease,color .28s ease;
     }
 
     .wrap{max-width:920px;margin:0 auto;padding:0 32px}
 
     /* ── Nav ─────────────────────────────────────────────────── */
-    .nav{display:flex;justify-content:space-between;align-items:center;padding:40px 0}
+    .nav{display:flex;justify-content:space-between;align-items:baseline;
+      gap:24px;padding:40px 0}
     .logo{font-size:15px;font-weight:500;letter-spacing:-.02em}
+    /* Whitespace does the grouping, not a divider — the page's own
+       Layout Logic. 56px separates the links from the controls. */
+    .nav-right{display:flex;align-items:baseline;gap:56px}
     .nav ul{display:flex;gap:36px}
     .nav ul a{font-size:14px;color:var(--muted);position:relative;padding-bottom:2px}
     .nav ul a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
       background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.7,.3,1)}
     .nav ul a:hover{color:var(--ink)}
     .nav ul a:hover::after{transform:scaleX(1)}
+
+    /* ── Controls ────────────────────────────────────────────────
+       Deliberately the 11px/.18em uppercase label the page already
+       uses as its sole ornament. The size gap against the 14px nav
+       links is what demotes them — hierarchy by size, not by a box. */
+    .controls{display:flex;flex-wrap:wrap;gap:28px}
+    .ctl{display:inline-flex;align-items:baseline;gap:8px;
+      font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+      color:var(--muted);transition:color .22s ease}
+    .ctl__value{color:var(--ink);transition:color .22s ease}
+    .ctl:hover,.ctl:hover .ctl__value{color:var(--ink)}
+    .ctl:focus-visible{outline:1px solid var(--ink);outline-offset:5px}
+
+    /* ── Sidebar mode ────────────────────────────────────────────
+       The same nav element, re-placed. z-index must clear
+       .design-points (80), which paints above the page. */
+    :root[data-nav="side"]{--rail:212px}
+    [data-nav="side"] .nav{
+      position:fixed;left:0;top:0;bottom:0;width:var(--rail);
+      flex-direction:column;align-items:flex-start;justify-content:flex-start;
+      gap:0;padding:40px 28px;
+      background:var(--paper);border-right:1px solid var(--rule);
+      overflow-y:auto;z-index:90;
+      transition:background-color .28s ease,border-color .28s ease}
+    [data-nav="side"] .nav-right{flex-direction:column;align-items:flex-start;
+      gap:40px;margin-top:44px}
+    [data-nav="side"] .nav ul{flex-direction:column;gap:16px}
+    [data-nav="side"] .controls{flex-direction:column;gap:14px}
 
     /* ── Hero ────────────────────────────────────────────────── */
     .hero{padding:var(--gap) 0}
@@ -61,20 +122,82 @@
       padding:15px 30px;
       font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
       background:var(--paper);color:var(--ink);
-      transition:background .22s ease,color .22s ease;
+      transition:background .22s ease,color .22s ease,border-color .22s ease;
     }
     .btn:hover{background:var(--ink);color:var(--paper)}
+    .btn:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
 
     /* ── Features ────────────────────────────────────────────── */
     .features{display:grid;grid-template-columns:repeat(3,1fr);gap:56px;padding-bottom:var(--gap)}
-    .card{border-top:1px solid var(--rule);padding-top:22px}
+    .card{border-top:1px solid var(--rule);padding-top:22px;transition:border-color .28s ease}
     .icon{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
     .card h3{font-size:17px;font-weight:500;letter-spacing:-.01em;margin:14px 0 10px}
     .card p{font-size:15px;color:var(--muted);line-height:1.62}
 
     /* ── CTA ─────────────────────────────────────────────────── */
-    .cta{border-top:1px solid var(--rule);padding:var(--gap) 0}
+    .cta{border-top:1px solid var(--rule);padding:var(--gap) 0;transition:border-color .28s ease}
     .cta h2{font-size:clamp(28px,4.4vw,46px);font-weight:300;letter-spacing:-.035em}
+
+    /* ── Component reference ─────────────────────────────────────
+       Sized as a card title, not a second statement headline: the
+       page's ramp allows exactly one large jump, and the hero has it. */
+    .component{border-top:1px solid var(--rule);padding:var(--gap) 0;transition:border-color .28s ease}
+    .component__title{font-size:17px;font-weight:500;letter-spacing:-.01em;margin:14px 0 10px}
+    .component__note{font-size:15px;color:var(--muted);line-height:1.62;max-width:38ch}
+
+    /* ── Dialog ──────────────────────────────────────────────────
+       Native <dialog>: the browser supplies the focus trap, Escape
+       and an inert background. Hairline box, zero radius, no shadow —
+       depth is never simulated on this page. */
+    .dialog{
+      width:min(520px,calc(100vw - 48px));padding:0;
+      border:1px solid var(--ink);border-radius:0;
+      background:var(--paper);color:var(--ink)}
+    .dialog::backdrop{background:rgba(10,10,10,.62)}
+    :root[data-theme="dark"] .dialog::backdrop{background:rgba(0,0,0,.78)}
+    .dialog[open]{animation:dialog-in .22s ease}
+    @keyframes dialog-in{from{opacity:0}to{opacity:1}}
+    .dialog__inner{padding:40px 36px 36px}
+    .dialog__label{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+    .dialog__title{margin:14px 0 12px;font-size:17px;font-weight:500;letter-spacing:-.01em}
+    .dialog__body p{font-size:15px;color:var(--muted);line-height:1.62}
+    .dialog__meta{margin-top:18px;font-size:11px;letter-spacing:.18em;
+      text-transform:uppercase;color:var(--muted)}
+    .dialog__close{margin-top:32px}
+
+    /* ── Footer ──────────────────────────────────────────────────
+       One hairline and a lot of air, flush left like everything else. */
+    /* Grid, not flex: the signature needs its own row while staying
+       shrink-to-fit. A full-width flex item would stretch the anchor's
+       box, and its hover underline with it, across the whole footer. */
+    .site-footer{border-top:1px solid var(--rule);padding:56px 0 var(--gap);
+      display:grid;grid-template-columns:auto auto 1fr;align-items:baseline;
+      column-gap:56px;row-gap:40px;transition:border-color .28s ease}
+    .site-footer__mark{grid-column:1;grid-row:1;font-size:15px;font-weight:500;letter-spacing:-.02em}
+    .site-footer__note{grid-column:2;grid-row:1;font-size:11px;letter-spacing:.18em;
+      text-transform:uppercase;color:var(--muted)}
+    .site-footer__links{grid-column:3;grid-row:1;justify-self:end;display:flex;gap:36px}
+    .site-footer__links a{font-size:14px;color:var(--muted);position:relative;padding-bottom:2px}
+    .site-footer__links a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+      background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.7,.3,1)}
+    .site-footer__links a:hover{color:var(--ink)}
+    .site-footer__links a:hover::after{transform:scaleX(1)}
+    .site-footer__links a:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+
+    /* ── Signature mark ──────────────────────────────────────────
+       Copied verbatim from styles/swiss-design.html and deliberately
+       NOT adapted to this page. Minimalism owns Inter at three
+       weights; this is a hand, and it is the same hand on every page.
+       Do not restyle it. Only the focus ring differs: this page has
+       no accent colour, so it uses --ink like every other ring here. */
+    .signature{grid-column:1;grid-row:2;justify-self:start;
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--ink);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .18s linear}
+    .signature:hover{border-bottom-color:var(--ink)}
+    .signature:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 
     /* ── Restrained reveal ───────────────────────────────────── */
     .reveal{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
@@ -84,40 +207,100 @@
       .features{grid-template-columns:1fr;gap:36px}
       .nav ul{gap:22px}
       .wrap{padding:0 22px}
+
+      /* A fixed 212px rail cannot share a 320px viewport with the
+         content, so side mode collapses to the stacked top nav here.
+         --rail is the single token driving the offset, so zeroing it
+         undoes the body inset; the nav is un-fixed alongside.
+
+         Un-fixing .nav is safe: the only absolutely-positioned thing
+         in the nav is .nav ul a::after, whose containing block is
+         .nav ul a (position:relative), not .nav — that relative is
+         load-bearing and must never be removed here. */
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;width:auto;
+        padding:40px 0;border-right:0;overflow:visible;background:none}
+      .nav,[data-nav="side"] .nav{flex-direction:column;align-items:flex-start;gap:22px}
+      .nav-right,[data-nav="side"] .nav-right{flex-direction:row;flex-wrap:wrap;
+        align-items:baseline;gap:22px 32px;margin-top:0;width:100%}
+      [data-nav="side"] .nav ul{flex-direction:row;gap:22px}
+      [data-nav="side"] .controls{flex-direction:row;gap:24px}
+      .site-footer{grid-template-columns:1fr;row-gap:22px}
+      .site-footer__mark,.site-footer__note,.site-footer__links,.signature{
+        grid-column:1;justify-self:start}
+      .site-footer__note{grid-row:2}
+      .site-footer__links{grid-row:3;gap:24px}
+      .signature{grid-row:4;margin-top:12px}
     }
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
-    .dp-inner{max-width:860px;margin:0 auto}
+    /* ══ DESIGN POINTS ═════════════════════════════════════════════
+       Rebuilt in this page's own language: no panel fill, no 6px slab,
+       no chips. Hairlines, the 11px/.18em label for field names, and
+       the same 920px flush-left column as the demo above. Content is
+       unchanged — only its presentation is this page's. */
+    .dp-divider{height:0;border-top:1px solid var(--rule);margin:0;transition:border-color .28s ease}
+    .design-points{position:relative;z-index:80;background:var(--paper);color:var(--ink);
+      padding:var(--gap) 32px;
+      font-family:"Inter",-apple-system,"Helvetica Neue",Arial,sans-serif;
+      font-size:15px;line-height:1.62;letter-spacing:0;text-transform:none;
+      text-align:left;font-style:normal;font-weight:400}
+    .dp-inner{max-width:920px;margin:0 auto}
     .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+      margin-bottom:44px}
+    .design-points h2{font:500 11px/1.4 "Inter",-apple-system,"Helvetica Neue",Arial,sans-serif;
+      letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0}
+    .dp-back{font-size:14px;color:var(--muted);position:relative;padding-bottom:2px}
+    .dp-back::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+      background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.7,.3,1)}
+    .dp-back:hover{color:var(--ink)}
+    .dp-back:hover::after{transform:scaleX(1)}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:26px 0;
+      border-top:1px solid var(--rule);transition:border-color .28s ease}
     .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
+    .dp dt{font:500 11px/1.5 "Inter",-apple-system,"Helvetica Neue",Arial,sans-serif;
+      letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+    .dp dd{margin:0;color:var(--ink)}
     .dp dd > ul,.dp dd > ol{padding-left:20px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
-    .dp li{margin-bottom:7px}
+    .dp li{margin-bottom:9px}
     .dp li:last-child{margin-bottom:0}
-    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    /* no fill on inline code — this page forbids filled containers */
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      font-size:13px;color:var(--muted)}
     .dp-palette{list-style:none!important;padding-left:0!important}
-    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
-    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+    /* The swatch outline delimits near-paper colours (#ffffff, #fafafa),
+       so it takes --muted, not the --rule hairline: at 1.26:1 the white
+       swatch is invisible on white paper. The original rgba(0,0,0,.25)
+       had the same problem in reverse and vanished on a dark ground. */
+    .sw{display:inline-block;width:13px;height:13px;border-radius:0;
+      border:1px solid var(--muted);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){
+      .dp-row{grid-template-columns:1fr;gap:8px}
+      .design-points{padding:72px 22px 96px}
+    }
 </style>
+<script>
+  /* Applied before first paint so a stored preference never flashes the
+     default first. Storage is behind try/catch: private mode, quota or
+     blocked cookies fall through to the default rather than throwing.
+
+     'atlas-theme' is the sitewide key, shared with index.html and the
+     other pages that offer a theme control. 'atlas-min-nav' is scoped to
+     this page, because the sidebar belongs to this page alone. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }
+    }
+    root.setAttribute('data-nav',   read('atlas-min-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',   ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -125,11 +308,23 @@
 
     <nav class="nav">
       <a href="../index.html" class="logo">Atlas</a>
-      <ul>
-        <li><a href="#">Work</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
+      <div class="nav-right">
+        <ul>
+          <li><a href="#">Work</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+        <div class="controls">
+          <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">
+            <span class="ctl__label">Nav</span>
+            <span class="ctl__value" id="nav-toggle-value">Top</span>
+          </button>
+          <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">
+            <span class="ctl__label">Theme</span>
+            <span class="ctl__value" id="theme-toggle-value">Light</span>
+          </button>
+        </div>
+      </div>
     </nav>
 
     <header class="hero reveal">
@@ -162,7 +357,40 @@
       <a href="mailto:hello@example.com" class="btn cta-btn">Get in touch</a>
     </section>
 
+    <section class="component reveal" aria-labelledby="component-title">
+      <span class="icon">Dialog</span>
+      <h2 class="component__title" id="component-title">Component reference</h2>
+      <p class="component__note">A modal built on the native dialog element — focus trapped,
+        Escape to close, background inert.</p>
+      <button type="button" class="btn" id="dialog-open">Open dialog</button>
+    </section>
+
+    <footer class="site-footer">
+      <p class="site-footer__mark">Atlas</p>
+      <p class="site-footer__note">Minimalism · one typeface · hairlines only</p>
+      <nav class="site-footer__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <div class="dialog__inner">
+      <p class="dialog__label">Dialog</p>
+      <h2 class="dialog__title" id="dialog-title">Component reference</h2>
+      <div class="dialog__body">
+        <p>A modal built on the native dialog element. The browser traps focus inside it,
+        closes it on Escape, and makes everything behind it inert. Clicking the backdrop
+        closes it, and focus returns to the button that opened it.</p>
+      </div>
+      <p class="dialog__meta">Native &lt;dialog&gt; · showModal()</p>
+      <button type="button" class="btn dialog__close" id="dialog-close">Close</button>
+    </div>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -181,7 +409,7 @@
 
         <div class="dp-row" data-field="era-origin">
           <dt>Era / Origin</dt>
-          <dd>1960s–70s minimal art and Dieter Rams' product design at Braun, carried into digital interfaces from the late 2000s onward.</dd>
+          <dd>Post-2015 SaaS and developer-tool minimalism — Stripe, Linear, Vercel — which is what this page actually builds: a neutral grotesque (Inter), fluid <code>clamp()</code> type, hairline-separated cards, no ornament. That idiom descends from 1960s–70s minimal art and Dieter Rams' product design at Braun, but the closer and more accurate lineage is the last decade of interface work.</dd>
         </div>
 
         <div class="dp-row" data-field="color-palette">
@@ -190,7 +418,7 @@
             <ul class="dp-palette">
               <li><span class="sw" style="--c:#ffffff"></span><code>#ffffff</code> — page background, the dominant surface</li>
               <li><span class="sw" style="--c:#0a0a0a"></span><code>#0a0a0a</code> — headings, logo, button fill on hover</li>
-              <li><span class="sw" style="--c:#737373"></span><code>#737373</code> — body copy and nav links</li>
+              <li><span class="sw" style="--c:#5c5c5c"></span><code>#5c5c5c</code> — body copy and nav links</li>
               <li><span class="sw" style="--c:#e5e5e5"></span><code>#e5e5e5</code> — 1px hairline rules, the only drawn lines</li>
               <li><span class="sw" style="--c:#fafafa"></span><code>#fafafa</code> — reserved hover tint</li>
             </ul>
@@ -222,7 +450,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>Restrained and short. Nav links grow a 1px underline from the left over 280ms (<code>scaleX</code> with a left transform-origin). The button crossfades background and text colour over 220ms. An <code>IntersectionObserver</code> reveals the hero, cards, and CTA once each with a 10px rise and fade over 600ms, then unobserves — nothing animates twice, nothing loops.</dd>
+          <dd>Restrained and short. Nav links grow a 1px underline from the left over 280ms (<code>scaleX</code> with a left transform-origin). The button crossfades background and text colour over 220ms. An <code>IntersectionObserver</code> reveals the hero, cards, CTA and component reference once each with a 10px rise and fade over 600ms, then unobserves — nothing animates twice, nothing loops. Two controls sit in the nav at the page's 11px label size: one moves the nav between a top bar and a fixed left rail by changing a single <code>--rail</code> token, the other flips <code>data-theme</code> so the whole page re-resolves through five colour tokens; both persist to <code>localStorage</code> and reflow over 280ms. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background; it fades in over 220ms and returns focus to its trigger. Every transition here is CSS, so <code>prefers-reduced-motion</code> mutes all of it.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -241,6 +469,83 @@
       </dl>
     </div>
   </section>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+
+    /* Storage is best-effort: a failure must never break a control. */
+    function store(key, value) {
+      try { localStorage.setItem(key, value); }
+      catch (e) { /* private mode / quota */ }
+    }
+
+    /* ── 1. Nav: top bar <-> fixed left rail ────────────────────────
+       One element, re-placed. State lives in data-nav on <html> and all
+       the reflow is CSS driven by --rail, so the sitewide
+       prefers-reduced-motion rule in reset.css mutes it.
+
+       aria-pressed, not aria-expanded: this switches between two
+       persistent layouts. Nothing is disclosed or hidden, so an
+       expanded/collapsed relationship would be a lie to a screen reader. */
+    var navBtn   = document.getElementById('nav-toggle');
+    var navValue = document.getElementById('nav-toggle-value');
+
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navValue.textContent = mode === 'side' ? 'Side' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next);
+      store('atlas-min-nav', next);
+    });
+
+    /* ── 2. Light / dark, whole page ────────────────────────────────
+       data-theme flips the five --th-* values that every colour token
+       on this page aliases, so the hero, cards, dialog, footer and the
+       Design Points panel all re-resolve from one attribute. */
+    var themeBtn   = document.getElementById('theme-toggle');
+    var themeValue = document.getElementById('theme-toggle-value');
+
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeValue.textContent = mode === 'dark' ? 'Dark' : 'Light';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      store('atlas-theme', next);
+    });
+
+    /* ── 3. Dialog ──────────────────────────────────────────────────
+       Native showModal() gives the focus trap, Escape and the inert
+       background for free. Only backdrop-click and an explicit focus
+       return are added on top. */
+    var dlg      = document.getElementById('dialog');
+    var openBtn  = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function () { dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      /* the backdrop is the dialog's own box outside .dialog__inner */
+      dlg.addEventListener('click', function (e) {
+        if (e.target === dlg) dlg.close();
+      });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      /* no native dialog: hide the control rather than ship a dead one */
+      openBtn.hidden = true;
+    }
+  })();
+</script>
 
 <script>
   /* Reveal each element once, then stop watching it. */
