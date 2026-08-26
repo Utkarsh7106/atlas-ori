@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Archivo:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Archivo:wght@500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ EDITORIAL DESIGN ═════════════════════════════════════════
        A magazine page, not a landing page. The furniture is what
@@ -17,12 +17,39 @@
        Text is the primary material — everything else is apparatus. */
 
     :root{
-      --paper:#fbfaf7;
-      --ink:#16161a;
-      --red:#c8322b;      /* the single editorial accent */
-      --grey:#6d6b66;
-      --rule:#d9d5cc;
-      --tint:#f1ede4;
+      /* --th-* are the source of truth; the palette variables below are
+         ALIASES onto them, so [data-theme="dark"] re-resolves every colour
+         declaration on the page without editing one. Unlike Maximalism or
+         Neo-Brutalism this page has no fixed identity fill to protect —
+         it is ink on paper, and a magazine printed on black paper still
+         obeys the same rules. So the whole palette moves. */
+      --th-paper:#fbfaf7;
+      --th-ink:#16161a;
+      --th-red:#c8322b;    /* the single editorial accent */
+      --th-grey:#6d6b66;
+      --th-rule:#d9d5cc;
+      --th-tint:#f1ede4;
+
+      --paper:var(--th-paper);
+      --ink:var(--th-ink);
+      --red:var(--th-red);
+      --grey:var(--th-grey);
+      --rule:var(--th-rule);
+      --tint:var(--th-tint);
+
+      --rail:0px;          /* the one token the nav mode drives */
+    }
+
+    :root[data-theme="dark"]{
+      color-scheme:dark;
+      --th-paper:#131316;
+      --th-ink:#f0efec;    /* 16.13:1 on paper */
+      /* the accent is lifted, not inverted: 5.10:1 on paper and 5.10:1
+         under paper-coloured text, the same pair the light red carries */
+      --th-red:#e5564d;
+      --th-grey:#a5a29b;   /* 7.28:1 on paper, 6.66:1 on tint */
+      --th-rule:#2e2e33;
+      --th-tint:#1c1c21;
     }
 
     body{
@@ -31,11 +58,17 @@
       font-family:"Source Serif 4",Georgia,"Times New Roman",serif;
       font-size:17px;
       line-height:1.6;
+      padding-left:var(--rail);
+      transition:padding-left .2s ease;
     }
     .wrap{max-width:1160px;margin:0 auto;padding:0 clamp(18px,4vw,44px)}
 
     /* Reading progress — the one piece of web furniture. */
+    /* z-index 90 keeps it above the fixed masthead rail (85), which is
+       above .design-points (80). The bar is a page-level indicator, so it
+       should draw over the rail rather than under it. */
     #progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--red);z-index:90}
+    #progress[hidden]{display:none}
 
     .label{font-family:"Archivo",sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;
       text-transform:uppercase}
@@ -53,6 +86,37 @@
     .nav ul a:hover{border-bottom-color:var(--red);color:var(--red)}
     .dateline{position:absolute;right:0;top:30px;font-family:"Archivo",sans-serif;font-size:10px;
       letter-spacing:.12em;text-transform:uppercase;color:var(--grey)}
+
+    /* ── Controls ────────────────────────────────────────────────
+       Apparatus, so they are set as apparatus: the same 10px Archivo
+       cap-and-track the dateline, kicker, byline and folio all use, and
+       placed on the masthead's left to mirror the dateline on its right.
+       Red on hover, because on this page red marks apparatus only. */
+    .controls{position:absolute;left:0;top:30px;display:flex;gap:18px}
+    .ctl{font-family:"Archivo",sans-serif;font-size:10px;font-weight:600;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--grey);
+      padding-bottom:3px;border-bottom:2px solid transparent;
+      transition:color .2s ease,border-color .2s ease}
+    .ctl b{font-weight:700;color:var(--ink);transition:color .2s ease}
+    .ctl[aria-pressed="true"] b{color:var(--red)}
+    .ctl:hover,.ctl:hover b{color:var(--red)}
+    .ctl:hover{border-bottom-color:var(--red)}
+    .ctl:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+    /* ── Sidebar mode ────────────────────────────────────────────
+       The masthead re-set as a left-hand standing column. z-index 85
+       clears .design-points (80) and stays under #progress (90). */
+    :root[data-nav="side"]{--rail:232px}
+    [data-nav="side"] .nav{
+      position:fixed;left:0;top:0;bottom:0;width:var(--rail);
+      text-align:left;padding:34px 22px;overflow-y:auto;z-index:85;
+      background:var(--paper);
+      border-bottom:0;border-right:3px solid var(--ink)}
+    [data-nav="side"] .nav .rule-top{margin-bottom:14px}
+    [data-nav="side"] .nav .logo{font-size:34px}
+    [data-nav="side"] .nav ul{flex-direction:column;align-items:flex-start;gap:12px;justify-content:flex-start}
+    [data-nav="side"] .dateline{position:static;margin-top:18px;display:block}
+    [data-nav="side"] .controls{position:static;flex-direction:column;gap:10px;margin-top:20px}
 
     /* ── Hero: headline block over a standfirst column ───────── */
     .hero{display:grid;grid-template-columns:7fr 4fr;gap:clamp(20px,3vw,40px) clamp(24px,4vw,58px);
@@ -101,6 +165,61 @@
       text-transform:uppercase;background:var(--red);color:var(--paper);padding:15px 30px;
       transition:background .2s ease}
     .cta .cta-btn:hover{background:var(--ink)}
+    .btn:focus-visible,.cta .cta-btn:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+    .nav ul a:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+    /* ── Component reference ─────────────────────────────────── */
+    .component{padding:38px 0;border-top:1px solid var(--rule);
+      display:flex;justify-content:space-between;align-items:flex-end;gap:26px;flex-wrap:wrap}
+    .component .kicker{color:var(--red);display:block;margin-bottom:12px}
+    .component h2{font-size:clamp(22px,2.8vw,30px);font-weight:600;letter-spacing:-.02em;line-height:1.1}
+    .component p{margin-top:10px;font-size:17px;line-height:1.62;max-width:46ch;color:var(--grey)}
+
+    /* ── Dialog ──────────────────────────────────────────────────
+       Native <dialog>: focus trap, Escape and inert background from the
+       browser. Set as a page element — 3px ink rule above, apparatus
+       label, serif body — not as a UI panel. */
+    .dialog{width:min(560px,calc(100vw - 40px));padding:34px 32px;
+      background:var(--paper);color:var(--ink);
+      border:1px solid var(--rule);border-top:3px solid var(--ink);border-radius:0;
+      font-family:"Source Serif 4",Georgia,"Times New Roman",serif}
+    .dialog::backdrop{background:rgba(22,22,26,.62)}
+    :root[data-theme="dark"] .dialog::backdrop{background:rgba(0,0,0,.74)}
+    .dialog .kicker{color:var(--red);display:block;margin-bottom:12px}
+    .dialog h2{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+    .dialog p{margin-top:14px;font-size:17px;line-height:1.62}
+    .dialog__meta{margin-top:16px;font-family:"Archivo",sans-serif;font-size:10px;font-weight:600;
+      letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
+    .dialog__close{display:inline-block;margin-top:22px;font-family:"Archivo",sans-serif;font-size:11px;
+      font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+      background:var(--ink);color:var(--paper);padding:13px 28px;transition:background .2s ease}
+    .dialog__close:hover{background:var(--red)}
+    .dialog__close:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+    /* ── Footer: set below the folio, on the same rule system ─── */
+    .site-footer{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
+      padding:26px 0 52px;border-top:3px solid var(--ink)}
+    .site-footer__links{display:flex;gap:26px;flex-wrap:wrap}
+    .site-footer__links a{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;
+      letter-spacing:.14em;text-transform:uppercase;color:var(--ink);
+      padding-bottom:3px;border-bottom:2px solid transparent;
+      transition:border-color .2s ease,color .2s ease}
+    .site-footer__links a:hover{border-bottom-color:var(--red);color:var(--red)}
+    .site-footer__links a:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+    /* ── Signature mark ──────────────────────────────────────────
+       Copied verbatim from styles/swiss-design.html and deliberately NOT
+       adapted. This page owns Source Serif 4 and Archivo; the signature
+       is a hand, and it is the same hand on every page. It is the one
+       thing here that is not magazine furniture. Do not restyle it. */
+    .signature{
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--ink);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .18s linear}
+    .signature:hover{border-bottom-color:var(--ink)}
+    .signature:focus-visible{outline:2px solid var(--red);outline-offset:4px}
 
     /* ── Folio ───────────────────────────────────────────────── */
     .folio{display:flex;justify-content:space-between;padding:16px 0 40px;
@@ -114,40 +233,88 @@
       .card{padding:0;border-left:none;border-top:1px solid var(--rule);padding-top:22px}
       .card:first-child{border-top:none;padding-top:0}
       .dateline{display:none}
+
+      /* A fixed 232px standing column cannot share a 320px viewport, so
+         side mode collapses back to the masthead. --rail is the single
+         token behind the offset.
+
+         .nav MUST keep position:relative here — .dateline and .controls
+         are absolutely positioned inside it, and removing it would hand
+         them the viewport as a containing block. The controls move into
+         flow instead of staying absolute, because the dateline's
+         display:none above is not an option for a functional control. */
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:relative;width:auto;text-align:center;
+        padding:26px 0 0;overflow:visible;background:none;
+        border-right:0;border-bottom:3px solid var(--ink)}
+      [data-nav="side"] .nav .logo{font-size:clamp(38px,6vw,68px)}
+      [data-nav="side"] .nav ul{flex-direction:row;justify-content:center;gap:34px}
+      [data-nav="side"] .dateline{display:none}
+      .controls,[data-nav="side"] .controls{position:static;flex-direction:row;
+        justify-content:center;gap:18px;margin-top:0;padding:12px 0 4px}
     }
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
-    .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    /* ══ DESIGN POINTS ═════════════════════════════════════════════
+       Rebuilt as the back matter of the same magazine: a 3px ink rule
+       to open, apparatus labels in Archivo caps, entries set in the
+       serif across a two-column measure, hairlines between. Red stays
+       on apparatus only. Content is unchanged — only its presentation. */
+    .dp-divider{height:0;border:none;border-top:1px solid var(--rule);margin:0}
+    .design-points{position:relative;z-index:80;background:var(--paper);color:var(--ink);
+      padding:56px 0 84px;
+      font-family:"Source Serif 4",Georgia,"Times New Roman",serif;
+      font-size:17px;line-height:1.6;letter-spacing:0;text-transform:none;
+      text-align:left;font-style:normal;font-weight:400}
+    .dp-inner{max-width:1160px;margin:0 auto;padding:0 clamp(18px,4vw,44px)}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;
+      border-top:3px solid var(--ink);padding-top:18px;margin-bottom:34px}
+    .design-points h2{font-family:"Source Serif 4",Georgia,serif;
+      font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-.028em;line-height:1;
+      margin:0;color:var(--ink)}
+    .dp-actions{display:flex;gap:26px;flex-wrap:wrap}
+    .dp-skill,.dp-back{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;
+      letter-spacing:.14em;text-transform:uppercase;color:var(--ink);
+      padding-bottom:3px;border-bottom:2px solid transparent;
+      transition:border-color .2s ease,color .2s ease}
+    .dp-skill:hover,.dp-back:hover{border-bottom-color:var(--red);color:var(--red)}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:2px solid var(--red);outline-offset:3px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
-    .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
-    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp-row{display:grid;grid-template-columns:200px 1fr;gap:clamp(20px,4vw,52px);
+      padding:22px 0;border-top:1px solid var(--rule)}
+    .dp-row:first-child{border-top:0}
+    .dp dt{font-family:"Archivo",sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;
+      text-transform:uppercase;color:var(--red);line-height:1.6}
+    .dp dd{margin:0;color:var(--ink)}
+    .dp dd > ul,.dp dd > ol{padding-left:22px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
-    .dp li{margin-bottom:7px}
+    .dp li{margin-bottom:8px}
     .dp li:last-child{margin-bottom:0}
-    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp code{font-family:"Archivo",sans-serif;font-size:13px;letter-spacing:.02em;
+      background:var(--tint);color:var(--ink);padding:1px 6px}
     .dp-palette{list-style:none!important;padding-left:0!important}
-    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
-    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:0;
+      border:1px solid var(--grey);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:860px){
+      .dp-row{grid-template-columns:1fr;gap:8px}
+      .design-points{padding:44px 0 64px}
+    }
 </style>
+<script>
+  /* Applied before first paint so a stored preference never flashes the
+     default first. Storage is behind try/catch. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }
+    }
+    root.setAttribute('data-nav',   read('atlas-editorial-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',         ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -164,6 +331,10 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">Nav <b id="nav-toggle-value">Top</b></button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">Edition <b id="theme-toggle-value">Day</b></button>
+      </div>
     </nav>
 
     <header class="hero">
@@ -199,7 +370,7 @@
     </section>
 
     <aside class="pull">
-      <p>A study in visual language, one style at a time.</p>
+      <p>Tension between elements creates meaning.</p>
     </aside>
 
     <section class="cta">
@@ -208,13 +379,42 @@
       <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
+    <section class="component" aria-labelledby="component-title">
+      <div>
+        <span class="kicker label">The Apparatus</span>
+        <h2 id="component-title">Component reference</h2>
+        <p>A modal built on the native dialog element — focus trapped, Escape to close,
+          background inert.</p>
+      </div>
+      <button type="button" class="btn" id="dialog-open">Open dialog</button>
+    </section>
+
     <div class="folio">
       <span>Atlas</span>
       <span>Set in Source Serif 4 &amp; Archivo</span>
       <span>001</span>
     </div>
 
+    <footer class="site-footer">
+      <nav class="site-footer__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <span class="kicker label">The Apparatus</span>
+    <h2 id="dialog-title">Component reference</h2>
+    <p>A modal built on the native dialog element. The browser traps focus inside it,
+      closes it on Escape, and makes everything behind it inert. Clicking the backdrop
+      closes it, and focus returns to the button that opened it.</p>
+    <p class="dialog__meta">Native &lt;dialog&gt; · showModal()</p>
+    <button type="button" class="dialog__close" id="dialog-close">Close</button>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -222,7 +422,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -275,7 +479,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>Almost none, by discipline. A 3px red reading-progress bar is fixed at the top and its width is set from <code>scrollTop / (scrollHeight − innerHeight)</code> on a passive scroll listener — the only motion tied to content length rather than decoration. Nav links reveal a 2px red underline and buttons swap between ink and red over 200ms. Nothing fades in, nothing parallaxes: text should be readable the instant it renders.</dd>
+          <dd>Almost none, by discipline. A 3px red reading-progress bar is fixed at the top and its width is set from <code>scrollTop / (scrollHeight − innerHeight)</code> on a passive scroll listener, clamped to 0–100% and hidden outright when the article already fits the viewport and there is no progress to report — the only motion tied to content length rather than decoration. Nav links reveal a 2px red underline and buttons swap between ink and red over 200ms. Nothing fades in, nothing parallaxes: text should be readable the instant it renders. Two controls are set on the masthead's left to mirror the dateline on its right, in the same 10px Archivo caps the rest of the apparatus uses: one re-sets the masthead as a fixed left-hand standing column by changing a single <code>--rail</code> token, the other switches the edition between day and night, which re-resolves every colour on the page through six tokens; both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -296,12 +500,70 @@
   </section>
 
 <script>
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    /* aria-pressed, not aria-expanded: two persistent settings, nothing
+       disclosed or hidden. */
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'Column' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-editorial-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode === 'dark' ? 'Night' : 'Day';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function () { dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
+  })();
+</script>
+
+<script>
   /* Reading progress: the only motion a magazine page earns. */
   (function () {
     var bar = document.getElementById('progress');
     function update() {
       var max = document.documentElement.scrollHeight - window.innerHeight;
-      var p = max > 0 ? window.scrollY / max : 0;
+      /* When the article already fits the viewport there is no progress to
+         report, and a bar frozen at 0% is just dead furniture — hide it.
+         The original guard correctly avoided dividing by zero here; this
+         goes one step further and removes the indicator entirely. */
+      if (max <= 0) { bar.hidden = true; bar.style.width = '0%'; return; }
+      bar.hidden = false;
+      /* Clamped: rubber-band scrolling on iOS and macOS puts scrollY
+         outside [0, max], which would otherwise drive the width past
+         100% or negative. */
+      var p = Math.min(1, Math.max(0, window.scrollY / max));
       bar.style.width = (p * 100).toFixed(2) + '%';
     }
     update();
