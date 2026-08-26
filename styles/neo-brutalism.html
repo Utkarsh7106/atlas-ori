@@ -8,30 +8,62 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ NEO-BRUTALISM ════════════════════════════════════════════
        Brutalism after a design system got hold of it. Raw honesty
        is kept as an AESTHETIC — thick outlines, flat fills, hard
        shadows — but everything is now deliberate: one typeface, a
-       fixed palette, an orderly grid, and nothing rotated.        */
+       fixed palette, an orderly grid, and nothing rotated.
+
+       Phase 3 note: the original used --ink for two different jobs,
+       structure (outlines, hard shadows) and text. That works while
+       every fill is light. It cannot survive a dark ground, so the
+       two roles are separate tokens now — see the theme block. */
 
     :root{
-      --bg:#fdf6e3;       /* warm paper ground     */
-      --ink:#101010;      /* outlines and text     */
-      --yellow:#ffd93d;   /* primary block colour  */
-      --coral:#ff6b6b;    /* secondary block       */
-      --mint:#7bf1a8;     /* tertiary block        */
-      --card:#ffffff;     /* neutral block         */
-      --b:4px;            /* the one border width  */
-      --sh:6px;           /* the one shadow offset */
+      /* The three block colours ARE the identity and do not move between
+         themes, so the documented palette stays true in both. What moves
+         is the paper ground, the neutral block, and the structural edge. */
+      --th-bg:#fdf6e3;        /* warm paper ground     */
+      --th-card:#ffffff;      /* neutral block         */
+      --th-edge:#101010;      /* outlines + hard shadows */
+      --th-on-card:#101010;   /* text on card and on the ground */
+
+      --yellow:#ffd93d;       /* primary block colour  */
+      --coral:#ff6b6b;        /* secondary block       */
+      --mint:#7bf1a8;         /* tertiary block        */
+      --ink:#101010;          /* text ON the three fills — fixed, because
+                                 the fills are fixed and stay bright     */
+      --on-ink:#fdf6e3;       /* text on the ink-filled CTA button       */
+
+      --bg:var(--th-bg);
+      --card:var(--th-card);
+      --edge:var(--th-edge);
+      --on-card:var(--th-on-card);
+
+      --b:4px;                /* the one border width  */
+      --sh:6px;               /* the one shadow offset */
+      --rail:0px;             /* the one token the nav mode drives */
+    }
+
+    :root[data-theme="dark"]{
+      --th-bg:#161410;
+      --th-card:#221f18;
+      /* the edge goes light: a #101010 outline round a dark block on a
+         dark ground is invisible. Cream reads 15.7:1 against the ground,
+         which is what an outline is for here. */
+      --th-edge:#f2ede0;
+      --th-on-card:#f2ede0;
     }
 
     body{
       background:var(--bg);
-      color:var(--ink);
+      color:var(--on-card);
       font-family:"Space Grotesk",-apple-system,"Segoe UI",sans-serif;
       font-weight:500;
+      padding-left:var(--rail);
+      transition:padding-left .08s linear;
     }
 
     .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(16px,4vw,32px)}
@@ -39,21 +71,56 @@
     /* One block primitive. Everything on the page is this. */
     .block{
       background:var(--card);
-      border:var(--b) solid var(--ink);
+      color:var(--on-card);
+      border:var(--b) solid var(--edge);
       border-radius:0;
-      box-shadow:var(--sh) var(--sh) 0 var(--ink);
+      box-shadow:var(--sh) var(--sh) 0 var(--edge);
     }
+
+    /* Focus: the page had none at all. Same vocabulary as everything
+       else — a hard offset ring, no blur, no radius. --edge so it reads
+       against whatever block it lands on in either theme; the ink-filled
+       CTA button overrides it below. */
+    a:focus-visible,button:focus-visible{outline:3px solid var(--edge);outline-offset:3px}
 
     /* ── Nav ─────────────────────────────────────────────────── */
     .nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
-      padding:14px 20px;margin-top:28px;background:var(--yellow)}
-    .logo{font-size:26px;font-weight:700;letter-spacing:-.03em}
+      padding:14px 20px;margin-top:28px;background:var(--yellow);color:var(--ink)}
+    .logo{font-size:26px;font-weight:700;letter-spacing:-.03em;color:var(--ink)}
     .nav ul{display:flex;gap:10px}
-    .nav ul a{display:block;border:3px solid var(--ink);background:var(--card);padding:7px 16px;
-      font-size:14px;font-weight:700;box-shadow:3px 3px 0 var(--ink);
+    .nav ul a{display:block;border:3px solid var(--edge);background:var(--card);color:var(--on-card);
+      padding:7px 16px;font-size:14px;font-weight:700;box-shadow:3px 3px 0 var(--edge);
       transition:transform .08s linear,box-shadow .08s linear,background .08s linear}
-    .nav ul a:hover{background:var(--mint)}
-    .nav ul a:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+    .nav ul a:hover{background:var(--mint);color:var(--ink)}
+    .nav ul a:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--edge)}
+    .nav ul a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+
+    /* ── Controls ────────────────────────────────────────────────
+       The same block primitive at pill scale: 3px edge, 3px hard
+       shadow, the same 80ms press. Pressed = the mint fill, because
+       this palette signals state by swapping a flat fill, never by
+       tinting or shading one. */
+    .controls{display:flex;gap:10px;flex-wrap:wrap}
+    .ctl{display:block;border:3px solid var(--edge);background:var(--card);color:var(--on-card);
+      padding:7px 14px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+      box-shadow:3px 3px 0 var(--edge);
+      transition:transform .08s linear,box-shadow .08s linear,background .08s linear}
+    .ctl[aria-pressed="true"]{background:var(--mint);color:var(--ink)}
+    .ctl:hover{background:var(--yellow);color:var(--ink)}
+    .ctl:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--edge)}
+    .ctl:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+
+    /* ── Sidebar mode ────────────────────────────────────────────
+       The same nav block, re-placed. z-index must clear
+       .design-points (80), which paints above the page. */
+    :root[data-nav="side"]{--rail:238px}
+    [data-nav="side"] .nav{
+      position:fixed;left:0;top:0;bottom:0;width:var(--rail);
+      flex-direction:column;align-items:stretch;justify-content:flex-start;gap:18px;
+      margin-top:0;padding:22px 18px;overflow-y:auto;z-index:90;
+      border-width:0 var(--b) 0 0;box-shadow:var(--sh) 0 0 var(--edge)}
+    [data-nav="side"] .nav ul{flex-direction:column;gap:10px}
+    [data-nav="side"] .controls{flex-direction:column}
 
     /* ── Hero: two orderly columns, nothing rotated ──────────── */
     .hero{display:grid;grid-template-columns:1.55fr 1fr;gap:26px;margin:26px 0}
@@ -61,80 +128,218 @@
     .hero h1{font-size:clamp(36px,5.6vw,62px);font-weight:700;line-height:1.02;letter-spacing:-.035em}
     .hero p{margin-top:20px;font-size:17px;font-weight:500;max-width:34ch}
     .btn{display:inline-block;margin-top:30px;background:var(--coral);color:var(--ink);
-      border:var(--b) solid var(--ink);box-shadow:var(--sh) var(--sh) 0 var(--ink);
+      border:var(--b) solid var(--edge);box-shadow:var(--sh) var(--sh) 0 var(--edge);
       padding:15px 34px;font-size:17px;font-weight:700;
       transition:transform .08s linear,box-shadow .08s linear}
-    .btn:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--ink)}
-    .btn:active{transform:translate(6px,6px);box-shadow:0 0 0 var(--ink)}
+    .btn:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--edge)}
+    .btn:active{transform:translate(6px,6px);box-shadow:0 0 0 var(--edge)}
 
-    .hero-side{background:var(--mint);padding:26px;display:flex;flex-direction:column;justify-content:space-between;gap:18px}
-    .hero-side .badge{border:3px solid var(--ink);background:var(--card);padding:8px 12px;
+    .hero-side{background:var(--mint);color:var(--ink);padding:26px;display:flex;flex-direction:column;justify-content:space-between;gap:18px}
+    .hero-side .badge{border:3px solid var(--edge);background:var(--card);color:var(--on-card);padding:8px 12px;
       font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;align-self:flex-start}
     .hero-side .stack{display:grid;gap:10px}
-    .hero-side .stack i{height:22px;border:3px solid var(--ink);background:var(--yellow)}
+    .hero-side .stack i{height:22px;border:3px solid var(--edge);background:var(--yellow)}
     .hero-side .stack i:nth-child(2){background:var(--coral);width:78%}
     .hero-side .stack i:nth-child(3){background:var(--card);width:56%}
-    .hero-side .count{font-size:44px;font-weight:700;letter-spacing:-.04em;line-height:1}
+    .hero-side .count{font-size:44px;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--ink)}
 
     /* ── Features: three equal blocks, equal gaps ────────────── */
     .features{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-bottom:26px}
-    .card{padding:26px 24px 30px;transition:transform .08s linear,box-shadow .08s linear}
+    .card{padding:26px 24px 30px;color:var(--ink);transition:transform .08s linear,box-shadow .08s linear}
     .card:nth-child(1){background:var(--yellow)}
     .card:nth-child(2){background:var(--coral)}
     .card:nth-child(3){background:var(--mint)}
-    .card:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--ink)}
-    .icon{display:inline-block;border:3px solid var(--ink);background:var(--card);
+    .card:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--edge)}
+    .icon{display:inline-block;border:3px solid var(--edge);background:var(--card);color:var(--on-card);
       padding:5px 11px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
     .card h3{font-size:30px;font-weight:700;letter-spacing:-.03em;margin:18px 0 8px;line-height:1}
     .card p{font-size:15.5px;font-weight:500;line-height:1.45}
 
     /* ── CTA ─────────────────────────────────────────────────── */
     .cta{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
-      background:var(--yellow);padding:44px 36px;margin-bottom:56px}
+      background:var(--yellow);color:var(--ink);padding:44px 36px;margin-bottom:56px}
     .cta h2{font-size:clamp(30px,4.6vw,52px);font-weight:700;letter-spacing:-.035em}
-    .cta .cta-btn{display:inline-block;background:var(--ink);color:var(--bg);border:var(--b) solid var(--ink);
-      box-shadow:var(--sh) var(--sh) 0 var(--card),calc(var(--sh) + 4px) calc(var(--sh) + 4px) 0 var(--ink);
+    .cta .cta-btn{display:inline-block;background:var(--ink);color:var(--on-ink);border:var(--b) solid var(--edge);
+      box-shadow:var(--sh) var(--sh) 0 var(--card),calc(var(--sh) + 4px) calc(var(--sh) + 4px) 0 var(--edge);
       padding:15px 30px;font-size:16px;font-weight:700;
       transition:transform .08s linear,box-shadow .08s linear}
-    .cta .cta-btn:active{transform:translate(6px,6px);box-shadow:0 0 0 var(--ink)}
+    .cta .cta-btn:hover{transform:translate(-2px,-2px)}
+    .cta .cta-btn:active{transform:translate(6px,6px);box-shadow:0 0 0 var(--edge)}
+    .cta .cta-btn:focus-visible{outline:3px solid var(--on-ink);outline-offset:3px}
+
+    /* ── Component reference ─────────────────────────────────── */
+    .component{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
+      background:var(--card);padding:32px 36px;margin-bottom:26px}
+    .component h2{font-size:clamp(24px,3.4vw,34px);font-weight:700;letter-spacing:-.03em}
+    .component p{margin-top:8px;font-size:15.5px;font-weight:500;max-width:44ch}
+
+    /* ── Dialog ──────────────────────────────────────────────────
+       Native <dialog>: focus trap, Escape and inert background come
+       from the browser. Presented as one more block — same 4px edge,
+       same 6px hard shadow, zero radius, no blur. */
+    .dialog{width:min(520px,calc(100vw - 40px));padding:30px 28px;
+      background:var(--card);color:var(--on-card);
+      border:var(--b) solid var(--edge);border-radius:0;
+      box-shadow:var(--sh) var(--sh) 0 var(--edge)}
+    .dialog::backdrop{background:rgba(16,16,16,.62)}
+    :root[data-theme="dark"] .dialog::backdrop{background:rgba(0,0,0,.74)}
+    .dialog h2{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1}
+    .dialog__label{display:inline-block;border:3px solid var(--edge);background:var(--yellow);color:var(--ink);
+      padding:5px 11px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+      margin-bottom:16px}
+    .dialog p{margin-top:12px;font-size:15.5px;font-weight:500;line-height:1.45}
+    .dialog__close{display:inline-block;margin-top:22px;background:var(--coral);color:var(--ink);
+      border:var(--b) solid var(--edge);box-shadow:var(--sh) var(--sh) 0 var(--edge);
+      padding:12px 26px;font-size:15px;font-weight:700;
+      transition:transform .08s linear,box-shadow .08s linear}
+    .dialog__close:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--edge)}
+    .dialog__close:active{transform:translate(6px,6px);box-shadow:0 0 0 var(--edge)}
+    .dialog__close:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+
+    /* ── Footer: one more block, same primitive ──────────────── */
+    .site-footer{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
+      background:var(--mint);color:var(--ink);padding:26px 30px;margin-bottom:56px}
+    .site-footer__links{display:flex;gap:10px;flex-wrap:wrap}
+    .site-footer__links a{display:block;border:3px solid var(--edge);background:var(--card);color:var(--on-card);
+      padding:7px 16px;font-size:14px;font-weight:700;box-shadow:3px 3px 0 var(--edge);
+      transition:transform .08s linear,box-shadow .08s linear,background .08s linear}
+    .site-footer__links a:hover{background:var(--yellow);color:var(--ink)}
+    .site-footer__links a:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--edge)}
+    .site-footer__links a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+
+    /* ── Signature mark ──────────────────────────────────────────
+       Copied verbatim from styles/swiss-design.html and deliberately
+       NOT adapted. Neo-Brutalism owns Space Grotesk, the 4px edge and
+       the hard shadow; this is a hand, and it is the same hand on
+       every page. No border, no shadow, no fill. Do not restyle it. */
+    .signature{
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--ink);
+      border-bottom:1px solid transparent;padding-bottom:1px}
+    .signature:hover{border-bottom-color:var(--ink)}
+    .signature:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+
+    /* The edge follows its OWN fill, which is the rule that survives the
+       theme flip: a block filled with one of the three fixed bright
+       colours keeps the fixed dark edge (>=6.8:1 against it in both
+       themes), and a block whose fill flips with the theme takes the
+       flipping edge (>=13:1 against it in both themes). Without this,
+       a cream edge lands on a mint pill at 1.2:1 in dark mode. */
+    .nav,.hero-side,.cta,.site-footer,.dp-kicker,
+    .card:nth-child(1),.card:nth-child(2),.card:nth-child(3){
+      border-color:var(--ink);box-shadow:var(--sh) var(--sh) 0 var(--ink)}
+    .btn,.dialog__close{border-color:var(--ink);box-shadow:var(--sh) var(--sh) 0 var(--ink)}
+    .btn:hover,.dialog__close:hover{box-shadow:9px 9px 0 var(--ink)}
+    .btn:active,.dialog__close:active,
+    .btn.is-pressed,.dialog__close.is-pressed{box-shadow:0 0 0 var(--ink)}
+    .card:hover{box-shadow:9px 9px 0 var(--ink)}
+    .hero-side .badge,.dp dt,.dialog__label{border-color:var(--ink)}
+    .hero-side .stack i{border-color:var(--ink)}
+    /* chips that swap to a bright fill on hover/press swap their edge too */
+    .nav ul a:hover,.ctl:hover,.ctl[aria-pressed="true"],
+    .site-footer__links a:hover,.dp-skill:hover,.dp-back:hover{
+      border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+    .nav ul a:active,.ctl:active,
+    .site-footer__links a:active,.dp-skill:active,.dp-back:active,
+    .nav ul a.is-pressed,.ctl.is-pressed,
+    .site-footer__links a.is-pressed,.dp-skill.is-pressed,.dp-back.is-pressed{
+      box-shadow:0 0 0 var(--ink)}
+
+    /* Chromium withholds :active on touch until it knows the gesture is not
+       a scroll, so on a brief tap the depress never renders. .is-pressed is
+       driven from pointer events with a short minimum hold so the press is
+       actually perceptible on a touchscreen. The movement itself is still
+       the same CSS transition, so prefers-reduced-motion still mutes it. */
+    .btn.is-pressed,.cta .cta-btn.is-pressed,.dialog__close.is-pressed{transform:translate(6px,6px)}
+    .nav ul a.is-pressed,.ctl.is-pressed,
+    .site-footer__links a.is-pressed,.dp-skill.is-pressed,.dp-back.is-pressed{transform:translate(3px,3px)}
+    .cta .cta-btn.is-pressed{box-shadow:0 0 0 var(--ink)}
 
     @media(max-width:820px){
       .hero{grid-template-columns:1fr}
       .features{grid-template-columns:1fr}
+
+      /* A fixed 238px rail cannot share a 320px viewport with 4px
+         borders and 6px shadows, so side mode collapses to the stacked
+         nav block. --rail is the single token behind the offset.
+
+         Un-fixing .nav is safe: nothing on this page is absolutely
+         positioned — .design-points carries position:relative purely
+         for its own stacking context, and no child depends on it. */
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;width:auto;flex-direction:row;
+        align-items:center;margin-top:28px;padding:14px 20px;overflow:visible;
+        border-width:var(--b);box-shadow:var(--sh) var(--sh) 0 var(--edge)}
+      [data-nav="side"] .nav ul{flex-direction:row}
+      [data-nav="side"] .controls{flex-direction:row}
     }
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
-    .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    /* ══ DESIGN POINTS ═════════════════════════════════════════════
+       Rebuilt in this page's own language: every row is the block
+       primitive, field names are the same outlined chip the cards use
+       for their icons, and nothing is rotated. Content is unchanged —
+       only its presentation is this page's. */
+    .dp-divider{height:0;border:none;border-top:var(--b) solid var(--edge);margin:0}
+    .design-points{position:relative;z-index:80;background:var(--bg);color:var(--on-card);
+      padding:56px clamp(16px,4vw,32px) 72px;
+      font-family:"Space Grotesk",-apple-system,"Segoe UI",sans-serif;
+      font-size:15.5px;font-weight:500;line-height:1.5;letter-spacing:0;
+      text-transform:none;text-align:left;font-style:normal}
+    .dp-inner{max-width:1080px;margin:0 auto}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;
+      background:var(--yellow);color:var(--ink);
+      border:var(--b) solid var(--edge);box-shadow:var(--sh) var(--sh) 0 var(--edge);
+      padding:20px 24px;margin-bottom:30px}
+    .design-points h2{font-size:clamp(26px,3.6vw,38px);font-weight:700;letter-spacing:-.035em;
+      line-height:1;margin:0;color:var(--ink)}
+    .dp-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .dp-skill,.dp-back{display:block;border:3px solid var(--edge);background:var(--card);color:var(--on-card);
+      padding:7px 16px;font-size:13px;font-weight:700;box-shadow:3px 3px 0 var(--edge);
+      transition:transform .08s linear,box-shadow .08s linear,background .08s linear}
+    .dp-skill:hover{background:var(--coral);color:var(--ink)}
+    .dp-back:hover{background:var(--mint);color:var(--ink)}
+    .dp-skill:active,.dp-back:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--edge)}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
-    .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
-    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp-row{display:grid;grid-template-columns:210px 1fr;gap:20px;align-items:start;
+      background:var(--card);color:var(--on-card);
+      border:var(--b) solid var(--edge);box-shadow:var(--sh) var(--sh) 0 var(--edge);
+      padding:20px 22px;margin-bottom:22px}
+    .dp dt{display:inline-block;border:3px solid var(--edge);background:var(--yellow);color:var(--ink);
+      padding:5px 11px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+      align-self:start}
+    .dp dd{margin:0;color:var(--on-card)}
+    .dp dd > ul,.dp dd > ol{padding-left:22px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
     .dp li{margin-bottom:7px}
     .dp li:last-child{margin-bottom:0}
     .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+      background:var(--bg);color:var(--on-card);border:2px solid var(--edge);padding:0 5px}
     .dp-palette{list-style:none!important;padding-left:0!important}
-    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
-    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+    .sw{display:inline-block;width:14px;height:14px;border-radius:0;
+      border:2px solid var(--edge);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    @media(max-width:660px){
+      .dp-row{grid-template-columns:1fr;gap:10px}
+      .design-points{padding:44px 16px 56px}
+    }
 </style>
+<script>
+  /* Applied before first paint so a stored preference never flashes the
+     default first. Storage is behind try/catch. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }
+    }
+    root.setAttribute('data-nav',   read('atlas-neo-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',   ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -147,6 +352,10 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">Nav: <span id="nav-toggle-value">Top</span></button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">Theme: <span id="theme-toggle-value">Light</span></button>
+      </div>
     </nav>
 
     <header class="hero">
@@ -159,7 +368,7 @@
       <aside class="hero-side block" aria-hidden="true">
         <span class="badge">No gradients</span>
         <div class="stack"><i></i><i></i><i></i></div>
-        <p class="count" id="count">00</p>
+        <p class="count" id="count" data-target="29">00</p>
       </aside>
     </header>
 
@@ -187,7 +396,34 @@
       <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
+    <section class="component block" aria-labelledby="component-title">
+      <div>
+        <h2 id="component-title">Component reference</h2>
+        <p>A modal built on the native dialog element — focus trapped, Escape to close,
+          background inert.</p>
+      </div>
+      <button type="button" class="btn" id="dialog-open">Open dialog</button>
+    </section>
+
+    <footer class="site-footer block">
+      <nav class="site-footer__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <span class="dialog__label">Dialog</span>
+    <h2 id="dialog-title">Component reference</h2>
+    <p>A modal built on the native dialog element. The browser traps focus inside it,
+      closes it on Escape, and makes everything behind it inert. Clicking the backdrop
+      closes it, and focus returns to the button that opened it.</p>
+    <button type="button" class="dialog__close" id="dialog-close">Close</button>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -195,7 +431,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -248,7 +488,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>Physical and mechanical, all at 80ms linear — no easing curves. Hovering a card or button moves it −2px on both axes and grows the shadow to 9px; pressing it translates +6px into its own shadow, which collapses to 0 so the element appears to depress into the page. JS counts the hero badge number from 00 to 29 on load using <code>requestAnimationFrame</code>, padded to two digits.</dd>
+          <dd>Physical and mechanical, all at 80ms linear — no easing curves. Hovering a card or button moves it −2px on both axes and grows the shadow to 9px; pressing it translates +6px into its own shadow, which collapses to 0 so the element appears to depress into the page. Every interactive element also carries a hard 3px offset focus ring in the same vocabulary — no blur, no radius. JS counts the hero badge number from 00 up on load using <code>requestAnimationFrame</code>, padded to two digits, reading its target from a <code>data-target</code> attribute; because that is a script-driven animation rather than CSS, it is guarded by a <code>matchMedia</code> check and the final figure is written immediately when <code>prefers-reduced-motion</code> is set. Two controls sit in the nav as the same block primitive at pill scale: one moves the nav between a top bar and a fixed left rail through a single <code>--rail</code> token, the other flips <code>data-theme</code>; pressed state is a flat fill swap, never a tint, and both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -269,14 +509,101 @@
   </section>
 
 <script>
-  /* Count the badge up to 29 — one for each style in the set. */
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    /* aria-pressed, not aria-expanded: two persistent layouts, nothing
+       disclosed or hidden. */
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'Side' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-neo-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode === 'dark' ? 'Dark' : 'Light';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    /* Press feedback that survives a touch tap — see the .is-pressed note
+       in the stylesheet. Held for a minimum so a fast tap still completes
+       the 80ms move; pointercancel covers the case where the tap turns out
+       to be the start of a scroll. */
+    var PRESSABLE = '.btn, .cta .cta-btn, .nav ul a, .ctl, .site-footer__links a, .dp-skill, .dp-back, .dialog__close';
+    var MIN_HOLD = 140;
+    document.querySelectorAll(PRESSABLE).forEach(function (el) {
+      var at = 0, timer = null;
+      function down() {
+        clearTimeout(timer);
+        at = Date.now();
+        el.classList.add('is-pressed');
+      }
+      function up() {
+        var left = Math.max(0, MIN_HOLD - (Date.now() - at));
+        clearTimeout(timer);
+        timer = setTimeout(function () { el.classList.remove('is-pressed'); }, left);
+      }
+      el.addEventListener('pointerdown', down);
+      el.addEventListener('pointerup', up);
+      el.addEventListener('pointercancel', up);
+      el.addEventListener('pointerleave', up);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function () { dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
+  })();
+</script>
+
+<script>
+  /* Count the badge up — one for each style in the set. */
   (function () {
     var el = document.getElementById('count');
-    var target = 29, start = null;
+    /* Still a hard-coded figure, just declared in the markup instead of
+       buried here. It is NOT derived from anything: the set size also
+       lives in index.html, and with no build step there is no single
+       source for it. See PHASE3_NEO_BRUTALISM.md. */
+    var target = parseInt(el.getAttribute('data-target'), 10) || 0;
+
+    /* requestAnimationFrame is not a CSS animation, so the sitewide
+       prefers-reduced-motion rule in reset.css cannot mute it. Queried
+       live so a preference changed mid-session is honoured. */
+    var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+    function render(n) { el.textContent = String(n).padStart(2, '0'); }
+
+    if (reduce && reduce.matches) { render(target); return; }
+
+    var start = null;
     function step(ts) {
       if (!start) start = ts;
       var p = Math.min((ts - start) / 900, 1);
-      el.textContent = String(Math.round(p * target)).padStart(2, '0');
+      render(Math.round(p * target));
       if (p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
