@@ -6,20 +6,62 @@
 <title>Brutalism — Atlas</title>
 <meta name="description" content="Brutalism: raw HTML, default blue links, Times New Roman, no comfort.">
 <link rel="stylesheet" href="../assets/reset.css">
+<!-- The only external asset this page loads. It exists solely for the
+     signature mark, which is deliberately not a browser default. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ BRUTALISM (WEB BRUTALISM) ════════════════════════════════
        The honest document. Nothing is designed away: default link
        blue, underlines, Times New Roman, visible structure, no
        radius, no shadow, no easing. It looks like the browser won.
-       Ugly is not the goal — INDIFFERENCE to beauty is.            */
+       Ugly is not the goal — INDIFFERENCE to beauty is.
+
+       Everything added in Phase 3 obeys that: the controls are
+       bracketed text like the existing [ Explore ] link, the dialog
+       is a 1px box, and NOTHING here has a transition. */
 
     :root{
-      --paper:#ffffff;
-      --ink:#000000;
-      --link:#0000ee;      /* the browser default, untouched */
-      --visited:#551a8b;
-      --alert:#ff0000;
-      --grey:#c0c0c0;
+      color-scheme:light;
+      /* --th-* are the source of truth; every palette variable below is
+         an ALIAS onto them, so [data-theme="dark"] re-resolves the whole
+         page without editing a single colour declaration. */
+      --th-paper:#ffffff;
+      --th-ink:#000000;
+      --th-link:#0000ee;      /* the browser default, untouched */
+      --th-visited:#551a8b;
+      --th-alert:#ff0000;
+      --th-grey:#c0c0c0;
+      --th-on-alert:#000000;  /* text on the hover inversion */
+
+      --paper:var(--th-paper);
+      --ink:var(--th-ink);
+      --link:var(--th-link);
+      --visited:var(--th-visited);
+      --alert:var(--th-alert);
+      --grey:var(--th-grey);
+      --on-alert:var(--th-on-alert);
+
+      --rail:0px;             /* the one token the nav mode drives */
+    }
+
+    /* Dark mode here is NOT an inversion of the light page. This page's
+       premise is that the browser won, so its dark mode is the browser's
+       OWN dark defaults: Chrome's dark canvas, and the dark-mode UA link
+       colours (#9e9eff / #d0adf0) that replace #0000ee / #551a8b when
+       color-scheme is dark. The palette entries stay true, because what
+       they document is the rule — "the browser's default link blue,
+       deliberately untouched" — not the hex. Inverting #0000ee instead
+       would be both unreadable (1.3:1) and less honest. */
+    :root[data-theme="dark"]{
+      color-scheme:dark;
+      --th-paper:#121212;
+      --th-ink:#e8e6e3;
+      --th-link:#9e9eff;
+      --th-visited:#d0adf0;
+      --th-grey:#2b2b2b;
+      --th-on-alert:#121212;
     }
 
     body{
@@ -29,11 +71,11 @@
       font-size:16px;
       line-height:1.35;
       max-width:none;
-      padding:0;
+      padding:0 0 0 var(--rail);
     }
 
     /* Everything is a bordered box. The border is 1px and black. */
-    nav,header,section{border:1px solid var(--ink);margin:0;padding:8px}
+    nav,header,section,footer{border:1px solid var(--ink);margin:0;padding:8px}
 
     /* ── Nav: an inline list of underlined links ─────────────── */
     .nav{display:block;background:var(--grey)}
@@ -45,7 +87,33 @@
     .nav li:last-child::after{content:""}
     .nav ul a{color:var(--link);text-decoration:underline}
     .nav ul a:visited{color:var(--visited)}
-    .nav ul a:hover{background:var(--alert);color:var(--paper)}
+    .nav ul a:hover{background:var(--alert);color:var(--on-alert)}
+
+    /* ── Controls ────────────────────────────────────────────────
+       Bracketed text, exactly like [ Explore ]. Mono, because this
+       page already uses Courier for anything that describes the
+       document rather than being it. No transition, no pressed
+       styling — the state is written out in the label, which is the
+       most honest indicator available. */
+    .controls{display:block;margin-top:6px;font-family:"Courier New",Courier,monospace;font-size:12px}
+    .ctl{font-family:inherit;font-size:inherit;color:var(--link);text-decoration:underline;
+      background:none;border:none;padding:0;display:inline}
+    .ctl::before{content:"[ "}
+    .ctl::after{content:" ]"}
+    .ctl + .ctl{margin-left:8px}
+    .ctl:hover{background:var(--alert);color:var(--on-alert)}
+    .ctl:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+
+    /* ── Sidebar mode ────────────────────────────────────────────
+       The same nav box, re-placed. z-index must clear .design-points
+       (80), which paints above the page. */
+    :root[data-nav="side"]{--rail:210px}
+    [data-nav="side"] .nav{
+      position:fixed;left:0;top:0;bottom:0;width:var(--rail);
+      border-width:0 1px 0 0;overflow-y:auto;z-index:90}
+    [data-nav="side"] .nav .logo{font-size:26px}
+    [data-nav="side"] .nav li{display:block}
+    [data-nav="side"] .nav li::after{content:""}
 
     /* ── Hero: unstyled type at document scale ───────────────── */
     .hero h1{font-size:48px;font-weight:700;line-height:1.05;margin-bottom:12px;font-family:inherit}
@@ -54,7 +122,8 @@
       background:none;border:none;padding:0;display:inline}
     .btn::before{content:"[ "}
     .btn::after{content:" ]"}
-    .btn:hover{background:var(--alert);color:var(--paper)}
+    .btn:hover{background:var(--alert);color:var(--on-alert)}
+    .btn:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 
     /* ── Features: an actual HTML table, because that is honest ─ */
     .features{padding:0}
@@ -71,7 +140,59 @@
     .cta .cta-btn{font-family:inherit;font-size:16px;color:var(--link);text-decoration:underline;display:inline}
     .cta .cta-btn::before{content:"[ "}
     .cta .cta-btn::after{content:" ]"}
-    .cta .cta-btn:hover{background:var(--alert);color:var(--paper)}
+    .cta .cta-btn:hover{background:var(--alert);color:var(--on-alert)}
+    .cta .cta-btn:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+
+    /* ── Component reference ─────────────────────────────────── */
+    .component h2{font-size:22px;font-weight:700;margin-bottom:6px;font-family:inherit}
+    .component p{font-size:16px;margin-bottom:10px}
+
+    /* ── Dialog ──────────────────────────────────────────────────
+       Native <dialog>: the browser supplies the focus trap, Escape
+       and the inert background — which is the whole argument of this
+       page, so it is used unstyled apart from the 1px border. No
+       animation: this page does not have one. */
+    .dialog{max-width:44em;width:calc(100vw - 32px);padding:8px;
+      border:1px solid var(--ink);background:var(--paper);color:var(--ink);
+      font-family:"Times New Roman",Times,serif;font-size:16px;line-height:1.35}
+    .dialog::backdrop{background:rgba(0,0,0,.55)}
+    .dialog h2{font-size:22px;font-weight:700;margin-bottom:6px;font-family:inherit}
+    .dialog p{margin-bottom:10px}
+    .dialog__close{font-family:inherit;font-size:16px;color:var(--link);text-decoration:underline;
+      background:none;border:none;padding:0;display:inline}
+    .dialog__close::before{content:"[ "}
+    .dialog__close::after{content:" ]"}
+    .dialog__close:hover{background:var(--alert);color:var(--on-alert)}
+    .dialog__close:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+
+    /* ── Footer: one more bordered box, labelled like the rest ── */
+    .site-footer{display:block}
+    .site-footer ul{display:block;margin-bottom:8px}
+    .site-footer li{display:inline}
+    .site-footer li::after{content:" | "}
+    .site-footer li:last-child::after{content:""}
+    /* :not(.signature) is load-bearing — ".site-footer a" (0-0-1-1) outranks
+       ".signature" (0-0-1-0), so without it the footer link rule repaints the
+       signature in link blue and underlines it. */
+    .site-footer a:not(.signature){color:var(--link);text-decoration:underline}
+    .site-footer a:not(.signature):visited{color:var(--visited)}
+    .site-footer a:not(.signature):hover{background:var(--alert);color:var(--on-alert)}
+    .site-footer a:not(.signature):focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+
+    /* ── Signature mark ──────────────────────────────────────────
+       Copied verbatim from styles/swiss-design.html and deliberately
+       NOT adapted to this page. Brutalism owns Times New Roman and
+       the browser's defaults; this is a hand, and it is the same hand
+       on every page. It is the only thing here that is not a browser
+       default, and the only reason this page loads a webfont at all.
+       Do not restyle it. */
+    .signature{display:inline-block;
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--ink);text-decoration:none;
+      border-bottom:1px solid transparent;padding-bottom:1px}
+    .signature:hover{border-bottom-color:var(--ink);background:none;color:var(--ink)}
+    .signature:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 
     /* ── Structural annotations: the page describes itself ───── */
     .tag{font-family:"Courier New",Courier,monospace;font-size:11px;color:var(--ink);
@@ -80,38 +201,80 @@
     .blink{font-family:"Courier New",Courier,monospace;font-size:12px;color:var(--alert)}
     .meta{font-family:"Courier New",Courier,monospace;font-size:11px;padding:6px 8px;border:1px solid var(--ink)}
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
-    .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
-    .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
-    .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
-    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    /* ══ DESIGN POINTS ═════════════════════════════════════════════
+       Rebuilt in this page's own language: a real bordered table-like
+       definition list, Times for content, Courier for the field names
+       in the same grey band the features table uses. No panel fill, no
+       radius, no shadow. Content is unchanged — only its presentation. */
+    .dp-divider{height:0;border:none;border-top:1px solid var(--ink);margin:0}
+    .design-points{position:relative;z-index:80;background:var(--paper);color:var(--ink);
+      border:1px solid var(--ink);padding:8px;
+      font-family:"Times New Roman",Times,serif;font-size:16px;line-height:1.35;
+      letter-spacing:0;text-transform:none;text-align:left;font-style:normal;font-weight:400}
+    .dp-inner{max-width:none;margin:0}
+    .dp-kicker{display:block;margin-bottom:8px}
+    .design-points h2{font-size:34px;font-weight:700;font-family:inherit;
+      letter-spacing:-.02em;margin:0 0 4px;color:var(--ink)}
+    .dp-actions{font-family:"Courier New",Courier,monospace;font-size:12px}
+    .dp-skill,.dp-back{color:var(--link);text-decoration:underline;font-family:inherit;font-size:inherit}
+    .dp-skill::before,.dp-back::before{content:"[ "}
+    .dp-skill::after,.dp-back::after{content:" ]"}
+    .dp-skill{margin-right:8px}
+    .dp-skill:visited,.dp-back:visited{color:var(--visited)}
+    .dp-skill:hover,.dp-back:hover{background:var(--alert);color:var(--on-alert)}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+    .dp{margin:0;border:1px solid var(--ink);border-bottom:0}
+    .dp-row{display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid var(--ink)}
+    .dp dt{font-family:"Courier New",Courier,monospace;font-size:12px;font-weight:700;
+      text-transform:uppercase;background:var(--grey);color:var(--ink);
+      padding:8px;border-right:1px solid var(--ink)}
+    .dp dd{margin:0;padding:8px;color:var(--ink)}
+    .dp dd > ul,.dp dd > ol{padding-left:22px;margin-top:4px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
-    .dp li{margin-bottom:7px}
+    .dp li{margin-bottom:4px}
     .dp li:last-child{margin-bottom:0}
-    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp code{font-family:"Courier New",Courier,monospace;font-size:13px;
+      background:var(--paper);color:var(--ink);border:1px solid var(--ink);padding:0 3px}
     .dp-palette{list-style:none!important;padding-left:0!important}
-    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
-    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:0;
+      border:1px solid var(--ink);vertical-align:-2px;margin-right:8px;background:var(--c)}
+
+    @media(max-width:660px){
+      /* A fixed 210px rail cannot share a 320px viewport, so side mode
+         collapses to the stacked nav box. --rail is the single token
+         behind the offset, so zeroing it undoes the body inset.
+
+         Un-fixing .nav is safe: nothing on this page is absolutely
+         positioned. .nav li::after and .btn::before are generated
+         INLINE content, not positioned boxes, so no element here
+         depends on an ancestor being a containing block. */
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;width:auto;border-width:1px;overflow:visible}
+      [data-nav="side"] .nav .logo{font-size:34px}
+      [data-nav="side"] .nav li{display:inline}
+      [data-nav="side"] .nav li::after{content:" | "}
+      [data-nav="side"] .nav li:last-child::after{content:""}
+      .dp-row{grid-template-columns:1fr}
+      .dp dt{border-right:0;border-bottom:1px solid var(--ink)}
+    }
 </style>
+<script>
+  /* Applied before first paint so a stored preference never flashes the
+     default first. Storage is behind try/catch: private mode, quota or
+     blocked cookies fall through to the default rather than throwing. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }
+    }
+    root.setAttribute('data-nav',   read('atlas-brutalism-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',         ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -123,6 +286,10 @@
       <li><a href="#">About</a></li>
       <li><a href="#">Contact</a></li>
     </ul>
+    <div class="controls">
+      <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">nav: <span id="nav-toggle-value">top</span></button>
+      <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">theme: <span id="theme-toggle-value">light</span></button>
+    </div>
   </nav>
 
   <header class="hero">
@@ -160,7 +327,34 @@
     <p class="blink" id="cursor">READY_</p>
   </section>
 
+  <section class="component" aria-labelledby="component-title">
+    <span class="tag">&lt;section id="component"&gt;</span>
+    <h2 id="component-title">Component reference</h2>
+    <p>A modal built on the native dialog element. The browser traps focus, closes it on
+      Escape and makes the background inert — no script required for any of that.</p>
+    <p><button type="button" class="btn" id="dialog-open">Open dialog</button></p>
+  </section>
+
+  <footer class="site-footer">
+    <span class="tag">&lt;footer&gt;</span>
+    <ul>
+      <li><a href="../index.html">All styles</a></li>
+      <li><a href="https://github.com/Utkarsh7106/atlas">Source</a></li>
+    </ul>
+    <!-- TODO: replace with portfolio link -->
+    <a class="signature" href="#">Built with care</a>
+  </footer>
+
   <p class="meta" id="meta">document loaded</p>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <span class="tag">&lt;dialog&gt;</span>
+    <h2 id="dialog-title">Component reference</h2>
+    <p>A modal built on the native dialog element. The browser traps focus inside it,
+      closes it on Escape, and makes everything behind it inert. Clicking the backdrop
+      closes it, and focus returns to the button that opened it.</p>
+    <p><button type="button" class="dialog__close" id="dialog-close">Close</button></p>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -168,7 +362,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -221,7 +419,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>Deliberately unrefined: there is not a single <code>transition</code> on the page. Hover states snap instantly to a red background with white text. JS blinks the <code>READY_</code> cursor by toggling <code>visibility</code> every 600ms and writes the document's real viewport width and load timestamp into the mono status line, updating on resize — information, not decoration.</dd>
+          <dd>Deliberately unrefined: there is not a single <code>transition</code> on the page, including on everything added since. Hover states snap instantly to a red background with the page's darkest neutral as text. JS blinks the <code>READY_</code> cursor by toggling <code>visibility</code> every 600ms — because that is a script-driven interval rather than CSS, it is guarded by a <code>matchMedia</code> check and the cursor is left solid when <code>prefers-reduced-motion</code> is set — and writes the document's real viewport width and load timestamp into the mono status line, updating on resize; information, not decoration. Two bracketed controls sit in the nav, written in the same <code>[ ]</code> form as every other action: one moves the nav between a stacked box and a fixed left rail by changing a single <code>--rail</code> token, the other flips <code>data-theme</code>. Dark mode is not an inversion — it swaps in the browser's own dark defaults, including the dark-mode UA link colours — and both controls persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -242,10 +440,67 @@
   </section>
 
 <script>
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    /* aria-pressed, not aria-expanded: this switches between two persistent
+       layouts. Nothing is disclosed or hidden. */
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode;
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-brutalism-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode;
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function () { dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
+  })();
+</script>
+
+<script>
   /* No easing, no polish. A blinking cursor and a factual status line. */
   (function () {
     var c = document.getElementById('cursor');
+
+    /* setInterval is not a CSS animation, so the sitewide
+       prefers-reduced-motion rule in reset.css cannot touch it. It also
+       blinks indefinitely, which WCAG 2.2.2 asks you not to do. Guarded
+       here: with the preference set the cursor is simply left solid.
+       Queried live so a preference changed mid-session is honoured. */
+    var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
     setInterval(function () {
+      if (reduce && reduce.matches) { c.style.visibility = 'visible'; return; }
       c.style.visibility = c.style.visibility === 'hidden' ? 'visible' : 'hidden';
     }, 600);
 
