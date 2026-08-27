@@ -49,6 +49,17 @@
       --th-crown:rgba(179,147,85,.10);     /* light through the apse */
       --th-scan:rgba(255,255,255,.014);
       --th-rib:rgba(0,0,0,.5);
+      /* --trace-1 is not free to move for this: it draws the feature
+         cards' border, the CTA diamond, .cta-btn and .dialog__close,
+         and the hover glow on nav links, .ctl and the footer — bumping
+         its alpha to fix the Explore button would have brightened all
+         of those too. A dedicated token instead, scoped to .btn's
+         border only; everything else built on --trace-1 is untouched
+         at .55. Measured against BOTH sides the border sits between
+         (the button's own --stone fill and the page's night ground,
+         full-perimeter, not one sample) — .65 clears 3:1 with margin
+         (3.37:1) without needing the .8 first guessed at. */
+      --th-btn-edge:rgba(179,147,85,.92);
 
       --night:var(--th-night);
       --stone:var(--th-stone);
@@ -59,6 +70,7 @@
       --sapphire:var(--th-sapphire);
       --gold:var(--th-gold);
       --trace-1:var(--th-trace-1);
+      --btn-edge:var(--th-btn-edge);
       --trace-2:var(--th-trace-2);
       --trace-3:var(--th-trace-3);
       --trace-4:var(--th-trace-4);
@@ -96,6 +108,7 @@
       --th-torch:rgba(232,227,214,.055);   /* the light burns lower */
       --th-vignette:rgba(0,0,0,.96);       /* and the dark closes in */
       --th-crown:rgba(165,133,74,.07);
+      --th-btn-edge:rgba(165,133,74,1);
     }
 
     body{
@@ -154,7 +167,7 @@
       max-width:36ch;margin-left:auto;margin-right:auto}
     .btn{display:inline-block;margin-top:40px;font-family:"Cinzel",serif;font-size:11px;
       letter-spacing:.34em;text-indent:.34em;text-transform:uppercase;color:var(--bone);
-      padding:18px 44px;background:var(--stone);border:1px solid var(--trace-1);
+      padding:18px 44px;background:var(--stone);border:1px solid var(--btn-edge);
       clip-path:polygon(50% 0%, 100% 16%, 100% 100%, 0 100%, 0 16%);
       transition:background .5s ease,color .5s ease,box-shadow .5s ease}
     .btn:hover{background:var(--oxblood);color:#fff;box-shadow:0 0 32px var(--glow-red)}
@@ -531,6 +544,7 @@
               <li>Stone drawn with a 1px vertical striation gradient over 2px horizontal courses, both at very low alpha.</li>
               <li>A heavy <code>inset 0 0 240px 60px</code> vignette that crushes the edges of the page to black.</li>
               <li>A rotated 14px square straddling the CTA's top border as a crocket, marking the apex of the section.</li>
+              <li>The Explore button's border runs on its own edge token rather than the shared tracery alpha every other line on the page draws from — gilt metal against aged stone, not another mullion.</li>
             </ul>
           </dd>
         </div>
