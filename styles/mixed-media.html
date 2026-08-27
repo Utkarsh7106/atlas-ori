@@ -615,7 +615,7 @@
           <dd>
             <ol>
               <li>Combine at least three different reproduction processes — halftone, flat riso plate, photocopy grain, torn paper — and let each one stay visible.</li>
-              <li>Set colour plates to <code>mix-blend-mode: multiply</code> so overlaps make new colours; never let one plate simply cover another.</li>
+              <li>Set colour plates to <code>mix-blend-mode: multiply</code> so overlaps make new colours; never let one plate simply cover another. Multiply only holds on light stock — over black stock it resolves to black, so dark mode swaps the token to <code>screen</code>, the equivalent move for ink layered on a dark ground.</li>
               <li>Build headlines as ransom notes: change typeface, size, background and angle on every word.</li>
               <li>Give every cutting a 2px keyline, a hard offset shadow and a small rotation, and let washes bleed past the edges.</li>
               <li>Keep motion mechanical — <code>steps()</code> transitions and misregistration offsets — because the subject is printing, not animation.</li>
