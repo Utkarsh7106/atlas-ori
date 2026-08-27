@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Quicksand:wght@500;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ CLAYMORPHISM ═════════════════════════════════════════════
        Everything looks moulded from soft plasticine: fat radii, a
@@ -17,29 +17,180 @@
        objects are a different colour from the ground and the palette
        is loudly pastel.                                            */
 
+    /* Tokens are split along the line this material already implies.
+       PIGMENT is what a lump of clay is coloured with; it does not change
+       when the studio lights go down. NEUTRAL, GROUND and INK are what the
+       light itself decides. Three tokens were each covering both sides of
+       that line, and one was covering three jobs at once:
+
+         --text   was the ink on the white clay AND the ink on the pink,
+                  yellow and mint clays AND the ink on the yellow button.
+                  The first must flip on a dark body; the others must not,
+                  because the pastels do not move.
+         --purple was the CTA/button pigment AND the wordmark AND the nav
+                  hover ink — see the note on its value below.
+         --pink / --yellow / --mint were each a clay body AND a blurred
+                  background blob, which is a light, not a pigment.
+
+       Every rgba in the clay recipe was a literal. They are all tokens
+       now, because the recipe is exactly what has to be rebuilt when the
+       ground goes dark. */
     :root{
-      --ground1:#dcd6ff;   /* lavender ground        */
-      --ground2:#ffe3f1;   /* pink ground            */
-      --clay:#ffffff;      /* neutral clay body      */
-      --purple:#8b7cf6;
+      color-scheme:light;
+
+      /* ── pigment: fixed in both lights ──────────────────────── */
+      --purple:#6d55e0;
       --pink:#ff8fab;
       --yellow:#ffd166;
       --mint:#7ee0c9;
-      --text:#3d3563;      /* deep violet-grey ink   */
-      --muted:#7a72a6;
+      --on-purple:#ffffff;   /* ink on the purple clay              */
+      --on-pastel:#3d3563;   /* ink on the pink, yellow, mint clays */
+      --well:rgba(255,255,255,.75);  /* the icon well, on a pigment */
+
+      /* ── ground, neutral body and ink: the light decides ────── */
+      --th-ground1:#dcd6ff;  /* lavender base of the gradient       */
+      --th-ground2:#ffe3f1;  /* pink radial wash                    */
+      --th-ground3:#d9f5ee;  /* mint radial wash                    */
+      --th-ground-mid:#efe9ff;
+      --th-clay:#ffffff;     /* neutral clay body                   */
+      --th-ink:#3d3563;      /* deep violet-grey ink                */
+      --th-muted:#635b85;    /* secondary ink                       */
+      --th-accent-ink:#6248d6;  /* the wordmark, and the nav hover  */
+      --th-chip:#f3f0ff;     /* the nav hover chip                  */
+
+      /* ── the clay recipe, as tokens ─────────────────────────── */
+      --hi-neutral:rgba(255,255,255,.95);
+      --lo-neutral:rgba(126,110,190,.22);
+      --cast-neutral:rgba(102,84,190,.45);
+      --hi-purple:rgba(255,255,255,.42);
+      --lo-purple:rgba(60,40,140,.4);
+      --cast-purple:rgba(102,84,190,.6);
+      --hi-pink:rgba(255,255,255,.55);
+      --lo-pink:rgba(190,70,110,.32);
+      --cast-pink:rgba(255,143,171,.7);
+      --hi-yellow:rgba(255,255,255,.6);
+      --lo-yellow:rgba(190,140,40,.3);
+      --cast-yellow:rgba(255,209,102,.75);
+      --hi-mint:rgba(255,255,255,.6);
+      --lo-mint:rgba(40,150,130,.3);
+      --cast-mint:rgba(126,224,201,.75);
+      --hi-well:rgba(255,255,255,.9);
+      --lo-well:rgba(120,100,180,.25);
+      --cast-well:rgba(102,84,190,.45);
+      --hi-chip:rgba(255,255,255,.9);
+      --lo-chip:rgba(126,110,190,.28);
+      --cast-chip:rgba(102,84,190,.4);
+      /* press a thumb into clay and the displaced material rises into a
+         lip around the depression. That lip is what gives a pressed
+         well an outline at all — measured, the footer's silhouette was
+         1.17:1 against the ground without it. */
+      --press-lip:rgba(126,110,190,.34);
+      /* A lump set into a bar leaves a seam. Fill alone put the two
+         toggles at 1.2:1 against the bar they sit in and the palest
+         palette pebble at 1.44:1 against the slab — neither the cast nor
+         the lit face helps at that size. Same job, same token. */
+      --seam:rgba(61,53,99,.68);
+      /* On a pale ground a lump of clay is separated from it by its own
+         cast shadow. On a dark ground it is not — see the dark block. */
+      --rim:transparent;
+
+      --ground1:var(--th-ground1);
+      --ground2:var(--th-ground2);
+      --ground3:var(--th-ground3);
+      --ground-mid:var(--th-ground-mid);
+      --clay:var(--th-clay);
+      --ink:var(--th-ink);
+      --muted:var(--th-muted);
+      --accent-ink:var(--th-accent-ink);
+      --chip:var(--th-chip);
+
       --r:38px;
+      /* the one token the nav mode drives: the shelf the nav stands on */
+      --shelf:0px;
+    }
+
+    /* ── The studio with the lights down ──────────────────────────
+       The pigments do not move. "Loudly pastel" is the stated identity
+       and Replication Rule 3 turns on the objects being a different
+       colour from the ground, so deepening the four clays toward
+       mid-tones would dissolve the premise rather than translate it.
+       What moves is the ground, the neutral body and the ink.
+
+       The extrusion model is REBUILT, not recoloured, because a straight
+       inversion of the shadow pair does not survive the move:
+
+         · the cast shadow carries all of the elevation on a pale ground.
+           A shadow is an absence of light, and on a #1e1938 ground a
+           black cast at .5 measures 1.20:1 against the ground it falls
+           on — invisible. So on the dark ground the operator flips from
+           subtractive to additive and the cast becomes a GLOW. That is
+           not a reinterpretation: Signature Techniques already says the
+           coloured shadow exists "so each object appears to glow onto
+           the ground", and on a dark ground that is literally what a
+           bright object does.
+         · the inset top highlight drops most of its alpha. A white
+           highlight at .95 on a dark body is not a lit face, it is a
+           strip light.
+         · the inset bottom shade goes to near-black. A violet tint at
+           .22 cannot darken a body that is already dark.
+         · the neutral clay's fill lands 1.28:1 against the dark ground,
+           so it gains a rim. The four pigments do not need one: they
+           still separate on fill, which is the whole point of clay over
+           neumorphism. */
+    :root[data-theme="dark"]{
+      color-scheme:dark;
+      --th-ground1:#1e1938;
+      --th-ground2:#2b1c33;
+      --th-ground3:#132a2c;
+      --th-ground-mid:#241e42;
+      --th-clay:#322b57;
+      --th-ink:#efe9ff;
+      --th-muted:#b0a8d8;
+      --th-accent-ink:#bfb2ff;
+      --th-chip:#3d3566;
+
+      --hi-neutral:rgba(255,255,255,.10);
+      --lo-neutral:rgba(0,0,0,.45);
+      --cast-neutral:rgba(139,124,246,.30);
+      --hi-purple:rgba(255,255,255,.30);
+      --lo-purple:rgba(0,0,0,.45);
+      --cast-purple:rgba(139,124,246,.75);
+      --hi-pink:rgba(255,255,255,.5);
+      --lo-pink:rgba(150,40,80,.4);
+      --cast-pink:rgba(255,143,171,.85);
+      --hi-yellow:rgba(255,255,255,.55);
+      --lo-yellow:rgba(150,105,20,.38);
+      --cast-yellow:rgba(255,209,102,.85);
+      --hi-mint:rgba(255,255,255,.55);
+      --lo-mint:rgba(20,110,95,.38);
+      --cast-mint:rgba(126,224,201,.85);
+      --hi-well:rgba(255,255,255,.85);
+      --lo-well:rgba(120,100,180,.3);
+      --cast-well:rgba(102,84,190,.4);
+      --hi-chip:rgba(255,255,255,.12);
+      --lo-chip:rgba(0,0,0,.42);
+      --cast-chip:rgba(139,124,246,.30);
+      --press-lip:rgba(255,255,255,.18);
+      --seam:rgba(239,233,255,.55);
+      --rim:rgba(255,255,255,.15);
     }
 
     body{
       background:
         radial-gradient(1000px 600px at 12% -5%, var(--ground2) 0%, transparent 60%),
-        radial-gradient(900px 700px at 92% 8%, #d9f5ee 0%, transparent 55%),
-        linear-gradient(165deg, var(--ground1) 0%, #efe9ff 55%, var(--ground2) 100%);
+        radial-gradient(900px 700px at 92% 8%, var(--ground3) 0%, transparent 55%),
+        linear-gradient(165deg, var(--ground1) 0%, var(--ground-mid) 55%, var(--ground2) 100%);
+      /* NOTE: background-attachment:fixed is a long-standing compositing
+         and jank problem on iOS Safari specifically. Left in place — it
+         is a documented part of this style's Layout Logic — and flagged
+         in PHASE3_CLAYMORPHISM.md rather than silently removed. */
       background-attachment:fixed;
-      color:var(--text);
+      color:var(--ink);
       font-family:"Quicksand",-apple-system,"Segoe UI",sans-serif;
       font-weight:500;
       padding:0 clamp(16px,4vw,36px);
+      /* the shelf offsets the whole page, not one panel */
+      padding-left:calc(clamp(16px,4vw,36px) + var(--shelf));
       overflow-x:hidden;
     }
     .wrap{max-width:1040px;margin:0 auto;padding:34px 0 80px;position:relative;z-index:1}
@@ -49,43 +200,47 @@
       background:var(--clay);
       border-radius:var(--r);
       box-shadow:
-        inset 0 10px 16px rgba(255,255,255,.95),
-        inset 0 -12px 18px rgba(126,110,190,.22),
-        0 26px 40px -16px rgba(102,84,190,.45);
+        inset 0 10px 16px var(--hi-neutral),
+        inset 0 -12px 18px var(--lo-neutral),
+        0 0 0 1px var(--rim),
+        0 26px 40px -16px var(--cast-neutral);
     }
-    .clay-purple{background:var(--purple);color:#fff;
-      box-shadow:inset 0 10px 16px rgba(255,255,255,.42), inset 0 -12px 18px rgba(60,40,140,.4), 0 26px 40px -16px rgba(102,84,190,.6)}
+    .clay-purple{background:var(--purple);color:var(--on-purple);
+      box-shadow:inset 0 10px 16px var(--hi-purple), inset 0 -12px 18px var(--lo-purple), 0 26px 40px -16px var(--cast-purple)}
     .clay-pink{background:var(--pink);
-      box-shadow:inset 0 10px 16px rgba(255,255,255,.55), inset 0 -12px 18px rgba(190,70,110,.32), 0 24px 36px -16px rgba(255,143,171,.7)}
+      box-shadow:inset 0 10px 16px var(--hi-pink), inset 0 -12px 18px var(--lo-pink), 0 24px 36px -16px var(--cast-pink)}
     .clay-yellow{background:var(--yellow);
-      box-shadow:inset 0 10px 16px rgba(255,255,255,.6), inset 0 -12px 18px rgba(190,140,40,.3), 0 24px 36px -16px rgba(255,209,102,.75)}
+      box-shadow:inset 0 10px 16px var(--hi-yellow), inset 0 -12px 18px var(--lo-yellow), 0 24px 36px -16px var(--cast-yellow)}
     .clay-mint{background:var(--mint);
-      box-shadow:inset 0 10px 16px rgba(255,255,255,.6), inset 0 -12px 18px rgba(40,150,130,.3), 0 24px 36px -16px rgba(126,224,201,.75)}
+      box-shadow:inset 0 10px 16px var(--hi-mint), inset 0 -12px 18px var(--lo-mint), 0 24px 36px -16px var(--cast-mint)}
 
     /* Drifting background blobs. */
     .blob{position:fixed;border-radius:50%;filter:blur(46px);opacity:.5;z-index:0;pointer-events:none;
       animation:drift 16s ease-in-out infinite}
+    /* The blobs are a light thrown onto the ground, not a lump of clay:
+       same three hues, but they belong to the ground and dim with it. */
     .b1{width:220px;height:220px;background:var(--pink);top:12%;left:-70px}
     .b2{width:300px;height:300px;background:var(--mint);bottom:-90px;right:-80px;animation-duration:21s}
     .b3{width:150px;height:150px;background:var(--yellow);top:62%;left:8%;animation-duration:13s}
+    :root[data-theme="dark"] .blob{opacity:.30}
     @keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(28px,-34px) scale(1.08)}}
 
     /* ── Nav ─────────────────────────────────────────────────── */
     .nav{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
       padding:16px 22px;border-radius:30px}
-    .logo{font-family:"Baloo 2",cursive;font-size:26px;font-weight:700;color:var(--purple)}
+    .logo{font-family:"Baloo 2",cursive;font-size:26px;font-weight:700;color:var(--accent-ink)}
     .nav ul{display:flex;gap:10px}
     .nav ul a{display:block;padding:10px 20px;border-radius:22px;font-size:14px;font-weight:600;color:var(--muted);
       transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .3s ease,color .3s ease}
-    .nav ul a:hover{background:#f3f0ff;color:var(--purple);transform:translateY(-3px) scale(1.05)}
+    .nav ul a:hover{background:var(--chip);color:var(--accent-ink);transform:translateY(-3px) scale(1.05)}
 
     /* ── Hero ────────────────────────────────────────────────── */
     .hero{margin-top:26px;padding:66px 46px;text-align:center;border-radius:48px}
     .hero h1{font-family:"Baloo 2",cursive;font-size:clamp(34px,5.4vw,62px);font-weight:700;line-height:1.08;
-      max-width:15ch;margin:0 auto;color:var(--text)}
+      max-width:15ch;margin:0 auto;color:var(--ink)}
     .hero p{margin-top:16px;font-size:17px;color:var(--muted);max-width:38ch;margin-left:auto;margin-right:auto}
     .btn{display:inline-block;margin-top:34px;padding:19px 48px;border-radius:34px;
-      font-family:"Baloo 2",cursive;font-size:20px;font-weight:700;color:#fff;
+      font-family:"Baloo 2",cursive;font-size:20px;font-weight:700;color:var(--on-purple);
       transition:transform .32s cubic-bezier(.34,1.56,.64,1)}
     .btn:hover{transform:translateY(-6px) scale(1.05)}
     .btn.squish{transform:translateY(3px) scale(1.06,.9)}
@@ -96,55 +251,241 @@
       transition:transform .32s cubic-bezier(.34,1.56,.64,1)}
     .card:hover{transform:translateY(-10px) rotate(-1deg)}
     .icon{display:inline-flex;align-items:center;justify-content:center;width:86px;height:86px;border-radius:50%;
-      font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text);margin-bottom:20px;
-      background:rgba(255,255,255,.75);
-      box-shadow:inset 0 8px 12px rgba(255,255,255,.9), inset 0 -9px 14px rgba(120,100,180,.25), 0 12px 18px -8px rgba(102,84,190,.45)}
-    .card h3{font-family:"Baloo 2",cursive;font-size:26px;font-weight:700;margin-bottom:6px}
-    .card p{font-size:15px;color:var(--text);opacity:.78;line-height:1.55}
+      font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--on-pastel);margin-bottom:20px;
+      background:var(--well);
+      box-shadow:inset 0 8px 12px var(--hi-well), inset 0 -9px 14px var(--lo-well), 0 12px 18px -8px var(--cast-well)}
+    .card h3{font-family:"Baloo 2",cursive;font-size:26px;font-weight:700;margin-bottom:6px;color:var(--on-pastel)}
+    /* opacity:.78 was fading this copy against its own card: 3.51:1 on the
+       pink and 4.37:1 on the mint. The ink is fine, the veil was not. */
+    .card p{font-size:15px;color:var(--on-pastel);line-height:1.55}
 
     /* ── CTA ─────────────────────────────────────────────────── */
     .cta{margin-top:44px;padding:60px 40px;text-align:center;border-radius:48px}
-    .cta h2{font-family:"Baloo 2",cursive;font-size:clamp(30px,4.4vw,50px);font-weight:700;color:#fff}
+    .cta h2{font-family:"Baloo 2",cursive;font-size:clamp(30px,4.4vw,50px);font-weight:700;color:var(--on-purple)}
     .cta .cta-btn{display:inline-block;margin-top:26px;padding:18px 42px;border-radius:32px;
-      font-family:"Baloo 2",cursive;font-size:19px;font-weight:700;color:var(--text);
+      font-family:"Baloo 2",cursive;font-size:19px;font-weight:700;color:var(--on-pastel);
       transition:transform .32s cubic-bezier(.34,1.56,.64,1)}
     .cta .cta-btn:hover{transform:translateY(-6px) scale(1.05)}
     .cta .cta-btn.squish{transform:translateY(3px) scale(1.06,.9)}
 
-    @media(max-width:820px){.features{grid-template-columns:1fr}.hero{padding:46px 24px}}
+    /* ── Controls: two small lumps on the nav bar ────────────────
+       The page already has a vocabulary for "this has been pushed": the
+       squish. Extended here into a resting state — a control that is ON
+       is a lump of clay pressed INTO the bar rather than sitting on it,
+       so the recipe simply runs backwards: the highlight moves to the
+       bottom, the shade to the top, and the cast turns inward, because
+       a pressed object throws no shadow onto the ground. */
+    .controls{display:flex;gap:10px;flex-wrap:wrap}
+    .ctl{display:inline-flex;align-items:baseline;gap:7px;
+      padding:10px 18px;border-radius:22px;
+      font-family:"Quicksand",sans-serif;font-size:13px;font-weight:600;
+      color:var(--muted);background:var(--chip);
+      box-shadow:inset 0 6px 10px var(--hi-chip), inset 0 -7px 11px var(--lo-chip),
+        0 0 0 1px var(--seam), 0 9px 14px -7px var(--cast-chip);
+      transition:transform .3s cubic-bezier(.34,1.56,.64,1),color .3s ease,box-shadow .3s ease}
+    .ctl__v{font-family:"Baloo 2",cursive;font-size:15px;font-weight:700;color:var(--accent-ink)}
+    .ctl:hover{color:var(--accent-ink);transform:translateY(-3px) scale(1.04)}
+    .ctl[aria-pressed="true"]{
+      box-shadow:inset 0 -8px 12px var(--hi-chip), inset 0 9px 14px var(--lo-chip),
+        inset 0 0 0 1px var(--rim), 0 0 0 1px var(--seam);
+      transform:none}
+    .ctl:focus-visible,.nav ul a:focus-visible,.btn:focus-visible,
+    .cta .cta-btn:focus-visible{outline:3px solid var(--accent-ink);outline-offset:4px}
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
-    .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    /* ── The nav stood on its side ───────────────────────────────
+       The same clay bar, turned: one shared --shelf token widens the
+       page's left padding and the bar fills it. Nothing else on this
+       page claims a stacking context above .design-points at 80 — the
+       drifting blobs are at 0 and .wrap at 1 — so the shelf takes 90. */
+    :root[data-nav="side"]{--shelf:250px}
+    [data-nav="side"] .nav{
+      position:fixed;left:clamp(16px,4vw,36px);top:22px;bottom:22px;
+      width:calc(var(--shelf) - 30px);
+      flex-direction:column;align-items:stretch;justify-content:flex-start;
+      gap:28px;overflow-y:auto;z-index:90;padding:26px 20px;border-radius:36px}
+    [data-nav="side"] .nav ul{flex-direction:column;gap:8px}
+    [data-nav="side"] .nav ul a{text-align:center}
+    [data-nav="side"] .controls{flex-direction:column;align-items:stretch}
+    [data-nav="side"] .ctl{justify-content:center}
+
+    /* ── Component reference ─────────────────────────────────── */
+    .component{margin-top:44px;padding:52px 40px 56px;text-align:center;border-radius:44px}
+    .component h2{font-family:"Baloo 2",cursive;font-size:clamp(26px,3.4vw,38px);font-weight:700;color:var(--ink)}
+    .component p{margin-top:14px;font-size:16px;color:var(--muted);max-width:44ch;margin-left:auto;margin-right:auto}
+    .component .btn{margin-top:28px}
+
+    /* ── Dialog ──────────────────────────────────────────────────
+       One more lump of clay, lifted right off the page into the top
+       layer. showModal() supplies the focus trap, Escape, the inert
+       background and the stacking. */
+    .dialog{width:min(520px,calc(100vw - 40px));border:0;padding:46px 38px 42px;text-align:center;
+      background:var(--clay);color:var(--ink);border-radius:44px;
+      font-family:"Quicksand",-apple-system,sans-serif;font-weight:500;
+      box-shadow:inset 0 10px 16px var(--hi-neutral), inset 0 -12px 18px var(--lo-neutral),
+        0 0 0 1px var(--rim), 0 30px 50px -18px var(--cast-neutral)}
+    /* ::backdrop does not reliably inherit custom properties, so it is
+       written out per theme rather than tokenised. */
+    .dialog::backdrop{background:rgba(61,53,99,.42)}
+    :root[data-theme="dark"] .dialog::backdrop{background:rgba(10,7,24,.66)}
+    .dialog__label{display:inline-block;padding:7px 16px;border-radius:16px;
+      background:var(--chip);color:var(--accent-ink);
+      font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+    .dialog h2{font-family:"Baloo 2",cursive;font-size:30px;font-weight:700;margin:18px 0 10px;color:var(--ink)}
+    .dialog p{font-size:15px;line-height:1.6;color:var(--muted)}
+    .dialog__close{display:inline-block;margin-top:28px;padding:16px 40px;border-radius:30px;
+      font-family:"Baloo 2",cursive;font-size:18px;font-weight:700;color:var(--on-purple);
+      transition:transform .32s cubic-bezier(.34,1.56,.64,1)}
+    .dialog__close:hover{transform:translateY(-5px) scale(1.05)}
+    .dialog__close:focus-visible{outline:3px solid var(--accent-ink);outline-offset:4px}
+
+    /* ── Footer ──────────────────────────────────────────────────
+       The nav inverted, in both senses this page has. The nav puts the
+       wordmark left and the links right, and it is clay RAISED off the
+       page; the footer puts the links left and the mark right, and it is
+       clay PRESSED INTO it — highlight and shade swapped ends, the cast
+       turned inward. It keeps the neutral body, so it is still a
+       different colour from the ground: a pressed well in the ground's
+       own colour would be neumorphism, which is the thing this style
+       defines itself against.
+
+       Checked for the trap that caught Brutalism: the link rule is
+       scoped to `.foot__links a`, and the signature is a sibling of that
+       nav rather than a descendant, so it is never matched. */
+    .foot{margin-top:44px;padding:22px 30px;border-radius:34px;
+      display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+      background:var(--clay);
+      box-shadow:inset 0 -10px 16px var(--hi-neutral), inset 0 12px 18px var(--lo-neutral),
+        inset 0 0 0 1px var(--rim),
+        0 0 0 1px var(--press-lip), 0 3px 5px -2px var(--cast-neutral)}
+    .foot__links{display:flex;gap:10px;flex-wrap:wrap}
+    .foot__links a{display:block;padding:10px 20px;border-radius:22px;
+      font-size:14px;font-weight:600;color:var(--muted);
+      transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .3s ease,color .3s ease}
+    .foot__links a:hover{background:var(--chip);color:var(--accent-ink);transform:translateY(-3px) scale(1.05)}
+    .foot__links a:focus-visible,.signature:focus-visible,.dp-skill:focus-visible,
+    .dp-back:focus-visible,.dialog__close:focus-visible{outline:3px solid var(--accent-ink);outline-offset:4px}
+
+    /* ── Signature mark ──────────────────────────────────────────
+       Copied verbatim from styles/swiss-design.html and deliberately NOT
+       adapted. This page owns Baloo 2 and Quicksand and rounds every
+       corner it can find; the signature is a hand, and it is the same
+       hand on every page. Do not restyle it. */
+    .signature{
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--ink);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .18s linear}
+    .signature:hover{border-bottom-color:var(--ink)}
+
+    @media(max-width:820px){
+      .features{grid-template-columns:1fr}
+      .hero{padding:46px 24px}
+      .foot{justify-content:center;text-align:center}
+
+      /* A 250px shelf cannot share a 320px page, so the bar lies back
+         down across the top and the shelf goes to nothing. --shelf is the
+         single token behind the offset.
+
+         position:relative is NOT removed from anything here. .wrap carries
+         it to hold z-index:1 above the fixed blobs, and .nav, .icon and
+         .dialog are untouched by this block. */
+      :root[data-nav="side"]{--shelf:0px}
+      [data-nav="side"] .nav{position:static;left:auto;top:auto;bottom:auto;width:auto;
+        flex-direction:row;align-items:center;justify-content:space-between;
+        gap:14px;overflow:visible;padding:16px 22px;border-radius:30px}
+      [data-nav="side"] .nav ul{flex-direction:row;gap:10px}
+      [data-nav="side"] .nav ul a{text-align:left}
+      [data-nav="side"] .controls{flex-direction:row;align-items:center}
+    }
+
+    /* ══ DESIGN POINTS ═════════════════════════════════════════════
+       Rebuilt in this page's own language: the panel is the ground, and
+       the reference matter sits on one big lump of clay laid on it, with
+       the same three-part recipe at panel scale. Field names are small
+       pressed chips; the palette swatches are clay pebbles built from the
+       icon well's recipe at 16px. Content unchanged; only its
+       presentation. */
+    .dp-divider{height:0;border:none;margin:0}
+    .design-points{position:relative;z-index:80;background:transparent;color:var(--ink);
+      padding:56px 0 96px;
+      font-family:"Quicksand",-apple-system,"Segoe UI",sans-serif;font-weight:500;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;
+      text-align:left;font-style:normal}
+    .dp-inner{max-width:900px;margin:0 auto;padding:44px clamp(22px,4vw,48px) 52px;
+      border-radius:44px;background:var(--clay);
+      box-shadow:inset 0 10px 16px var(--hi-neutral), inset 0 -12px 18px var(--lo-neutral),
+        0 0 0 1px var(--rim), 0 26px 40px -16px var(--cast-neutral)}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+      margin-bottom:26px;padding-bottom:22px;border-bottom:1px solid var(--lo-neutral)}
+    .design-points h2{font-family:"Baloo 2",cursive;font-size:26px;font-weight:700;
+      letter-spacing:0;text-transform:none;color:var(--ink);margin:0}
+    .dp-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .dp-skill,.dp-back{display:inline-block;padding:10px 20px;border-radius:22px;
+      font-family:"Quicksand",sans-serif;font-size:13px;font-weight:600;
+      color:var(--accent-ink);background:var(--chip);
+      box-shadow:inset 0 6px 10px var(--hi-chip), inset 0 -7px 11px var(--lo-chip),
+        0 0 0 1px var(--seam), 0 9px 14px -7px var(--cast-chip);
+      transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .3s ease,color .3s ease}
+    .dp-skill:hover,.dp-back:hover{transform:translateY(-3px) scale(1.04)}
+    .dp-skill{background:var(--purple);color:var(--on-purple);
+      box-shadow:inset 0 6px 10px var(--hi-purple), inset 0 -7px 11px var(--lo-purple),
+        0 0 0 1px var(--seam), 0 10px 16px -8px var(--cast-purple)}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:22px;padding:20px 0;
+      border-top:1px solid var(--lo-neutral)}
     .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
-    .dp dd > ul,.dp dd > ol{padding-left:20px}
+    .dp dt{align-self:start;justify-self:start;padding:6px 14px;border-radius:16px;
+      background:var(--chip);color:var(--accent-ink);
+      font-family:"Quicksand",sans-serif;font-size:11px;font-weight:600;line-height:1.5;
+      letter-spacing:.08em;text-transform:uppercase}
+    /* a hex list or a clamp() call must not push the column past the slab
+       once the shelf narrows it */
+    .dp dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+    .dp dd > ul,.dp dd > ol{padding-left:22px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
-    .dp li{margin-bottom:7px}
+    .dp li{margin-bottom:8px}
     .dp li:last-child{margin-bottom:0}
     .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+      background:var(--chip);padding:2px 8px;border-radius:9px;color:var(--ink);overflow-wrap:anywhere}
     .dp-palette{list-style:none!important;padding-left:0!important}
-    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
-    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
+    /* each swatch is a pebble of clay, not a square chip */
+    .sw{display:inline-block;width:16px;height:16px;border-radius:50%;
+      vertical-align:-3px;margin-right:10px;background:var(--c);
+      box-shadow:inset 0 3px 4px var(--hi-well), inset 0 -3px 5px var(--lo-well),
+        0 0 0 1px var(--seam), 0 4px 6px -3px var(--cast-well)}
+    @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:10px}}
+
+    /* ── Press ───────────────────────────────────────────────────
+       The squish already existed, on two buttons and bound to `click`.
+       Click fires after a touch gesture has resolved, so on a phone the
+       clay deformed once the finger had already left it — and the nav
+       links, the panel links and the footer never squished at all. It is
+       now driven from pointerdown across every control, with a minimum
+       hold so a brief tap still shows the deformation, and it keeps the
+       page's own numbers: 1.06 x 0.9, springing back over 320ms.
+
+       Placed after every rule it overrides, including the panel's. */
+    .squish{transform:translateY(3px) scale(1.06,.9)!important}
+    .nav ul a.squish,.foot__links a.squish,.ctl.squish,.dp-back.squish{
+      transform:translateY(2px) scale(1.08,.88)!important;background:var(--chip);color:var(--accent-ink)}
 </style>
+<script>
+  /* Before first paint, so the studio lights are never up for a frame and
+     then put down. Reads only, and only ever writes attributes. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }   /* private mode / blocked cookies */
+    }
+    root.setAttribute('data-nav',   read('atlas-clay-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',    ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -161,6 +502,10 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">Bar <span class="ctl__v" id="nav-toggle-value">Top</span></button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">Lights <span class="ctl__v" id="theme-toggle-value">Up</span></button>
+      </div>
     </nav>
 
     <header class="hero clay">
@@ -194,7 +539,32 @@
       <a href="mailto:hello@example.com" class="clay-yellow cta-btn" data-squish>Get in touch</a>
     </section>
 
+    <section class="component clay" aria-labelledby="component-title">
+      <h2 id="component-title">Component reference</h2>
+      <p>A modal built on the native dialog element — focus trapped, Escape to close,
+        background inert.</p>
+      <a href="#" class="btn clay-purple" data-squish id="dialog-open">Open dialog</a>
+    </section>
+
+    <footer class="foot">
+      <nav class="foot__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <span class="dialog__label">Dialog</span>
+    <h2 id="dialog-title">Component reference</h2>
+    <p>A modal built on the native dialog element. The browser traps focus inside it,
+      closes it on Escape, and makes everything behind it inert. Clicking the ground
+      behind closes it, and focus returns to the button that opened it.</p>
+    <button type="button" class="dialog__close clay-purple" id="dialog-close" data-squish>Close</button>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -202,7 +572,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -222,10 +596,11 @@
             <ul class="dp-palette">
               <li><span class="sw" style="--c:#dcd6ff"></span><code>#dcd6ff</code> — lavender base of the multi-stop ground</li>
               <li><span class="sw" style="--c:#ffe3f1"></span><code>#ffe3f1</code> — pink radial wash in the ground</li>
-              <li><span class="sw" style="--c:#8b7cf6"></span><code>#8b7cf6</code> — purple clay: primary button and CTA slab</li>
+              <li><span class="sw" style="--c:#6d55e0"></span><code>#6d55e0</code> — purple clay: primary button and CTA slab</li>
               <li><span class="sw" style="--c:#ff8fab"></span><code>#ff8fab</code> — pink clay card</li>
               <li><span class="sw" style="--c:#ffd166"></span><code>#ffd166</code> — yellow clay card and secondary button</li>
               <li><span class="sw" style="--c:#7ee0c9"></span><code>#7ee0c9</code> — mint clay card</li>
+              <li><span class="sw" style="--c:#3d3563"></span><code>#3d3563</code> — deep violet-grey ink for all type on a pale clay body</li>
             </ul>
           </dd>
         </div>
@@ -255,7 +630,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>Bouncy, with overshoot: every hover uses <code>cubic-bezier(.34, 1.56, .64, 1)</code> over ~320ms, lifting cards −10px with a −1deg tilt and buttons −6px at 1.05 scale. Clicking either button applies a JS <code>squish</code> class that scales it to <code>1.06 × 0.9</code> for 260ms so the clay visibly deforms and springs back. Three background blobs drift and scale on 13–21s loops.</dd>
+          <dd>Bouncy, with overshoot: every hover uses <code>cubic-bezier(.34, 1.56, .64, 1)</code> over ~320ms, lifting cards −10px with a −1deg tilt and buttons −6px at 1.05 scale. Pressing any control applies a JS <code>squish</code> class that scales it to <code>1.06 × 0.9</code> so the clay visibly deforms and springs back — driven from <code>pointerdown</code> and held a minimum 170ms, because a touchscreen resolves a click only after the finger has gone, and the deformation has to happen while it is still there. Three background blobs drift and scale on 13–21s loops. Every one of those is a CSS transition or animation and a single class write per press, so the sitewide reduced-motion rule mutes all of it and no motion here needs to test for it. Two small lumps are set into the bar: one turns the bar on its side to stand in a shelf down the left margin, moving the whole page by a single <code>--shelf</code> token; the other takes the studio lights down. A control that is on is clay pressed <em>into</em> the bar rather than sitting on it — the same three-part recipe run backwards, highlight and shade swapped ends and the cast turned inward. Lights down keeps the four pigments exactly as they are, because loudly pastel is the point, and rebuilds the extrusion instead: a cast shadow is an absence of light and cannot carry depth on a dark ground, so it becomes a coloured glow, which is what the coloured shadow was already described as doing. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -276,14 +651,85 @@
   </section>
 
 <script>
-  /* Clay deforms when you press it. */
   (function () {
-    document.querySelectorAll('[data-squish]').forEach(function (el) {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    /* aria-pressed, not aria-expanded: two persistent placements of the
+       same bar, nothing disclosed or hidden. */
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'Side' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-clay-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode === 'dark' ? 'Down' : 'Up';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function (e) { e.preventDefault(); dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
+  })();
+</script>
+
+<script>
+  /* Clay deforms when you press it.
+
+     Driven from pointerdown rather than click: Chromium withholds :active
+     on touch until it knows the gesture is not a scroll, and `click` on a
+     touchscreen fires only once the gesture has resolved — so the old
+     handler deformed the clay after the finger had already left it. A
+     minimum hold keeps a brief tap visible. One class write per press,
+     cleared on release: no loop, no momentum, nothing still running after
+     input stops, so no matchMedia guard is wanted here — the motion it
+     drives is the CSS transform transition, which the sitewide
+     reduced-motion rule already collapses. (The drifting blobs are a CSS
+     animation and are collapsed by the same rule.) */
+  (function () {
+    var PRESSABLE = '[data-squish], .ctl, .nav ul a, .foot__links a, .dp-skill, .dp-back';
+    var MIN_HOLD = 170;
+    document.querySelectorAll(PRESSABLE).forEach(function (el) {
+      var at = 0, timer = null;
+      function down() { clearTimeout(timer); at = Date.now(); el.classList.add('squish'); }
+      function up() {
+        var left = Math.max(0, MIN_HOLD - (Date.now() - at));
+        clearTimeout(timer);
+        timer = setTimeout(function () { el.classList.remove('squish'); }, left);
+      }
+      el.addEventListener('pointerdown', down);
+      el.addEventListener('pointerup', up);
+      el.addEventListener('pointercancel', up);
+      el.addEventListener('pointerleave', up);
+      /* placeholder links still must not navigate */
       el.addEventListener('click', function (e) {
-        /* only swallow the click for placeholder links; let real hrefs navigate */
         if (el.getAttribute('href') === '#') e.preventDefault();
-        el.classList.add('squish');
-        setTimeout(function () { el.classList.remove('squish'); }, 260);
       });
     });
   })();
