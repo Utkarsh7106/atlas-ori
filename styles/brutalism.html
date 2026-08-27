@@ -34,6 +34,18 @@
       --th-alert:#ff0000;
       --th-grey:#c0c0c0;
       --th-on-alert:#000000;  /* text on the hover inversion */
+      /* --th-alert was doing two jobs: the hover-inversion background
+         AND the .blink cursor's text colour direct on paper. Darkening
+         it to fix the cursor (4.0:1 on white) broke the hover pairs —
+         black-on-alert dropped from 5.25:1 to 4.36:1 light, 4.69:1 to
+         3.89:1 dark — because on-alert's dark value (#121212, not pure
+         black) leaves less room than the cursor-on-white pairing can
+         spare. Split instead: --th-alert stays untouched, --th-cursor
+         is its own value per theme, since paper itself is #ffffff light
+         / #121212 dark and one value can't serve both — #e60000 clears
+         4.81:1 on white; on dark paper's near-black, the ORIGINAL
+         #ff0000 already clears 4.69:1 on its own, so dark just keeps it. */
+      --th-cursor:#e60000;
 
       --paper:var(--th-paper);
       --ink:var(--th-ink);
@@ -42,6 +54,7 @@
       --alert:var(--th-alert);
       --grey:var(--th-grey);
       --on-alert:var(--th-on-alert);
+      --cursor:var(--th-cursor);
 
       --rail:0px;             /* the one token the nav mode drives */
     }
@@ -62,6 +75,8 @@
       --th-visited:#d0adf0;
       --th-grey:#2b2b2b;
       --th-on-alert:#121212;
+      --th-cursor:#ff0000;    /* the untouched original red already clears
+                                 4.69:1 on this paper on its own */
     }
 
     body{
@@ -198,7 +213,7 @@
     .tag{font-family:"Courier New",Courier,monospace;font-size:11px;color:var(--ink);
       background:var(--paper);display:block;margin-bottom:4px}
     .rule{border:none;border-top:1px solid var(--ink);margin:0}
-    .blink{font-family:"Courier New",Courier,monospace;font-size:12px;color:var(--alert)}
+    .blink{font-family:"Courier New",Courier,monospace;font-size:12px;color:var(--cursor)}
     .meta{font-family:"Courier New",Courier,monospace;font-size:11px;padding:6px 8px;border:1px solid var(--ink)}
 
     /* ══ DESIGN POINTS ═════════════════════════════════════════════
@@ -388,7 +403,8 @@
               <li><span class="sw" style="--c:#000000"></span><code>#000000</code> — text and every 1px border</li>
               <li><span class="sw" style="--c:#0000ee"></span><code>#0000ee</code> — the browser's default unvisited link blue, deliberately untouched</li>
               <li><span class="sw" style="--c:#551a8b"></span><code>#551a8b</code> — the browser's default visited purple</li>
-              <li><span class="sw" style="--c:#ff0000"></span><code>#ff0000</code> — pure red for hover inversion and the blinking cursor</li>
+              <li><span class="sw" style="--c:#ff0000"></span><code>#ff0000</code> — pure red for hover inversion</li>
+              <li><span class="sw" style="--c:#e60000"></span><code>#e60000</code> — the blinking cursor</li>
               <li><span class="sw" style="--c:#c0c0c0"></span><code>#c0c0c0</code> — system grey for table headers and the nav band</li>
             </ul>
           </dd>
