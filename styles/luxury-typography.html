@@ -40,11 +40,19 @@
       --grey:var(--th-grey);
       --hair:var(--th-hair);
 
-      /* The champagne accent is UNRESOLVED for text on ivory — see
-         Design Points / DECISIONS NEEDED. Left at its original,
-         still-failing value rather than guessed at, per the same
-         hold-and-report rule used for other pages' token conflicts. */
+      /* Champagne was one value doing two jobs with disjoint valid
+         ranges: text on ivory (needs luminance <=0.163, measured
+         2.48:1 at #b09a72) and text on the one black field (needs
+         luminance >=0.199, where #b09a72 already clears 6.97:1). No
+         single value can satisfy both, so the ivory-context uses get
+         their own token below; --champagne itself is untouched and
+         now scoped to the CTA-field use only, where it already passed. */
       --champagne:#b09a72;
+      /* Deepened champagne for the three ivory-context uses (headline
+         em, numerals, button-hover text) — same warm-gold hue, dark
+         enough to clear 4.5:1 against ivory (4.87:1 measured). */
+      --th-champagne-ink:#78694e;
+      --champagne-ink:var(--th-champagne-ink);
 
       --field:#12100e;
       --on-field:#f7f4ef;
@@ -62,11 +70,12 @@
       --th-ink:#f0ebe0;
       --th-grey:#a49b8c;
       --th-hair:#332d24;
-      /* Unlike light mode, champagne only has ONE background to answer
-         to here — ink no longer touches the field, so there is no
-         conflict to hold on. Brightened until text-on-ivory clears
-         4.5:1 (6.00:1 measured). */
       --champagne:#a89060;
+      /* Unlike light mode, dark ivory sits close in luminance to the
+         black field, so the same value clears 4.5:1 against ivory too
+         (6.00:1 measured) — no split needed here, so champagne-ink
+         simply matches champagne in this theme. */
+      --th-champagne-ink:#a89060;
     }
 
     body{
@@ -122,7 +131,7 @@
       font-size:clamp(42px,8.4vw,116px);
       font-weight:400;line-height:.98;letter-spacing:-.012em;max-width:13ch;
     }
-    .hero h1 em{font-style:italic;color:var(--champagne)}
+    .hero h1 em{font-style:italic;color:var(--champagne-ink)}
     .hero .word{display:inline-block;opacity:0;transform:translateY(14px);
       transition:opacity 1s ease,transform 1s cubic-bezier(.16,1,.3,1)}
     .hero .word.in{opacity:1;transform:none}
@@ -132,13 +141,13 @@
     .btn{display:inline-block;margin-top:52px;font-size:9px;font-weight:400;letter-spacing:.42em;
       text-indent:.42em;text-transform:uppercase;color:var(--ink);padding-bottom:9px;
       border-bottom:1px solid var(--ink);transition:color .6s ease,border-color .6s ease,padding .6s ease}
-    .btn:hover{color:var(--champagne);border-color:var(--champagne);padding-left:14px;padding-right:14px}
+    .btn:hover{color:var(--champagne-ink);border-color:var(--champagne-ink);padding-left:14px;padding-right:14px}
     .btn:focus-visible{outline:1px solid var(--champagne);outline-offset:6px}
 
     /* ── Features: three columns under one hairline ──────────── */
     .features{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,5vw,80px);
       border-top:1px solid var(--hair);padding:64px 0 clamp(70px,11vh,130px)}
-    .card .num{font-family:"Bodoni Moda",serif;font-style:italic;font-size:15px;color:var(--champagne);
+    .card .num{font-family:"Bodoni Moda",serif;font-style:italic;font-size:15px;color:var(--champagne-ink);
       display:block;margin-bottom:26px}
     .icon{display:block;font-size:9px;font-weight:400;letter-spacing:.42em;text-indent:.42em;
       text-transform:uppercase;color:var(--grey);margin-bottom:16px}
@@ -187,7 +196,7 @@
       letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;color:var(--ink);background:none;
       border:0;border-bottom:1px solid var(--ink);padding:0 0 9px;cursor:pointer;
       transition:color .6s ease,border-color .6s ease,padding .6s ease}
-    .dialog__close:hover{color:var(--champagne);border-color:var(--champagne);padding-left:14px;padding-right:14px}
+    .dialog__close:hover{color:var(--champagne-ink);border-color:var(--champagne-ink);padding-left:14px;padding-right:14px}
     .dialog__close:focus-visible{outline:1px solid var(--champagne);outline-offset:6px}
 
     /* ── Footer ─────────────────────────────────────────────── */
@@ -413,7 +422,8 @@
             <ul class="dp-palette">
               <li><span class="sw" style="--c:#f7f4ef"></span><code>#f7f4ef</code> — ivory page ground, warmer than white</li>
               <li><span class="sw" style="--c:#12100e"></span><code>#12100e</code> — near-black ink and the single black field</li>
-              <li><span class="sw" style="--c:#b09a72"></span><code>#b09a72</code> — champagne, the only accent, on italics and hovers</li>
+              <li><span class="sw" style="--c:#b09a72"></span><code>#b09a72</code> — champagne, scoped to the one black field's hover text, the only context it clears AA against</li>
+              <li><span class="sw" style="--c:#78694e"></span><code>#78694e</code> — champagne-ink, the same accent deepened for every other, ivory-background use (headline em, numerals, button-hover text)</li>
               <li><span class="sw" style="--c:#6a655e"></span><code>#6a655e</code> — warm grey for all secondary text</li>
               <li><span class="sw" style="--c:#ddd7cc"></span><code>#ddd7cc</code> — hairline rules</li>
             </ul>
