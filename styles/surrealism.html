@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=Inter:wght@400;500&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ SURREALISM ═══════════════════════════════════════════════
        Dream logic applied to an interface. Everything is rendered
@@ -17,27 +17,72 @@
        fall the wrong way, objects float, and the page resists the
        cursor instead of obeying it.                                */
 
+    /* --th-* are the source of truth; every colour below is an ALIAS
+       onto them, so [data-theme="dark"] re-resolves the whole page
+       without editing a single declaration past this block.
+
+       --flesh and --cloud are deliberately NOT themed: they are
+       physical objects in the scene (an uncanny sphere, a floating
+       cloud shape, an eye's sclera) rather than surfaces that
+       re-light — a felt cutout doesn't change colour when the room
+       dims. --cloud used to also serve as the nav/card/hero-p SURFACE
+       fill, which does need to darken at night; that job is split out
+       to --panel below so the literal cloud shapes stay cloud-white
+       in both themes. */
     :root{
-      --sky:#a8c4d8;        /* Magritte daylight sky   */
-      --sky-deep:#7ba0bd;
-      --sand:#e8d9c3;       /* Dalí desert floor       */
+      --th-sky-top:#cfe0ec;
+      --th-sky:#a8c4d8;        /* Magritte daylight sky   */
+      --th-sky-deep:#7ba0bd;
+      --th-sand:#e8d9c3;       /* Dalí desert floor       */
+      --th-panel:#f6f2ea;
+      --th-ink:#1c2733;
+      --th-shadow:#5a6b7d;
+
+      --sky-top:var(--th-sky-top);
+      --sky:var(--th-sky);
+      --sky-deep:var(--th-sky-deep);
+      --sand:var(--th-sand);
+      --panel:var(--th-panel);
+      --ink:var(--th-ink);
+      --shadow:var(--th-shadow);
+
       --flesh:#e5b5a0;      /* uncanny warm            */
-      --ink:#1c2733;
-      --shadow:#5a6b7d;
       --cloud:#f6f2ea;
+
+      --rail:0px;             /* the one token the nav mode drives */
+    }
+
+    /* The same dream after dark, not a different one: Magritte's
+       daylight sky becomes a Dalí desert night — the same impossible
+       arrangement of sky-over-sand, the same objects, just after the
+       sun goes down. The uncanny flesh accent and the physical cloud
+       shapes hold their exact values regardless of hour, the same way
+       an object in a dream keeps its identity even as the light
+       around it changes. */
+    :root[data-theme="dark"]{
+      --th-sky-top:#2e3a58;
+      --th-sky:#1c2540;
+      --th-sky-deep:#10162a;
+      --th-sand:#3a2f22;
+      --th-panel:#232838;
+      --th-ink:#eceff4;
+      --th-shadow:#9fb0c2;
     }
 
     body{
       background:
-        radial-gradient(120% 70% at 50% 0%, #cfe0ec 0%, var(--sky) 34%, var(--sky-deep) 62%, var(--sand) 100%);
+        radial-gradient(120% 70% at 50% 0%, var(--sky-top) 0%, var(--sky) 34%, var(--sky-deep) 62%, var(--sand) 100%);
       background-attachment:fixed;
       color:var(--ink);
       font-family:"Cormorant Garamond",Georgia,serif;
       min-height:100vh;
       overflow-x:hidden;
       cursor:crosshair;
+      padding-left:var(--rail);
     }
     .wrap{max-width:1060px;margin:0 auto;padding:0 clamp(16px,4vw,32px) 90px;position:relative;z-index:2}
+
+    a:hover{cursor:pointer}
 
     /* Clouds drifting inside a hard-edged frame — sky where it should not be. */
     .cloud{position:fixed;border-radius:50%;background:var(--cloud);filter:blur(18px);opacity:.75;z-index:0;
@@ -49,15 +94,28 @@
 
     /* ── Nav: hangs from nothing, casts a shadow onto the sky ─── */
     .nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
-      background:var(--cloud);padding:16px 26px;margin-top:52px;border-radius:2px;
+      background:var(--panel);padding:16px 26px;margin-top:52px;border-radius:2px;
       box-shadow:26px 40px 40px -22px rgba(28,39,51,.55);
       transform:rotate(-1.2deg)}
     .logo{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:500;letter-spacing:.02em;
-      font-style:italic}
+      font-style:italic;color:var(--ink)}
     .nav ul{display:flex;gap:26px}
     .nav ul a{font-family:"Inter",sans-serif;font-size:11px;letter-spacing:.24em;text-transform:uppercase;
       color:var(--shadow);display:inline-block;transition:transform .5s cubic-bezier(.2,.7,.3,1),color .5s ease}
     .nav ul a:hover{color:var(--ink);transform:translateY(-14px) rotate(-6deg)}
+    .nav ul a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+    /* Two controls, the same wandering-cursor language as every nav
+       link — a control leaps the same way a link does, just held in
+       place (not translated) when it reads "on". */
+    .nav-controls{display:flex;gap:22px;align-items:center}
+    .ctl{font-family:"Inter",sans-serif;font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+      color:var(--shadow);background:none;border:0;cursor:pointer;display:inline-block;
+      transition:transform .5s cubic-bezier(.2,.7,.3,1),color .5s ease}
+    .ctl:hover{color:var(--ink);transform:translateY(-6px) rotate(-4deg)}
+    .ctl[aria-pressed="true"]{color:var(--ink)}
+    .ctl:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+    .ctl__v{margin-left:6px;color:var(--ink)}
 
     /* ── Hero ────────────────────────────────────────────────── */
     .hero{padding:88px 0 60px;position:relative}
@@ -68,12 +126,16 @@
     .hero h1 .small{font-size:.34em;vertical-align:.9em;letter-spacing:.2em;font-family:"Inter",sans-serif;
       font-weight:400;color:var(--ink)}
     .hero p{margin-top:40px;font-family:"Inter",sans-serif;font-size:14px;letter-spacing:.06em;
-      color:var(--ink);max-width:34ch;background:var(--cloud);padding:14px 18px;display:inline-block;
+      color:var(--ink);max-width:34ch;background:var(--panel);padding:14px 18px;display:inline-block;
       box-shadow:-22px 26px 34px -18px rgba(28,39,51,.6);transform:rotate(.8deg)}
 
-    /* the button drifts away from the pointer */
+    /* the button drifts away from the pointer. Background is a
+       literal, not --ink: this is the one solid dark pill on the
+       page, paired with the fixed-pale --cloud text — if it took
+       --ink's text role, the two would converge to the same pale
+       value at night and the label would vanish into its own fill. */
     .btn{display:inline-block;margin-top:46px;font-family:"Inter",sans-serif;font-size:12px;
-      letter-spacing:.3em;text-transform:uppercase;color:var(--cloud);background:var(--ink);
+      letter-spacing:.3em;text-transform:uppercase;color:var(--cloud);background:#1c2733;
       padding:18px 46px;border-radius:999px;
       box-shadow:0 30px 34px -18px rgba(28,39,51,.75);
       transition:transform .9s cubic-bezier(.16,1,.3,1)}
@@ -84,13 +146,16 @@
       display:flex;align-items:center;justify-content:center}
     .iris{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 40% 35%, #4f7ea3, #1c2733 68%);
       transition:transform .12s linear}
-    .door{position:absolute;left:52%;bottom:-30px;width:74px;height:118px;background:var(--ink);
+    /* A door standing in the sky is a fixed object, not a surface —
+       it keeps its own dark colour regardless of hour, like the iris
+       gradient beside it, rather than inverting with --ink's text role. */
+    .door{position:absolute;left:52%;bottom:-30px;width:74px;height:118px;background:#1c2733;
       border-radius:3px 3px 0 0;box-shadow:18px 22px 26px -14px rgba(28,39,51,.6);transform:rotate(2deg)}
     .door::after{content:"";position:absolute;right:9px;top:56%;width:6px;height:6px;border-radius:50%;background:var(--flesh)}
 
     /* ── Features: objects at wrong scales, wrong shadows ────── */
     .features{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;margin-top:120px;align-items:start}
-    .card{background:var(--cloud);padding:30px 24px 34px;position:relative}
+    .card{background:var(--panel);padding:30px 24px 34px;position:relative}
     .card:nth-child(1){transform:rotate(-2deg) translateY(26px);box-shadow:-30px 34px 34px -20px rgba(28,39,51,.55)}
     .card:nth-child(2){transform:rotate(1.4deg);box-shadow:0 -26px 34px -20px rgba(28,39,51,.5)}
     .card:nth-child(3){transform:rotate(-.6deg) translateY(-22px);box-shadow:34px 30px 34px -20px rgba(28,39,51,.55)}
@@ -106,50 +171,144 @@
     .cta h2{font-size:clamp(38px,7vw,86px);font-weight:300;color:var(--cloud);
       text-shadow:0 22px 26px rgba(28,39,51,.42)}
     .cta h2 span{display:inline-block;transform-origin:top center}
+    /* Text colour is a literal, not --ink: --flesh is a fixed object
+       colour that never darkens, so the button always needs the same
+       dark ink regardless of theme rather than inheriting --ink's
+       text role, which inverts to a pale value at night. */
     .cta .cta-btn{display:inline-block;margin-top:38px;font-family:"Inter",sans-serif;font-size:12px;letter-spacing:.3em;
-      text-transform:uppercase;color:var(--ink);background:var(--flesh);padding:18px 44px;border-radius:999px;
+      text-transform:uppercase;color:#1c2733;background:var(--flesh);padding:18px 44px;border-radius:999px;
       box-shadow:0 28px 30px -16px rgba(28,39,51,.6);
       transition:border-radius .8s ease,transform .8s ease}
     .cta .cta-btn:hover{border-radius:60% 40% 55% 45% / 50% 55% 45% 50%;transform:scale(1.06) rotate(-2deg)}
+
+    /* ── Component reference ────────────────────────────────── */
+    .component{margin-top:110px;padding:64px 36px;text-align:center;background:var(--panel);
+      box-shadow:0 -26px 34px -20px rgba(28,39,51,.4);transform:rotate(-.5deg)}
+    .component h2{font-size:clamp(26px,3.6vw,38px);font-weight:300;font-style:italic;margin-bottom:16px;color:var(--ink)}
+    .component p{font-family:"Inter",sans-serif;font-size:14px;line-height:1.8;color:var(--shadow);
+      max-width:44ch;margin:0 auto}
+
+    /* ── Dialog: a window that opens onto the same impossible sky ── */
+    .dialog{padding:0;border:0;max-width:none;width:min(520px, calc(100vw - 56px));
+      background:var(--panel);color:var(--ink);border-radius:2px}
+    .dialog::backdrop{background:color-mix(in srgb, var(--sky-deep) 60%, transparent)}
+    .dialog[open]{animation:dlg-in .5s cubic-bezier(.16,1,.3,1)}
+    .dialog[open]::backdrop{animation:bg-in .5s ease}
+    @keyframes dlg-in{from{opacity:0;transform:translateY(18px) rotate(-1.5deg)}to{opacity:1;transform:none}}
+    @keyframes bg-in{from{opacity:0}to{opacity:1}}
+    .dialog__inner{padding:44px 40px}
+    .dialog h2{font-size:26px;font-weight:300;font-style:italic;margin-bottom:14px;color:var(--ink)}
+    .dialog p{font-family:"Inter",sans-serif;font-size:14px;line-height:1.8;color:var(--shadow);max-width:40ch}
+    .dialog__close{display:inline-block;margin-top:28px;font-family:"Inter",sans-serif;font-size:12px;
+      letter-spacing:.3em;text-transform:uppercase;color:#1c2733;background:var(--flesh);border:0;cursor:pointer;
+      padding:14px 34px;border-radius:999px;box-shadow:0 18px 22px -12px rgba(28,39,51,.6);
+      transition:border-radius .6s ease,transform .6s ease}
+    .dialog__close:hover{border-radius:60% 40% 55% 45% / 50% 55% 45% 50%;transform:scale(1.05) rotate(-2deg)}
+    .dialog__close:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    .foot{margin-top:80px;padding:26px 30px;display:flex;justify-content:space-between;align-items:center;
+      flex-wrap:wrap;gap:18px;background:var(--panel);border-radius:2px;
+      box-shadow:-20px 26px 30px -18px rgba(28,39,51,.5);transform:rotate(.7deg)}
+    .foot__links{display:flex;gap:26px}
+    .foot__links a{font-family:"Inter",sans-serif;font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+      color:var(--shadow);display:inline-block;transition:transform .5s cubic-bezier(.2,.7,.3,1),color .5s ease}
+    .foot__links a:hover{color:var(--ink);transform:translateY(-8px) rotate(-6deg)}
+    .foot__links a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+    .signature{
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--ink);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .5s ease}
+    .signature:hover{border-bottom-color:var(--ink)}
+    .signature:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 
     @media(max-width:860px){
       .features{grid-template-columns:1fr;margin-top:80px}
       .card{transform:none!important}
       .eye,.door{display:none}
+      .component,.foot{transform:none!important}
     }
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    /* ── Nav ⇄ side column ──────────────────────────────────────
+       The nav's own logic turned ninety degrees: still hanging from
+       nothing, still casting an impossible shadow, now down the left
+       edge instead of across the top. */
+    :root[data-nav="side"]{--rail:238px}
+    [data-nav="side"] .nav{
+      position:fixed;top:0;left:0;bottom:0;width:206px;margin:18px 0 0 16px;
+      flex-direction:column;align-items:flex-start;justify-content:flex-start;
+      gap:30px;padding:24px 20px;border-radius:2px;
+      box-shadow:16px 26px 30px -18px rgba(28,39,51,.55);
+      overflow-y:auto;z-index:50;
+    }
+    [data-nav="side"] .nav ul{flex-direction:column;gap:18px}
+    [data-nav="side"] .nav-controls{flex-direction:column;align-items:flex-start;gap:16px}
+
+    @media(max-width:640px){
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;width:auto;height:auto;margin:52px 0 0;
+        flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;
+        padding:16px 26px;overflow:visible;z-index:auto}
+      [data-nav="side"] .nav ul{flex-direction:row}
+      [data-nav="side"] .nav-controls{flex-direction:row}
+    }
+
+    /* ══ DESIGN POINTS — rebuilt in this page's own language ═══════
+       Everything above resists the grid; this panel is where the
+       resistance stops — a plain, legible index card, the one flat
+       surface on the page, in the same panel/ink language as every
+       card and the nav. */
+    .dp-divider{height:0;border:none;margin:0}
+    .design-points{position:relative;z-index:80;background:var(--panel);color:var(--ink);
+      padding:72px 24px 96px;
+      font-family:"Inter",-apple-system,"Helvetica Neue",Arial,sans-serif;
       font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
     .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:1px solid var(--shadow)}
+    .dp-actions{display:flex;gap:24px;align-items:baseline}
+    .design-points h2{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:500;font-style:italic;
+      color:var(--ink);margin:0}
+    .dp-skill,.dp-back{font-family:"Inter",sans-serif;font-size:12px;letter-spacing:.06em;color:var(--shadow);
+      text-decoration:underline;text-underline-offset:3px;transition:color .5s ease}
+    .dp-skill:hover,.dp-back:hover{color:var(--ink)}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid color-mix(in srgb, var(--shadow) 30%, transparent)}
     .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
+    .dp dt{font-family:"Inter",sans-serif;font-size:11px;font-weight:500;letter-spacing:.18em;line-height:1.6;
+      text-transform:uppercase;color:var(--shadow)}
+    .dp dd{margin:0;color:var(--ink)}
     .dp dd > ul,.dp dd > ol{padding-left:20px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
     .dp li{margin-bottom:7px}
     .dp li:last-child{margin-bottom:0}
     .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+      background:color-mix(in srgb, var(--shadow) 16%, transparent);color:var(--ink);padding:1px 6px;border-radius:3px}
     .dp-palette{list-style:none!important;padding-left:0!important}
     .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+      border:1px solid color-mix(in srgb, var(--ink) 25%, transparent);vertical-align:-2px;margin-right:8px;background:var(--c)}
     @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
 </style>
+<script>
+  /* Before first paint, so the sky is never the wrong hour for a
+     frame and then correct. Reads only, and only ever writes
+     attributes. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }   /* private mode / blocked cookies */
+    }
+    root.setAttribute('data-nav',   read('atlas-sur-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',   ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -166,6 +325,10 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="nav-controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">Nav <span class="ctl__v" id="nav-toggle-value">Top</span></button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">Sky <span class="ctl__v" id="theme-toggle-value">Day</span></button>
+      </div>
     </nav>
 
     <header class="hero">
@@ -201,7 +364,32 @@
       <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
+    <section class="component" aria-labelledby="component-title">
+      <h2 id="component-title">Component reference</h2>
+      <p>A modal built on the native dialog element — focus trapped, Escape to close, background inert.</p>
+      <a href="#" class="btn" id="dialog-open">Open dialog</a>
+    </section>
+
+    <footer class="foot">
+      <nav class="foot__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <div class="dialog__inner">
+      <h2 id="dialog-title">Component reference</h2>
+      <p>A modal built on the native dialog element. The browser traps focus inside it,
+        closes it on Escape, and makes everything behind it inert. Clicking outside it
+        closes it as well, and focus returns to the button that opened it.</p>
+      <button type="button" class="dialog__close" id="dialog-close">Close</button>
+    </div>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -209,7 +397,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -231,9 +423,10 @@
               <li><span class="sw" style="--c:#7ba0bd"></span><code>#7ba0bd</code> — deeper sky toward the horizon</li>
               <li><span class="sw" style="--c:#e8d9c3"></span><code>#e8d9c3</code> — desert sand at the bottom of the gradient</li>
               <li><span class="sw" style="--c:#e5b5a0"></span><code>#e5b5a0</code> — uncanny flesh tone for the small impossible objects</li>
-              <li><span class="sw" style="--c:#f6f2ea"></span><code>#f6f2ea</code> — cloud white for every floating plane</li>
+              <li><span class="sw" style="--c:#f6f2ea"></span><code>#f6f2ea</code> — cloud white, fixed on every floating cloud and the eye's sclera regardless of hour</li>
               <li><span class="sw" style="--c:#1c2733"></span><code>#1c2733</code> — deep blue-black for type, the door and cast shadows</li>
             </ul>
+            <p style="margin-top:14px">Sky, sand, panel surfaces (nav/cards/hero note) and ink invert under dark mode — the daylight scene becomes the same dream after dark; flesh and cloud hold their values in both themes, since they're objects in the scene rather than lit surfaces.</p>
           </dd>
         </div>
 
@@ -262,7 +455,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>The page refuses to behave. JS makes the eye's iris track the pointer within an 11px radius, so it watches the visitor. The <em>Explore</em> button flees: when the pointer comes within 130px it translates up to 90px away over 900ms on <code>cubic-bezier(.16,1,.3,1)</code>, returning only when the cursor leaves. The CTA heading is split into per-character spans that melt on hover — each letter stretches to <code>scaleY(1.9)</code> and slides down with a staggered delay. Nav links leap 14px upward and rotate −6deg. The cursor itself is a crosshair.</dd>
+          <dd>The page refuses to behave, within limits. JS makes the eye's iris track the pointer within an 11px radius, so it watches the visitor — muted under reduced motion, since the tracking is a discrete style write each pointermove rather than a running loop. The <em>Explore</em> button flees: when the pointer comes within 130px it translates away over 900ms on <code>cubic-bezier(.16,1,.3,1)</code>, clamped so it can never leave its own container, and only for three dodges — the fourth approach lets it settle back to place and stay put, catchable, rather than fleeing forever. Under reduced motion the flee behaviour is skipped outright rather than merely sped up, so the button never moves at all; on touch, a tap does not generate the pointermove the flee logic listens for, so the button is reachable normally without ever needing to be caught. The CTA heading is split into per-character spans that melt on hover — each letter stretches to <code>scaleY(1.9)</code> and slides down with a staggered delay, muted the same way as every other transition-driven effect on the page. Nav links and the two controls beside them leap upward and rotate on hover. One control relocates the bar between the top strip and a fixed left column by moving a single <code>--rail</code> token; the other moves the hour between day and night on <code>data-theme</code>. Both persist to <code>localStorage</code>. The cursor itself is a crosshair everywhere except real interactive elements, which show a pointer on hover so the crosshair never hides what is clickable. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -274,6 +467,7 @@
               <li>Give shadows contradictory directions across sibling elements so the viewer cannot locate a light source.</li>
               <li>Float every plane: long soft offset shadows and small rotations, so nothing sits on the page.</li>
               <li>Make at least one interaction disobey the user — an element that flees, watches, or melts — because surrealism is about the loss of control, not decoration.</li>
+              <li>A fleeing element is a real accessibility cost, not just a metaphor: clamp it to its container, cap the number of dodges before it settles catchable, and skip the flee outright (not just faster) under reduced motion — otherwise "loss of control" becomes a literal barrier rather than a feeling.</li>
             </ol>
           </dd>
         </div>
@@ -285,10 +479,13 @@
 <script>
   /* Three disobediences: the eye watches, the button flees, the words melt. */
   (function () {
+    var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+
     var iris = document.getElementById('iris');
     var eye = iris ? iris.parentElement : null;
     if (eye) {
       window.addEventListener('pointermove', function (e) {
+        if (reduce && reduce.matches) return;
         var r = eye.getBoundingClientRect();
         var dx = e.clientX - (r.left + r.width / 2);
         var dy = e.clientY - (r.top + r.height / 2);
@@ -298,15 +495,57 @@
       });
     }
 
+    /* The button flees, but only within its own container, and only
+       for three dodges — the fourth approach lets it settle back to
+       place rather than fleeing forever, so an ordinary mouse user is
+       never actually unable to click it. Under reduced motion the
+       flee is skipped outright, not just sped up: a shortened
+       transition would make the button teleport instantly, which is
+       the opposite of calm. A tap doesn't generate the pointermove
+       this listens for, so touch never triggers the flee at all — the
+       button is reachable normally there regardless. */
     var btn = document.getElementById('btn');
+    var btnHome = btn.closest('.hero') || btn.parentElement;
+    var dodges = 0, MAX_DODGES = 3, settled = false, nearby = false, baseRect = null;
+
+    function measureBase() {
+      var t = btn.style.transform;
+      btn.style.transform = 'none';
+      baseRect = btn.getBoundingClientRect();
+      btn.style.transform = t;
+    }
+    measureBase();
+    window.addEventListener('resize', measureBase);
+
+    function settle() {
+      settled = true;
+      btn.style.transform = 'translate(0,0)';
+    }
+
     window.addEventListener('pointermove', function (e) {
+      if (settled || (reduce && reduce.matches)) return;
       var r = btn.getBoundingClientRect();
       var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
       var dist = Math.hypot(e.clientX - cx, e.clientY - cy);
       if (dist < 130) {
+        if (!nearby) {
+          nearby = true;
+          dodges++;
+          if (dodges > MAX_DODGES) { settle(); return; }
+        }
         var a = Math.atan2(cy - e.clientY, cx - e.clientX);
-        btn.style.transform = 'translate(' + Math.cos(a) * 90 + 'px,' + Math.sin(a) * 60 + 'px)';
+        var tx = Math.cos(a) * 90, ty = Math.sin(a) * 60;
+        var home = btnHome.getBoundingClientRect();
+        var margin = 10;
+        var minTx = home.left + margin - baseRect.left;
+        var maxTx = home.right - margin - baseRect.right;
+        var minTy = home.top + margin - baseRect.top;
+        var maxTy = home.bottom - margin - baseRect.bottom;
+        tx = Math.max(minTx, Math.min(maxTx, tx));
+        ty = Math.max(minTy, Math.min(maxTy, ty));
+        btn.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
       } else if (dist > 240) {
+        nearby = false;
         btn.style.transform = 'translate(0,0)';
       }
     });
@@ -322,6 +561,7 @@
     });
     var spans = melt.querySelectorAll('span');
     melt.addEventListener('pointerenter', function () {
+      if (reduce && reduce.matches) return;
       spans.forEach(function (s, i) {
         s.style.transform = 'scaleY(' + (1.4 + (i % 4) * 0.18) + ') translateY(' + (6 + (i % 5) * 5) + 'px)';
       });
@@ -329,6 +569,53 @@
     melt.addEventListener('pointerleave', function () {
       spans.forEach(function (s) { s.style.transform = 'none'; });
     });
+  })();
+</script>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'Side' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-sur-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode === 'dark' ? 'Night' : 'Day';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function (e) { e.preventDefault(); dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
   })();
 </script>
 </body>
