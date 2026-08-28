@@ -8,20 +8,65 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ LUXURY TYPOGRAPHY ════════════════════════════════════════
        The house style of a fashion or fragrance maison. There is no
        ornament — refinement comes from SCALE CONTRAST (a 120px
        didone against 9px capitals at 0.42em), hairlines, and the
-       confidence to leave two thirds of the page empty.            */
+       confidence to leave two thirds of the page empty.
+
+       --th-* are the source of truth; every colour below is an ALIAS
+       onto them, so [data-theme="dark"] re-resolves the whole page
+       without editing a single declaration past this block. --field
+       and --on-field are deliberately NOT themed: the CTA is "the one
+       black field" by name in this page's own Signature Techniques,
+       and letting it invert to a light field under dark mode would
+       make that description false and lose the one moment of drama
+       the whole style is built around. */
 
     :root{
-      --ivory:#f7f4ef;
-      --ink:#12100e;
+      --th-ivory:#f7f4ef;
+      --th-ink:#12100e;
+      /* Was one value doing three jobs: text on ivory (needs 4.5:1,
+         measured 3.18:1) and, at the smallest size on the page (9px
+         caps), the same shortfall everywhere it appears. Deepened —
+         still warm grey, just darker — clears 4.5:1 with margin. */
+      --th-grey:#6a655e;
+      --th-hair:#ddd7cc;
+
+      --ivory:var(--th-ivory);
+      --ink:var(--th-ink);
+      --grey:var(--th-grey);
+      --hair:var(--th-hair);
+
+      /* The champagne accent is UNRESOLVED for text on ivory — see
+         Design Points / DECISIONS NEEDED. Left at its original,
+         still-failing value rather than guessed at, per the same
+         hold-and-report rule used for other pages' token conflicts. */
       --champagne:#b09a72;
-      --grey:#8b857c;
-      --hair:#ddd7cc;
+
+      --field:#12100e;
+      --on-field:#f7f4ef;
+
+      --rail:0px;             /* the one token the nav mode drives */
+    }
+
+    /* The same maison after dark, not a different one: ivory drops to
+       a warm charcoal and ink rises to a warm cream — never a cold
+       true black/white — while the one black field stays exactly what
+       it is regardless of hour, because it is a fixed idea, not a
+       value that inverts. */
+    :root[data-theme="dark"]{
+      --th-ivory:#171310;
+      --th-ink:#f0ebe0;
+      --th-grey:#a49b8c;
+      --th-hair:#332d24;
+      /* Unlike light mode, champagne only has ONE background to answer
+         to here — ink no longer touches the field, so there is no
+         conflict to hold on. Brightened until text-on-ivory clears
+         4.5:1 (6.00:1 measured). */
+      --champagne:#a89060;
     }
 
     body{
@@ -31,6 +76,7 @@
       font-weight:300;
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
+      padding-left:var(--rail);
     }
     .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(22px,5vw,64px)}
 
@@ -39,8 +85,8 @@
       text-indent:.42em;text-transform:uppercase;color:var(--grey)}
 
     /* ── Nav ─────────────────────────────────────────────────── */
-    .nav{display:flex;justify-content:space-between;align-items:center;padding:44px 0 22px;
-      border-bottom:1px solid var(--hair)}
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
+      padding:44px 0 22px;border-bottom:1px solid var(--hair)}
     .logo{font-family:"Bodoni Moda",Didot,"Times New Roman",serif;font-size:25px;font-weight:400;
       letter-spacing:.46em;text-indent:.46em;text-transform:uppercase;color:var(--ink)}
     .nav ul{display:flex;gap:46px}
@@ -50,6 +96,22 @@
       transform:scaleX(0);transform-origin:right;transition:transform .7s cubic-bezier(.16,1,.3,1)}
     .nav ul a:hover{color:var(--ink)}
     .nav ul a:hover::after{transform:scaleX(1);transform-origin:left}
+    .nav ul a:focus-visible{outline:1px solid var(--champagne);outline-offset:4px}
+
+    /* Two controls, the same tracked-capital-plus-wipe-underline unit
+       as every nav link — nothing new invented for them. */
+    .nav-controls{display:flex;gap:32px}
+    .ctl{font-family:"Jost",sans-serif;font-size:9px;font-weight:400;letter-spacing:.42em;text-indent:.42em;
+      text-transform:uppercase;color:var(--grey);background:none;border:0;cursor:pointer;
+      position:relative;padding-bottom:5px;transition:color .6s ease}
+    .ctl::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--champagne);
+      transform:scaleX(0);transform-origin:right;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+    .ctl:hover{color:var(--ink)}
+    .ctl:hover::after{transform:scaleX(1);transform-origin:left}
+    .ctl[aria-pressed="true"]{color:var(--ink)}
+    .ctl[aria-pressed="true"]::after{transform:scaleX(1);transform-origin:left}
+    .ctl:focus-visible{outline:1px solid var(--champagne);outline-offset:4px}
+    .ctl__v{margin-left:10px;color:var(--ink)}
 
     /* ── Hero: asymmetric, label column against display column ── */
     .hero{display:grid;grid-template-columns:minmax(120px,1fr) 4.4fr;gap:clamp(20px,5vw,72px);
@@ -71,6 +133,7 @@
       text-indent:.42em;text-transform:uppercase;color:var(--ink);padding-bottom:9px;
       border-bottom:1px solid var(--ink);transition:color .6s ease,border-color .6s ease,padding .6s ease}
     .btn:hover{color:var(--champagne);border-color:var(--champagne);padding-left:14px;padding-right:14px}
+    .btn:focus-visible{outline:1px solid var(--champagne);outline-offset:6px}
 
     /* ── Features: three columns under one hairline ──────────── */
     .features{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,5vw,80px);
@@ -83,9 +146,12 @@
     .card p{font-size:14.5px;font-weight:300;color:var(--grey);line-height:1.85;letter-spacing:.04em;max-width:26ch}
 
     /* ── CTA: the one black field ────────────────────────────── */
-    /* The one black field, broken out of the measure to the full viewport. */
-    .cta{background:var(--ink);color:var(--ivory);
-      width:100vw;margin-left:calc(50% - 50vw);
+    /* The one black field, broken out of the measure to the full
+       viewport. The extra -var(--rail)/2 term keeps the field's edges
+       pinned to the true viewport, not the wrapper's off-centre point
+       once the side rail shifts .wrap's own centre to one side. */
+    .cta{background:var(--field);color:var(--on-field);
+      width:100vw;margin-left:calc(50% - 50vw - var(--rail)/2);
       padding:clamp(80px,14vh,160px) clamp(22px,5vw,64px)}
     .cta-inner{max-width:1180px;margin:0 auto;display:grid;
       grid-template-columns:minmax(120px,1fr) 4.4fr;gap:clamp(20px,5vw,72px);align-items:center}
@@ -93,10 +159,56 @@
     .cta h2{font-family:"Bodoni Moda",serif;font-size:clamp(34px,6.4vw,88px);font-weight:400;
       line-height:1;letter-spacing:-.012em}
     .cta .cta-btn{display:inline-block;margin-top:44px;font-family:"Jost",sans-serif;font-size:9px;font-weight:400;
-      letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;color:var(--ivory);
+      letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;color:var(--on-field);
       padding-bottom:9px;border-bottom:1px solid rgba(247,244,239,.6);
       transition:color .6s ease,border-color .6s ease,padding .6s ease}
     .cta .cta-btn:hover{color:var(--champagne);border-color:var(--champagne);padding-left:14px;padding-right:14px}
+    .cta .cta-btn:focus-visible{outline:1px solid var(--champagne);outline-offset:6px}
+
+    /* ── Component reference ────────────────────────────────── */
+    .component{padding:clamp(70px,11vh,130px) 0;border-top:1px solid var(--hair);text-align:center}
+    .component h2{font-family:"Bodoni Moda",serif;font-size:28px;font-weight:400;margin-bottom:18px}
+    .component p{font-size:15px;font-weight:300;color:var(--grey);letter-spacing:.04em;
+      line-height:1.8;max-width:48ch;margin:0 auto}
+
+    /* ── Dialog ─────────────────────────────────────────────── */
+    .dialog{padding:0;border:0;max-width:none;width:min(560px, calc(100vw - 64px));
+      background:var(--ivory);color:var(--ink)}
+    .dialog::backdrop{background:rgba(18,16,14,.5)}
+    :root[data-theme="dark"] .dialog::backdrop{background:rgba(0,0,0,.68)}
+    .dialog[open]{animation:dlg-in .5s ease}
+    .dialog[open]::backdrop{animation:dlg-in .5s ease}
+    @keyframes dlg-in{from{opacity:0}to{opacity:1}}
+    .dialog__inner{padding:64px 52px;text-align:center}
+    .dialog h2{font-family:"Bodoni Moda",serif;font-size:28px;font-weight:400;margin-bottom:18px}
+    .dialog p{font-size:15px;font-weight:300;color:var(--grey);letter-spacing:.04em;
+      line-height:1.8;max-width:42ch;margin:0 auto}
+    .dialog__close{display:inline-block;margin-top:36px;font-family:"Jost",sans-serif;font-size:9px;font-weight:400;
+      letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;color:var(--ink);background:none;
+      border:0;border-bottom:1px solid var(--ink);padding:0 0 9px;cursor:pointer;
+      transition:color .6s ease,border-color .6s ease,padding .6s ease}
+    .dialog__close:hover{color:var(--champagne);border-color:var(--champagne);padding-left:14px;padding-right:14px}
+    .dialog__close:focus-visible{outline:1px solid var(--champagne);outline-offset:6px}
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    .foot{padding:44px 0 64px;border-top:1px solid var(--hair);
+      display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+    .foot__links{display:flex;gap:32px}
+    .foot__links a{font-size:9px;font-weight:400;letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;
+      color:var(--grey);position:relative;padding-bottom:5px;transition:color .6s ease}
+    .foot__links a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--champagne);
+      transform:scaleX(0);transform-origin:right;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+    .foot__links a:hover{color:var(--ink)}
+    .foot__links a:hover::after{transform:scaleX(1);transform-origin:left}
+    .foot__links a:focus-visible{outline:1px solid var(--champagne);outline-offset:4px}
+    .signature{
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--ink);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .6s ease}
+    .signature:hover{border-bottom-color:var(--ink)}
+    .signature:focus-visible{outline:1px solid var(--champagne);outline-offset:4px}
 
     @media(max-width:860px){
       .hero,.cta-inner{grid-template-columns:1fr}
@@ -104,38 +216,84 @@
       .nav ul{gap:22px}
     }
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    /* ── Nav ⇄ side column ──────────────────────────────────────
+       The same asymmetric label/content logic the hero and CTA
+       already use, turned ninety degrees: a narrow fixed column
+       standing opposite the page the way a caps label stands
+       opposite a headline. */
+    :root[data-nav="side"]{--rail:260px}
+    [data-nav="side"] .nav{
+      position:fixed;top:0;left:0;bottom:0;width:260px;
+      flex-direction:column;align-items:flex-start;justify-content:flex-start;
+      gap:44px;padding:44px 32px;border-bottom:0;border-right:1px solid var(--hair);
+      overflow-y:auto;z-index:50;
+    }
+    [data-nav="side"] .nav ul{flex-direction:column;gap:26px}
+    [data-nav="side"] .nav-controls{flex-direction:column;gap:22px}
+
+    @media(max-width:640px){
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;width:auto;height:auto;flex-direction:row;flex-wrap:wrap;
+        align-items:center;justify-content:space-between;border-right:0;border-bottom:1px solid var(--hair);
+        padding:44px 0 22px;overflow:visible;z-index:auto}
+      [data-nav="side"] .nav ul{flex-direction:row}
+      [data-nav="side"] .nav-controls{flex-direction:row}
+    }
+
+    /* ══ DESIGN POINTS — rebuilt in this page's own language ═══════
+       The same restraint as the demo: hairlines instead of fills,
+       tracked capitals for labels, Bodoni for the one heading. */
+    .dp-divider{height:0;border:none;margin:0}
+    .design-points{position:relative;z-index:80;background:var(--ivory);color:var(--ink);
+      padding:72px 24px 96px;border-top:1px solid var(--hair);
+      font-family:"Jost",-apple-system,"Helvetica Neue",Arial,sans-serif;
+      font-size:15px;font-weight:300;line-height:1.8;letter-spacing:.02em;
+      text-transform:none;text-align:left;font-style:normal}
     .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+      margin-bottom:32px;padding-bottom:18px;border-bottom:1px solid var(--hair)}
+    .dp-actions{display:flex;gap:28px;align-items:baseline}
+    .design-points h2{font-family:"Bodoni Moda",serif;font-size:22px;font-weight:400;
+      letter-spacing:-.005em;color:var(--ink);margin:0}
+    .dp-skill,.dp-back{font-size:9px;font-weight:400;letter-spacing:.3em;text-indent:.3em;
+      text-transform:uppercase;color:var(--grey);text-decoration:none;
+      border-bottom:1px solid transparent;padding-bottom:3px;transition:color .6s ease,border-color .6s ease}
+    .dp-skill:hover,.dp-back:hover{color:var(--ink);border-bottom-color:var(--champagne)}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:1px solid var(--champagne);outline-offset:4px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:20px 0;border-top:1px solid var(--hair)}
     .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
+    .dp dt{font-size:9px;font-weight:400;letter-spacing:.3em;text-indent:.3em;
+      line-height:1.6;text-transform:uppercase;color:var(--grey)}
+    .dp dd{margin:0;color:var(--ink)}
     .dp dd > ul,.dp dd > ol{padding-left:20px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
-    .dp li{margin-bottom:7px}
+    .dp li{margin-bottom:9px}
     .dp li:last-child{margin-bottom:0}
     .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+      background:color-mix(in srgb, var(--hair) 55%, transparent);color:var(--ink);padding:1px 7px;border-radius:2px}
     .dp-palette{list-style:none!important;padding-left:0!important}
-    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:0;
+      border:1px solid var(--hair);vertical-align:-2px;margin-right:8px;background:var(--c)}
     @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
 </style>
+<script>
+  /* Before first paint, so the ground is never the wrong shade for a
+     frame and then correct. Reads only, and only ever writes
+     attributes. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }   /* private mode / blocked cookies */
+    }
+    root.setAttribute('data-nav',   read('atlas-lux-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',   ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -148,6 +306,10 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="nav-controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">Nav <span class="ctl__v" id="nav-toggle-value">Top</span></button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">Hour <span class="ctl__v" id="theme-toggle-value">Day</span></button>
+      </div>
     </nav>
 
     <header class="hero">
@@ -194,7 +356,32 @@
       </div>
     </section>
 
+    <section class="component" aria-labelledby="component-title">
+      <h2 id="component-title">Component reference</h2>
+      <p>A modal built on the native dialog element — focus trapped, Escape to close, background inert.</p>
+      <a href="#" class="btn" id="dialog-open">Open dialog</a>
+    </section>
+
+    <footer class="foot">
+      <nav class="foot__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <div class="dialog__inner">
+      <h2 id="dialog-title">Component reference</h2>
+      <p>A modal built on the native dialog element. The browser traps focus inside it,
+        closes it on Escape, and makes everything behind it inert. Clicking outside it
+        closes it as well, and focus returns to the button that opened it.</p>
+      <button type="button" class="dialog__close" id="dialog-close">Close</button>
+    </div>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -202,7 +389,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -223,7 +414,7 @@
               <li><span class="sw" style="--c:#f7f4ef"></span><code>#f7f4ef</code> — ivory page ground, warmer than white</li>
               <li><span class="sw" style="--c:#12100e"></span><code>#12100e</code> — near-black ink and the single black field</li>
               <li><span class="sw" style="--c:#b09a72"></span><code>#b09a72</code> — champagne, the only accent, on italics and hovers</li>
-              <li><span class="sw" style="--c:#8b857c"></span><code>#8b857c</code> — warm grey for all secondary text</li>
+              <li><span class="sw" style="--c:#6a655e"></span><code>#6a655e</code> — warm grey for all secondary text</li>
               <li><span class="sw" style="--c:#ddd7cc"></span><code>#ddd7cc</code> — hairline rules</li>
             </ul>
           </dd>
@@ -254,7 +445,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>JS splits the headline into individual words wrapped in <code>.word</code> spans and reveals them in sequence — 14px rise plus fade, 1s each on <code>cubic-bezier(.16, 1, .3, 1)</code>, staggered 90ms apart — so the line assembles itself rather than appearing. Hovers are unusually slow at 600–700ms; buttons gain 14px of horizontal padding as their rule recolours to champagne, so the type appears to breathe outward.</dd>
+          <dd>JS splits the headline into individual words wrapped in <code>.word</code> spans and reveals them in sequence — 14px rise plus fade, 1s each on <code>cubic-bezier(.16, 1, .3, 1)</code>, staggered 90ms apart — so the line assembles itself rather than appearing. That stagger is untouched from before this pass. The actual motion is a CSS transition triggered by a discrete class write, so reduced-motion mutes every word to an instant, imperceptible appearance without any script-side guard — confirmed, not assumed. Hovers are unusually slow at 600–700ms; buttons gain 14px of horizontal padding as their rule recolours to champagne, so the type appears to breathe outward. Two controls join the nav in the same tracked-capital, wipe-underline language as every other link. One relocates the bar between the top strip and a fixed left column by moving a single <code>--rail</code> token — the CTA's full-bleed math carries an extra term so its black field still reaches the true viewport edge once the column shifts the page's centre; the other moves the hour between day and dusk on <code>data-theme</code>. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -275,7 +466,8 @@
   </section>
 
 <script>
-  /* The headline assembles itself, word by word. */
+  /* The headline assembles itself, word by word. Unchanged from
+     before this pass — timing is explicitly out of scope. */
   (function () {
     var h = document.getElementById('headline');
     var nodes = [].slice.call(h.childNodes);
@@ -298,6 +490,53 @@
     words.forEach(function (w, i) {
       setTimeout(function () { w.classList.add('in'); }, 120 + i * 90);
     });
+  })();
+</script>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'Side' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-lux-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode === 'dark' ? 'Dusk' : 'Day';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function (e) { e.preventDefault(); dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
   })();
 </script>
 </body>
