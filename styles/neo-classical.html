@@ -8,32 +8,67 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Cinzel:wght@400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ NEO-CLASSICAL ════════════════════════════════════════════
        Order, symmetry, proportion. The page is an elevation drawing
        of a façade: a central axis, a colonnade of three equal bays,
        an entablature above and a plinth below. Restraint is moral —
-       ornament is permitted only where structure justifies it.     */
+       ornament is permitted only where structure justifies it.
+
+       --th-* are the source of truth; every colour below is an ALIAS
+       onto them, so [data-theme="dark"] re-resolves the whole page
+       without editing a single declaration past this block. */
 
     :root{
-      --marble:#f4f1ea;    /* aged plaster ground     */
-      --stone:#e6e1d6;     /* slightly deeper stone   */
-      --ink:#1f1c17;       /* carved lettering        */
-      --sepia:#6b6250;     /* secondary text          */
-      --gilt:#a8894f;      /* restrained gold leaf    */
-      --line:#c9c0ac;      /* rule and column edges   */
+      --th-marble:#f4f1ea;    /* aged plaster ground     */
+      --th-stone:#e6e1d6;     /* slightly deeper stone   */
+      --th-ink:#1f1c17;       /* carved lettering        */
+      --th-sepia:#6b6250;     /* secondary text          */
+      /* Was #a8894f — 2.93:1 on marble, failing even the drop-cap's own
+         3:1 (it IS large text: 1.5em of a 19px/400 h3 clears 24px). The
+         same token also colours .icon at 10px/400, which needs the full
+         4.5:1 no large-text exemption reaches. One deepened value clears
+         both at once (4.63:1 / 4.02:1) — no split needed here, unlike
+         the Brutalism/Gothic cases where two jobs pulled in opposite
+         directions. */
+      --th-gilt:#81693b;
+      --th-line:#c9c0ac;      /* rule and column edges   */
+
+      --marble:var(--th-marble);
+      --stone:var(--th-stone);
+      --ink:var(--th-ink);
+      --sepia:var(--th-sepia);
+      --gilt:var(--th-gilt);
+      --line:var(--th-line);
+
+      --rail:0px;              /* the one token the nav mode drives */
+    }
+
+    /* Dusk, not an inversion: the ground goes to a warm near-black
+       stone rather than true black, lettering rises to a warm cream
+       (still "carved", never a cold white), and the gilt is brightened
+       — a lit surface reflects more at night than a shaded one does
+       by day. Line stays a hairline, just dark-side of the ground. */
+    :root[data-theme="dark"]{
+      --th-marble:#17140f;
+      --th-stone:#221e17;
+      --th-ink:#ece4d3;
+      --th-sepia:#a89a84;
+      --th-gilt:#bb9658;
+      --th-line:#3a3327;
     }
 
     body{
       background:
-        radial-gradient(1200px 700px at 50% -10%, #fbf9f4 0%, transparent 65%),
-        repeating-linear-gradient(102deg, rgba(160,145,115,.045) 0 3px, transparent 3px 9px),
+        radial-gradient(1200px 700px at 50% -10%, color-mix(in srgb, var(--marble) 60%, white 40%) 0%, transparent 65%),
+        repeating-linear-gradient(102deg, color-mix(in srgb, var(--ink) 8%, transparent) 0 3px, transparent 3px 9px),
         var(--marble);
       color:var(--ink);
       font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;
       font-weight:400;
       text-align:center;              /* the central axis governs everything */
+      padding-left:var(--rail);
     }
     .wrap{max-width:1000px;margin:0 auto;padding:0 28px}
 
@@ -49,6 +84,22 @@
       transform:translateX(-50%);transition:width .45s cubic-bezier(.2,.7,.3,1)}
     .nav ul a:hover{color:var(--ink)}
     .nav ul a:hover::after{width:100%}
+    .nav ul a:focus-visible{outline:1px solid var(--gilt);outline-offset:4px}
+
+    /* One shared underline-from-centre motif, reused for every new
+       control so nothing invents a second interaction language. */
+    .nav-controls{display:flex;justify-content:center;gap:36px;margin-top:20px}
+    .ctl{font-family:"Cinzel",serif;font-size:11px;font-weight:400;letter-spacing:.26em;
+      text-transform:uppercase;color:var(--sepia);background:none;border:0;padding:0 0 4px;
+      position:relative;cursor:pointer;transition:color .3s ease}
+    .ctl::after{content:"";position:absolute;left:50%;bottom:0;width:0;height:1px;background:var(--gilt);
+      transform:translateX(-50%);transition:width .45s cubic-bezier(.2,.7,.3,1)}
+    .ctl:hover{color:var(--ink)}
+    .ctl:hover::after{width:100%}
+    .ctl[aria-pressed="true"]{color:var(--ink)}
+    .ctl[aria-pressed="true"]::after{width:100%}
+    .ctl:focus-visible{outline:1px solid var(--gilt);outline-offset:4px}
+    .ctl__v{font-weight:600;margin-left:6px}
 
     /* ── Pediment / hero ─────────────────────────────────────── */
     .hero{padding:96px 0 88px;position:relative}
@@ -70,6 +121,7 @@
       border:1px solid var(--ink);padding:17px 44px;background:transparent;
       transition:background .45s ease,color .45s ease,letter-spacing .45s ease}
     .btn:hover{background:var(--ink);color:var(--marble)}
+    .btn:focus-visible{outline:1px solid var(--gilt);outline-offset:4px}
 
     /* ── Colonnade: three equal bays divided by columns ──────── */
     .features{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);
@@ -86,7 +138,8 @@
       width:1px;height:22px;background:var(--gilt);opacity:.5}
 
     /* ── Plinth / CTA ────────────────────────────────────────── */
-    .cta{padding:96px 0 104px;background:linear-gradient(180deg, transparent, rgba(200,190,165,.28));
+    .cta{padding:96px 0 104px;
+      background:linear-gradient(180deg, transparent, color-mix(in srgb, var(--stone) 60%, transparent));
       margin-top:0}
     .cta h2{font-family:"Cinzel",serif;font-size:clamp(28px,4.2vw,48px);font-weight:400;
       letter-spacing:.12em;text-transform:uppercase}
@@ -95,6 +148,52 @@
       background:var(--ink);border:1px solid var(--ink);padding:17px 42px;
       transition:background .45s ease,color .45s ease}
     .cta .cta-btn:hover{background:transparent;color:var(--ink)}
+    .cta .cta-btn:focus-visible{outline:1px solid var(--gilt);outline-offset:4px}
+
+    /* ── Component reference ────────────────────────────────── */
+    .component{padding:96px 0;text-align:center}
+    .component h2{font-family:"Cinzel",serif;font-size:22px;font-weight:400;letter-spacing:.12em;
+      text-transform:uppercase;margin-bottom:14px}
+    .component p{font-size:17px;color:var(--sepia);max-width:44ch;margin:0 auto}
+
+    /* ── Dialog ─────────────────────────────────────────────── */
+    .dialog{padding:0;border:0;max-width:none;width:min(560px, calc(100vw - 56px));
+      background:var(--marble);color:var(--ink);border-top:1px solid var(--gilt)}
+    .dialog::backdrop{background:rgba(31,28,23,.55)}
+    :root[data-theme="dark"] .dialog::backdrop{background:rgba(0,0,0,.72)}
+    .dialog[open]{animation:dlg-in .18s linear}
+    .dialog[open]::backdrop{animation:dlg-in .18s linear}
+    @keyframes dlg-in{from{opacity:0}to{opacity:1}}
+    .dialog__inner{padding:56px 44px}
+    .dialog h2{font-family:"Cinzel",serif;font-size:22px;font-weight:400;letter-spacing:.12em;
+      text-transform:uppercase;margin-bottom:16px}
+    .dialog p{font-size:17px;color:var(--sepia);line-height:1.6;max-width:38ch;margin:0 auto}
+    .dialog__close{display:inline-block;margin-top:30px;font-family:"Cinzel",serif;font-size:11px;font-weight:600;
+      letter-spacing:.3em;text-indent:.3em;text-transform:uppercase;color:var(--ink);
+      border:1px solid var(--ink);padding:16px 40px;background:transparent;cursor:pointer;
+      transition:background .45s ease,color .45s ease}
+    .dialog__close:hover{background:var(--ink);color:var(--marble)}
+    .dialog__close:focus-visible{outline:1px solid var(--gilt);outline-offset:4px}
+
+    /* ── Footer / base ──────────────────────────────────────── */
+    .foot{padding:56px 0 64px;border-top:1px solid var(--line);position:relative;text-align:center}
+    .foot::before{content:"";position:absolute;left:0;right:0;top:-5px;height:1px;background:var(--line)}
+    .foot__links{display:flex;justify-content:center;gap:40px;margin-bottom:26px}
+    .foot__links a{font-family:"Cinzel",serif;font-size:11px;font-weight:400;letter-spacing:.26em;
+      text-transform:uppercase;color:var(--sepia);position:relative;padding-bottom:4px}
+    .foot__links a::after{content:"";position:absolute;left:50%;bottom:0;width:0;height:1px;background:var(--gilt);
+      transform:translateX(-50%);transition:width .45s cubic-bezier(.2,.7,.3,1)}
+    .foot__links a:hover{color:var(--ink)}
+    .foot__links a:hover::after{width:100%}
+    .foot__links a:focus-visible{outline:1px solid var(--gilt);outline-offset:4px}
+    .signature{
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--ink);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .18s linear}
+    .signature:hover{border-bottom-color:var(--ink)}
+    .signature:focus-visible{outline:2px solid var(--gilt);outline-offset:4px}
 
     @media(max-width:820px){
       .features{grid-template-columns:1fr}
@@ -102,38 +201,88 @@
       .nav ul{gap:28px}
     }
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    /* ── Nav ⇄ pier ─────────────────────────────────────────────
+       The same entablature, relocated: a fixed left pier standing in
+       for the third architectural member the page already names in
+       its own Layout Logic — nav as entablature, CTA as plinth, and
+       now the rail as pier when the axis turns ninety degrees. */
+    :root[data-nav="side"]{--rail:224px}
+    [data-nav="side"] .nav{
+      position:fixed;top:0;left:0;bottom:0;width:224px;
+      display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+      gap:34px;padding:44px 20px;border-bottom:0;border-right:1px solid var(--line);
+      overflow-y:auto;z-index:50;
+    }
+    [data-nav="side"] .nav::after{content:"";left:auto;right:-5px;top:0;bottom:0;width:1px;height:auto}
+    [data-nav="side"] .nav ul{flex-direction:column;gap:26px}
+    [data-nav="side"] .logo{margin-bottom:0}
+    [data-nav="side"] .nav-controls{flex-direction:column;gap:22px;margin-top:0}
+
+    @media(max-width:640px){
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;width:auto;height:auto;flex-direction:row;flex-wrap:wrap;
+        align-items:center;justify-content:center;border-right:0;border-bottom:1px solid var(--line);
+        padding:34px 0 22px;overflow:visible;z-index:auto}
+      [data-nav="side"] .nav::after{left:0;right:0;top:auto;bottom:-5px;width:auto;height:1px}
+      [data-nav="side"] .nav ul{flex-direction:row}
+      [data-nav="side"] .nav-controls{flex-direction:row;margin-top:20px}
+    }
+
+    /* ══ DESIGN POINTS — rebuilt in this page's own language ═══════
+       Same materials as the demo above: marble ground, carved ink,
+       Cinzel capitals for labels, a single gilt hairline standing in
+       for the panel's cornice. Content is unchanged — only its
+       presentation — except Motion/Interaction and the gilt hex. */
+    .dp-divider{height:0;border:none;margin:0}
+    .design-points{position:relative;z-index:80;background:var(--marble);color:var(--ink);
+      padding:72px 24px 96px;border-top:1px solid var(--gilt);
+      font-family:"Cormorant Garamond",Georgia,serif;
+      font-size:17px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
     .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+    .dp-actions{display:flex;gap:24px;align-items:baseline}
+    .design-points h2{font-family:"Cinzel",serif;font-size:12px;font-weight:400;line-height:1;
+      letter-spacing:.26em;text-transform:uppercase;color:var(--sepia);margin:0}
+    .dp-skill,.dp-back{font-family:"Cinzel",serif;font-size:11px;letter-spacing:.16em;
+      text-transform:uppercase;color:var(--sepia);text-decoration:none;
+      border-bottom:1px solid transparent;padding-bottom:2px;transition:border-color .3s ease,color .3s ease}
+    .dp-skill:hover,.dp-back:hover{color:var(--ink);border-bottom-color:var(--gilt)}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:1px solid var(--gilt);outline-offset:4px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid var(--line)}
     .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
+    .dp dt{font-family:"Cinzel",serif;font-size:12px;font-weight:400;line-height:1.5;
+      letter-spacing:.16em;text-transform:uppercase;color:var(--sepia)}
+    .dp dd{margin:0;color:var(--ink)}
     .dp dd > ul,.dp dd > ol{padding-left:20px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
     .dp li{margin-bottom:7px}
     .dp li:last-child{margin-bottom:0}
-    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+    .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;
+      background:var(--stone);color:var(--ink);padding:1px 7px;border-radius:2px}
     .dp-palette{list-style:none!important;padding-left:0!important}
-    .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+    .sw{display:inline-block;width:13px;height:13px;border-radius:0;
+      border:1px solid var(--line);vertical-align:-2px;margin-right:8px;background:var(--c)}
     @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
 </style>
+<script>
+  /* Before first paint, so the ground is never the wrong colour or
+     shape for a frame and then correct. Reads only, and only ever
+     writes attributes. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }   /* private mode / blocked cookies */
+    }
+    root.setAttribute('data-nav',   read('atlas-nc-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',  ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -146,6 +295,10 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="nav-controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">Nav <span class="ctl__v" id="nav-toggle-value">Top</span></button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">Hour <span class="ctl__v" id="theme-toggle-value">Day</span></button>
+      </div>
     </nav>
 
     <header class="hero">
@@ -183,13 +336,42 @@
     <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
   </section>
 
+  <section class="component" aria-labelledby="component-title">
+    <h2 id="component-title">Component reference</h2>
+    <p>A modal built on the native dialog element — focus trapped, Escape to close, background inert.</p>
+    <a href="#" class="btn" id="dialog-open">Open dialog</a>
+  </section>
+
+  <footer class="foot">
+    <nav class="foot__links" aria-label="Footer">
+      <a href="../index.html">All styles</a>
+      <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+    </nav>
+    <!-- TODO: replace with portfolio link -->
+    <a class="signature" href="#">Built with care</a>
+  </footer>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <div class="dialog__inner">
+      <h2 id="dialog-title">Component reference</h2>
+      <p>A modal built on the native dialog element. The browser traps focus inside it,
+        closes it on Escape, and makes everything behind it inert. Clicking outside it
+        closes it as well, and focus returns to the button that opened it.</p>
+      <button type="button" class="dialog__close" id="dialog-close">Close</button>
+    </div>
+  </dialog>
+
   <hr class="dp-divider">
 
   <section class="design-points" id="design-points" data-style="Neo-classical">
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -211,7 +393,7 @@
               <li><span class="sw" style="--c:#e6e1d6"></span><code>#e6e1d6</code> — deeper stone for the plinth gradient</li>
               <li><span class="sw" style="--c:#1f1c17"></span><code>#1f1c17</code> — carved lettering, near-black warm brown</li>
               <li><span class="sw" style="--c:#6b6250"></span><code>#6b6250</code> — sepia secondary text</li>
-              <li><span class="sw" style="--c:#a8894f"></span><code>#a8894f</code> — restrained gilt, used only for small ornament</li>
+              <li><span class="sw" style="--c:#81693b"></span><code>#81693b</code> — restrained gilt, used only for small ornament</li>
               <li><span class="sw" style="--c:#c9c0ac"></span><code>#c9c0ac</code> — hairline rules and column divisions</li>
             </ul>
           </dd>
@@ -242,7 +424,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>Slow and symmetrical, 450ms on every transition. Nav links grow a gilt underline outward from the centre (<code>left: 50%</code> with a translate, width 0 → 100%), never from one side, so the axis is preserved. Buttons invert fill and text colour. There is no JavaScript on this page at all — the style predates the machine, and nothing here needs it.</dd>
+          <dd>Two inscribed controls sit in the nav, styled with the page's own hover-underline motif — a gilt rule growing outward from centre, the same one nav links already use — so nothing new was invented for them. One relocates the same bar between an entablature strip and a fixed left pier by moving a single <code>--rail</code> token, which shifts the whole page's own padding so nothing sits beneath it; the other moves the hour between day and dusk across <code>data-theme</code>, deepening the ground and brightening the gilt so it still reads against a night marble rather than simply inverting. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close. This is now the only JavaScript on the page — three state toggles, nothing animated by script — every transition remains the original slow, symmetrical 450ms CSS the style was built on.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -262,5 +444,53 @@
     </div>
   </section>
 
+<script>
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    /* aria-pressed, not aria-expanded: two persistent placements of the
+       same bar, nothing disclosed or hidden. */
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'Pier' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-nc-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode === 'dark' ? 'Dusk' : 'Day';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function (e) { e.preventDefault(); dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
+  })();
+</script>
 </body>
 </html>
