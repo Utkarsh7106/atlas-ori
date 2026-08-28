@@ -8,22 +8,51 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Courier+Prime:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ CONCEPTUAL SKETCH ════════════════════════════════════════
        The thinking stage, not the artefact. Graph paper, boxes drawn
        by hand, placeholder crosses where content will go, dimension
        lines, redlines and marginalia. Analytical rather than crafty:
-       this is a wireframe someone argued with, not a scrapbook.    */
+       this is a wireframe someone argued with, not a scrapbook.
+
+       --th-* are the source of truth; every colour below is an ALIAS
+       onto them, so [data-theme="dark"] re-resolves the whole page
+       without editing a single declaration past this block. */
 
     :root{
-      --paper:#fcfcfa;
-      --grid:#e3e7ec;      /* graph rule            */
-      --grid-major:#d2d8e0;
-      --graphite:#2b2b2b;  /* pencil / pen          */
-      --soft:#7a7f86;      /* light pencil          */
-      --blue:#3f6fd8;      /* annotation pencil     */
-      --red:#e03b2f;       /* redline               */
+      --th-paper:#fcfcfa;
+      --th-grid:#e3e7ec;      /* graph rule            */
+      --th-grid-major:#d2d8e0;
+      --th-graphite:#2b2b2b;  /* pencil / pen          */
+      --th-soft:#7a7f86;      /* light pencil          */
+      --th-blue:#3f6fd8;      /* annotation pencil     */
+      --th-red:#e03b2f;       /* redline               */
+
+      --paper:var(--th-paper);
+      --grid:var(--th-grid);
+      --grid-major:var(--th-grid-major);
+      --graphite:var(--th-graphite);
+      --soft:var(--th-soft);
+      --blue:var(--th-blue);
+      --red:var(--th-red);
+
+      --rail:0px;              /* the one token the nav mode drives */
+    }
+
+    /* Not an inversion — a night session at the drafting table. The
+       sheet goes to a near-black blueprint blue rather than true
+       black, the ruled grid stays visible a shade lighter than the
+       page, and both pencils brighten so they still read against a
+       dark ground the way graphite catches lamplight. */
+    :root[data-theme="dark"]{
+      --th-paper:#12161f;
+      --th-grid:#232b3a;
+      --th-grid-major:#2c3648;
+      --th-graphite:#eef0f2;
+      --th-soft:#98a1b0;
+      --th-blue:#8aa4fb;
+      --th-red:#ff8577;
     }
 
     body{
@@ -36,18 +65,22 @@
       color:var(--graphite);
       font-family:"Architects Daughter",Comic Sans MS,cursive;
       padding:0 clamp(14px,4vw,34px);
+      padding-left:calc(clamp(14px,4vw,34px) + var(--rail));
     }
     .wrap{max-width:1080px;margin:0 auto;padding:34px 0 80px}
 
-    /* A box drawn by hand: uneven corner radii, doubled stroke. */
+    /* A box drawn by hand: uneven corner radii, doubled stroke. Both
+       strokes and the fill are tied to tokens (not hardcoded), so a
+       drawn box re-inks correctly instead of staying paper-white
+       when the sheet itself goes dark. */
     .drawn{
       border:2px solid var(--graphite);
       border-radius:255px 14px 225px 16px/16px 225px 14px 255px;
-      background:rgba(252,252,250,.85);
+      background:color-mix(in srgb, var(--paper) 85%, transparent);
       position:relative;
     }
     .drawn::before{ /* the second, shakier pass of the pen */
-      content:"";position:absolute;inset:2px;border:1px solid rgba(43,43,43,.34);
+      content:"";position:absolute;inset:2px;border:1px solid color-mix(in srgb, var(--graphite) 34%, transparent);
       border-radius:225px 16px 255px 14px/14px 255px 16px 225px;pointer-events:none}
 
     .mono{font-family:"Courier Prime",Courier,monospace}
@@ -61,6 +94,22 @@
     .nav ul a{font-size:17px;color:var(--graphite);border-bottom:2px solid transparent;padding-bottom:1px;
       transition:border-color .2s ease,color .2s ease}
     .nav ul a:hover{border-bottom-color:var(--red);color:var(--red)}
+    .nav ul a:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+
+    /* One shared control style, reused for both new toggles: the
+       same dashed-pill "annotation tag" the page already uses for
+       .icon, so a control reads as another piece of margin apparatus
+       rather than a new interaction language. */
+    .nav-controls{display:flex;gap:12px;align-items:center}
+    .ctl{font-family:"Courier Prime",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--blue);background:transparent;border:1px dashed var(--blue);
+      border-radius:225px 15px 255px 15px/15px 255px 15px 225px;
+      padding:6px 13px;cursor:pointer;
+      transition:background .2s ease,color .2s ease,border-style .2s ease}
+    .ctl:hover{border-style:solid}
+    .ctl[aria-pressed="true"]{background:var(--blue);color:var(--paper);border-style:solid}
+    .ctl:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+    .ctl__v{font-weight:700;margin-left:4px}
 
     /* ── Hero ────────────────────────────────────────────────── */
     .hero{display:grid;grid-template-columns:1.35fr 1fr;gap:30px;align-items:center;
@@ -74,6 +123,7 @@
       border-radius:255px 15px 225px 15px/15px 225px 15px 255px;background:transparent;
       transition:background .2s ease,color .2s ease}
     .btn:hover{background:var(--graphite);color:var(--paper)}
+    .btn:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
 
     /* placeholder: the box that says "picture goes here" */
     .placeholder{aspect-ratio:4/3;border:2px solid var(--soft);position:relative;
@@ -120,6 +170,53 @@
       border-radius:15px 255px 15px 225px/225px 15px 255px 15px;
       transition:transform .2s ease}
     .cta .cta-btn:hover{transform:rotate(-1.5deg) scale(1.03)}
+    .cta .cta-btn:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+
+    /* ── Component reference ─────────────────────────────────── */
+    .component{margin-top:56px;padding:52px 34px 56px;text-align:center}
+    .component .icon{margin-bottom:16px}
+    .component h2{font-size:26px;margin-bottom:10px}
+    .component p{font-family:"Courier Prime",monospace;font-size:14px;line-height:1.7;color:var(--graphite);
+      max-width:44ch;margin:0 auto 26px}
+
+    /* ── Dialog ──────────────────────────────────────────────── */
+    dialog.dialog{padding:0;color:var(--graphite);max-width:none;width:min(520px, calc(100vw - 56px))}
+    .dialog::backdrop{background:color-mix(in srgb, var(--graphite) 55%, transparent)}
+    .dialog[open]{animation:dlg-in .15s linear}
+    .dialog[open]::backdrop{animation:dlg-in .15s linear}
+    @keyframes dlg-in{from{opacity:0}to{opacity:1}}
+    /* ::backdrop is a top-layer pseudo-element the sitewide `*` reduced-
+       motion rule in reset.css does not reach — muted explicitly here. */
+    @media(prefers-reduced-motion: reduce){
+      .dialog[open]::backdrop{animation-duration:.01ms}
+    }
+    .dialog__inner{padding:40px 36px}
+    .dialog h2{font-size:26px;margin-bottom:14px}
+    .dialog p{font-family:"Courier Prime",monospace;font-size:14px;line-height:1.7;color:var(--graphite);
+      max-width:38ch}
+    .dialog__close{display:inline-block;margin-top:26px;font-family:"Architects Daughter",cursive;font-size:19px;
+      color:var(--graphite);padding:11px 30px;border:2px solid var(--graphite);
+      border-radius:255px 15px 225px 15px/15px 225px 15px 255px;background:transparent;cursor:pointer;
+      transition:background .2s ease,color .2s ease}
+    .dialog__close:hover{background:var(--graphite);color:var(--paper)}
+    .dialog__close:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    .foot{margin-top:56px;padding:34px 30px 38px;display:flex;justify-content:space-between;
+      align-items:center;flex-wrap:wrap;gap:20px}
+    .foot__links{display:flex;gap:26px}
+    .foot__links a{font-size:15px;color:var(--graphite);border-bottom:2px solid transparent;padding-bottom:1px;
+      transition:border-color .2s ease,color .2s ease}
+    .foot__links a:hover{border-bottom-color:var(--red);color:var(--red)}
+    .foot__links a:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+    .signature{
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--graphite);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .18s linear}
+    .signature:hover{border-bottom-color:var(--graphite)}
+    .signature:focus-visible{outline:2px solid var(--blue);outline-offset:4px}
 
     @media(max-width:860px){
       .hero{grid-template-columns:1fr}
@@ -127,36 +224,65 @@
       .note{display:none}
     }
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    /* ── Nav ⇄ margin column ─────────────────────────────────────
+       The nav becomes a tall drawn box running the full left edge —
+       the ruled margin a sketchbook already reserves for notes —
+       rather than a strip across the top. One token moves it. */
+    :root[data-nav="side"]{--rail:236px}
+    [data-nav="side"] .nav{
+      position:fixed;top:0;left:0;bottom:0;width:236px;
+      display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;
+      gap:28px;padding:30px 22px;overflow-y:auto;z-index:50;
+    }
+    [data-nav="side"] .nav ul{flex-direction:column;gap:18px}
+    [data-nav="side"] .nav-controls{flex-direction:column;align-items:flex-start;gap:12px}
+
+    @media(max-width:640px){
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;width:auto;height:auto;flex-direction:row;flex-wrap:wrap;
+        align-items:center;justify-content:space-between;padding:14px 24px;overflow:visible;z-index:auto}
+      [data-nav="side"] .nav ul{flex-direction:row}
+      [data-nav="side"] .nav-controls{flex-direction:row;align-items:center}
+    }
+
+    /* ══ DESIGN POINTS — rebuilt in this page's own language ═══════
+       Same materials as the demo above: paper ground, graphite ink,
+       a dashed rule standing in for the panel's usual solid cornice.
+       Content is unchanged — only its presentation — except
+       Motion/Interaction, which now describes what was actually
+       built. */
+    .dp-divider{height:0;border:none;margin:0}
+    .design-points{position:relative;z-index:80;background:var(--paper);color:var(--graphite);
+      padding:72px 24px 96px;border-top:2px dashed var(--graphite);
+      font-family:"Courier Prime",Courier,monospace;
+      font-size:14px;line-height:1.7;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
     .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:1px solid var(--grid-major)}
+    .dp-actions{display:flex;gap:22px;align-items:baseline}
+    .design-points h2{font-family:"Courier Prime",monospace;font-size:12px;font-weight:700;line-height:1;
+      letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin:0}
+    .dp-skill,.dp-back{font-family:"Architects Daughter",cursive;font-size:15px;color:var(--graphite);
+      text-decoration:none;border-bottom:2px solid transparent;padding-bottom:1px;
+      transition:border-color .2s ease,color .2s ease}
+    .dp-skill:hover,.dp-back:hover{border-bottom-color:var(--red);color:var(--red)}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid var(--grid-major)}
     .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
+    .dp dt{font-family:"Courier Prime",monospace;font-size:11px;font-weight:700;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--blue)}
+    .dp dd{margin:0;color:var(--graphite)}
     .dp dd > ul,.dp dd > ol{padding-left:20px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
     .dp li{margin-bottom:7px}
     .dp li:last-child{margin-bottom:0}
     .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+      background:var(--grid);color:var(--graphite);padding:1px 6px;border-radius:3px}
     .dp-palette{list-style:none!important;padding-left:0!important}
     .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+      border:1px solid var(--soft);vertical-align:-2px;margin-right:8px;background:var(--c)}
     @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
 </style>
 </head>
@@ -171,6 +297,10 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="nav-controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">layout: <span class="ctl__v" id="nav-toggle-value">top</span></button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">sheet: <span class="ctl__v" id="theme-toggle-value">day</span></button>
+      </div>
     </nav>
 
     <header class="hero drawn">
@@ -216,7 +346,33 @@
       <span class="note" style="left:6%;bottom:18px" aria-hidden="true">final copy pending</span>
     </section>
 
+    <section class="component drawn" aria-labelledby="component-title">
+      <span class="icon">Modal</span>
+      <h2 id="component-title">Component reference</h2>
+      <p>A modal built on the native dialog element — focus trapped, Escape to close, background inert.</p>
+      <a href="#" class="btn" id="dialog-open">Open dialog</a>
+    </section>
+
+    <footer class="foot drawn">
+      <nav class="foot__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog drawn" id="dialog" aria-labelledby="dialog-title">
+    <div class="dialog__inner">
+      <h2 id="dialog-title">Component reference</h2>
+      <p>A modal built on the native dialog element. The browser traps focus inside it,
+        closes it on Escape, and makes everything behind it inert. Clicking outside it
+        closes it as well, and focus returns to the button that opened it.</p>
+      <button type="button" class="dialog__close" id="dialog-close">Close</button>
+    </div>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -224,7 +380,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -277,7 +437,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>On load, JS re-rolls the eight corner radii of every hand-drawn box within set ranges, so no two boxes on the page are identical and a reload produces a different drawing — the machine-repeat that gives fake hand-drawing away is removed. Hovering a card fades in its redline annotation over 300ms; the CTA button rotates −1.5deg on hover; links pick up a red underline. Nothing else moves — a sketch is a still document.</dd>
+          <dd>On load, JS re-rolls the eight corner radii of every hand-drawn box within set ranges, so no two boxes on the page are identical and a reload produces a different drawing — the machine-repeat that gives fake hand-drawing away is removed. Two controls sit in the nav, styled as the same dashed annotation pill the page already uses for its icon tags, so nothing new was invented for them: one relocates the drawn nav from a strip across the top to a tall margin column down the left by moving a single <code>--rail</code> token, the other moves the sheet from day to a dark drafting-table night across <code>data-theme</code>. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code>, itself another hand-drawn box with its own re-rolled corners, which supplies the focus trap, Escape and an inert background and returns focus to its trigger on close. Hovering a card fades in its redline annotation over 300ms; the CTA button rotates −1.5deg on hover; links pick up a red underline. Nothing else moves — a sketch is a still document.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -298,10 +458,26 @@
   </section>
 
 <script>
+  /* Before first paint, so the sheet is never the wrong colour or
+     shape for a frame and then correct. Reads only, and only ever
+     writes attributes. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }   /* private mode / blocked cookies */
+    }
+    root.setAttribute('data-nav',   read('atlas-cs-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',  ['light', 'dark'], 'light'));
+  })();
+</script>
+<script>
   /* Nothing drawn by hand repeats. Re-roll every corner on load. */
   (function () {
     function r(min, max) { return Math.round(min + Math.random() * (max - min)); }
-    document.querySelectorAll('.drawn, .btn, .icon, .placeholder, .cta .cta-btn').forEach(function (el) {
+    document.querySelectorAll('.drawn, .btn, .icon, .placeholder, .cta .cta-btn, .ctl, .dialog__close').forEach(function (el) {
       var a = [r(200, 275), r(10, 22), r(200, 260), r(10, 22)];
       var b = [r(10, 22), r(200, 265), r(10, 22), r(200, 275)];
       el.style.borderRadius = a.join('px ') + 'px / ' + b.join('px ') + 'px';
@@ -315,6 +491,52 @@
     var s = document.createElement('style');
     s.textContent = '.drawn::before{border-radius:var(--r2)}';
     document.head.appendChild(s);
+  })();
+</script>
+<script>
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'side' : 'top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-cs-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode === 'dark' ? 'night' : 'day';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function (e) { e.preventDefault(); dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
   })();
 </script>
 </body>
