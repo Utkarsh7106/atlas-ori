@@ -1,4 +1,4 @@
-# Atlas — 29 design styles, one page of content
+# Atlas — Visual Languages
 
 A static, dependency-free site that renders **identical content** in 29 distinct visual
 languages, one per page. It exists to do two things:
