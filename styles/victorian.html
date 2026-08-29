@@ -46,6 +46,10 @@
       --fleuron-field:#e0be76;     /* fixed — fleuron glyphs sitting on --forest-field,
                                        darkened-then-reused, not #c39a4b (2.13:1 on
                                        paper / 4.35:1 on forest — see DECISIONS NEEDED) */
+      --forest-on-gilt:#20392a;    /* fixed — .cta-btn text only: --forest-field on
+                                       --gilt measures 4.35:1 (not --forest-field
+                                       itself, which stays untouched as a background
+                                       elsewhere), darkened to 4.79:1 */
 
       --rail:0px;
     }
@@ -172,7 +176,7 @@
     .cta::before,.cta::after{color:var(--gilt)}
     .cta h2{font-family:"Abril Fatface",serif;font-size:clamp(30px,4.6vw,52px);color:var(--cream)}
     .cta .cta-btn{display:inline-block;margin-top:26px;font-family:"Playfair Display",serif;font-size:13px;font-weight:700;
-      letter-spacing:.28em;text-indent:.28em;text-transform:uppercase;color:var(--forest-field);
+      letter-spacing:.28em;text-indent:.28em;text-transform:uppercase;color:var(--forest-on-gilt);
       background:var(--gilt);border:2px double var(--cream);padding:14px 38px;
       transition:background .3s ease,color .3s ease}
     .cta .cta-btn:hover{background:var(--cream);color:var(--burgundy-field)}

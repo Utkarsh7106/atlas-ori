@@ -41,11 +41,17 @@
                                     original failed AA (3.46:1 on
                                     sand) as a small uppercase label */
       --th-sienna:#9c4f2f;
+      --th-terracotta-nav:#9a4e32;  /* .nav ul a:hover only — --th-terracotta
+                                        measures 3.09:1 here (needs 4.5); this
+                                        darkened value reaches 4.91:1 without
+                                        touching --terracotta's other, mostly
+                                        decorative uses elsewhere on the page */
 
       --sand:var(--th-sand);
       --paper:var(--th-paper);
       --walnut:var(--th-walnut);
       --terracotta:var(--th-terracotta);
+      --terracotta-nav:var(--th-terracotta-nav);
       --ochre:var(--th-ochre);
       --rose:var(--th-rose);
       --olive:var(--th-olive);
@@ -74,6 +80,8 @@
       --th-rose:#d69f9f;
       --th-olive:#96a069;
       --th-sienna:#c97a4f;
+      --th-terracotta-nav:#dd8058;  /* --th-terracotta already passes here
+                                        (6.05:1), no separate value needed */
     }
 
     body{
@@ -106,15 +114,16 @@
     .nav ul{display:flex;gap:30px}
     .nav ul a{font-family:"Cardo",serif;font-style:italic;font-size:17px;color:var(--walnut);
       padding-bottom:3px;border-bottom:1px dotted color-mix(in srgb, var(--walnut) 45%, transparent);transition:color .35s ease,border-color .35s ease}
-    .nav ul a:hover{color:var(--terracotta);border-bottom-color:var(--terracotta)}
+    .nav ul a:hover{color:var(--terracotta-nav);border-bottom-color:var(--terracotta-nav)}
     .nav ul a:focus-visible{outline:2px solid var(--walnut);outline-offset:3px}
 
     /* Two controls beside the nav links. The value word ("Top"/"Side",
        "Day"/"Night") is what carries the state — the text itself stays
        walnut at every point, always AA-safe; only the dotted underline
        (a decoration, not text) picks up the terracotta accent on
-       hover/pressed, so this new control never repeats the nav links'
-       own pre-existing hover contrast shortfall (see DECISIONS NEEDED). */
+       hover/pressed, so contrast was never a concern for this control
+       the way it was for .nav ul a:hover (now fixed via --terracotta-nav
+       above). */
     .nav-controls{display:flex;gap:22px;align-items:center}
     .ctl{font-family:"Cardo",serif;font-style:italic;font-size:17px;color:var(--walnut);background:none;border:0;
       cursor:pointer;padding-bottom:3px;border-bottom:1px dotted color-mix(in srgb, var(--walnut) 45%, transparent);

@@ -40,6 +40,7 @@
       --yellow:#ffd400;
       --cyan:#12c8ff;
       --violet:#a83bff;
+      --violet-cta:#b04dff;   /* .cta-btn:hover fill only, see comment above it */
       --lime:#5cff54;
       --black:#0c0c0e;
       --chalk:#f2f2ef;
@@ -88,7 +89,10 @@
     .nav li:nth-child(1) a{transform:rotate(2deg)}
     .nav li:nth-child(2) a{transform:rotate(-2.4deg);background:var(--cyan)}
     .nav li:nth-child(3) a{transform:rotate(1.4deg)}
-    .nav ul a:hover{background:var(--red);color:var(--chalk);transform:rotate(-4deg) scale(1.06)}
+    /* black text, not chalk: chalk-on-red measured 3.27:1 (needs 4.5) —
+       same fix already used by .ctl:hover below (black-on-red clears
+       5.33:1), now applied here too instead of just documented. */
+    .nav ul a:hover{background:var(--red);color:var(--black);transform:rotate(-4deg) scale(1.06)}
 
     /* Two more stickers, same slapped-up language as the nav links. */
     .nav-controls{display:flex;gap:10px}
@@ -98,10 +102,9 @@
       transform:rotate(-1.6deg);
       transition:background .12s linear,transform .12s linear,color .12s linear}
     .ctl:nth-child(2){transform:rotate(2deg)}
-    /* text stays --black on hover, not --chalk: chalk-on-red is a
-       pre-existing shortfall on .nav ul a:hover (3.27:1, needs 4.5)
-       this new control deliberately doesn't repeat (see DECISIONS
-       NEEDED) — black-on-red clears 5.33:1. */
+    /* text stays --black on hover, not --chalk: black-on-red clears
+       5.33:1 where chalk-on-red only reached 3.27:1 — .nav ul a:hover
+       now uses the same fix. */
     .ctl:hover{background:var(--red);color:var(--black);transform:rotate(-4deg) scale(1.06)}
     .ctl[aria-pressed="true"]{background:var(--lime)}
     .ctl:focus-visible{outline:3px solid var(--red);outline-offset:2px}
@@ -169,11 +172,17 @@
     .cta h2{font-family:"Bungee",sans-serif;font-size:clamp(34px,6.6vw,80px);text-transform:uppercase;
       color:var(--chalk);-webkit-text-stroke:8px var(--black);paint-order:stroke fill;
       text-shadow:8px 9px 0 rgba(0,0,0,.6), 0 0 34px rgba(242,242,239,.28)}
+    /* black text, same fix as the nav sticker: chalk-on-red measured
+       3.27:1. Hover's chalk-on-violet was 3.95:1, but black-on-violet
+       is only 4.41:1 — neither of this button's two text options
+       clears 4.5 against the shared --violet, so --violet-cta is a
+       scoped, slightly lighter violet (black text reaches 4.98:1) used
+       only here, leaving --violet's other decorative/text uses alone. */
     .cta .cta-btn{display:inline-block;margin-top:28px;font-family:"Bungee",sans-serif;font-size:18px;text-transform:uppercase;
-      color:var(--chalk);background:var(--red);padding:14px 36px;border:4px solid var(--black);
+      color:var(--black);background:var(--red);padding:14px 36px;border:4px solid var(--black);
       box-shadow:6px 7px 0 rgba(0,0,0,.6);transform:rotate(1.4deg);
       transition:transform .12s linear,background .12s linear}
-    .cta .cta-btn:hover{background:var(--violet);transform:rotate(-2deg) scale(1.05)}
+    .cta .cta-btn:hover{background:var(--violet-cta);transform:rotate(-2deg) scale(1.05)}
     .cta .cta-btn:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
 
     /* aerosol particles */
@@ -201,9 +210,10 @@
     .dialog__inner{padding:34px 32px}
     .dialog h2{font-family:"Bungee",sans-serif;font-size:26px;text-transform:uppercase;color:var(--black);margin-bottom:12px}
     .dialog p{font-family:"Oswald",sans-serif;font-size:15px;font-weight:300;line-height:1.6;color:var(--black);max-width:40ch}
-    /* black text, not chalk: chalk-on-red/violet is the same
-       pre-existing shortfall as the CTA button (see DECISIONS
-       NEEDED) — this new button doesn't repeat it. */
+    /* black text, not chalk: chalk-on-red/violet was the same
+       shortfall the CTA button had — see the fix on .cta .cta-btn
+       above. Yellow/lime backgrounds pass with black text either way,
+       so this button never needed the violet-specific workaround. */
     .dialog__close{display:inline-block;margin-top:22px;font-family:"Bungee",sans-serif;font-size:15px;text-transform:uppercase;
       color:var(--black);background:var(--yellow);border:3px solid var(--black);cursor:pointer;
       padding:11px 28px;box-shadow:4px 5px 0 rgba(0,0,0,.6);transition:transform .12s linear,background .12s linear}

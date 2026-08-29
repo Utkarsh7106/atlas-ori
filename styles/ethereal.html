@@ -29,15 +29,12 @@
       --th-blush:#fde8f0;      /* pink wash                */
       --th-aqua:#e0f4f7;       /* aqua wash                */
       --th-ink:#4a4266;        /* soft violet-grey text    */
-      --th-faint:#8f88ab;      /* secondary text           */
+      --th-faint:#726a95;      /* secondary text — darkened from #8f88ab
+         (3.22:1) to clear 4.5:1 against --light across every use (nav
+         links, hero note, card copy, icon labels); now measures 4.80:1,
+         so --faint-safe is no longer a distinct correction in light mode
+         either, kept below only because dark mode still defines it. */
       --th-glow:#c9b8f5;
-      /* --faint measures 3.22:1 against --light (needs 4.5) — a
-         pre-existing shortfall across nearly every secondary-text
-         use on this page (nav links, hero note, card copy, icon
-         labels), unrelated to this task's authorised scope and not
-         touched (see DECISIONS NEEDED). --faint-safe is a corrected
-         variant used only by the new UI this build adds, so that new
-         work doesn't repeat a failure it isn't required to inherit. */
       --th-faint-safe:#665e82;
 
       --light:var(--th-light);

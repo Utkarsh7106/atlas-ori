@@ -47,7 +47,25 @@
       --shadow:var(--th-shadow);
 
       --flesh:#e5b5a0;      /* uncanny warm            */
+      --flesh-icon:#a04f2c; /* .icon only — --flesh-on-panel measures
+                                1.64:1 in light mode (needs 4.5); this
+                                deeper rust reaches 5.15:1 without
+                                touching --flesh's other, purely
+                                decorative object uses (door/card dots) */
       --cloud:#f6f2ea;
+      /* .hero h1 / #melt sit on the body's sky gradient, not a solid
+         panel — --cloud measured 2.42:1 / 1.81:1 in light mode (needs
+         3:1, large text) at different points along it, and no single
+         --cloud value clears 3:1 across the full gradient without
+         losing its pale identity (the range spans too close to
+         cloud's own lightness in the middle, so a *lighter* cloud
+         helps one end while a *darker* one is needed for the other).
+         --heading-scrim is a semi-opaque backdrop behind the text
+         instead — same fixed-ink tone as the page's other solid
+         objects (.btn/.door), at 50% so it reads as atmosphere/shadow
+         rather than a panel; 3.13:1+ against every stop on the
+         gradient, cloud text itself untouched. */
+      --heading-scrim:rgba(28,39,51,.5);
 
       --rail:0px;             /* the one token the nav mode drives */
     }
@@ -60,6 +78,10 @@
        an object in a dream keeps its identity even as the light
        around it changes. */
     :root[data-theme="dark"]{
+      --flesh-icon:var(--flesh);   /* --flesh already passes on the dark
+                                       panel (7.99:1), no correction needed */
+      --heading-scrim:transparent; /* --cloud already passes on the dark
+                                       sky (14-16:1), no scrim needed */
       --th-sky-top:#2e3a58;
       --th-sky:#1c2540;
       --th-sky-deep:#10162a;
@@ -120,7 +142,10 @@
     /* ── Hero ────────────────────────────────────────────────── */
     .hero{padding:88px 0 60px;position:relative}
     .hero h1{font-size:clamp(40px,7.4vw,92px);font-weight:300;line-height:1.02;max-width:14ch;
-      color:var(--cloud);text-shadow:0 26px 30px rgba(28,39,51,.4)}
+      color:var(--cloud);text-shadow:0 26px 30px rgba(28,39,51,.4);
+      background:var(--heading-scrim);border-radius:.16em;
+      box-decoration-break:clone;-webkit-box-decoration-break:clone;
+      padding:.06em .12em;margin-left:-.12em}
     /* one word is enormous, one is tiny — impossible scale */
     .hero h1 .big{font-size:1.5em;font-style:italic;display:inline-block;line-height:.8}
     .hero h1 .small{font-size:.34em;vertical-align:.9em;letter-spacing:.2em;font-family:"Inter",sans-serif;
@@ -160,7 +185,7 @@
     .card:nth-child(2){transform:rotate(1.4deg);box-shadow:0 -26px 34px -20px rgba(28,39,51,.5)}
     .card:nth-child(3){transform:rotate(-.6deg) translateY(-22px);box-shadow:34px 30px 34px -20px rgba(28,39,51,.55)}
     .icon{display:block;font-family:"Inter",sans-serif;font-size:10px;letter-spacing:.3em;
-      text-transform:uppercase;color:var(--flesh);margin-bottom:14px}
+      text-transform:uppercase;color:var(--flesh-icon);margin-bottom:14px}
     .card h3{font-size:34px;font-weight:300;font-style:italic;margin-bottom:10px}
     .card p{font-family:"Inter",sans-serif;font-size:13.5px;line-height:1.8;color:var(--shadow)}
     .card::after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:var(--flesh);
@@ -169,7 +194,10 @@
     /* ── CTA: melting ────────────────────────────────────────── */
     .cta{margin-top:110px;text-align:center;position:relative}
     .cta h2{font-size:clamp(38px,7vw,86px);font-weight:300;color:var(--cloud);
-      text-shadow:0 22px 26px rgba(28,39,51,.42)}
+      text-shadow:0 22px 26px rgba(28,39,51,.42);
+      background:var(--heading-scrim);border-radius:.16em;
+      width:fit-content;margin-left:auto;margin-right:auto;
+      padding:.06em .12em}
     .cta h2 span{display:inline-block;transform-origin:top center}
     /* Text colour is a literal, not --ink: --flesh is a fixed object
        colour that never darkens, so the button always needs the same

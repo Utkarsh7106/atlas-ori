@@ -122,8 +122,14 @@
       border:2px solid var(--ink);border-radius:50%}
     .deck__face .mouth{border-width:2px}
     .deck__text{font-size:16px;font-weight:700;color:var(--ink)}
+    /* ink text, not white: white-on-coral measured 2.57:1 in both
+       themes (--coral is fixed) and no reasonable darkening of coral
+       reaches 4.5 without losing its pastel identity — 4.52:1 needed
+       #e32d00, basically a red-orange, not coral. --ink already reaches
+       5.75:1 on the unchanged coral and matches the button's own
+       ink border/shadow. */
     .btn{display:inline-block;margin-top:34px;font-family:"Fredoka",sans-serif;font-size:19px;font-weight:600;
-      color:#fff;background:var(--coral);border:3px solid var(--ink);border-radius:999px;padding:14px 38px;
+      color:var(--ink);background:var(--coral);border:3px solid var(--ink);border-radius:999px;padding:14px 38px;
       box-shadow:0 7px 0 0 var(--ink);
       transition:transform .16s ease,box-shadow .16s ease}
     .btn:hover{transform:translateY(-3px);box-shadow:0 10px 0 0 var(--ink)}

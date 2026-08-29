@@ -148,9 +148,13 @@
     .star:nth-of-type(2){animation-delay:.6s}
     @keyframes tw{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
 
+    /* white text measures 3.68:1 against the 46% stop where the glyphs
+       actually sit (the 0%/100% stops are the gloss highlight beyond
+       the text band) — #2aa3ff darkened to #0063ad clears 4.5:1 there
+       without touching the highlight edges. */
     .btn{display:inline-block;margin-top:30px;font-family:Verdana,sans-serif;font-size:14px;font-weight:700;
       letter-spacing:.14em;text-transform:uppercase;color:#fff;padding:16px 46px;border-radius:999px;
-      background:linear-gradient(180deg,#8ed3ff 0%,#2aa3ff 46%,#0a6fd0 54%,#3fb5ff 100%);
+      background:linear-gradient(180deg,#8ed3ff 0%,#0063ad 46%,#0a6fd0 54%,#3fb5ff 100%);
       border:1px solid #0a6fd0;
       box-shadow:inset 0 2px 0 rgba(255,255,255,.9), inset 0 -10px 16px rgba(0,40,90,.35),
         0 8px 18px -6px rgba(10,111,208,.75);
@@ -173,8 +177,15 @@
         rgba(255,244,150,.5), rgba(255,122,198,.55));
       transition:transform .6s ease,opacity .4s ease}
     .card:hover::after{transform:rotate(38deg) scale(1.5);opacity:.72}
+    /* white text measured 2.34:1 here and no point on this gradient
+       clears 4.5:1 with white (even the darkest edge, #e0409f, only
+       reaches 3.89:1) — darkening the pink enough to fix that would
+       have meant losing the pastel hot-pink identity entirely. Same
+       recipe as .cta-btn/.dialog__close instead: the burgundy text
+       already proven at 6.7-10.5:1 on this identical pink gel, which
+       leaves the gradient itself untouched. */
     .icon{display:inline-block;font-family:Verdana,sans-serif;font-size:10px;font-weight:700;
-      letter-spacing:.16em;text-transform:uppercase;color:#fff;padding:6px 14px;border-radius:999px;
+      letter-spacing:.16em;text-transform:uppercase;color:#5a0f3c;padding:6px 14px;border-radius:999px;
       background:linear-gradient(180deg,#ffb3e0,#ff7ac6 52%,#e0409f);
       border:1px solid #e0409f;box-shadow:inset 0 1px 0 rgba(255,255,255,.85);position:relative;z-index:1}
     .card h3{font-family:"Audiowide",sans-serif;font-size:22px;margin:16px 0 10px;color:var(--ink);
