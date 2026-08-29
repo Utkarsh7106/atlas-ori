@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Permanent+Marker&family=Oswald:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Permanent+Marker&family=Oswald:wght@300;500;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ GRAFFITI ═════════════════════════════════════════════════
        Aerosol on concrete. The wall comes first: cold grey, grainy,
@@ -16,10 +16,26 @@
        fill, black outline, white highlight, overspray halo, drips,
        and a handstyle tag over the top of everything.              */
 
+    /* Only the WALL is themed — --th-wall/--wall-lo/--concrete swap
+       between a daylight concrete grey and its current shadowed
+       grey. Everything painted ON the wall (letters, chips, cards,
+       buttons, tags, stickers) is fixed pigment, same idea as
+       surrealism's flesh/cloud: spray paint and a stuck-on sticker
+       don't change colour when the ambient light does, only the
+       wall behind them does. --chalk sticker/chip surfaces need a
+       dark ground to read against fixed white ink, so they stay
+       fixed dark regardless of theme too. */
     :root{
-      --wall:#3c3c40;
-      --wall-lo:#2b2b2f;
-      --concrete:#4a4a4f;
+      --th-wall:#c2c2bc;
+      --th-wall-lo:#a8a8a2;
+      --th-concrete:#d8d8d2;
+      --th-ink:#1c1c1e;        /* themed, used only by the Design Points panel */
+
+      --wall:var(--th-wall);
+      --wall-lo:var(--th-wall-lo);
+      --concrete:var(--th-concrete);
+      --ink:var(--th-ink);
+
       --red:#ff2f3c;
       --yellow:#ffd400;
       --cyan:#12c8ff;
@@ -27,6 +43,15 @@
       --lime:#5cff54;
       --black:#0c0c0e;
       --chalk:#f2f2ef;
+
+      --rail:0px;
+    }
+
+    :root[data-theme="dark"]{
+      --th-wall:#3c3c40;
+      --th-wall-lo:#2b2b2f;
+      --th-concrete:#4a4a4f;
+      --th-ink:#f2f2ef;
     }
 
     body{
@@ -42,6 +67,7 @@
       font-weight:300;
       overflow-x:hidden;
       position:relative;
+      padding-left:var(--rail);
     }
     .wrap{max-width:1120px;margin:0 auto;padding:0 clamp(14px,3vw,28px) 90px;position:relative;z-index:2}
 
@@ -63,6 +89,23 @@
     .nav li:nth-child(2) a{transform:rotate(-2.4deg);background:var(--cyan)}
     .nav li:nth-child(3) a{transform:rotate(1.4deg)}
     .nav ul a:hover{background:var(--red);color:var(--chalk);transform:rotate(-4deg) scale(1.06)}
+
+    /* Two more stickers, same slapped-up language as the nav links. */
+    .nav-controls{display:flex;gap:10px}
+    .ctl{font-family:"Oswald",sans-serif;font-size:14px;font-weight:700;letter-spacing:.16em;
+      text-transform:uppercase;color:var(--black);background:var(--chalk);padding:8px 16px;
+      border:3px solid var(--black);box-shadow:4px 5px 0 rgba(0,0,0,.5);cursor:pointer;
+      transform:rotate(-1.6deg);
+      transition:background .12s linear,transform .12s linear,color .12s linear}
+    .ctl:nth-child(2){transform:rotate(2deg)}
+    /* text stays --black on hover, not --chalk: chalk-on-red is a
+       pre-existing shortfall on .nav ul a:hover (3.27:1, needs 4.5)
+       this new control deliberately doesn't repeat (see DECISIONS
+       NEEDED) — black-on-red clears 5.33:1. */
+    .ctl:hover{background:var(--red);color:var(--black);transform:rotate(-4deg) scale(1.06)}
+    .ctl[aria-pressed="true"]{background:var(--lime)}
+    .ctl:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+    .ctl__v{font-weight:400;opacity:.8}
 
     /* ── Hero: the piece ─────────────────────────────────────── */
     .hero{position:relative;padding:52px 0 66px}
@@ -131,44 +174,140 @@
       box-shadow:6px 7px 0 rgba(0,0,0,.6);transform:rotate(1.4deg);
       transition:transform .12s linear,background .12s linear}
     .cta .cta-btn:hover{background:var(--violet);transform:rotate(-2deg) scale(1.05)}
+    .cta .cta-btn:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
 
     /* aerosol particles */
     .dot{position:fixed;border-radius:50%;pointer-events:none;z-index:80}
 
+    /* ── Component reference ────────────────────────────────── */
+    .component{margin-top:34px;padding:48px 26px 54px;text-align:center;position:relative;
+      background:repeating-linear-gradient(135deg, rgba(255,255,255,.045) 0 12px, transparent 12px 24px),
+        rgba(12,12,14,.62);
+      border:5px dashed rgba(242,242,239,.5)}
+    .component h2{font-family:"Bungee",sans-serif;font-size:clamp(24px,3.6vw,36px);text-transform:uppercase;
+      color:var(--chalk);-webkit-text-stroke:4px var(--black);paint-order:stroke fill;
+      text-shadow:4px 5px 0 rgba(0,0,0,.6);margin-bottom:14px}
+    .component p{font-family:"Oswald",sans-serif;font-size:15.5px;font-weight:300;line-height:1.6;
+      color:var(--chalk);max-width:44ch;margin:0 auto}
+
+    /* ── Dialog: another sticker, slapped over the wall ────────── */
+    .dialog{padding:0;border:4px solid var(--black);max-width:none;width:min(480px, calc(100vw - 56px));
+      background:var(--chalk);color:var(--black);box-shadow:8px 9px 0 rgba(0,0,0,.6)}
+    .dialog::backdrop{background:rgba(12,12,14,.72)}
+    .dialog[open]{animation:dlg-in .18s linear}
+    .dialog[open]::backdrop{animation:bg-in .18s linear}
+    @keyframes dlg-in{from{opacity:0;transform:translateY(10px) rotate(-1.5deg)}to{opacity:1;transform:none}}
+    @keyframes bg-in{from{opacity:0}to{opacity:1}}
+    .dialog__inner{padding:34px 32px}
+    .dialog h2{font-family:"Bungee",sans-serif;font-size:26px;text-transform:uppercase;color:var(--black);margin-bottom:12px}
+    .dialog p{font-family:"Oswald",sans-serif;font-size:15px;font-weight:300;line-height:1.6;color:var(--black);max-width:40ch}
+    /* black text, not chalk: chalk-on-red/violet is the same
+       pre-existing shortfall as the CTA button (see DECISIONS
+       NEEDED) — this new button doesn't repeat it. */
+    .dialog__close{display:inline-block;margin-top:22px;font-family:"Bungee",sans-serif;font-size:15px;text-transform:uppercase;
+      color:var(--black);background:var(--yellow);border:3px solid var(--black);cursor:pointer;
+      padding:11px 28px;box-shadow:4px 5px 0 rgba(0,0,0,.6);transition:transform .12s linear,background .12s linear}
+    .dialog__close:hover{background:var(--lime);transform:scale(1.05)}
+    .dialog__close:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    .foot{margin-top:60px;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;
+      flex-wrap:wrap;gap:16px;background:rgba(12,12,14,.55);border:3px solid var(--black)}
+    .foot__links{display:flex;gap:10px}
+    .foot__links a{display:block;font-family:"Oswald",sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--black);background:var(--chalk);padding:6px 13px;
+      border:2px solid var(--black);box-shadow:3px 4px 0 rgba(0,0,0,.5);
+      transition:background .12s linear,transform .12s linear,color .12s linear}
+    .foot__links a:hover{background:var(--red);color:var(--black);transform:scale(1.05)}
+    .foot__links a:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+    .signature{
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--chalk);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .12s linear}
+    .signature:hover{border-bottom-color:var(--chalk)}
+    .signature:focus-visible{outline:3px solid var(--yellow);outline-offset:4px}
+
     @media(max-width:860px){.features{grid-template-columns:1fr}.tag{display:none}}
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    /* ── Nav ⇄ side column ──────────────────────────────────────
+       Same stickers, same slapped angles, now down a fixed left
+       column instead of across the top strip. */
+    :root[data-nav="side"]{--rail:222px}
+    [data-nav="side"] .nav{
+      position:fixed;top:0;left:0;bottom:0;width:190px;margin:0;
+      flex-direction:column;align-items:flex-start;justify-content:flex-start;
+      gap:22px;padding:24px 18px;
+      background:rgba(12,12,14,.5);border-right:3px solid var(--black);
+      overflow-y:auto;z-index:50}
+    [data-nav="side"] .nav ul{flex-direction:column;gap:12px}
+    [data-nav="side"] .nav-controls{flex-direction:column;gap:12px}
+
+    @media(max-width:640px){
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;width:auto;height:auto;margin:0;
+        flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;
+        padding:26px 0 18px;background:none;border-right:0;overflow:visible;z-index:auto}
+      [data-nav="side"] .nav ul{flex-direction:row}
+      [data-nav="side"] .nav-controls{flex-direction:row}
+    }
+
+    /* ══ DESIGN POINTS — rebuilt in this page's own language ═══════
+       The wall keeps going, just cleaned up — no stickers, no
+       stroke-and-shadow lettering, so the reference material reads
+       as legible documentation rather than another piece. */
+    .dp-divider{height:0;border:none;margin:0}
+    .design-points{position:relative;z-index:80;background:var(--wall);color:var(--ink);padding:72px 24px 96px;
+      border-top:6px solid var(--black);font-family:"Oswald",-apple-system,sans-serif;font-weight:300;
       font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
     .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid var(--ink)}
+    .dp-actions{display:flex;gap:20px;align-items:baseline}
+    /* var(--ink), not a fixed neon: red/cyan/yellow/lime are tuned
+       for the dark wall and fail against the light one (checked:
+       red only manages 2.05:1 on the light wall) — the themed ink
+       already carries a strong accent here via Bungee + uppercase. */
+    .design-points h2{font-family:"Bungee",sans-serif;font-size:16px;font-weight:400;letter-spacing:.06em;
+      text-transform:uppercase;color:var(--ink);margin:0}
+    .dp-skill,.dp-back{font-family:"Oswald",sans-serif;font-size:12px;font-weight:500;letter-spacing:.06em;color:var(--ink);
+      text-decoration:underline;text-underline-offset:3px;transition:text-underline-offset .12s linear}
+    .dp-skill:hover,.dp-back:hover{text-underline-offset:5px}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid color-mix(in srgb, var(--ink) 20%, transparent)}
     .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
+    .dp dt{font-family:"Oswald",sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;line-height:1.6;
+      text-transform:uppercase;color:color-mix(in srgb, var(--ink) 80%, var(--wall))}
+    .dp dd{margin:0;color:var(--ink)}
     .dp dd > ul,.dp dd > ol{padding-left:20px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
     .dp li{margin-bottom:7px}
     .dp li:last-child{margin-bottom:0}
     .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+      background:color-mix(in srgb, var(--ink) 14%, transparent);color:var(--ink);padding:1px 6px;border-radius:3px}
     .dp-palette{list-style:none!important;padding-left:0!important}
     .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+      border:1px solid color-mix(in srgb, var(--ink) 30%, transparent);vertical-align:-2px;margin-right:8px;background:var(--c)}
     @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
 </style>
+<script>
+  /* Before first paint, so the wall is never lit for the wrong hour
+     and then corrected. Reads only, and only ever writes attributes. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }   /* private mode / blocked cookies */
+    }
+    root.setAttribute('data-nav',   read('atlas-gr-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',   ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -181,6 +320,10 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="nav-controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">Nav <span class="ctl__v" id="nav-toggle-value">Top</span></button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">Wall <span class="ctl__v" id="theme-toggle-value">Day</span></button>
+      </div>
     </nav>
 
     <header class="hero">
@@ -220,7 +363,32 @@
       <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
+    <section class="component" aria-labelledby="component-title">
+      <h2 id="component-title">Component reference</h2>
+      <p>A modal built on the native dialog element — focus trapped, Escape to close, background inert.</p>
+      <a href="#" class="btn" id="dialog-open">Open dialog</a>
+    </section>
+
+    <footer class="foot">
+      <nav class="foot__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <div class="dialog__inner">
+      <h2 id="dialog-title">Component reference</h2>
+      <p>A modal built on the native dialog element. The browser traps focus inside it,
+        closes it on Escape, and makes everything behind it inert. Clicking outside it
+        closes it as well, and focus returns to the button that opened it.</p>
+      <button type="button" class="dialog__close" id="dialog-close">Close</button>
+    </div>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -228,7 +396,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -239,7 +411,7 @@
 
         <div class="dp-row" data-field="era-origin">
           <dt>Era / Origin</dt>
-          <dd>New York and Philadelphia, late 1960s–70s — handstyle tags on subway cars evolving into throw-ups and full-colour pieces, and a global visual language by the 1980s.</dd>
+          <dd>New York and Philadelphia, late 1960s–70s — handstyle tags on subway cars evolving into throw-ups and full-colour pieces, and a global visual language by the 1980s. Handstyle writing began specifically as Black and Puerto Rican youth culture, one of hip-hop's four elements, and the same marks referenced here as decoration carry a long history of being criminalised — worth naming rather than treating purely as a texture to borrow.</dd>
         </div>
 
         <div class="dp-row" data-field="color-palette">
@@ -252,7 +424,9 @@
               <li><span class="sw" style="--c:#ffd400"></span><code>#ffd400</code> — yellow second fill and the logo</li>
               <li><span class="sw" style="--c:#ff2f3c"></span><code>#ff2f3c</code> — red throwie and CTA button</li>
               <li><span class="sw" style="--c:#a83bff"></span><code>#a83bff</code> — violet handstyle tag over the top</li>
+              <li><span class="sw" style="--c:#f2f2ef"></span><code>#f2f2ef</code> — chalk ink for body text, sticker fills and highlights</li>
             </ul>
+            <p style="margin-top:14px">Only the wall inverts under dark mode — the same daylight concrete going into shadow. The outline, the fills, chalk and every sticker or chip surface stay fixed regardless of theme: spray paint and a slapped-on sticker don't change colour when the ambient light does.</p>
           </dd>
         </div>
 
@@ -281,7 +455,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>JS generates the drip row under the piece — 11 drips at randomised x positions under the painted letters, heights (14–58px) and widths — so the paint runs differently on every load. Clicking <em>Explore</em> fires an aerosol burst: 60 particles of random size and hue scattered in a cone with randomised opacity, fading over 900ms and cleaning up after themselves. Card hovers run a fresh drip down 44px over 550ms. All hover transitions are 120ms linear — spray paint does not ease.</dd>
+          <dd>JS generates the drip row under the piece — 11 drips at randomised x positions under the painted letters, heights (14–58px) and widths — so the paint runs differently on every load; these are static per-load shapes, not animated. Clicking <em>Explore</em> fires an aerosol burst: 60 particles of random size and hue scattered in a cone via the Web Animations API, fading over 700–1100ms and cleaning up after themselves — checked live against <code>prefers-reduced-motion</code> at click time and skipped outright under it, since a 60-particle burst is exactly the kind of motion that guard exists to stop and a CSS mute can't reach an imperative <code>element.animate()</code> call. Card hovers run a fresh drip down 44px over 550ms; that and every other hover transition are muted sitewide under reduced motion. All hover transitions are 120ms linear — spray paint does not ease. Two stickers beside the nav links match its own language: one moves the nav between the top strip and a fixed left column on a single <code>--rail</code> token, the other moves the wall between daylight and shadow on <code>data-theme</code>; both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -304,6 +478,8 @@
 <script>
   /* Paint runs differently every time you paint. */
   (function () {
+    var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+
     var wrapEl = document.getElementById('drips');
     for (var i = 0; i < 11; i++) {
       var d = document.createElement('i');
@@ -317,6 +493,11 @@
     var colors = ['#12c8ff', '#ffd400', '#ff2f3c', '#a83bff', '#5cff54', '#f2f2ef'];
     document.getElementById('spraybtn').addEventListener('click', function (e) {
       e.preventDefault();
+      /* A 60-particle burst is exactly what reduced motion asks to
+         skip, and Element.animate() ignores the sitewide CSS mute
+         (that only touches CSS animation/transition durations), so
+         it needs this explicit, live-queried guard. */
+      if (reduce && reduce.matches) return;
       var r = this.getBoundingClientRect();
       var ox = r.left + r.width / 2, oy = r.top + r.height / 2;
       for (var i = 0; i < 60; i++) {
@@ -341,6 +522,53 @@
         setTimeout(function (n) { return function () { n.remove(); }; }(p), 1150);
       }
     });
+  })();
+</script>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'Side' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-gr-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode === 'dark' ? 'Night' : 'Day';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function (e) { e.preventDefault(); dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
   })();
 </script>
 </body>
