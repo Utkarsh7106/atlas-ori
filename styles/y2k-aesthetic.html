@@ -160,7 +160,16 @@
         0 8px 18px -6px rgba(10,111,208,.75);
       text-shadow:0 1px 2px rgba(0,40,90,.6);
       transition:filter .2s ease,transform .2s ease}
-    .btn:hover{filter:brightness(1.14) saturate(1.2);transform:translateY(-2px)}
+    /* brightness(1.14) used to ship here too, matching the other
+       .../hover filters on this page, but it pushes the 54% stop
+       (#0a6fd0, the bottom edge of the text band) to 3.73:1 under
+       CSS's actual saturate() color matrix -- brightness and
+       saturate compound non-linearly, so this isn't the same 3.68:1
+       gap the base gradient already fixed. saturate(1.2) alone
+       still gives the vivid "gel" pop (worst point in-band 4.62:1)
+       without brightening the glyph band toward white; the lift
+       (translateY) carries the rest of the hover feedback. */
+    .btn:hover{filter:saturate(1.2);transform:translateY(-2px)}
     .btn:active{transform:translateY(1px);box-shadow:inset 0 3px 8px rgba(0,40,90,.5)}
 
     /* ── Features: holographic foil cards ────────────────────── */
