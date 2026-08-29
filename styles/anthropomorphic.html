@@ -179,6 +179,23 @@
     .foot.l{left:26px}
     .foot.r{right:26px}
 
+    /* CONTENT-PARITY OVERRIDE (see CONTRIBUTING.md): the speech bubble was
+       cut from the original build under a stricter parity rule than the
+       one now written down there. Reopened because a character-led
+       interface whose lead character never says anything undersells the
+       one thing this style is actually demonstrating; the words inside
+       the bubble are new, page-specific text, not shared-block content. */
+    .mascot__bubble{position:absolute;bottom:calc(100% + 16px);left:50%;transform:translateX(-50%);
+      white-space:nowrap;background:#fff;color:var(--ink);border:3px solid var(--ink);border-radius:20px;
+      padding:10px 18px;font-family:"Nunito",-apple-system,sans-serif;font-size:14px;font-weight:700;
+      box-shadow:0 6px 0 0 var(--ink)}
+    .mascot__bubble::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
+      width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;
+      border-top:12px solid var(--ink)}
+    .mascot__bubble::before{content:"";position:absolute;top:calc(100% - 3px);left:50%;transform:translateX(-50%);
+      width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;
+      border-top:9px solid #fff;z-index:1}
+
     /* ── Features: three characters ──────────────────────────── */
     .features{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:26px}
     .card{background:#fff;border:3px solid var(--ink);border-radius:34px;padding:30px 24px 34px;text-align:center;
@@ -299,8 +316,9 @@
        Another card in the same system: white, ink-bordered, flat-
        shadowed — the documentation gets a panel like everyone else
        in the cast. Content is unchanged — only its presentation —
-       except Motion/Interaction and the one Signature Techniques
-       line describing the removed speech bubble. */
+       except Motion/Interaction and the Signature Techniques line
+       now describing the mascot's speech bubble (reopened; see the
+       CONTENT-PARITY OVERRIDE comment by .mascot__bubble above). */
     .dp-divider{height:0;border:none;margin:0 0 26px}
     .design-points{position:relative;z-index:80;background:#fff;color:var(--ink);
       margin:0 clamp(16px,4vw,30px) 40px;max-width:1060px;margin-left:auto;margin-right:auto;
@@ -375,6 +393,7 @@
         <a href="#" class="btn">Explore</a>
       </div>
       <div class="face mascot" data-face aria-hidden="true">
+        <span class="mascot__bubble">Hi! Nice to see you.</span>
         <i class="arm l"></i>
         <i class="arm r"></i>
         <span class="blush l"></span>
@@ -512,7 +531,7 @@
               <li>Mouths drawn as a bottom-only 3px border with a 999px bottom radius, so a single width/height change becomes a different expression.</li>
               <li>Asymmetric eight-value <code>border-radius</code> bodies, each character a different silhouette, with ears, arms and feet as separate bordered elements.</li>
               <li>A flat <code>0 7px 0 0</code> ink shadow on every panel and button — the ground line a character stands on, never a blur.</li>
-              <li>A small badge-scaled <code>.face</code> credits shared copy to a character without staging it as dialogue — no speech-bubble shape, just the same reusable face sized down and set beside the line.</li>
+              <li>A small badge-scaled <code>.face</code> credits shared copy to a character without staging it as dialogue — the shared subheading stays plain text beside a face. Actual dialogue is reserved for the hero mascot: a bordered speech bubble with its own tail, holding one short bespoke line the shared content block doesn't carry.</li>
             </ul>
           </dd>
         </div>
