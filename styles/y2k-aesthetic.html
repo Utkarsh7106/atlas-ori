@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ Y2K AESTHETIC ════════════════════════════════════════════
        1999–2003 techno-optimism: translucent iMac plastic, Aqua
@@ -16,43 +16,93 @@
        shiny and hopeful — the opposite of a dark neon dystopia.
        Body text is Verdana/Tahoma because that is what it was.     */
 
+    /* Only the ambient ground and the translucent plastic panel body
+       are themed — dark mode is the Graphite/Smoke colourway Apple
+       actually shipped, not a departure from Y2K. The chrome word
+       art, Aqua/pink gel buttons, nav pills, icon chips and foil
+       overlay are fixed manufactured-plastic recipes: a moulded
+       button's gradient is a material property, not something that
+       re-lights with the room, the same way surrealism's flesh/cloud
+       or bohemian's CTA field hold their values across themes. */
     :root{
+      --th-ink:#1d2436;
+      --th-ink-soft:#2b3550;
+      --th-panel-1:rgba(255,255,255,.96);
+      --th-panel-2:rgba(233,241,252,.9);
+      --th-panel-3:rgba(206,220,240,.92);
+      --th-panel-border:#ffffff;
+      --th-panel-hi:rgba(255,255,255,1);
+      --th-panel-lo:rgba(141,155,181,.28);
+      --th-panel-cast:rgba(52,68,102,.45);
+      --th-bg-hi:rgba(255,255,255,.95);
+      --th-bg-glow:rgba(255,122,198,.35);
+      --th-c1:#cfe9ff; --th-c2:#e7d6ff; --th-c3:#ffd9ef; --th-c4:#d6fbff;
+      --th-dp-bg:#dde7f5;   /* opaque — deliberately not translucent,
+        so Design Points contrast never depends on what scrolls
+        behind it in the fixed conic ground */
+
+      --ink:var(--th-ink);
+      --ink-soft:var(--th-ink-soft);
+
       --sky:#bfe4ff;        /* baby blue                 */
       --lilac:#c8a2ff;
       --bubble:#ff7ac6;     /* bubblegum pink            */
       --chrome-hi:#ffffff;
       --chrome-lo:#8d9bb5;
       --silver:#dfe6f0;
-      --ink:#1d2436;
       --aqua:#2aa3ff;       /* Aqua button blue          */
+
+      --rail:0px;
+    }
+
+    /* The Graphite iMac: same translucent-plastic idea, smoked dark
+       instead of frosted white, and the same conic rainbow deepened
+       rather than swapped for a different palette. */
+    :root[data-theme="dark"]{
+      --th-ink:#e8ecf5;
+      --th-ink-soft:#c3cbe2;
+      --th-panel-1:rgba(74,82,104,.94);
+      --th-panel-2:rgba(46,52,72,.9);
+      --th-panel-3:rgba(26,30,44,.94);
+      --th-panel-border:rgba(190,200,220,.3);
+      --th-panel-hi:rgba(255,255,255,.28);
+      --th-panel-lo:rgba(0,0,0,.4);
+      --th-panel-cast:rgba(0,0,0,.6);
+      --th-bg-hi:rgba(255,255,255,.1);
+      --th-bg-glow:rgba(255,122,198,.22);
+      --th-c1:#141b32; --th-c2:#221733; --th-c3:#331a2c; --th-c4:#122c30;
+      --th-dp-bg:#252c40;
     }
 
     body{
       background:
-        radial-gradient(circle at 14% 12%, rgba(255,255,255,.95) 0 90px, transparent 140px),
-        radial-gradient(circle at 88% 78%, rgba(255,122,198,.35) 0 120px, transparent 220px),
-        conic-gradient(from 200deg at 50% 40%, #cfe9ff, #e7d6ff, #ffd9ef, #d6fbff, #cfe9ff);
+        radial-gradient(circle at 14% 12%, var(--th-bg-hi) 0 90px, transparent 140px),
+        radial-gradient(circle at 88% 78%, var(--th-bg-glow) 0 120px, transparent 220px),
+        conic-gradient(from 200deg at 50% 40%, var(--th-c1), var(--th-c2), var(--th-c3), var(--th-c4), var(--th-c1));
       background-attachment:fixed;
       color:var(--ink);
       font-family:Verdana,Tahoma,Geneva,sans-serif;
       font-size:13px;
       overflow-x:hidden;
       position:relative;
+      padding-left:var(--rail);
     }
     .wrap{max-width:1020px;margin:0 auto;padding:22px clamp(12px,3vw,22px) 60px;position:relative;z-index:2}
 
     /* Glossy plastic panel: bevel edge, inner highlight, soft cast. */
     .plastic{
       border-radius:22px;
-      background:linear-gradient(180deg, rgba(255,255,255,.96) 0%, rgba(233,241,252,.9) 46%, rgba(206,220,240,.92) 100%);
-      border:1px solid #ffffff;
+      background:linear-gradient(180deg, var(--th-panel-1) 0%, var(--th-panel-2) 46%, var(--th-panel-3) 100%);
+      border:1px solid var(--th-panel-border);
       box-shadow:
-        inset 0 2px 0 rgba(255,255,255,1),
-        inset 0 -14px 22px rgba(141,155,181,.28),
-        0 10px 22px -8px rgba(52,68,102,.45);
+        inset 0 2px 0 var(--th-panel-hi),
+        inset 0 -14px 22px var(--th-panel-lo),
+        0 10px 22px -8px var(--th-panel-cast);
       position:relative;overflow:hidden;
     }
-    .plastic::before{ /* the Aqua top-light */
+    .plastic::before{ /* the Aqua top-light — a specular reflection stays
+      bright regardless of the plastic's own colour, so this one keeps
+      a fixed white gradient in both themes */
       content:"";position:absolute;left:6px;right:6px;top:3px;height:38%;border-radius:18px 18px 60% 60%;
       background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,0));pointer-events:none}
 
@@ -70,6 +120,19 @@
       border:1px solid #7fb2e8;box-shadow:inset 0 1px 0 #fff, 0 2px 5px rgba(40,80,140,.3);
       transition:filter .18s ease,transform .18s ease}
     .nav ul a:hover{filter:brightness(1.12) saturate(1.25);transform:translateY(-1px)}
+    .nav ul a:focus-visible{outline:2px solid #12467d;outline-offset:2px}
+
+    /* Same fixed gel pill as the nav links — a moulded control,
+       not a themed surface. */
+    .nav-controls{display:flex;gap:9px}
+    .ctl{font-family:Verdana,sans-serif;font-size:11px;font-weight:700;
+      letter-spacing:.06em;text-transform:uppercase;color:#12467d;padding:9px 18px;border-radius:999px;
+      background:linear-gradient(180deg,#ffffff,#d7e8fb 48%,#a9cdf3 52%,#e6f2ff);
+      border:1px solid #7fb2e8;box-shadow:inset 0 1px 0 #fff, 0 2px 5px rgba(40,80,140,.3);
+      cursor:pointer;transition:filter .18s ease,transform .18s ease}
+    .ctl:hover{filter:brightness(1.12) saturate(1.25);transform:translateY(-1px)}
+    .ctl[aria-pressed="true"]{color:#5a0f3c;background:linear-gradient(180deg,#ffffff,#ffd9ef 48%,#ff9fd6 52%,#fff0f8);border-color:#e0409f}
+    .ctl:focus-visible{outline:2px solid #12467d;outline-offset:2px}
 
     /* ── Hero ────────────────────────────────────────────────── */
     .hero{padding:52px 34px 48px;text-align:center;margin-bottom:18px}
@@ -78,7 +141,7 @@
       background:linear-gradient(180deg,#ffffff 4%,#c7daf2 27%,#3c4e74 48%,#7488ad 50%,#ffffff 58%,#8098bd 80%,#e9f2ff 100%);
       -webkit-background-clip:text;background-clip:text;color:transparent;
       filter:drop-shadow(0 2px 0 #ffffff) drop-shadow(0 3px 3px rgba(29,36,54,.4))}
-    .hero p{margin-top:20px;font-size:13.5px;line-height:1.8;color:#2b3550;
+    .hero p{margin-top:20px;font-size:13.5px;line-height:1.8;color:var(--ink-soft);
       max-width:44ch;margin-left:auto;margin-right:auto}
     .star{display:inline-block;color:#fff;text-shadow:0 0 8px var(--bubble),0 0 16px var(--bubble);
       animation:tw 1.8s ease-in-out infinite}
@@ -99,8 +162,13 @@
     /* ── Features: holographic foil cards ────────────────────── */
     .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:18px}
     .card{padding:28px 22px 30px;text-align:center}
+    /* was mix-blend-mode:overlay: overlay pushes any pixel already
+       past mid-grey toward white, and this panel's own gloss
+       highlight sits well past that — the two together blew the top
+       third of every card out to flat white. soft-light gives the
+       same iridescent tint without clipping (checked both themes). */
     .card::after{ /* iridescent foil sweep */
-      content:"";position:absolute;inset:0;pointer-events:none;opacity:.62;mix-blend-mode:overlay;
+      content:"";position:absolute;inset:0;pointer-events:none;opacity:.62;mix-blend-mode:soft-light;
       background:conic-gradient(from 0deg, rgba(255,122,198,.55), rgba(200,162,255,.5), rgba(122,224,255,.5),
         rgba(255,244,150,.5), rgba(255,122,198,.55));
       transition:transform .6s ease,opacity .4s ease}
@@ -109,9 +177,9 @@
       letter-spacing:.16em;text-transform:uppercase;color:#fff;padding:6px 14px;border-radius:999px;
       background:linear-gradient(180deg,#ffb3e0,#ff7ac6 52%,#e0409f);
       border:1px solid #e0409f;box-shadow:inset 0 1px 0 rgba(255,255,255,.85);position:relative;z-index:1}
-    .card h3{font-family:"Audiowide",sans-serif;font-size:22px;margin:16px 0 10px;color:#1d2436;
+    .card h3{font-family:"Audiowide",sans-serif;font-size:22px;margin:16px 0 10px;color:var(--ink);
       text-shadow:0 1px 0 #fff,0 2px 3px rgba(29,36,54,.28);position:relative;z-index:1}
-    .card p{font-size:12.5px;line-height:1.85;color:#2b3550;position:relative;z-index:1}
+    .card p{font-size:12.5px;line-height:1.85;color:var(--ink-soft);position:relative;z-index:1}
 
     /* ── CTA ─────────────────────────────────────────────────── */
     .cta{padding:52px 30px 56px;text-align:center}
@@ -126,45 +194,145 @@
       box-shadow:inset 0 2px 0 #fff, inset 0 -10px 16px rgba(200,40,130,.28), 0 8px 18px -6px rgba(200,40,130,.6);
       transition:filter .2s ease,transform .2s ease}
     .cta .cta-btn:hover{filter:brightness(1.08) saturate(1.2);transform:translateY(-2px)}
+    .cta .cta-btn:focus-visible{outline:2px solid #5a0f3c;outline-offset:2px}
 
     /* sparkle trail */
     .spark{position:fixed;pointer-events:none;z-index:70;font-size:13px;color:#fff;
       text-shadow:0 0 8px #ff7ac6,0 0 14px #c8a2ff}
 
+    /* ── Component reference ────────────────────────────────── */
+    .component{padding:46px 28px 50px;text-align:center}
+    .component h2{font-family:"Audiowide",sans-serif;font-size:clamp(20px,3vw,28px);color:var(--ink);margin-bottom:12px}
+    .component p{font-size:13px;line-height:1.8;color:var(--ink-soft);max-width:44ch;margin:0 auto}
+
+    /* ── Dialog: one more plastic panel ────────────────────────── */
+    .dialog{padding:0;border:1px solid var(--th-panel-border);max-width:none;width:min(480px, calc(100vw - 56px));
+      border-radius:22px;background:linear-gradient(180deg, var(--th-panel-1) 0%, var(--th-panel-2) 46%, var(--th-panel-3) 100%);
+      color:var(--ink);
+      box-shadow:inset 0 2px 0 var(--th-panel-hi), inset 0 -14px 22px var(--th-panel-lo), 0 10px 22px -8px var(--th-panel-cast)}
+    .dialog::backdrop{background:rgba(29,36,54,.4)}
+    .dialog[open]{animation:dlg-in .3s ease}
+    .dialog[open]::backdrop{animation:bg-in .3s ease}
+    @keyframes dlg-in{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+    @keyframes bg-in{from{opacity:0}to{opacity:1}}
+    .dialog__inner{padding:36px 34px;position:relative}
+    .dialog h2{font-family:"Audiowide",sans-serif;font-size:22px;color:var(--ink);margin-bottom:12px}
+    .dialog p{font-size:13px;line-height:1.8;color:var(--ink-soft);max-width:40ch}
+    /* The pink-white gel (already proven at 6.7-10.5:1, same recipe
+       as the CTA button), not the Aqua one: white-on-Aqua is a
+       pre-existing shortfall on .btn (3.68:1, see DECISIONS NEEDED)
+       that this new button doesn't repeat. */
+    .dialog__close{display:inline-block;margin-top:22px;font-family:Verdana,sans-serif;font-size:13px;font-weight:700;
+      letter-spacing:.14em;text-transform:uppercase;color:#5a0f3c;border:1px solid #e0409f;cursor:pointer;
+      padding:12px 32px;border-radius:999px;
+      background:linear-gradient(180deg,#ffffff,#ffd9ef 46%,#ff9fd6 54%,#fff0f8);
+      box-shadow:inset 0 2px 0 #fff, inset 0 -10px 16px rgba(200,40,130,.28), 0 8px 18px -6px rgba(200,40,130,.6);
+      transition:filter .2s ease,transform .2s ease}
+    .dialog__close:hover{filter:brightness(1.08) saturate(1.2);transform:translateY(-2px)}
+    .dialog__close:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    .foot{margin-top:18px;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;
+      flex-wrap:wrap;gap:16px}
+    .foot__links{display:flex;gap:9px}
+    .foot__links a{display:block;font-family:Verdana,sans-serif;font-size:10px;font-weight:700;
+      letter-spacing:.06em;text-transform:uppercase;color:#12467d;padding:7px 15px;border-radius:999px;
+      background:linear-gradient(180deg,#ffffff,#d7e8fb 48%,#a9cdf3 52%,#e6f2ff);
+      border:1px solid #7fb2e8;box-shadow:inset 0 1px 0 #fff, 0 2px 5px rgba(40,80,140,.3);
+      transition:filter .18s ease,transform .18s ease}
+    .foot__links a:hover{filter:brightness(1.12) saturate(1.25);transform:translateY(-1px)}
+    .foot__links a:focus-visible{outline:2px solid #12467d;outline-offset:2px}
+    .signature{
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--ink);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .18s ease}
+    .signature:hover{border-bottom-color:var(--ink)}
+    .signature:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+
     @media(max-width:860px){.features{grid-template-columns:1fr}.logo{font-size:25px}}
+
+    /* ── Nav ⇄ side column ──────────────────────────────────────
+       Same gel pills, same panel, now down a fixed left column. */
+    :root[data-nav="side"]{--rail:220px}
+    [data-nav="side"] .nav{
+      position:fixed;top:0;left:0;bottom:18px;width:188px;margin:0;
+      flex-direction:column;align-items:flex-start;justify-content:flex-start;
+      gap:16px;padding:20px 16px;border-radius:0 22px 22px 0;
+      overflow-y:auto;z-index:50}
+    [data-nav="side"] .nav ul{flex-direction:column;gap:8px;width:100%}
+    [data-nav="side"] .nav ul a{width:100%;box-sizing:border-box;text-align:center}
+    [data-nav="side"] .nav-controls{flex-direction:column;gap:8px;width:100%}
+    [data-nav="side"] .ctl{width:100%;box-sizing:border-box}
+
+    @media(max-width:640px){
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;width:auto;height:auto;margin:0 0 18px;
+        flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;
+        padding:14px 20px;border-radius:22px;overflow:visible;z-index:auto}
+      [data-nav="side"] .nav ul{flex-direction:row;width:auto}
+      [data-nav="side"] .nav ul a{width:auto}
+      [data-nav="side"] .nav-controls{flex-direction:row;width:auto}
+      [data-nav="side"] .ctl{width:auto}
+    }
 
     /* ══ DESIGN POINTS — documentation panel ═══════════════════════
        Intentionally neutral and IDENTICAL on all 29 style pages.
        It is reference material, not part of the styled demo above. */
     .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    /* ══ DESIGN POINTS — rebuilt in this page's own language ═══════
+       Same plastic panel and ink as the demo above, without the
+       chrome/gel flourishes, so the reference material stays legible
+       first. */
+    .design-points{position:relative;z-index:80;
+      background:var(--th-dp-bg);
+      color:var(--ink);padding:72px 24px 96px;
+      border-top:6px solid var(--th-panel-border);font-family:Verdana,Tahoma,Geneva,sans-serif;
+      font-size:14px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
     .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid var(--ink)}
+    .dp-actions{display:flex;gap:20px;align-items:baseline}
+    .design-points h2{font-family:"Audiowide",sans-serif;font:400 14px/1 "Audiowide",sans-serif;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--ink);margin:0}
+    .dp-skill,.dp-back{font-size:12px;letter-spacing:.02em;color:var(--ink-soft);
+      text-decoration:underline;text-underline-offset:3px;transition:color .18s ease}
+    .dp-skill:hover,.dp-back:hover{color:var(--ink)}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid color-mix(in srgb, var(--ink) 18%, transparent)}
     .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
+    .dp dt{font-size:11px;font-weight:700;letter-spacing:.1em;line-height:1.5;
+      text-transform:uppercase;color:var(--ink-soft)}
+    .dp dd{margin:0;color:var(--ink)}
     .dp dd > ul,.dp dd > ol{padding-left:20px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
     .dp li{margin-bottom:7px}
     .dp li:last-child{margin-bottom:0}
     .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+      background:color-mix(in srgb, var(--ink) 14%, transparent);color:var(--ink);padding:1px 6px;border-radius:3px}
     .dp-palette{list-style:none!important;padding-left:0!important}
     .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+      border:1px solid color-mix(in srgb, var(--ink) 25%, transparent);vertical-align:-2px;margin-right:8px;background:var(--c)}
     @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
 </style>
+<script>
+  /* Before first paint, so the plastic is never the wrong colourway
+     and then corrected. Reads only, and only ever writes attributes. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }   /* private mode / blocked cookies */
+    }
+    root.setAttribute('data-nav',   read('atlas-y2k-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',   ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -177,6 +345,10 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="nav-controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">Nav <span class="ctl__v" id="nav-toggle-value">Top</span></button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">Case <span class="ctl__v" id="theme-toggle-value">Frost</span></button>
+      </div>
     </nav>
 
     <header class="hero plastic">
@@ -209,7 +381,32 @@
       <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
+    <section class="component plastic" aria-labelledby="component-title">
+      <h2 id="component-title">Component reference</h2>
+      <p>A modal built on the native dialog element — focus trapped, Escape to close, background inert.</p>
+      <a href="#" class="btn" id="dialog-open">Open dialog</a>
+    </section>
+
+    <footer class="foot plastic">
+      <nav class="foot__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <div class="dialog__inner">
+      <h2 id="dialog-title">Component reference</h2>
+      <p>A modal built on the native dialog element. The browser traps focus inside it,
+        closes it on Escape, and makes everything behind it inert. Clicking outside it
+        closes it as well, and focus returns to the button that opened it.</p>
+      <button type="button" class="dialog__close" id="dialog-close">Close</button>
+    </div>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -217,7 +414,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -239,9 +440,11 @@
               <li><span class="sw" style="--c:#c8a2ff"></span><code>#c8a2ff</code> — lilac in the conic foil gradient</li>
               <li><span class="sw" style="--c:#ff7ac6"></span><code>#ff7ac6</code> — bubblegum pink for chips, sparkles and the CTA</li>
               <li><span class="sw" style="--c:#2aa3ff"></span><code>#2aa3ff</code> — Aqua blue for the primary gel button</li>
+              <li><span class="sw" style="--c:#1d2436"></span><code>#1d2436</code> — ink for body text and headline shadows</li>
               <li><span class="sw" style="--c:#dfe6f0"></span><code>#dfe6f0</code> — silver plastic body</li>
               <li><span class="sw" style="--c:#8d9bb5"></span><code>#8d9bb5</code> — chrome shadow stop in bevels and word art</li>
             </ul>
+            <p style="margin-top:14px">Only the ambient ground and the translucent plastic panel body invert under dark mode — the Graphite/Smoke colourway the iMac actually shipped, not a departure from Y2K. Chrome word art, the Aqua and pink gel buttons, nav pills, icon chips and the foil overlay keep fixed values in both themes: a moulded button's gradient is a material property, not something that re-lights with the room.</p>
           </dd>
         </div>
 
@@ -262,7 +465,7 @@
               <li>Aqua gel: a hard mid-stop gradient (light 0–46%, dark 54–100%) plus <code>inset 0 2px 0 white</code> and a bottom inner shadow, giving the wet-plastic split.</li>
               <li>A separate top-light <code>::before</code> with a <code>18px 18px 60% 60%</code> radius — the reflected highlight lozenge of the era.</li>
               <li>Chrome word art via a six-stop vertical gradient with <code>background-clip: text</code> and stacked <code>drop-shadow</code> filters for the bevel.</li>
-              <li>Holographic foil: a full-hue <code>conic-gradient</code> at 62% opacity in <code>mix-blend-mode: overlay</code> (screen blows out on a light panel), rotated and scaled on hover.</li>
+              <li>Holographic foil: a full-hue <code>conic-gradient</code> at 62% opacity in <code>mix-blend-mode: soft-light</code>, rotated and scaled on hover — soft-light rather than overlay, since overlay pushed the panel's own gloss highlight (already past mid-grey) to flat white.</li>
               <li>Twinkling ✦ sparkles on a 1.8s scale-and-fade loop with offset delays.</li>
             </ul>
           </dd>
@@ -270,7 +473,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>JS drops a sparkle at the pointer roughly every 45ms of movement — a ✦ or ✧ that scales up, drifts 22px and fades over 700ms before removing itself, capped so the DOM never accumulates. Hover states use <code>filter: brightness() saturate()</code> plus a 2px lift rather than colour changes, so plastic looks catch the light; the foil layer on cards rotates 38deg and scales 1.5 over 600ms. Buttons depress on <code>:active</code> by swapping their outer shadow for an inset one.</dd>
+          <dd>JS drops a sparkle at the pointer roughly every 45ms of movement — a ✦ or ✧ that scales up, drifts 22px and fades over 700ms before removing itself via the Web Animations API, capped so the DOM never accumulates. That call is checked live against <code>prefers-reduced-motion</code> and skipped outright under it, since a CSS mute can't reach an imperative <code>element.animate()</code>. A <code>pointermove</code> trail has no equivalent on a tap, so a <code>pointerdown</code> from a touch pointer drops a small fixed burst of sparkles at the tap point instead, giving touch the same feedback a mouse gets for free. Hover states use <code>filter: brightness() saturate()</code> plus a 2px lift rather than colour changes, so plastic looks catch the light; the foil layer on cards rotates 38deg and scales 1.5 over 600ms. Buttons depress on <code>:active</code> by swapping their outer shadow for an inset one. Two gel pills beside the nav links match that language: one moves the nav between the top strip and a fixed left column on a single <code>--rail</code> token, the other swaps the plastic's colourway on <code>data-theme</code>; both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -293,18 +496,18 @@
 <script>
   /* Sparkle trail — the single most Y2K interaction there is. */
   (function () {
+    var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
     var last = 0, live = 0;
     var glyphs = ['✦', '✧', '✶'];
-    window.addEventListener('pointermove', function (e) {
-      var now = Date.now();
-      if (now - last < 45 || live > 26) return;
-      last = now; live++;
 
+    function drop(x, y) {
+      if (live > 26) return;
+      live++;
       var s = document.createElement('span');
       s.className = 'spark';
       s.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
-      s.style.left = (e.clientX - 6) + 'px';
-      s.style.top = (e.clientY - 6) + 'px';
+      s.style.left = (x - 6) + 'px';
+      s.style.top = (y - 6) + 'px';
       document.body.appendChild(s);
 
       s.animate(
@@ -315,7 +518,76 @@
         { duration: 700, easing: 'ease-out' }
       );
       setTimeout(function () { s.remove(); live--; }, 720);
+    }
+
+    /* Element.animate() ignores the sitewide CSS reduced-motion mute
+       (that only touches CSS animation/transition durations), so the
+       trail needs its own live check. */
+    window.addEventListener('pointermove', function (e) {
+      if (reduce && reduce.matches) return;
+      var now = Date.now();
+      if (now - last < 45) return;
+      last = now;
+      drop(e.clientX, e.clientY);
     });
+
+    /* A mouse gets the trail for free from pointermove; a tap never
+       generates a meaningful move sequence, so give touch the same
+       feedback as a small fixed burst at the tap point instead. */
+    window.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'touch' || (reduce && reduce.matches)) return;
+      for (var i = 0; i < 5; i++) {
+        var a = (i / 5) * Math.PI * 2;
+        drop(e.clientX + Math.cos(a) * 14, e.clientY + Math.sin(a) * 14);
+      }
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'Side' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-y2k-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode === 'dark' ? 'Smoke' : 'Frost';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function (e) { e.preventDefault(); dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
   })();
 </script>
 </body>
