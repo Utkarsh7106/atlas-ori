@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Cardo:ital,wght@0,400;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Cardo:ital,wght@0,400;1,400&family=Outfit:wght@300;400;500&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ BOHEMIAN ═════════════════════════════════════════════════
        Sun-warmed and hand-woven. Terracotta, ochre and dusty rose;
@@ -16,27 +16,78 @@
        instead of geometry; fringe, beads and block-print motifs.
        Layered and abundant — but earthy, never neon.               */
 
+    /* --th-* are the source of truth; every colour below is an ALIAS
+       onto them, so [data-theme="dark"] re-resolves the whole page
+       without editing a single declaration past this block.
+
+       --cream, --ink-fixed, --ochre-fixed, --terracotta-deep and
+       --sienna-deep are deliberately NOT themed. They belong to the
+       CTA field and the two solid buttons (.btn, .dialog__close) —
+       small warm pills that read as lit from within, like lamplight
+       indoors looking the same colour whether it is day or night
+       outside — rather than surfaces that re-light with the page.
+       The CTA's terracotta itself is also deepened here versus the
+       page's regular --terracotta: at the original value, no text
+       colour cleared AA against it once the diagonal ochre stripe
+       was composited in (fix per task E). */
     :root{
-      --sand:#f3e7d8;       /* limewashed adobe        */
-      --terracotta:#c56b4a;
-      --ochre:#d9a441;
-      --rose:#c98b8b;       /* dusty rose              */
-      --olive:#7a7f52;
-      --walnut:#4a3627;     /* deep wood / ink         */
-      --sienna:#9c4f2f;
+      --th-sand:#f3e7d8;        /* limewashed adobe, page ground   */
+      --th-paper:#fffaf2;       /* opaque panel/card/nav surface   */
+      --th-walnut:#4a3627;      /* deep wood / ink                 */
+      --th-terracotta:#c56b4a;
+      --th-ochre:#d9a441;
+      --th-rose:#c98b8b;        /* dusty rose                      */
+      --th-olive:#626642;       /* darkened from #7a7f52 — the
+                                    original failed AA (3.46:1 on
+                                    sand) as a small uppercase label */
+      --th-sienna:#9c4f2f;
+
+      --sand:var(--th-sand);
+      --paper:var(--th-paper);
+      --walnut:var(--th-walnut);
+      --terracotta:var(--th-terracotta);
+      --ochre:var(--th-ochre);
+      --rose:var(--th-rose);
+      --olive:var(--th-olive);
+      --sienna:var(--th-sienna);
+
+      --cream:#f3e7d8;
+      --ink-fixed:#4a3627;
+      --ochre-fixed:#d9a441;
+      --terracotta-deep:#9e563b;
+      --sienna-deep:#7a3f22;
+
+      --rail:0px;               /* the one token the nav mode drives */
+    }
+
+    /* The same adobe room after dark: walls and weave deepen toward
+       charcoal-umber, ink turns to warm cream, and the earth accents
+       lift a shade so they still read as terracotta/ochre/olive
+       rather than fading into the dark ground — not a different
+       palette, the same one at a different hour. */
+    :root[data-theme="dark"]{
+      --th-sand:#221812;
+      --th-paper:#2b1f17;
+      --th-walnut:#f1e6d6;
+      --th-terracotta:#dd8058;
+      --th-ochre:#e6b662;
+      --th-rose:#d69f9f;
+      --th-olive:#96a069;
+      --th-sienna:#c97a4f;
     }
 
     body{
       background:
         /* woven weft: two fine thread directions over adobe */
-        repeating-linear-gradient(90deg, rgba(74,54,39,.045) 0 1px, transparent 1px 5px),
-        repeating-linear-gradient(0deg, rgba(74,54,39,.035) 0 1px, transparent 1px 6px),
-        radial-gradient(70% 50% at 78% 4%, rgba(217,164,65,.28) 0%, transparent 62%),
+        repeating-linear-gradient(90deg, color-mix(in srgb, var(--walnut) 4.5%, transparent) 0 1px, transparent 1px 5px),
+        repeating-linear-gradient(0deg, color-mix(in srgb, var(--walnut) 3.5%, transparent) 0 1px, transparent 1px 6px),
+        radial-gradient(70% 50% at 78% 4%, color-mix(in srgb, var(--ochre) 28%, transparent) 0%, transparent 62%),
         var(--sand);
       color:var(--walnut);
       font-family:"Outfit",-apple-system,sans-serif;
       font-weight:300;
       overflow-x:hidden;
+      padding-left:var(--rail);
     }
     .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(16px,4vw,34px) 90px}
 
@@ -54,17 +105,32 @@
     .logo{font-family:"Amatic SC",cursive;font-size:52px;line-height:.9;color:var(--sienna);letter-spacing:.02em}
     .nav ul{display:flex;gap:30px}
     .nav ul a{font-family:"Cardo",serif;font-style:italic;font-size:17px;color:var(--walnut);
-      padding-bottom:3px;border-bottom:1px dotted rgba(74,54,39,.45);transition:color .35s ease,border-color .35s ease}
+      padding-bottom:3px;border-bottom:1px dotted color-mix(in srgb, var(--walnut) 45%, transparent);transition:color .35s ease,border-color .35s ease}
     .nav ul a:hover{color:var(--terracotta);border-bottom-color:var(--terracotta)}
+    .nav ul a:focus-visible{outline:2px solid var(--walnut);outline-offset:3px}
+
+    /* Two controls beside the nav links. The value word ("Top"/"Side",
+       "Day"/"Night") is what carries the state — the text itself stays
+       walnut at every point, always AA-safe; only the dotted underline
+       (a decoration, not text) picks up the terracotta accent on
+       hover/pressed, so this new control never repeats the nav links'
+       own pre-existing hover contrast shortfall (see DECISIONS NEEDED). */
+    .nav-controls{display:flex;gap:22px;align-items:center}
+    .ctl{font-family:"Cardo",serif;font-style:italic;font-size:17px;color:var(--walnut);background:none;border:0;
+      cursor:pointer;padding-bottom:3px;border-bottom:1px dotted color-mix(in srgb, var(--walnut) 45%, transparent);
+      transition:border-color .35s ease}
+    .ctl:hover,.ctl[aria-pressed="true"]{border-bottom-color:var(--terracotta)}
+    .ctl:focus-visible{outline:2px solid var(--walnut);outline-offset:3px}
+    .ctl__v{font-family:"Amatic SC",cursive;font-style:normal;font-size:1.3em;line-height:.7;margin-left:2px;color:var(--sienna)}
 
     /* ── Hero: an adobe arch ─────────────────────────────────── */
     .hero{position:relative;margin-top:14px;padding:74px 40px 78px;text-align:center;
       background:
-        radial-gradient(120% 70% at 50% 100%, rgba(197,107,74,.16) 0%, transparent 60%),
-        rgba(255,250,242,.55);
+        radial-gradient(120% 70% at 50% 100%, color-mix(in srgb, var(--terracotta) 16%, transparent) 0%, transparent 60%),
+        color-mix(in srgb, var(--paper) 55%, transparent);
       border:2px solid var(--terracotta);
       border-radius:50% 50% 12px 12px/34% 34% 12px 12px;   /* the arch */
-      box-shadow:inset 0 0 0 7px rgba(217,164,65,.28)}
+      box-shadow:inset 0 0 0 7px color-mix(in srgb, var(--ochre) 28%, transparent)}
     .hero h1{font-family:"Cardo",serif;font-size:clamp(34px,5.6vw,64px);font-weight:400;line-height:1.24;
       max-width:15ch;margin:0 auto;color:var(--walnut)}
     .hero h1 em{font-family:"Amatic SC",cursive;font-style:normal;font-size:1.5em;color:var(--terracotta);
@@ -72,15 +138,19 @@
     .hero p{margin-top:22px;font-size:16px;letter-spacing:.02em;color:var(--sienna);max-width:36ch;
       margin-left:auto;margin-right:auto}
     .sun{width:74px;height:74px;margin:0 auto 26px;border-radius:50%;background:var(--ochre);
-      box-shadow:0 0 0 6px rgba(217,164,65,.28), 0 0 0 13px rgba(217,164,65,.14);position:relative}
-    .sun::after{content:"";position:absolute;inset:16px;border-radius:50%;border:2px dashed rgba(74,54,39,.4)}
+      box-shadow:0 0 0 6px color-mix(in srgb, var(--ochre) 28%, transparent), 0 0 0 13px color-mix(in srgb, var(--ochre) 14%, transparent);position:relative}
+    .sun::after{content:"";position:absolute;inset:16px;border-radius:50%;border:2px dashed color-mix(in srgb, var(--walnut) 40%, transparent)}
 
+    /* Text/fill are fixed literals, not --sand/--sienna: this pill
+       needs to stay legible against itself regardless of theme (see
+       the :root comment above), so its two colours never invert. */
     .btn{display:inline-block;margin-top:32px;font-family:"Outfit",sans-serif;font-size:13px;font-weight:500;
-      letter-spacing:.22em;text-transform:uppercase;color:var(--sand);background:var(--sienna);
+      letter-spacing:.22em;text-transform:uppercase;color:var(--cream);background:var(--sienna-deep);
       padding:15px 40px;border-radius:999px;
-      box-shadow:0 8px 0 -2px rgba(74,54,39,.22);
+      box-shadow:0 8px 0 -2px rgba(0,0,0,.22);
       transition:background .35s ease,transform .35s ease}
-    .btn:hover{background:var(--terracotta);transform:translateY(-3px)}
+    .btn:hover{background:var(--terracotta-deep);transform:translateY(-3px)}
+    .btn:focus-visible{outline:2px solid var(--walnut);outline-offset:3px}
 
     /* macramé fringe hanging from the arch */
     /* 48 cords are wider than a phone; clip rather than let the page scroll */
@@ -92,11 +162,11 @@
     /* ── Features: three woven panels ────────────────────────── */
     .features{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:64px}
     .card{padding:34px 24px 36px;text-align:center;position:relative;
-      background:rgba(255,250,242,.6);
+      background:color-mix(in srgb, var(--paper) 60%, transparent);
       border-radius:46% 46% 14px 14px/22% 22% 14px 14px;
-      border:1px solid rgba(156,79,47,.35);
+      border:1px solid color-mix(in srgb, var(--sienna) 35%, transparent);
       transition:transform .4s ease,box-shadow .4s ease}
-    .card:hover{transform:translateY(-5px);box-shadow:0 14px 0 -6px rgba(74,54,39,.14)}
+    .card:hover{transform:translateY(-5px);box-shadow:0 14px 0 -6px color-mix(in srgb, var(--walnut) 14%, transparent)}
     .bead{display:flex;justify-content:center;gap:6px;margin-bottom:18px}
     .bead i{width:9px;height:9px;border-radius:50%;background:var(--terracotta)}
     .bead i:nth-child(2){background:var(--ochre);width:12px;height:12px}
@@ -107,51 +177,139 @@
     .card p{font-family:"Cardo",serif;font-size:16px;line-height:1.75;color:var(--walnut);max-width:24ch;margin:0 auto}
 
     /* ── CTA ─────────────────────────────────────────────────── */
+    /* Field and both texts are fixed literals — see the :root comment. */
     .cta{margin-top:60px;padding:62px 30px 66px;text-align:center;position:relative;
       background:
-        repeating-linear-gradient(45deg, rgba(217,164,65,.16) 0 10px, transparent 10px 20px),
-        var(--terracotta);
-      border-radius:34% 34% 16px 16px/14% 14% 16px 16px;color:var(--sand)}
-    .cta h2{font-family:"Amatic SC",cursive;font-size:clamp(46px,7.4vw,84px);line-height:.88;color:var(--sand)}
+        repeating-linear-gradient(45deg, color-mix(in srgb, var(--ochre-fixed) 16%, transparent) 0 10px, transparent 10px 20px),
+        var(--terracotta-deep);
+      border-radius:34% 34% 16px 16px/14% 14% 16px 16px;color:var(--cream)}
+    .cta h2{font-family:"Amatic SC",cursive;font-size:clamp(46px,7.4vw,84px);line-height:.88;color:var(--cream)}
     .cta .cta-btn{display:inline-block;margin-top:26px;font-family:"Outfit",sans-serif;font-size:13px;font-weight:500;
-      letter-spacing:.22em;text-transform:uppercase;color:var(--sienna);background:var(--sand);
+      letter-spacing:.22em;text-transform:uppercase;color:var(--ink-fixed);background:var(--cream);
       padding:15px 38px;border-radius:999px;transition:transform .35s ease,background .35s ease}
-    .cta .cta-btn:hover{background:var(--ochre);color:var(--walnut);transform:translateY(-3px)}
+    .cta .cta-btn:hover{background:var(--ochre-fixed);color:var(--ink-fixed);transform:translateY(-3px)}
+    .cta .cta-btn:focus-visible{outline:2px solid var(--ink-fixed);outline-offset:3px}
+
+    /* ── Component reference ────────────────────────────────── */
+    .component{margin-top:80px;padding:56px 34px;text-align:center;position:relative;
+      background:color-mix(in srgb, var(--paper) 60%, transparent);
+      border-radius:40% 40% 14px 14px/18% 18% 14px 14px;
+      border:1px solid color-mix(in srgb, var(--sienna) 35%, transparent)}
+    .component h2{font-family:"Amatic SC",cursive;font-size:clamp(32px,4.4vw,44px);line-height:.9;color:var(--sienna);margin-bottom:14px}
+    .component p{font-family:"Cardo",serif;font-size:16px;line-height:1.75;color:var(--walnut);max-width:44ch;margin:0 auto}
+
+    /* ── Dialog: an index card pulled from the same weave ─────── */
+    .dialog{padding:0;border:0;max-width:none;width:min(480px, calc(100vw - 56px));
+      background:var(--paper);color:var(--walnut);border-radius:14px;
+      border:1px solid color-mix(in srgb, var(--sienna) 35%, transparent)}
+    .dialog::backdrop{background:color-mix(in srgb, var(--walnut) 55%, transparent)}
+    .dialog[open]{animation:dlg-in .4s ease}
+    .dialog[open]::backdrop{animation:bg-in .4s ease}
+    @keyframes dlg-in{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+    @keyframes bg-in{from{opacity:0}to{opacity:1}}
+    .dialog__inner{padding:38px 34px}
+    .dialog h2{font-family:"Amatic SC",cursive;font-size:34px;line-height:.9;color:var(--sienna);margin-bottom:12px}
+    .dialog p{font-family:"Cardo",serif;font-size:16px;line-height:1.75;color:var(--walnut);max-width:40ch}
+    .dialog__close{display:inline-block;margin-top:24px;font-family:"Outfit",sans-serif;font-size:13px;font-weight:500;
+      letter-spacing:.22em;text-transform:uppercase;color:var(--cream);background:var(--sienna-deep);border:0;cursor:pointer;
+      padding:13px 32px;border-radius:999px;transition:background .35s ease,transform .35s ease}
+    .dialog__close:hover{background:var(--terracotta-deep);transform:translateY(-2px)}
+    .dialog__close:focus-visible{outline:2px solid var(--walnut);outline-offset:3px}
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    .foot{margin-top:70px;padding:26px 30px;display:flex;justify-content:space-between;align-items:center;
+      flex-wrap:wrap;gap:18px;background:color-mix(in srgb, var(--paper) 60%, transparent);
+      border-radius:24px;border:1px solid color-mix(in srgb, var(--sienna) 35%, transparent)}
+    .foot__links{display:flex;gap:26px}
+    .foot__links a{font-family:"Cardo",serif;font-style:italic;font-size:15px;color:var(--walnut);
+      padding-bottom:3px;border-bottom:1px dotted color-mix(in srgb, var(--walnut) 45%, transparent);transition:color .35s ease,border-color .35s ease}
+    .foot__links a:hover{color:var(--terracotta);border-bottom-color:var(--terracotta)}
+    .foot__links a:focus-visible{outline:2px solid var(--walnut);outline-offset:3px}
+    .signature{
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+      text-transform:none;color:var(--walnut);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .35s ease}
+    .signature:hover{border-bottom-color:var(--walnut)}
+    .signature:focus-visible{outline:2px solid var(--walnut);outline-offset:4px}
 
     @media(max-width:860px){.features{grid-template-columns:1fr}.hero{padding:54px 22px 60px}}
 
-    /* ══ DESIGN POINTS — documentation panel ═══════════════════════
-       Intentionally neutral and IDENTICAL on all 29 style pages.
-       It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    /* ── Nav ⇄ side column ──────────────────────────────────────
+       Same nav, same weave and dotted underlines, turned into a
+       fixed left column instead of a top strip. */
+    :root[data-nav="side"]{--rail:242px}
+    [data-nav="side"] .nav{
+      position:fixed;top:0;left:0;bottom:0;width:210px;margin:0;
+      flex-direction:column;align-items:flex-start;justify-content:flex-start;
+      gap:28px;padding:26px 20px;
+      background:color-mix(in srgb, var(--paper) 70%, transparent);
+      border-right:1px dotted color-mix(in srgb, var(--walnut) 45%, transparent);
+      overflow-y:auto;z-index:50}
+    [data-nav="side"] .nav ul{flex-direction:column;gap:16px}
+    [data-nav="side"] .nav-controls{flex-direction:column;align-items:flex-start;gap:14px}
+
+    @media(max-width:640px){
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;width:auto;height:auto;margin:0;
+        flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;
+        padding:30px 0 22px;background:none;border-right:0;overflow:visible;z-index:auto}
+      [data-nav="side"] .nav ul{flex-direction:row}
+      [data-nav="side"] .nav-controls{flex-direction:row}
+    }
+
+    /* ══ DESIGN POINTS — rebuilt in this page's own language ═══════
+       Same weave, same paper/ink/sienna vocabulary as the demo above,
+       so the reference material still reads as part of the page. */
+    .dp-divider{height:0;border:none;margin:0}
+    .design-points{position:relative;z-index:80;background:var(--paper);color:var(--walnut);
+      padding:72px 24px 96px;
+      font-family:"Outfit",-apple-system,sans-serif;font-weight:300;
       font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
     .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid var(--sienna)}
+    .dp-actions{display:flex;gap:22px;align-items:baseline}
+    .design-points h2{font-family:"Amatic SC",cursive;font-size:28px;line-height:.9;font-weight:700;
+      letter-spacing:.02em;text-transform:none;color:var(--sienna);margin:0}
+    .dp-skill,.dp-back{font-family:"Outfit",sans-serif;font-size:12px;letter-spacing:.04em;color:var(--walnut);
+      text-decoration:underline;text-underline-offset:3px;transition:color .35s ease}
+    .dp-skill:hover,.dp-back:hover{color:var(--terracotta)}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:2px solid var(--walnut);outline-offset:3px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid color-mix(in srgb, var(--walnut) 20%, transparent)}
     .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
+    .dp dt{font-family:"Outfit",sans-serif;font-size:11px;font-weight:500;letter-spacing:.18em;line-height:1.6;
+      text-transform:uppercase;color:var(--olive)}
+    .dp dd{margin:0;color:var(--walnut)}
     .dp dd > ul,.dp dd > ol{padding-left:20px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
     .dp li{margin-bottom:7px}
     .dp li:last-child{margin-bottom:0}
     .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+      background:color-mix(in srgb, var(--walnut) 12%, transparent);color:var(--walnut);padding:1px 6px;border-radius:3px}
     .dp-palette{list-style:none!important;padding-left:0!important}
     .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+      border:1px solid color-mix(in srgb, var(--walnut) 25%, transparent);vertical-align:-2px;margin-right:8px;background:var(--c)}
     @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
 </style>
+<script>
+  /* Before first paint, so the room is never lit for the wrong hour
+     and then corrected. Reads only, and only ever writes attributes. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }   /* private mode / blocked cookies */
+    }
+    root.setAttribute('data-nav',   read('atlas-boh-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',   ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -164,6 +322,10 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="nav-controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">Nav <span class="ctl__v" id="nav-toggle-value">Top</span></button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">Sun <span class="ctl__v" id="theme-toggle-value">Day</span></button>
+      </div>
     </nav>
 
     <div class="motif" aria-hidden="true"></div>
@@ -204,7 +366,32 @@
       <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
+    <section class="component" aria-labelledby="component-title">
+      <h2 id="component-title">Component reference</h2>
+      <p>A modal built on the native dialog element — focus trapped, Escape to close, background inert.</p>
+      <a href="#" class="btn" id="dialog-open">Open dialog</a>
+    </section>
+
+    <footer class="foot">
+      <nav class="foot__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <div class="dialog__inner">
+      <h2 id="dialog-title">Component reference</h2>
+      <p>A modal built on the native dialog element. The browser traps focus inside it,
+        closes it on Escape, and makes everything behind it inert. Clicking outside it
+        closes it as well, and focus returns to the button that opened it.</p>
+      <button type="button" class="dialog__close" id="dialog-close">Close</button>
+    </div>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -212,7 +399,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -223,7 +414,7 @@
 
         <div class="dp-row" data-field="era-origin">
           <dt>Era / Origin</dt>
-          <dd>19th-century Parisian bohème by way of the 1960s–70s counterculture, and its current interiors revival — Moroccan and Southwestern textile, adobe architecture and macramé craft.</dd>
+          <dd>19th-century Parisian bohème by way of the 1960s–70s counterculture, and its current interiors revival — Moroccan and Southwestern textile, adobe architecture and macramé craft. The textile, macramé and adobe forms borrowed here come from living craft traditions — Amazigh and other North African weaving, Diné and Pueblo textile and architecture, Latin American macramé — worth naming rather than folding into one generic "boho" surface.</dd>
         </div>
 
         <div class="dp-row" data-field="color-palette">
@@ -231,12 +422,14 @@
           <dd>
             <ul class="dp-palette">
               <li><span class="sw" style="--c:#f3e7d8"></span><code>#f3e7d8</code> — limewashed adobe, the page ground</li>
-              <li><span class="sw" style="--c:#c56b4a"></span><code>#c56b4a</code> — terracotta for arches, beads and the CTA field</li>
+              <li><span class="sw" style="--c:#c56b4a"></span><code>#c56b4a</code> — terracotta for arches, beads and the fringe</li>
+              <li><span class="sw" style="--c:#9e563b"></span><code>#9e563b</code> — deep terracotta for the CTA field, fixed regardless of theme</li>
               <li><span class="sw" style="--c:#d9a441"></span><code>#d9a441</code> — ochre sun and inset ring</li>
               <li><span class="sw" style="--c:#c98b8b"></span><code>#c98b8b</code> — dusty rose in the textile motif</li>
-              <li><span class="sw" style="--c:#7a7f52"></span><code>#7a7f52</code> — olive for small labels and beads</li>
+              <li><span class="sw" style="--c:#626642"></span><code>#626642</code> — olive for small labels and beads, darkened from an earlier #7a7f52 that failed AA</li>
               <li><span class="sw" style="--c:#4a3627"></span><code>#4a3627</code> — walnut ink for body text</li>
             </ul>
+            <p style="margin-top:14px">Ground, panel surfaces and ink invert under dark mode — the limewashed room by daylight becomes the same room after dark, with terracotta, ochre, rose and olive lifting a shade to stay warm against it. The CTA field, its text and the two solid buttons (Explore, Close) hold fixed values in both themes — small lit pills that read the same colour regardless of the hour, like lamplight indoors.</p>
           </dd>
         </div>
 
@@ -265,7 +458,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>JS builds the macramé fringe: 48 cords of randomised length (18–52px) with randomised animation delays, each swaying ±3deg on a 4.6s ease-in-out loop so the row ripples rather than moving as a block. Everything else is soft and slow at 350–400ms: cards lift 5px onto a hard offset shadow, buttons rise 3px and warm from sienna to terracotta, nav links change colour under their dotted underline.</dd>
+          <dd>JS builds the macramé fringe: 48 cords of randomised length (18–52px) with randomised animation delays, each swaying ±3deg on a 4.6s ease-in-out loop so the row ripples rather than moving as a block — muted with everything else on the page under <code>prefers-reduced-motion</code> sitewide. Everything else is soft and slow at 350–400ms: cards lift 5px onto a hard offset shadow, buttons rise 3px and warm from sienna to terracotta, nav links change colour under their dotted underline. Two controls sit beside the nav links in the same dotted-underline language: one moves the nav between the top strip and a fixed left column by setting a single <code>--rail</code> token, the other moves the hour between day and night on <code>data-theme</code>; both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -294,6 +487,53 @@
       cord.style.height = (18 + Math.random() * 34).toFixed(0) + 'px';
       cord.style.animationDelay = (-Math.random() * 4.6).toFixed(2) + 's';
       f.appendChild(cord);
+    }
+  })();
+</script>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'Side' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-boh-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode === 'dark' ? 'Night' : 'Day';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function (e) { e.preventDefault(); dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
     }
   })();
 </script>
