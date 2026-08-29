@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@500;700;900&family=Chakra+Petch:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@500;700;900&family=Chakra+Petch:wght@400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ SYNTHWAVE / OUTRUN ═══════════════════════════════════════
        1984 as it never was. A sunset you drive toward: warm graded
@@ -16,7 +16,20 @@
        grid rushing underneath, and chrome type reflecting all of
        it. Optimistic where cyberpunk is grim.                      */
 
+    /* --th-sky-* is the only themed layer — the drive at a different
+       hour, golden and bright by default, midnight-neon under
+       [data-theme="dark"]. The sun, grid, horizon and every "chip"
+       panel (nav/hero-plate/card/cta) stay the fixed tinted glass
+       they've always been: neon and a car's tinted windshield don't
+       change colour with the sky behind them, so the type and glow
+       riding on those chips is untouched by the toggle. */
     :root{
+      --th-sky-1:#fef3dc;
+      --th-sky-2:#ffd9a0;
+      --th-sky-3:#ff9a76;
+      --th-sky-4:#ff6f9e;
+      --th-sky-5:#ff4d94;
+
       --night:#160b2e;      /* upper sky            */
       --dusk:#3d1157;       /* mid sky              */
       --pink:#ff2d95;       /* primary neon         */
@@ -24,16 +37,28 @@
       --yellow:#ffd166;     /* sun upper band       */
       --cyan:#22e0ff;       /* grid + secondary     */
       --ink:#0a0517;
+      --body-ink:#f4ecff;   /* body/heading text on the dark chips */
+
+      --rail:0px;
+    }
+
+    :root[data-theme="dark"]{
+      --th-sky-1:#0a0517;
+      --th-sky-2:#160b2e;
+      --th-sky-3:#3d1157;
+      --th-sky-4:#6a1a63;
+      --th-sky-5:#b3246c;
     }
 
     body{
-      background:linear-gradient(180deg, #0a0517 0%, var(--night) 26%, var(--dusk) 62%, #6a1a63 82%, #b3246c 100%);
+      background:linear-gradient(180deg, var(--th-sky-1) 0%, var(--th-sky-2) 26%, var(--th-sky-3) 62%, var(--th-sky-4) 82%, var(--th-sky-5) 100%);
       background-attachment:fixed;
-      color:#f4ecff;
+      color:var(--body-ink);
       font-family:"Chakra Petch",-apple-system,sans-serif;
       overflow-x:hidden;
       position:relative;
       min-height:100vh;
+      padding-left:var(--rail);
     }
 
     /* ── The horizon: sun, glow line and the infinite grid ────── */
@@ -68,12 +93,26 @@
       box-shadow:0 0 26px rgba(34,224,255,.28), inset 0 0 26px rgba(255,45,149,.12)}
     .logo{font-family:"Monoton",cursive;font-size:32px;line-height:1;color:#fff;letter-spacing:.04em;
       text-shadow:0 0 8px #fff,0 0 22px var(--pink),0 0 44px var(--pink)}
-    .nav ul{display:flex;gap:8px}
+    .nav ul{display:flex;flex-wrap:wrap;gap:8px}
     .nav ul a{display:block;font-family:"Orbitron",sans-serif;font-size:12px;font-weight:700;
       letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);padding:9px 16px;
       border:1px solid rgba(34,224,255,.35);transition:color .25s ease,box-shadow .25s ease,border-color .25s ease}
     .nav ul a:hover{color:#fff;border-color:var(--pink);
       box-shadow:0 0 18px rgba(255,45,149,.7), inset 0 0 14px rgba(255,45,149,.35)}
+    .nav ul a:focus-visible{outline:1px solid #fff;outline-offset:2px}
+    .nav ul a:active{transform:translateY(1px)}
+
+    /* Two more tokens, the nav links' own bordered language. */
+    .nav-controls{display:flex;flex-wrap:wrap;gap:8px}
+    .ctl{font-family:"Orbitron",sans-serif;font-size:12px;font-weight:700;
+      letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);padding:9px 16px;
+      background:none;border:1px solid rgba(34,224,255,.35);cursor:pointer;
+      transition:color .25s ease,box-shadow .25s ease,border-color .25s ease}
+    .ctl:hover,.ctl[aria-pressed="true"]{color:#fff;border-color:var(--pink);
+      box-shadow:0 0 18px rgba(255,45,149,.7), inset 0 0 14px rgba(255,45,149,.35)}
+    .ctl:focus-visible{outline:1px solid #fff;outline-offset:2px}
+    .ctl:active{transform:translateY(1px)}
+    .ctl__v{opacity:.8}
 
     /* ── Hero: chrome type over the sun ──────────────────────── */
     .hero{padding:clamp(64px,13vh,132px) 10px clamp(50px,9vh,96px);text-align:center}
@@ -97,6 +136,8 @@
       transition:box-shadow .3s ease,transform .3s ease}
     .btn:hover{transform:translateY(-3px);
       box-shadow:0 0 40px rgba(255,45,149,.95), inset 0 0 30px rgba(255,45,149,.5)}
+    .btn:active{transform:translateY(-1px)}
+    .btn:focus-visible{outline:1px solid #fff;outline-offset:3px}
 
     /* ── Features ────────────────────────────────────────────── */
     .features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
@@ -104,7 +145,7 @@
       border:1px solid rgba(34,224,255,.34);
       box-shadow:0 0 24px rgba(34,224,255,.2), inset 0 -32px 44px rgba(255,45,149,.12);
       transition:transform .3s ease,box-shadow .3s ease}
-    .card:hover{transform:translateY(-6px);box-shadow:0 0 36px rgba(255,45,149,.5), inset 0 -32px 44px rgba(255,45,149,.24)}
+    .card:hover,.card:active{transform:translateY(-6px);box-shadow:0 0 36px rgba(255,45,149,.5), inset 0 -32px 44px rgba(255,45,149,.24)}
     .icon{display:inline-block;font-family:"Orbitron",sans-serif;font-size:10px;font-weight:700;
       letter-spacing:.28em;text-transform:uppercase;color:var(--cyan);
       text-shadow:0 0 14px rgba(34,224,255,.9);margin-bottom:16px}
@@ -123,42 +164,133 @@
       letter-spacing:.26em;text-transform:uppercase;color:var(--ink);background:var(--cyan);
       padding:16px 40px;box-shadow:0 0 26px rgba(34,224,255,.8);
       transition:background .3s ease,box-shadow .3s ease}
-    .cta .cta-btn:hover{background:#fff;box-shadow:0 0 40px rgba(255,255,255,.95)}
+    .cta .cta-btn:hover,.cta .cta-btn:active{background:#fff;box-shadow:0 0 40px rgba(255,255,255,.95)}
+    .cta .cta-btn:focus-visible{outline:1px solid var(--ink);outline-offset:3px}
+
+    /* ── Component reference ────────────────────────────────── */
+    .component{margin-top:20px;padding:56px 24px 60px;text-align:center;
+      background:rgba(14,6,32,.6);border:1px solid rgba(34,224,255,.34);
+      box-shadow:0 0 24px rgba(34,224,255,.2)}
+    .component h2{font-family:"Orbitron",sans-serif;font-size:clamp(24px,3.6vw,34px);font-weight:900;
+      text-transform:uppercase;color:#fff;margin-bottom:14px;
+      text-shadow:0 0 10px rgba(255,45,149,.9),0 2px 0 rgba(122,47,247,.9)}
+    .component p{font-size:15px;line-height:1.7;color:#e3d5ff;max-width:52ch;margin:0 auto}
+
+    /* ── Dialog: one more neon-framed chip ─────────────────────── */
+    .dialog{padding:0;border:1px solid var(--pink);max-width:none;width:min(480px, calc(100vw - 56px));
+      background:#150a2c;color:#fff;
+      box-shadow:0 0 40px rgba(255,45,149,.55), inset 0 0 26px rgba(255,45,149,.12)}
+    .dialog::backdrop{background:rgba(10,5,23,.75)}
+    .dialog[open]{animation:dlg-in .35s ease}
+    .dialog[open]::backdrop{animation:bg-in .35s ease}
+    @keyframes dlg-in{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+    @keyframes bg-in{from{opacity:0}to{opacity:1}}
+    .dialog__inner{padding:38px 34px;text-align:center}
+    .dialog h2{font-family:"Orbitron",sans-serif;font-size:24px;font-weight:900;text-transform:uppercase;
+      color:#fff;margin-bottom:14px;text-shadow:0 0 10px rgba(255,45,149,.9)}
+    .dialog p{font-size:15px;line-height:1.7;color:#e3d5ff;max-width:40ch;margin:0 auto}
+    .dialog__close{display:inline-block;margin-top:24px;font-family:"Orbitron",sans-serif;font-size:13px;font-weight:700;
+      letter-spacing:.24em;text-transform:uppercase;color:var(--ink);background:var(--cyan);border:0;cursor:pointer;
+      padding:13px 32px;box-shadow:0 0 22px rgba(34,224,255,.7);
+      transition:background .25s ease,box-shadow .25s ease}
+    .dialog__close:hover,.dialog__close:active{background:#fff;box-shadow:0 0 34px rgba(255,255,255,.9)}
+    .dialog__close:focus-visible{outline:1px solid var(--ink);outline-offset:3px}
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    .foot{margin-top:20px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;
+      flex-wrap:wrap;gap:16px;background:rgba(14,6,32,.55);border:1px solid rgba(34,224,255,.4);
+      box-shadow:0 0 26px rgba(34,224,255,.28), inset 0 0 26px rgba(255,45,149,.12)}
+    .foot__links{display:flex;gap:8px}
+    .foot__links a{display:block;font-family:"Orbitron",sans-serif;font-size:11px;font-weight:700;
+      letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);padding:7px 14px;
+      border:1px solid rgba(34,224,255,.35);transition:color .25s ease,box-shadow .25s ease,border-color .25s ease}
+    .foot__links a:hover,.foot__links a:active{color:#fff;border-color:var(--pink);
+      box-shadow:0 0 18px rgba(255,45,149,.7), inset 0 0 14px rgba(255,45,149,.35)}
+    .foot__links a:focus-visible{outline:1px solid #fff;outline-offset:2px}
+    .signature{
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;text-transform:none;
+      color:#fff;text-shadow:0 0 8px rgba(255,45,149,.7);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .25s ease}
+    .signature:hover{border-bottom-color:var(--pink)}
+    .signature:focus-visible{outline:1px solid #fff;outline-offset:4px}
 
     @media(max-width:860px){.features{grid-template-columns:1fr}.logo{font-size:24px}}
+
+    /* ── Nav ⇄ side column ──────────────────────────────────────
+       The same neon-framed rail, turned into a fixed left column. */
+    :root[data-nav="side"]{--rail:224px}
+    [data-nav="side"] .nav{
+      position:fixed;top:0;left:0;bottom:0;width:192px;margin:0;padding:20px 16px;
+      flex-direction:column;align-items:flex-start;justify-content:flex-start;
+      gap:18px;overflow-y:auto;z-index:50}
+    [data-nav="side"] .nav ul{flex-direction:column;gap:8px}
+    [data-nav="side"] .nav-controls{flex-direction:column;gap:8px}
+
+    @media(max-width:640px){
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;width:auto;height:auto;margin:0;padding:14px 20px;
+        flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;
+        overflow:visible;z-index:auto}
+      [data-nav="side"] .nav ul{flex-direction:row}
+      [data-nav="side"] .nav-controls{flex-direction:row}
+    }
 
     /* ══ DESIGN POINTS — documentation panel ═══════════════════════
        Intentionally neutral and IDENTICAL on all 29 style pages.
        It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    /* ══ DESIGN POINTS — rebuilt in this page's own language ═══════
+       The same tinted-glass chip as the demo above, without the
+       glow or chrome, so the reference material reads as legible
+       documentation rather than another panel on the drive. */
+    .dp-divider{height:0;border:none;margin:0}
+    .design-points{position:relative;z-index:80;background:#150a2c;color:#f4ecff;padding:72px 24px 96px;
+      border-top:2px solid var(--pink);font-family:"Chakra Petch",-apple-system,sans-serif;
       font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
     .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:1px solid rgba(34,224,255,.35)}
+    .dp-actions{display:flex;gap:20px;align-items:baseline}
+    .design-points h2{font-family:"Orbitron",sans-serif;font-size:14px;font-weight:700;letter-spacing:.16em;
+      text-transform:uppercase;color:var(--cyan);margin:0}
+    .dp-skill,.dp-back{font-size:12px;letter-spacing:.04em;color:#c9b8ec;
+      text-decoration:underline;text-underline-offset:3px;transition:color .25s ease}
+    .dp-skill:hover,.dp-back:hover{color:#fff}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:1px solid #fff;outline-offset:2px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid rgba(34,224,255,.2)}
     .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
+    .dp dt{font-family:"Orbitron",sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;line-height:1.6;
+      text-transform:uppercase;color:#c9b8ec}
+    .dp dd{margin:0;color:#f4ecff}
     .dp dd > ul,.dp dd > ol{padding-left:20px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
     .dp li{margin-bottom:7px}
     .dp li:last-child{margin-bottom:0}
     .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+      background:rgba(34,224,255,.16);color:#f4ecff;padding:1px 6px;border-radius:3px}
     .dp-palette{list-style:none!important;padding-left:0!important}
     .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+      border:1px solid rgba(255,255,255,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
     @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
 </style>
+<script>
+  /* Before first paint, so the drive is never the wrong hour and
+     then corrected. Reads only, and only ever writes attributes. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }   /* private mode / blocked cookies */
+    }
+    root.setAttribute('data-nav',   read('atlas-sw-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',   ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -177,6 +309,10 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="nav-controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">Nav <span class="ctl__v" id="nav-toggle-value">Top</span></button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">Sky <span class="ctl__v" id="theme-toggle-value">Dusk</span></button>
+      </div>
     </nav>
 
     <header class="hero">
@@ -209,7 +345,33 @@
       <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
+    <section class="component" aria-labelledby="component-title">
+      <h2 id="component-title">Component reference</h2>
+      <p>A modal built on the native dialog element — focus trapped, Escape to close, background inert.</p>
+      <br>
+      <a href="#" class="btn" id="dialog-open">Open dialog</a>
+    </section>
+
+    <footer class="foot">
+      <nav class="foot__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <div class="dialog__inner">
+      <h2 id="dialog-title">Component reference</h2>
+      <p>A modal built on the native dialog element. The browser traps focus inside it,
+        closes it on Escape, and makes everything behind it inert. Clicking outside it
+        closes it as well, and focus returns to the button that opened it.</p>
+      <button type="button" class="dialog__close" id="dialog-close">Close</button>
+    </div>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -217,7 +379,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -241,7 +407,9 @@
               <li><span class="sw" style="--c:#ff7a18"></span><code>#ff7a18</code> — sun's lower band</li>
               <li><span class="sw" style="--c:#ffd166"></span><code>#ffd166</code> — sun's upper band</li>
               <li><span class="sw" style="--c:#22e0ff"></span><code>#22e0ff</code> — grid cyan, horizon line and secondary CTA</li>
+              <li><span class="sw" style="--c:#f4ecff"></span><code>#f4ecff</code> — pale lavender ink for body text on the dark chips</li>
             </ul>
+            <p style="margin-top:14px">Only the sky gradient inverts under dark mode — the same drive at a different hour, golden and bright by default, deepened to midnight neon under the toggle. The sun, grid, horizon and every tinted-glass panel (nav, hero plate, cards, CTA) hold fixed values in both themes: neon and a windshield's tint don't change colour with the sky behind them.</p>
           </dd>
         </div>
 
@@ -270,7 +438,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>The landscape never stops: the grid's horizontal lines scroll one 62px cell every 1.9s on a linear loop, giving continuous forward motion, while the sun's drop-shadow breathes between 90px and 130px on a 4.6s ease-in-out cycle. Interaction is warm and eased at 250–300ms — cards lift 6px and swap their glow from cyan to pink, the CTA button brightens to white. There is no JavaScript on this page; the CSS animations carry it.</dd>
+          <dd>The landscape never stops: the grid's horizontal lines scroll one 62px cell every 1.9s on a linear loop, giving continuous forward motion, while the sun's drop-shadow breathes between 90px and 130px on a 4.6s ease-in-out cycle — both CSS-only, and muted with every other animation sitewide under <code>prefers-reduced-motion</code>. Interaction is warm and eased at 250–300ms — cards lift 6px and swap their glow from cyan to pink, the CTA button brightens to white; every hover state has a matching <code>:active</code> for touch. The only JavaScript on the page now is the standard toggle wiring: two neon-framed tokens beside the nav links move the nav between the top strip and a fixed left column on a single <code>--rail</code> token, and move the sky between golden hour and midnight on <code>data-theme</code>, both persisting to <code>localStorage</code>; the component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -290,5 +458,51 @@
     </div>
   </section>
 
+<script>
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'Side' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-sw-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode === 'dark' ? 'Night' : 'Dusk';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function (e) { e.preventDefault(); dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
+  })();
+</script>
 </body>
 </html>
