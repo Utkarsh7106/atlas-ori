@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../assets/reset.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Montserrat:wght@200;300;400&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     /* ══ ETHEREAL ═════════════════════════════════════════════════
        Weightless and high-key. There are no containers on this page
@@ -16,14 +16,55 @@
        aurora washes, type is set at 200 weight and tracked open, and
        everything is lit from behind rather than sitting on a surface.*/
 
+    /* --th-* are the source of truth; every colour below is an ALIAS
+       onto them, so [data-theme="dark"] re-resolves the whole page
+       without editing a single declaration past this block. There
+       are no separate "panel" surfaces on this page by design (no
+       card, no border, no filled button), so --ink/--faint only ever
+       pair with the one ground colour that inverts alongside them —
+       no split-token risk here the way earlier pages needed one. */
     :root{
-      --light:#fbfaff;      /* near-white ground        */
-      --mist:#e9e4fb;       /* lavender wash            */
-      --blush:#fde8f0;      /* pink wash                */
-      --aqua:#e0f4f7;       /* aqua wash                */
-      --ink:#4a4266;        /* soft violet-grey text    */
-      --faint:#8f88ab;      /* secondary text           */
-      --glow:#c9b8f5;
+      --th-light:#fbfaff;      /* near-white ground        */
+      --th-mist:#e9e4fb;       /* lavender wash            */
+      --th-blush:#fde8f0;      /* pink wash                */
+      --th-aqua:#e0f4f7;       /* aqua wash                */
+      --th-ink:#4a4266;        /* soft violet-grey text    */
+      --th-faint:#8f88ab;      /* secondary text           */
+      --th-glow:#c9b8f5;
+      /* --faint measures 3.22:1 against --light (needs 4.5) — a
+         pre-existing shortfall across nearly every secondary-text
+         use on this page (nav links, hero note, card copy, icon
+         labels), unrelated to this task's authorised scope and not
+         touched (see DECISIONS NEEDED). --faint-safe is a corrected
+         variant used only by the new UI this build adds, so that new
+         work doesn't repeat a failure it isn't required to inherit. */
+      --th-faint-safe:#665e82;
+
+      --light:var(--th-light);
+      --mist:var(--th-mist);
+      --blush:var(--th-blush);
+      --aqua:var(--th-aqua);
+      --ink:var(--th-ink);
+      --faint:var(--th-faint);
+      --faint-safe:var(--th-faint-safe);
+      --glow:var(--th-glow);
+
+      --rail:0px;
+    }
+
+    /* The same weightless mood after dark: a velvet-violet ground
+       instead of near-white, the same three washes deepened into
+       jewel tones, ink turned to pale lavender. Not a different
+       page — the aurora seen at night rather than midday. */
+    :root[data-theme="dark"]{
+      --th-light:#120e1f;
+      --th-mist:#3a2f66;
+      --th-blush:#5a2a44;
+      --th-aqua:#1f4a52;
+      --th-ink:#ede9fa;
+      --th-faint:#b3a9d1;
+      --th-faint-safe:#b3a9d1;   /* --th-faint already passes here (8.58:1), no separate value needed */
+      --th-glow:#d4c4ff;
     }
 
     body{
@@ -34,6 +75,7 @@
       overflow-x:hidden;
       position:relative;
       min-height:100vh;
+      padding-left:var(--rail);
     }
 
     /* Aurora: three enormous soft washes, endlessly drifting. */
@@ -45,9 +87,10 @@
     @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(6vw,5vh) scale(1.1)}}
     @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-7vw,-4vh) scale(1.08)}}
     @keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(4vw,-6vh) scale(1.12)}}
-    /* a high-key haze that lifts the whole page toward white */
+    /* a high-key haze that lifts the whole page toward the ground
+       colour at the edges — white by day, velvet by night */
     .haze{position:fixed;inset:0;z-index:1;pointer-events:none;
-      background:radial-gradient(120% 80% at 50% 40%, rgba(251,250,255,0) 0%, rgba(251,250,255,.72) 78%, #fbfaff 100%)}
+      background:radial-gradient(120% 80% at 50% 40%, transparent 0%, color-mix(in srgb, var(--light) 72%, transparent) 78%, var(--light) 100%)}
 
     .wrap{max-width:980px;margin:0 auto;padding:0 clamp(20px,5vw,44px) 140px;position:relative;z-index:2;
       text-align:center}
@@ -62,7 +105,17 @@
     .nav ul{display:flex;gap:44px}
     .nav ul a{font-size:10.5px;font-weight:300;letter-spacing:.34em;text-indent:.34em;text-transform:uppercase;
       color:var(--faint);transition:color 1s ease,text-shadow 1s ease}
-    .nav ul a:hover{color:var(--ink);text-shadow:0 0 18px rgba(201,184,245,.95)}
+    .nav ul a:hover{color:var(--ink);text-shadow:0 0 18px color-mix(in srgb, var(--glow) 95%, transparent)}
+    .nav ul a:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+
+    /* Two more weightless labels, the nav links' own language. */
+    .nav-controls{display:flex;gap:44px}
+    .ctl{font-size:10.5px;font-weight:300;letter-spacing:.34em;text-indent:.34em;text-transform:uppercase;
+      color:var(--faint-safe);background:transparent;border:0;cursor:pointer;
+      transition:color 1s ease,text-shadow 1s ease}
+    .ctl:hover,.ctl[aria-pressed="true"]{color:var(--ink);text-shadow:0 0 18px color-mix(in srgb, var(--glow) 95%, transparent)}
+    .ctl:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+    .ctl__v{opacity:.75}
 
     /* ── Hero ────────────────────────────────────────────────── */
     .hero{padding:clamp(90px,18vh,210px) 0 clamp(60px,10vh,120px)}
@@ -72,17 +125,22 @@
       max-width:15ch;margin:0 auto;
       background:linear-gradient(104deg,#6d5fa8 0%,#a98bd6 32%,#e79ec2 58%,#7fc3cf 100%);
       -webkit-background-clip:text;background-clip:text;color:transparent;
-      filter:drop-shadow(0 0 34px rgba(201,184,245,.55));
+      filter:drop-shadow(0 0 34px color-mix(in srgb, var(--glow) 55%, transparent));
     }
     .hero p{margin-top:34px;font-size:13px;font-weight:200;letter-spacing:.26em;text-indent:.26em;
       text-transform:uppercase;color:var(--faint);max-width:40ch;margin-left:auto;margin-right:auto;
       line-height:2.2}
+    /* text-indent changed on hover but was missing from the
+       transition list — letter-spacing animated smoothly while
+       text-indent snapped instantly, a visible stutter since the two
+       are meant to move together. Added at the same easing. */
     .btn{display:inline-block;margin-top:58px;font-size:11px;font-weight:300;letter-spacing:.4em;
       text-indent:.4em;text-transform:uppercase;color:var(--ink);padding:16px 4px;
-      border-bottom:1px solid rgba(143,136,171,.4);background:transparent;
-      transition:letter-spacing 1.2s cubic-bezier(.16,1,.3,1),border-color 1.2s ease,text-shadow 1.2s ease}
+      border-bottom:1px solid color-mix(in srgb, var(--faint) 40%, transparent);background:transparent;
+      transition:letter-spacing 1.2s cubic-bezier(.16,1,.3,1),text-indent 1.2s cubic-bezier(.16,1,.3,1),border-color 1.2s ease,text-shadow 1.2s ease}
     .btn:hover{letter-spacing:.56em;text-indent:.56em;border-color:var(--glow);
-      text-shadow:0 0 22px rgba(201,184,245,1)}
+      text-shadow:0 0 22px var(--glow)}
+    .btn:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
 
     /* ── Features: no cards, only light ──────────────────────── */
     .features{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(28px,6vw,80px);
@@ -91,10 +149,10 @@
     .card::before{ /* a halo instead of a container */
       content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);
       width:96px;height:96px;border-radius:50%;
-      background:radial-gradient(circle, rgba(201,184,245,.62) 0%, rgba(201,184,245,0) 70%);
+      background:radial-gradient(circle, color-mix(in srgb, var(--glow) 62%, transparent) 0%, transparent 70%);
       transition:opacity 1.2s ease,transform 1.2s ease}
-    .card:nth-child(2)::before{background:radial-gradient(circle, rgba(253,232,240,.9) 0%, rgba(253,232,240,0) 70%)}
-    .card:nth-child(3)::before{background:radial-gradient(circle, rgba(224,244,247,.95) 0%, rgba(224,244,247,0) 70%)}
+    .card:nth-child(2)::before{background:radial-gradient(circle, color-mix(in srgb, var(--blush) 90%, transparent) 0%, transparent 70%)}
+    .card:nth-child(3)::before{background:radial-gradient(circle, color-mix(in srgb, var(--aqua) 95%, transparent) 0%, transparent 70%)}
     .card:hover::before{transform:translateX(-50%) scale(1.35);opacity:.85}
     .icon{position:relative;display:block;font-size:9.5px;font-weight:300;letter-spacing:.36em;
       text-indent:.36em;text-transform:uppercase;color:var(--faint);margin-bottom:18px}
@@ -106,52 +164,143 @@
     /* ── CTA ─────────────────────────────────────────────────── */
     .cta{padding:clamp(70px,12vh,150px) 0 0}
     .cta h2{font-family:"Italiana",serif;font-size:clamp(32px,5.6vw,66px);letter-spacing:.1em;
-      text-indent:.1em;color:var(--ink);text-shadow:0 0 46px rgba(201,184,245,.85)}
+      text-indent:.1em;color:var(--ink);text-shadow:0 0 46px color-mix(in srgb, var(--glow) 85%, transparent)}
+    /* same text-indent/transition fix as .btn */
     .cta .cta-btn{display:inline-block;margin-top:44px;font-family:"Montserrat",sans-serif;font-size:11px;font-weight:300;
       letter-spacing:.4em;text-indent:.4em;text-transform:uppercase;color:var(--ink);
-      padding:16px 4px;border-bottom:1px solid rgba(143,136,171,.4);
-      transition:letter-spacing 1.2s cubic-bezier(.16,1,.3,1),border-color 1.2s ease,text-shadow 1.2s ease}
+      padding:16px 4px;border-bottom:1px solid color-mix(in srgb, var(--faint) 40%, transparent);
+      transition:letter-spacing 1.2s cubic-bezier(.16,1,.3,1),text-indent 1.2s cubic-bezier(.16,1,.3,1),border-color 1.2s ease,text-shadow 1.2s ease}
     .cta .cta-btn:hover{letter-spacing:.56em;text-indent:.56em;border-color:var(--glow);
-      text-shadow:0 0 22px rgba(201,184,245,1)}
+      text-shadow:0 0 22px var(--glow)}
+    .cta .cta-btn:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
 
-    /* motes */
+    /* ── Component reference ────────────────────────────────── */
+    .component{padding:clamp(70px,12vh,150px) 0 0}
+    .component h2{font-family:"Italiana",serif;font-size:clamp(24px,3.6vw,32px);letter-spacing:.08em;
+      text-indent:.08em;color:var(--ink);margin-bottom:20px}
+    .component p{font-size:13px;font-weight:200;letter-spacing:.1em;color:var(--faint-safe);
+      max-width:44ch;margin:0 auto;line-height:2}
+
+    /* ── Dialog: one more weightless surface ───────────────────── */
+    .dialog{padding:0;border:0;max-width:none;width:min(480px, calc(100vw - 56px));
+      background:var(--light);color:var(--ink);border-radius:2px;
+      box-shadow:0 0 60px color-mix(in srgb, var(--glow) 45%, transparent)}
+    .dialog::backdrop{background:color-mix(in srgb, var(--ink) 35%, transparent)}
+    .dialog[open]{animation:dlg-in 1s cubic-bezier(.16,1,.3,1)}
+    .dialog[open]::backdrop{animation:bg-in 1s ease}
+    @keyframes dlg-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+    @keyframes bg-in{from{opacity:0}to{opacity:1}}
+    .dialog__inner{padding:52px 44px;text-align:center}
+    .dialog h2{font-family:"Italiana",serif;font-size:26px;letter-spacing:.1em;text-indent:.1em;
+      color:var(--ink);margin-bottom:18px}
+    .dialog p{font-size:13px;font-weight:200;letter-spacing:.08em;color:var(--faint-safe);line-height:2}
+    .dialog__close{display:inline-block;margin-top:30px;font-size:11px;font-weight:300;letter-spacing:.4em;
+      text-indent:.4em;text-transform:uppercase;color:var(--ink);padding:16px 4px;background:transparent;border:0;
+      border-bottom:1px solid color-mix(in srgb, var(--faint) 40%, transparent);cursor:pointer;
+      transition:letter-spacing 1.2s cubic-bezier(.16,1,.3,1),text-indent 1.2s cubic-bezier(.16,1,.3,1),border-color 1.2s ease,text-shadow 1.2s ease}
+    .dialog__close:hover{letter-spacing:.56em;text-indent:.56em;border-color:var(--glow);text-shadow:0 0 22px var(--glow)}
+    .dialog__close:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    .foot{padding:clamp(70px,12vh,150px) 0 0;display:flex;justify-content:center;align-items:center;
+      flex-direction:column;gap:26px}
+    .foot__links{display:flex;gap:44px}
+    .foot__links a{font-size:10.5px;font-weight:300;letter-spacing:.34em;text-indent:.34em;text-transform:uppercase;
+      color:var(--faint-safe);transition:color 1s ease,text-shadow 1s ease}
+    .foot__links a:hover{color:var(--ink);text-shadow:0 0 18px color-mix(in srgb, var(--glow) 95%, transparent)}
+    .foot__links a:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+    .signature{
+      font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+      font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;text-indent:0;
+      text-transform:none;color:var(--ink);
+      border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color 1s ease}
+    .signature:hover{border-bottom-color:var(--ink)}
+    .signature:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+
+    /* motes: literal white — a mote is light itself, not a themed
+       surface, so it keeps its value in both themes; only its glow
+       (--glow) inverts with the rest of the page's light accent. */
     .mote{position:fixed;border-radius:50%;background:#fff;pointer-events:none;z-index:3;
-      box-shadow:0 0 10px 2px rgba(201,184,245,.9)}
+      box-shadow:0 0 10px 2px color-mix(in srgb, var(--glow) 90%, transparent)}
 
     @media(max-width:860px){.features{grid-template-columns:1fr}.nav ul{gap:20px}}
+
+    /* ── Nav ⇄ side column ──────────────────────────────────────
+       The same tracked-capital labels, stacked down a fixed left
+       column instead of across the top. */
+    :root[data-nav="side"]{--rail:230px}
+    [data-nav="side"] .nav{
+      position:fixed;top:0;left:0;bottom:0;width:198px;margin:0;
+      flex-direction:column;align-items:flex-start;justify-content:flex-start;
+      gap:40px;padding:46px 24px;overflow-y:auto;z-index:50;text-align:left}
+    [data-nav="side"] .nav ul{flex-direction:column;gap:22px}
+    [data-nav="side"] .nav-controls{flex-direction:column;gap:22px}
+
+    @media(max-width:640px){
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;width:auto;height:auto;margin:0;
+        flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;
+        padding:46px 0 0;overflow:visible;z-index:auto;text-align:center}
+      [data-nav="side"] .nav ul{flex-direction:row;gap:20px}
+      [data-nav="side"] .nav-controls{flex-direction:row}
+    }
 
     /* ══ DESIGN POINTS — documentation panel ═══════════════════════
        Intentionally neutral and IDENTICAL on all 29 style pages.
        It is reference material, not part of the styled demo above. */
     .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    /* ══ DESIGN POINTS — rebuilt in this page's own language ═══════
+       Same ground and ink as the demo above, brought back to earth:
+       normal tracking, normal weight, left-aligned, so the reference
+       material reads as documentation rather than another veil. */
+    .design-points{position:relative;z-index:80;background:var(--light);color:var(--ink);padding:72px 24px 96px;
+      border-top:1px solid color-mix(in srgb, var(--faint) 30%, transparent);
+      font-family:"Montserrat",-apple-system,sans-serif;
       font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
     .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:1px solid var(--ink)}
+    .dp-actions{display:flex;gap:20px;align-items:baseline}
+    .design-points h2{font-family:"Italiana",serif;font-size:16px;font-weight:400;letter-spacing:.16em;
+      text-indent:.16em;text-transform:uppercase;color:var(--ink);margin:0}
+    .dp-skill,.dp-back{font-size:12px;letter-spacing:.04em;color:var(--faint-safe);
+      text-decoration:underline;text-underline-offset:3px;transition:color 1s ease}
+    .dp-skill:hover,.dp-back:hover{color:var(--ink)}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:1px solid var(--ink);outline-offset:3px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid color-mix(in srgb, var(--faint) 25%, transparent)}
     .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
+    .dp dt{font-size:11px;font-weight:400;letter-spacing:.1em;line-height:1.6;
+      text-transform:uppercase;color:var(--faint-safe)}
+    .dp dd{margin:0;color:var(--ink)}
     .dp dd > ul,.dp dd > ol{padding-left:20px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
     .dp li{margin-bottom:7px}
     .dp li:last-child{margin-bottom:0}
     .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+      background:color-mix(in srgb, var(--faint) 18%, transparent);color:var(--ink);padding:1px 6px;border-radius:3px}
     .dp-palette{list-style:none!important;padding-left:0!important}
     .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+      border:1px solid color-mix(in srgb, var(--ink) 25%, transparent);vertical-align:-2px;margin-right:8px;background:var(--c)}
     @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
 </style>
+<script>
+  /* Before first paint, so the aurora is never the wrong hour and
+     then corrected. Reads only, and only ever writes attributes. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }   /* private mode / blocked cookies */
+    }
+    root.setAttribute('data-nav',   read('atlas-eth-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',   ['light', 'dark'], 'light'));
+  })();
+</script>
 </head>
 <body>
 
@@ -171,6 +320,10 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="nav-controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">Nav <span class="ctl__v" id="nav-toggle-value">Top</span></button>
+        <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">Hour <span class="ctl__v" id="theme-toggle-value">Day</span></button>
+      </div>
     </nav>
 
     <header class="hero rise">
@@ -203,7 +356,32 @@
       <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
+    <section class="component rise" aria-labelledby="component-title">
+      <h2 id="component-title">Component reference</h2>
+      <p>A modal built on the native dialog element — focus trapped, Escape to close, background inert.</p>
+      <a href="#" class="btn" id="dialog-open">Open dialog</a>
+    </section>
+
+    <footer class="foot rise">
+      <nav class="foot__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
+
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <div class="dialog__inner">
+      <h2 id="dialog-title">Component reference</h2>
+      <p>A modal built on the native dialog element. The browser traps focus inside it,
+        closes it on Escape, and makes everything behind it inert. Clicking outside it
+        closes it as well, and focus returns to the button that opened it.</p>
+      <button type="button" class="dialog__close" id="dialog-close">Close</button>
+    </div>
+  </dialog>
 
   <hr class="dp-divider">
 
@@ -211,7 +389,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -236,6 +418,7 @@
               <li><span class="sw" style="--c:#4a4266"></span><code>#4a4266</code> — soft violet-grey ink, never black</li>
               <li><span class="sw" style="--c:#c9b8f5"></span><code>#c9b8f5</code> — the glow colour, used only in shadows and halos</li>
             </ul>
+            <p style="margin-top:14px">The ground and the three washes invert under dark mode — the same aurora seen at night, deepened into jewel tones rather than a different palette; ink turns pale lavender. Secondary text (nav, hero note, card copy) keeps its original violet-grey in both themes; new interface additions (footer, dialog, this panel) use a slightly deepened variant of that same colour so they clear body-text contrast on their own (see Replication Rules).</p>
           </dd>
         </div>
 
@@ -264,7 +447,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>Everything is long and weightless. Blocks rise 18px and fade in over 1.8s via <code>IntersectionObserver</code>, staggered 260ms. Hovers take 1–1.2s: type gains a violet glow, halos expand, and buttons breathe outward by animating <code>letter-spacing</code> rather than moving. JS spawns 26 luminous motes at random positions that drift upward and sideways for 14–26s each on individual <code>Web Animations</code> loops, re-seeding when they finish, so the air is never still.</dd>
+          <dd>Everything is long and weightless. Blocks rise 18px and fade in over 1.8s via <code>IntersectionObserver</code>, staggered 260ms — muted with every other CSS transition sitewide under <code>prefers-reduced-motion</code>. Hovers take 1–1.2s: type gains a violet glow, halos expand, and buttons breathe outward by animating <code>letter-spacing</code> together with <code>text-indent</code>, so tracking widens without the two drifting out of sync. JS spawns 26 luminous motes at random positions that drift upward and sideways for 14–26s each on individual Web Animations loops, re-seeding when they finish, so the air is never still — that spawn loop is checked live against <code>prefers-reduced-motion</code> and skipped outright under it, since a CSS mute can't reach an imperative <code>element.animate()</code> call. Two tracked-capital labels beside the nav links move the nav between the top strip and a fixed left column on a single <code>--rail</code> token, and move the hour between day and night on <code>data-theme</code>; both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -273,9 +456,10 @@
             <ol>
               <li>Remove every container — no cards, borders, or filled buttons; group by proximity, halo and light alone.</li>
               <li>Build the ground from two or more viewport-scale blurred colour veils plus a radial haze that returns the edges to near-white.</li>
-              <li>Cap all font weights at 400 or below and track everything open, always pairing <code>letter-spacing</code> with an equal <code>text-indent</code>.</li>
+              <li>Cap all font weights at 400 or below and track everything open, always pairing <code>letter-spacing</code> with an equal <code>text-indent</code> — in both the CSS value and the hover transition, or the two visibly fall out of step.</li>
               <li>Fill display type with a soft multi-stop gradient and give it a wide coloured <code>drop-shadow</code> so it glows instead of sitting.</li>
               <li>Keep every transition between 1s and 2s and animate weightless properties — opacity, letter-spacing, scale of a glow — never a hard translate or a colour snap.</li>
+              <li>A page built entirely from soft violet-greys on near-white risks failing body-text contrast without ever looking obviously wrong — check every secondary-text colour against its ground at actual size before shipping, not just against the display type.</li>
             </ol>
           </dd>
         </div>
@@ -302,30 +486,85 @@
       items.forEach(function (el) { el.classList.add('in'); });
     }
 
-    for (var i = 0; i < 26; i++) {
-      (function (n) {
-        var m = document.createElement('span');
-        m.className = 'mote';
-        var size = 2 + Math.random() * 3;
-        m.style.width = m.style.height = size + 'px';
-        m.style.opacity = (0.3 + Math.random() * 0.5).toFixed(2);
-        document.body.appendChild(m);
+    /* Element.animate() ignores the sitewide CSS reduced-motion
+       mute (that only touches CSS animation/transition durations),
+       so 26 looping motes need their own live check — skipped
+       outright rather than spawned motionless, since a field of
+       static dots isn't what this page is for. */
+    var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+    if (!reduce || !reduce.matches) {
+      for (var i = 0; i < 26; i++) {
+        (function (n) {
+          var m = document.createElement('span');
+          m.className = 'mote';
+          var size = 2 + Math.random() * 3;
+          m.style.width = m.style.height = size + 'px';
+          m.style.opacity = (0.3 + Math.random() * 0.5).toFixed(2);
+          document.body.appendChild(m);
 
-        function seed() {
-          m.style.left = (Math.random() * 100) + 'vw';
-          m.style.top = (60 + Math.random() * 50) + 'vh';
-          var a = m.animate(
-            [
-              { transform: 'translate(0,0)', opacity: 0 },
-              { opacity: Number(m.style.opacity), offset: 0.2 },
-              { transform: 'translate(' + (Math.random() * 90 - 45) + 'px,' + -(60 + Math.random() * 70) + 'vh)', opacity: 0 }
-            ],
-            { duration: 14000 + Math.random() * 12000, easing: 'linear' }
-          );
-          a.onfinish = seed;
-        }
-        setTimeout(seed, n * 260);
-      })(i);
+          function seed() {
+            m.style.left = (Math.random() * 100) + 'vw';
+            m.style.top = (60 + Math.random() * 50) + 'vh';
+            var a = m.animate(
+              [
+                { transform: 'translate(0,0)', opacity: 0 },
+                { opacity: Number(m.style.opacity), offset: 0.2 },
+                { transform: 'translate(' + (Math.random() * 90 - 45) + 'px,' + -(60 + Math.random() * 70) + 'vh)', opacity: 0 }
+              ],
+              { duration: 14000 + Math.random() * 12000, easing: 'linear' }
+            );
+            a.onfinish = seed;
+          }
+          setTimeout(seed, n * 260);
+        })(i);
+      }
+    }
+  })();
+</script>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
+    }
+
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'Side' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-eth-nav', next);
+    });
+
+    var themeBtn = document.getElementById('theme-toggle');
+    var themeVal = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeVal.textContent = mode === 'dark' ? 'Night' : 'Day';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next); store('atlas-theme', next);
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function (e) { e.preventDefault(); dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
     }
   })();
 </script>
