@@ -564,6 +564,26 @@
           <dd>A fixed torchlight layer tracks the pointer: JS writes <code>--tx</code>/<code>--ty</code> and a 340px radial wash at 7.5% bone lifts the stone wherever the cursor rests, leaving the rest of the nave dark. The wash is written straight from the pointer with no easing and no animation loop, so it is direct manipulation rather than motion and needs no reduced-motion guard; every other transition on the page is CSS and is muted by the sitewide rule. Transitions are long — 500ms — for a heavy, architectural feel: arches lighten their stone gradient on hover, buttons fill with oxblood and gain a red glow, nav capitals warm to gold. Press is the exception, overridden to 120ms so a touch tap is answered inside the tap. Two inscribed controls stand centred below the rood screen: one turns that same screen through ninety degrees against the north wall by changing a single <code>--rail</code> token, the other moves the hour between day and compline — the ground deepens, the vignette closes and the tracery tarnishes, while the lettering holds its value. Both persist to <code>localStorage</code>. The component reference raises a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Setting blackletter at small sizes for "authenticity." This page's own rule caps it at 27px minimum because the dense verticals close up below that — small blackletter body text is illegible, not authentic.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The torchlight pointer-tracking wash writes custom properties directly with no easing or animation loop, so — per this page's own note — it needs no reduced-motion guard. Any future version of this effect that adds easing or a loop would need one, since that exemption is specific to the current direct-manipulation implementation.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Named directly in this page's own Design Points now: blackletter carries a real 20th-century political history — adopted, then banned, by Nazi Germany — beyond its ecclesiastical origin, worth the same care in any real product as the imagery choices around it, not just a "spooky font" pick.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Products needing broad legibility at small sizes or fast scanning (mobile-first utility apps, dense data tables). A 27px display-type floor and a centred single-axis layout are built for a stately hero, not compact, information-dense screens.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

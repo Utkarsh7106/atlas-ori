@@ -538,6 +538,26 @@
           <dd>Constant and unapologetic. The marquee translates −50% on an 18s linear loop; stickers bob 7px on a 3.2s ease-in-out loop. Hovering a nav pill rotates it 4deg and scales it 1.08; hovering a card snaps it back to 0deg and scales it 1.04; the button flips rotation and swaps its shadow stack. Clicking <em>Explore</em> or <em>Get in touch</em> fires a JS confetti burst of 18 hard-outlined squares that fall with randomised velocity and rotation, cleaned up after 1.2s — the burst is driven by the Web Animations API rather than CSS, so it is guarded explicitly and skipped when <code>prefers-reduced-motion</code> is set. Two pill controls sit in the nav: one moves the nav between a top bar and a fixed left rail by changing a single <code>--rail</code> token, the other flips <code>data-theme</code> so the whole page re-resolves through a handful of colour tokens; both persist to <code>localStorage</code> and turn lime when pressed. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background; it rises 10px over 160ms and returns focus to its trigger.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Adding one loud element to an otherwise calm page. The rule is at least five saturated colours with no neutral ground and two or more layered patterns behind every major block; a single bold accent on a quiet page is a highlight, not maximalism.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>Confetti bursts and the marquee/bob loops are all explicitly guarded behind <code>prefers-reduced-motion</code> via the Web Animations API. Copying the visual chaos without the matching <code>matchMedia</code> guards ships a page that is aggressively animated with no way to turn any of it down.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Stacked multi-colour text-shadows exist specifically so headlines "read even against pattern" — a real accessibility mitigation for a genuinely hostile background. New text added to a patterned area needs the same stacked-shadow treatment, not just a plain colour, to stay legible.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Anything requiring sustained visual focus — forms, reading, data entry. Five-plus competing colours, three conflicting typefaces and constant motion are the opposite of what a concentration-heavy task needs.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

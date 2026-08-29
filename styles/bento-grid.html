@@ -539,6 +539,26 @@
           <dd>JS tracks the pointer over each tile and writes <code>--mx</code>/<code>--my</code> custom properties, driving a 320px radial spotlight in the tile's <code>::after</code> that fades in on hover. CSS adds a −4px lift with a deepened shadow over 250ms, the CTA arrow slides 3px, and on load the stat tile's bars grow from zero with a staggered 60ms delay — as a <code>transform: scaleY()</code> from a bottom origin rather than an animated <code>height</code>, since animating height would reflow the grid, which rule 5 below forbids. That intro is script-driven, so it is guarded by a <code>matchMedia</code> check and the bars are simply drawn at full height when <code>prefers-reduced-motion</code> is set. The nav is itself a tile spanning the full six columns (<code>.t-nav{grid-column:span 6}</code>), and two pill controls sit inside it: one re-places that same tile as a fixed standing rail by changing a single <code>--rail</code> token, the other flips <code>data-theme</code> so every surface re-resolves through the theme tokens; both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger. All easing is <code>cubic-bezier(.2,.8,.3,1)</code>.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Varying the gap value between tiles for "breathing room." The packing logic depends on one uniform gap and equal auto-rows; hierarchy comes from span alone, not from inconsistent spacing, or the lattice stops reading as one grid.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>Every future addition — nav and CTA included — has to be authored as a tile with an explicit column/row span. A component built outside that model (a modal, a toast) needs deliberate exception-handling, since the whole page assumes everything lives in the grid.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Non-content filler tiles (the dot lattice, the bar chart) are decorative and marked <code>aria-hidden</code>. Any future filler tile added without that attribute puts a meaningless node in front of screen-reader users navigating tile by tile.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Content sets with genuinely unpredictable item counts or lengths. The style depends on a curated, fixed set of spans (hero 4×2, cards 2×1, and so on) chosen for a known content set; user-generated or dynamically-lengthed content breaks the packing math fast.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

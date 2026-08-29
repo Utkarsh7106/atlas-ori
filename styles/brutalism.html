@@ -448,6 +448,26 @@
           <dd>Deliberately unrefined: there is not a single <code>transition</code> on the page, including on everything added since. Hover states snap instantly to a red background with the page's darkest neutral as text. JS blinks the <code>READY_</code> cursor by toggling <code>visibility</code> every 600ms — because that is a script-driven interval rather than CSS, it is guarded by a <code>matchMedia</code> check and the cursor is left solid when <code>prefers-reduced-motion</code> is set — and writes the document's real viewport width and load timestamp into the mono status line, updating on resize; information, not decoration. Two bracketed controls sit in the nav, written in the same <code>[ ]</code> form as every other action: one moves the nav between a stacked box and a fixed left rail by changing a single <code>--rail</code> token, the other flips <code>data-theme</code>. Dark mode is not an inversion — it swaps in the browser's own dark defaults, including the dark-mode UA link colours — and both controls persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Restyling links or adding a webfont "for polish." The entire point is unmodified browser defaults — <code>#0000ee</code> links, Times New Roman; the moment either is touched, this stops being brutalism and becomes a plain page with a brutalist theme layered on top.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>There is not a single CSS transition on the page by design. Any future interactive state added without matching that constraint — a smooth hover fade, an eased reveal — will visually contradict the rest of the page immediately.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>One of the safer styles here by construction: default link colours and states are exactly what a screen reader or user stylesheet already expects. The 1.35 body line-height is tighter than WCAG's 1.5 recommendation, though, and is inherited unchanged from the document default this page deliberately never overrides.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Consumer e-commerce or any context where trust signals matter. Deliberately raw, undesigned pages can read as broken or unfinished to a non-technical audience rather than as an intentional statement.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

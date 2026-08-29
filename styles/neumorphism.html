@@ -461,6 +461,26 @@
           <dd>Two controls sit in the nav: one relocates the same bar between a top strip and a fixed left rail by moving a single <code>--rail</code> token, which also shifts the page's own padding so nothing sits underneath it; the other flips <code>data-theme</code> across the whole page. Both persist to <code>localStorage</code>. Clicking <em>Explore</em> toggles a <code>pressed</code> class on <code>&lt;body&gt;</code>, which flips the hero and all three cards from convex to concave over 400ms — the clearest demonstration of the style's single idea — and the control now carries <code>role="button"</code> and a live <code>aria-pressed</code> so the state is announced, not just shown. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close. Dark mode does not just recolour the shadow pair: the cast side of every pair, invisible once a dark shadow lands on an already-dark surface, becomes a soft violet glow drawn from the page's one accent hue instead, so elements still read as raised or pressed rather than flattening into the surface.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Adding a border or a third shadow state "to make buttons clearer." The technique is exactly two shadow recipes — light top-left/dark bottom-right, and the same values inset — with zero borders and zero fills; extra shadows or a border reintroduce the depth cues the style deliberately withholds.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>Element and background being literally the same colour means every new component needs the paired-shadow treatment from day one. An unstyled native element (a <code>&lt;select&gt;</code>, a third-party embed) looks broken rather than neutral, since there's no fallback "flat" state in this system.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Already flagged directly in this page's own Replication Rules: at capped weights (≤600), 14px body text never reaches WCAG's large-text exemption, so every text token has to independently clear 4.5:1 against the single surface colour — low native contrast is structural to the style, not an edge case.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Interfaces where users need to identify what's clickable at a glance — forms, dense toolbars. The core idea (element and background as one colour) is directly opposed to strong affordance, which costs real usability past a small number of controls.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

@@ -464,6 +464,26 @@
           <dd>JS gives the gilt fleurons a gaslight flicker: each <code>.lamp</code> element is driven by a randomised timer that nudges opacity between 0.94 and 1, with an occasional shallower dip to 0.85, so the ornament reads as burning rather than printed. The interval floor sits well above the flash-safety threshold — 700–1400ms between ticks, not the 90ms this used to run at — and the opacity range itself was narrowed rather than only slowed, since 90ms swinging as low as 0.55 opacity was a real photosensitive-seizure risk as well as the reason the fleuron colour underneath it couldn't hold AA at its dimmest point. The loop also now stops entirely while the tab is hidden (checked via the Page Visibility API) and resumes on return, rather than ticking forever in the background, and is skipped outright under <code>prefers-reduced-motion</code>, holding at full opacity. Hovers are period-appropriate and slow at 300ms — nav links warm to gold with a soft glow, buttons swap their field and gilt colours. Two more sign-board words beside the nav links move the nav between the top strip and a fixed left column on a single <code>--rail</code> token, and move the shop between day and gaslit evening on <code>data-theme</code>; both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Filling the page with ornament but forgetting the compulsory density. Per this page's own Era/Origin field, cheap chromolithography made ornament "affordable and therefore compulsory" — a sparse Victorian page with one damask pattern and lots of whitespace is closer to neo-classical restraint than to this jobbing-print register.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The gaslight flicker was a genuine photosensitive-seizure risk at a 90ms interval swinging to 0.55 opacity before this page's own fix. Copying the "flickering ornament" idea without also copying the interval floor (700–1400ms) and narrowed opacity range (0.85–1) reintroduces a real safety issue, not just a stylistic one.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Documented directly on the page: the flicker loop stops entirely while the tab is hidden and is skipped outright under <code>prefers-reduced-motion</code> — both load-bearing, not defensive extras, given the flash-safety history above.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Fast-scanning utility interfaces — search results, settings pages. The packed 16–18px block spacing and compound multi-line typographic stacking demand slow, deliberate reading, the opposite of what a utility screen needs.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

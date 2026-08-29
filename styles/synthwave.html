@@ -451,6 +451,26 @@
           <dd>The landscape never stops: the grid's horizontal lines scroll one 62px cell every 1.9s on a linear loop, giving continuous forward motion, while the sun's drop-shadow breathes between 90px and 130px on a 4.6s ease-in-out cycle — both CSS-only, and muted with every other animation sitewide under <code>prefers-reduced-motion</code>. Interaction is warm and eased at 250–300ms — cards lift 6px and swap their glow from cyan to pink, the CTA button brightens to white; every hover state has a matching <code>:active</code> for touch. The only JavaScript on the page now is the standard toggle wiring: two neon-framed tokens beside the nav links move the nav between the top strip and a fixed left column on a single <code>--rail</code> token, and move the sky between golden hour and midnight on <code>data-theme</code>, both persisting to <code>localStorage</code>; the component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Rendering the sun as a flat gradient circle. The actual technique is a <code>mask-image</code> that cuts horizontal slits into its lower half over a circular gradient; skipping the mask produces a plain sunset graphic, not the genre's signature striped sun.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The perspective floor animates <code>background-position</code> on a repeating gradient rather than moving a large image or element. A naive implementation that translates a big background image for the same effect costs far more paint and composite work per frame.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>The grid-scroll and sun-glow breathing loops are permanent, always-on ambient motion, not triggered by scroll or hover — exactly the category <code>prefers-reduced-motion</code> exists for, and this page's guard is load-bearing given how much of its identity is that constant motion.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Content-first or long-session reading contexts. Permanent background motion behind readable text is fatiguing well past landing-page length, and the chrome-gradient headline trades away text contrast flexibility for the effect.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

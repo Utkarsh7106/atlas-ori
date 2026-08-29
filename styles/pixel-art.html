@@ -473,6 +473,26 @@
           <dd>Every animation uses <code>steps()</code> — there are no in-between frames on this hardware. JS parses a 12×12 character bitmap into 80 <code>box-shadow</code> offsets to draw the sprite, which bobs one pixel on a 1s <code>steps(2)</code> loop at a 7px sprite scale; both loops are muted by the sitewide reduced-motion rule with nothing extra to guard, since neither is driven by script. Hovering a nav item reveals a blinking ▶ menu cursor at <code>steps(1)</code>, the <em>press start</em> line blinks on a 1.1s cycle, and buttons translate exactly one pixel down-right on <code>:active</code>. Two menu items now sit in the nav, reusing that same ▶ cursor language rather than inventing a second one: held lit rather than blinking when their alternate state is active. One relocates the bar between the top menu and a fixed side panel by moving a single <code>--px</code>-multiple <code>--rail</code> token; the other turns the brightness down across <code>data-theme</code> — the sixteen lit colours hold their exact values, only the void and the sky deepen further toward black, the same screen at lower brightness rather than a different cabinet. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code>, which supplies the focus trap, Escape and an inert background and returns focus to its trigger — deliberately without an open/close animation, since this page's own law is that hover states are instant and interpolation breaks the illusion.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Using a gradient anywhere "for smoothness." The page replaces every gradient with a dithering pattern specifically because a smooth gradient contradicts the fixed 8/16-colour hardware constraint the whole style simulates.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>Every dimension on the page derives from one <code>--px</code> custom property via <code>calc()</code>, so the whole layout snaps to a 4px lattice. Introducing even one arbitrary, non-multiple value anywhere breaks the "everything is a multiple of one pixel" claim the page makes about itself.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd><code>-webkit-font-smoothing: none</code> and <code>image-rendering: pixelated</code> are load-bearing for the aesthetic, but they also opt the page out of the browser's own text-rendering optimisations — low-vision users relying on OS-level font smoothing get bitmap type that can't benefit from those system settings.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Interfaces with real body-copy reading demands. Genuine bitmap faces at small fixed sizes with no anti-aliasing are legible in short UI bursts but fatiguing for sustained reading, which is why even this page keeps its own body copy modest with generous line-height to compensate.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

@@ -437,6 +437,26 @@
           <dd>Two inscribed controls sit in the nav, styled with the page's own hover-underline motif — a gilt rule growing outward from centre, the same one nav links already use — so nothing new was invented for them. One relocates the same bar between an entablature strip and a fixed left pier by moving a single <code>--rail</code> token, which shifts the whole page's own padding so nothing sits beneath it; the other moves the hour between day and dusk across <code>data-theme</code>, deepening the ground and brightening the gilt so it still reads against a night marble rather than simply inverting. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close. This is now the only JavaScript on the page — three state toggles, nothing animated by script — every transition remains the original slow, symmetrical 450ms CSS the style was built on.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Using bold weight for emphasis. This page's rule is that italic carries emphasis and weight never exceeds 600; reaching for bold on a headline breaks the restrained, carved-inscription register the style depends on.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>This page carries less JavaScript than any other style here — three state toggles, nothing animated by script. Extending it with a typical animated micro-interaction library fights the style's central premise (an elevation drawing, not a live interface) rather than working with it.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Everything is centred on a single vertical axis with no flush-left content anywhere. For screen-magnifier users panning a zoomed viewport, centred-only layouts lose the predictable "content starts at the left edge" scan pattern that flush-left layouts give for free.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Dense, task-oriented interfaces — dashboards, admin tools, checkout flows. The symmetrical, bay-divided composition and generous 56–96px vertical intervals are built for a handful of stately blocks, not a screen with a dozen controls to place efficiently.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

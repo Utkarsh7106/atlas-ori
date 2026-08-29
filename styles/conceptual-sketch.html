@@ -456,6 +456,26 @@
           <dd>On load, JS re-rolls the eight corner radii of every hand-drawn box within set ranges, so no two boxes on the page are identical and a reload produces a different drawing — the machine-repeat that gives fake hand-drawing away is removed. Two controls sit in the nav, styled as the same dashed annotation pill the page already uses for its icon tags, so nothing new was invented for them: one relocates the drawn nav from a strip across the top to a tall margin column down the left by moving a single <code>--rail</code> token, the other moves the sheet from day to a dark drafting-table night across <code>data-theme</code>. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code>, itself another hand-drawn box with its own re-rolled corners, which supplies the focus trap, Escape and an inert background and returns focus to its trigger on close. Hovering a card fades in its redline annotation over 300ms; the CTA button rotates −1.5deg on hover; links pick up a red underline. Nothing else moves — a sketch is a still document.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Using a single fixed "hand-drawn-looking" radius everywhere. The actual technique re-rolls all eight corner radii on every page load specifically so no two boxes are identical — a fixed value is exactly the "machine-repeat that gives fake hand-drawing away" this page's own Motion/Interaction field names.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The type split is semantic, not aesthetic: handwriting means a human decision, monospace means a measurement. Reaching for the handwriting face on a data label, or the mono face on a heading, breaks the one legibility rule that makes the working-document metaphor function rather than just look sketchy.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Marginalia ("too big?", "tighten ↑") sits outside the content flow, kept separate from the shared copy. A screen reader gets the real content cleanly, but a sighted user relying on the marginalia for context sees information a screen-reader user does not — worth being deliberate about if a marginalia note ever becomes load-bearing rather than decorative.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Final, production-facing UI. The whole premise is a working, unresolved document — dimension lines, "final copy pending" notes; shipping it as the actual finished interface undercuts user confidence that the product is complete.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

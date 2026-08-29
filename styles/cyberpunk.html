@@ -492,6 +492,26 @@
           <dd>Rain falls continuously on two CSS loops (1.6s and 2.4s linear, offset angles) — muted with every other CSS animation sitewide under <code>prefers-reduced-motion</code>; kept as two layers rather than consolidated to one, since the offset angle, speed and opacity between them is what reads as depth (a single sheet flattens back into a repeating texture, and the guard already stops both outright, so there is no motion cost to keeping two). JS drives an <code>IntersectionObserver</code> that fills each card's magenta meter to its <code>data-w</code> value over 1.4s when the card scrolls into view — a CSS <code>width</code> transition, also muted by the same sitewide rule — and rewrites the hero's status string on a <code>setInterval</code> every 2.4s from a fixed list of system messages, so the page reads as live telemetry; that interval is checked live against <code>prefers-reduced-motion</code> and never starts under it, so the line holds on its first message rather than cycling text a user asked to keep still. Hovers are hard-edged at 150ms linear — borders and glows snap on; nothing eases. Two HUD tiles beside the nav links move the nav between the top strip and a fixed left column on a single <code>--rail</code> token, and move the sky between day and night on <code>data-theme</code>; both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Using one neon colour. The page's actual rule is two neons that fight — cyan against magenta — plus a third amber reserved strictly for hazard and warning; a single-neon page is closer to synthwave or generic neon branding than to this style's deliberate colour conflict.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The hero's status string rewrites every 2.4s from a fixed message list specifically to read as live telemetry. A real product pulling this from an actual live data source needs the same reduced-motion gating this page already applies to the fake version.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Two neons plus dense HUD furniture (status strings, meters, readouts) in the page corners is a lot of simultaneously-competing information. Sighted users with attention-related conditions get the full ambient-data barrage with no way to quiet it short of the sitewide reduced-motion toggle.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Interfaces where users need to find real status information quickly. This style manufactures decorative telemetry specifically to look busy; a monitoring or ops dashboard adopting this treatment literally would bury real alerts under decorative ones.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

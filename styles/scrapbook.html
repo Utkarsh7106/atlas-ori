@@ -681,6 +681,26 @@
           <dd>The three cards are physically draggable: pointer events set <code>position</code> offsets so a card can be pulled anywhere on the board, gaining a lifted shadow and a raised z-index while held, with the cursor switching from <code>grab</code> to <code>grabbing</code>. On release each card keeps a small random re-rotation so it never lands perfectly straight, and a gesture that is taken away mid-drag — an OS swipe, a system dialog — ends through the same path rather than leaving a card stranded at its held size. Hovers add lift only — paper does not glow, slide, or fade. Everything that is not a drag now answers a press the way paper does: the soft blur goes, the hard paper edge tightens, and the object drops a pixel onto the board, held a minimum 170ms so a brief tap still registers. That press is scoped to controls alone — the drag keeps sole ownership of <code>pointerdown</code> on a card — and every duration on the page is a CSS transition, so the sitewide reduced-motion rule mutes all of it without the page testing for it. Two filing tabs are stuck to the strip: one stands that strip in the gutter down the binding edge, moving the whole board by a single <code>--gutter</code> token and turning its torn edge through ninety degrees with it; the other takes the lamp off. A tab that is set is not tinted but <em>stamped</em>, taking the same ink block the card labels use. Lamp off is the same desk late rather than a different palette: the kraft goes to shadow and every prop dims with it, except that you cannot write on a dark page with a biro, so the hand switches to a white gel pen — and the washi tape is the one thing that does not change, because it is the same roll. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Rotating every paper object by the same angle. The rule is distinct values every time, never repeating the same angle twice in a row; uniform rotation reads as a "tilted template" effect rather than genuinely scattered, individually-placed pieces.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>Cards are genuinely pointer-draggable, with explicit handling for an interrupted drag — an OS swipe or system dialog mid-gesture — so a card can't get stranded at its held size. A simplified port that drops that interruption handling can leave draggable elements visibly broken after any OS-level interrupt.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Free-form pointer dragging is the primary interaction with no stated keyboard equivalent in this page's own Motion/Interaction field. A keyboard-only user can still reach all content and the standard controls, but can't reproduce the drag itself — worth flagging explicitly if this pattern is ever used for something that isn't purely decorative.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Data-driven or frequently-updated content sets. Hand-placed rotation, tape and paperclip positioning are authored per object; content that changes often or is user-generated can't be art-directed at that level and needs a randomised-but-bounded approach instead.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

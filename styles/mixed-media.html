@@ -620,6 +620,26 @@
           <dd>All transitions use <code>steps(2)</code>, so state changes jump like a two-pass print rather than easing — including the pressed state on every control, which reuses that same 160ms step so a touch tap is answered inside the tap. JS handles misregistration: hovering a card offsets its coloured plate by a randomised −6 to +6px on both axes, as if that plate went through the press out of alignment, and it snaps back on leave; the plate is a decorative <code>aria-hidden</code> layer, so no type ever moves. Clicking <em>Explore</em> re-shuffles the rotation of every ransom-note word, re-pasting the headline. Both are one-shot writes driven by a discrete event rather than animation loops, so nothing keeps moving on its own; the CSS steps that carry them are muted by the sitewide reduced-motion rule. Two stamped controls are pasted onto the tape strip: one moves that strip from the head of the sheet to the left margin through a single <code>--rail</code> token, the other changes the stock — the same three riso inks pulled on black stock instead of newsprint, with the overprint operator following the stock so plates still build a third colour where they cross rather than hiding one another; on black stock the painted washes are screened back to a lower ink density and every small cutting takes the 2px keyline the larger ones already carry, because a black cutting on black stock has no edge of its own. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Layering effects with normal blend mode instead of multiply. The "third colour where plates overlap" effect is entirely a <code>mix-blend-mode: multiply</code> property; stacking coloured layers at normal blend mode just produces flat overlap, not the riso-overprint interaction that defines the style.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>Multiply only holds on light stock — the page explicitly swaps to <code>screen</code> blend mode under dark theme, since multiply resolves to solid black on a dark ground. Porting this technique into a dark-mode-capable product needs that same conditional swap, not multiply everywhere.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>The misregistration hover effect (a card's coloured plate offsets randomly on hover) is implemented as a decorative <code>aria-hidden</code> layer, with no real type ever moving. Letting actual text participate in that offset, instead of keeping it purely decorative, would make body copy jitter and become harder to read on hover.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Brand contexts requiring visual consistency across touchpoints. Three simultaneous typefaces per word, randomised plate misregistration and grain layered per element are deliberately inconsistent by design, which fights template-based or multi-channel systems that need predictable output.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

@@ -480,6 +480,26 @@
           <dd>JS builds the macramé fringe: 48 cords of randomised length (18–52px) with randomised animation delays, each swaying ±3deg on a 4.6s ease-in-out loop so the row ripples rather than moving as a block — muted with everything else on the page under <code>prefers-reduced-motion</code> sitewide. Everything else is soft and slow at 350–400ms: cards lift 5px onto a hard offset shadow, buttons rise 3px and warm from sienna to terracotta, nav links change colour under their dotted underline. Two controls sit beside the nav links in the same dotted-underline language: one moves the nav between the top strip and a fixed left column by setting a single <code>--rail</code> token, the other moves the hour between day and night on <code>data-theme</code>; both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Treating "boho" as one generic pattern-and-fringe look. This page's own Era/Origin field already makes the point directly: the textile, macramé and adobe devices come from specific living craft traditions — Amazigh weaving, Diné and Pueblo textile, Latin American macramé — worth naming rather than folding into one undifferentiated surface.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The 48 macramé fringe cords are DOM-generated with randomised length and per-cord delay specifically so the row ripples rather than moving as one block. A static, pre-authored fringe graphic loses the hand-knotted, uneven quality the randomisation exists to produce.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>The CTA field and its two solid buttons hold fixed colour values in both themes, unlike the rest of the palette, which inverts. Any new interactive element needs an explicit decision about which behaviour it follows, or it will drift out of the fixed-vs-inverting pattern this page establishes.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Minimal or corporate-neutral products. The warm earth palette, arch-shaped containers and hand-craft texture are maximally specific cultural signifiers; used generically, without the sourcing care this page itself models, the style risks reading as costume rather than reference.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

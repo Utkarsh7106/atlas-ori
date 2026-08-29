@@ -615,6 +615,26 @@
           <dd>Slow to the point of near-stillness. An <code>IntersectionObserver</code> fades each block in over 2.4s with an 8px rise, staggered 220ms apart, and unobserves so nothing repeats. Hovers take 1.1–1.6s: the button's asymmetric radius morphs to a <em>different</em> asymmetric radius, as though the vessel were re-thrown. The ensō rotates once every 90 seconds — slow enough that motion is felt rather than seen. A press is the exception to the slowness and has to be: a finger is gone long before a 1.2s ease has moved, so pressing any control delivers the state it would otherwise settle into — the filled form, the darkened link — at once, and lets it relax back at the page's own pace when the finger lifts. Nothing here loops or carries momentum: the reveal is a single write per block that then stops observing, and every duration above is a CSS transition or animation, so the sitewide reduced-motion rule mutes all of it without the page needing to test for it. Two marks are pressed into the nav strip: one turns that strip through ninety degrees to stand in the left margin, moving the whole sheet by a single <code>--ma</code> token — 間, the interval, made structural; the other changes the hour. Dusk is not an inversion but the same room later: the wall goes unlit, the ink becomes the lit thing so it still reads, the matter only darkens, and the kintsugi is the one value that rises, because gold is what still catches a low light. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to the control that opened it.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Treating "imperfect" as "unfinished," or applying it as a filter over an otherwise-symmetric layout. This page's asymmetry is systematic — no two columns share a width, no two cards align vertically — a deliberate, calculated irregularity, not sloppiness left unresolved.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>Eight-value asymmetric <code>border-radius</code> on every rounded form is a real per-component authoring cost — each new element needs its own bespoke set of values, not a reused token, to keep "no edge is a true arc." Easy to skip under deadline pressure and collapse back to a symmetric radius.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Documented directly on the page: warm sumi-ink text on a lime-washed ground and its close relatives sit close enough to the contrast floor that any new secondary-text colour needs an explicit check, not an assumption it inherits enough contrast from the existing warm-neutral palette.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>High-density transactional UI — checkout, forms, dashboards. The 1.1–2.4s transitions and generous, unequal whitespace are the entire point of the style, and both directly cost time and predictability where users want speed and consistency.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

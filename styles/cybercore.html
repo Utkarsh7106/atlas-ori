@@ -446,6 +446,26 @@
           <dd>JS decodes the headline on load — each character resolves from random glyphs (<code>#$%&amp;@01</code>) to its final letter over ~900ms — then fires a channel-split glitch burst at randomised 2.6–6s intervals by toggling a <code>glitching</code> class that runs both offset keyframes twice at <code>steps(2)</code>. Both the decode loop and the glitch scheduler are checked live against <code>prefers-reduced-motion</code> and skipped outright under it — a CSS mute can't reach a <code>setInterval</code>-driven text rewrite or a class toggle, so the headline instead renders its final text immediately and stays still. The CRT's own mains-flicker keyframe on <code>&lt;body&gt;</code> is CSS-only and already muted by the sitewide rule. A block cursor blinks at 1s <code>steps(1)</code>, also sitewide-muted. Hovering a nav item or button inverts it instantly to black-on-phosphor with no easing. Two more bracketed tokens beside the nav links move the nav between the top strip and a fixed left column on a single <code>--rail</code> token, and swap the CRT between reverse and normal video on <code>data-theme</code>; both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Treating this as "cyberpunk but green." The organising idea, per its own Era/Origin field, is the machine's own interface rather than the world around it: exactly one phosphor hue at three brightness levels plus one error colour, monospace everywhere, ASCII box-drawing for structure — a second neon or a proportional font breaks that premise.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>Every transition uses <code>steps()</code> specifically so state changes read as digital, never eased. Reusing an easing curve from elsewhere in a component library immediately contradicts the page's one formal rule: "there is no interpolation anywhere on the page."</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>This page already had to raise its dim-trace colour from an earlier <code>#0a3d17</code> (1.69:1) for contrast — a true-black, single-phosphor-hue palette has very little room to place a second, dimmer tone before it silently fails. Any future "quieter" variant of the phosphor green needs the same explicit ratio check this page's own colour-palette comment documents.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Any consumer-facing or broad-audience product. A true-black, single-hue, monospace-only interface reads as a specialist tool by design, and using it for a general audience actively signals "not for you" through genre convention alone.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

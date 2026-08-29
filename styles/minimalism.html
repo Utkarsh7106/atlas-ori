@@ -478,6 +478,26 @@
           <dd>Restrained and short. Nav links grow a 1px underline from the left over 280ms (<code>scaleX</code> with a left transform-origin). The button crossfades background and text colour over 220ms. An <code>IntersectionObserver</code> reveals the hero, cards, CTA and component reference once each with a 10px rise and fade over 600ms, then unobserves — nothing animates twice, nothing loops. Two controls sit in the nav at the page's 11px label size: one moves the nav between a top bar and a fixed left rail by changing a single <code>--rail</code> token, the other flips <code>data-theme</code> so the whole page re-resolves through five colour tokens; both persist to <code>localStorage</code> and reflow over 280ms. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background; it fades in over 220ms and returns focus to its trigger. Every transition here is CSS, so <code>prefers-reduced-motion</code> mutes all of it.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Treating "minimal" as "less content" rather than less ornamentation — cutting copy instead of cutting borders, shadows and radius, when the actual mechanism is one hairline as the only separator and zero border-radius or shadow anywhere.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>One unpaired typeface at three weights means every hierarchy decision rides on size and the single accent-colour event (the outline-to-solid button). Adding a second surface without that same discipline — a second font, a shadow "just this once" — erodes the whole system fast.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Body copy sits at <code>#5c5c5c</code> on white and the nav's hover cue is a 1px underline that grows from the left — both legible, but low-affordance: a user relying on link-shape recognition rather than colour has almost no non-colour cue until hover or focus reveals the underline.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Interfaces where users need to scan or compare many similar items quickly, like a dense dashboard or comparison table. The whitespace-as-hierarchy approach that works at three cards collapses information density at scale.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

@@ -435,6 +435,26 @@
           <dd>Deliberately quiet: 150ms on hover states, 200&ndash;250ms on theme and dialog transitions, nothing longer. The fixed docs-style theme switch stays exactly where it was — outside the nav, so the navigation stays exactly three links — and still flips <code>data-theme</code> on <code>&lt;html&gt;</code> between <code>dark</code> and <code>light</code>; because every colour is a token, the entire page re-renders from that one attribute. A second control now sits inside the nav, a token-styled <code>Nav</code> button that moves the navigation between the top strip and a fixed left column on a single <code>--rail</code> token, exactly as it does on every other style in this set. Both choices read from and persist to <code>localStorage</code> before first paint, in a try/catch, under the shared <code>atlas-theme</code> key this page already used and a page-scoped <code>atlas-dmui-nav</code> key for the new nav mode &mdash; dark is this page's own fallback where every other style falls back to light. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Inverting a light design — white to black, black to white — rather than building tokenised surfaces. This page aliases every colour through custom properties so the light theme is a second token block over the same components, never a fork; a literal invert produces the pure-black/pure-white values its own rules explicitly ban.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The whole system depends on nothing being a hardcoded literal. A new component shipped with a literal hex value instead of reading the existing tokens will silently fail to re-theme when <code>data-theme</code> flips, and won't be caught until someone actually toggles the switch.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>The page treats halation — glow around light text on dark grounds — as a first-class concern by capping text at ~91% white instead of pure <code>#fff</code>. Reaching for <code>#ffffff</code> "for extra contrast" actually makes large blocks of text harder to read at night, not easier.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Print-adjacent or content-heavy reading contexts. Dark backgrounds fight established reading conventions, and printing a dark-mode-designed page produces unreadable output without a dedicated print stylesheet.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

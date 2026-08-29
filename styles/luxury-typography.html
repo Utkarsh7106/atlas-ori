@@ -468,6 +468,26 @@
           <dd>JS splits the headline into individual words wrapped in <code>.word</code> spans and reveals them in sequence — 14px rise plus fade, 1s each on <code>cubic-bezier(.16, 1, .3, 1)</code>, staggered 90ms apart — so the line assembles itself rather than appearing. That stagger is untouched from before this pass. The actual motion is a CSS transition triggered by a discrete class write, so reduced-motion mutes every word to an instant, imperceptible appearance without any script-side guard — confirmed, not assumed. Hovers are unusually slow at 600–700ms; buttons gain 14px of horizontal padding as their rule recolours to champagne, so the type appears to breathe outward. Two controls join the nav in the same tracked-capital, wipe-underline language as every other link. One relocates the bar between the top strip and a fixed left column by moving a single <code>--rail</code> token — the CTA's full-bleed math carries an extra term so its black field still reaches the true viewport edge once the column shifts the page's centre; the other moves the hour between day and dusk on <code>data-theme</code>. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Filling the empty third of the page with something. The point, per this page's own Layout Logic and Replication Rules, is that at least a third of the page stays empty; using that space for another CTA or badge directly undoes the restraint the style is built on.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The champagne accent uses two different token values depending on context — a lighter one scoped to the one black field's hover text, a deepened one everywhere else on ivory — because a single value can't clear AA in both. Reusing only one of the two tokens in a new component risks silently failing contrast wherever it wasn't tuned for.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>0.42–0.46em letter-spacing at 9px is extreme by any standard. Screen readers are unaffected, but sighted low-vision users relying on browser zoom will see labels break their fixed text-indent alignment at high zoom, since the indent is tuned to a specific tracking value at default zoom.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Data-dense or information-first products. A scale ratio this extreme — roughly 13:1, nothing in between — and this much reserved emptiness actively fight any interface that needs to show many things at once.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

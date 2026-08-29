@@ -543,6 +543,26 @@
           <dd>JS reads pointer position and translates each orb by its own <code>data-depth</code> factor (+26, −34, +18), so the field behind the glass parallaxes as the cursor moves and every pane's refraction shifts with it; movement is damped by lerping toward the target each frame in <code>requestAnimationFrame</code>. Because that loop is script-driven rather than CSS, it is guarded by a <code>matchMedia</code> check and the orbs are left at rest when <code>prefers-reduced-motion</code> is set. Panes lift −6px and raise their fill alpha on hover over 350ms; buttons brighten and lift 2px, and every control takes a pointer-driven pressed state held briefly so a touch tap registers. Two glass pill controls sit in the nav: one stands that same nav pane on end as a fixed rail through a single <code>--rail</code> token, the other flips <code>data-theme</code>, which deepens the void and raises the glass alpha together so the panes keep reading as sheets rather than flattening into dark cards. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Applying blur and transparency over a flat or static background. Glass needs something saturated and moving behind it — the page's own replication rule says so directly; glass over nothing reads as flat grey, not glass.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd><code>backdrop-filter</code> is GPU-expensive, especially layered (<code>blur</code> plus <code>saturate</code>) across multiple stacked panes. A real product with many glass panels on one screen, not just three cards, can visibly tax a lower-end device's compositor.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Body text sits at 72% white alpha over a blurred, moving background. Contrast is only guaranteed against the specific orb positions this page tests; a differently-coloured or user-inverted background could push some text below 4.5:1 without any code change flagging it.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Data-dense enterprise software or anything read for long stretches. Semi-transparent text over moving colour is fatiguing well before the novelty wears off, and any forced-contrast accessibility override breaks the effect entirely.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

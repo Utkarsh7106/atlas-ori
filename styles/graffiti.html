@@ -478,6 +478,26 @@
           <dd>JS generates the drip row under the piece — 11 drips at randomised x positions under the painted letters, heights (14–58px) and widths — so the paint runs differently on every load; these are static per-load shapes, not animated. Clicking <em>Explore</em> fires an aerosol burst: 60 particles of random size and hue scattered in a cone via the Web Animations API, fading over 700–1100ms and cleaning up after themselves — checked live against <code>prefers-reduced-motion</code> at click time and skipped outright under it, since a 60-particle burst is exactly the kind of motion that guard exists to stop and a CSS mute can't reach an imperative <code>element.animate()</code> call. Card hovers run a fresh drip down 44px over 550ms; that and every other hover transition are muted sitewide under reduced motion. All hover transitions are 120ms linear — spray paint does not ease. Two stickers beside the nav links match its own language: one moves the nav between the top strip and a fixed left column on a single <code>--rail</code> token, the other moves the wall between daylight and shadow on <code>data-theme</code>; both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Drawing every paint drip identically. The page generates 11 drips at randomised position, height and width per load specifically because "paint that runs identically every time reads as a font, not a can," per its own Replication Rules; a fixed, reused drip graphic undercuts that illusion.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The aerosol burst (60 particles via the Web Animations API) is checked against <code>prefers-reduced-motion</code> live at the moment of the click, not just once on page load. A port that only checks the media query at load time keeps firing full bursts for a user who enables reduced motion mid-session.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>The clearest statement on this site of a style carrying real-world weight beyond decoration, now written into its own Era/Origin field: handstyle writing began as Black and Puerto Rican youth culture, and the marks referenced here carry "a long history of being criminalised" — worth naming in any production use of this aesthetic, not just this demo page.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Any brand or product context without a genuine connection to the culture and history the aesthetic comes from. Borrowing aerosol and handstyle visual language as pure decoration, without the acknowledgment this page itself models, is exactly the "texture to borrow" framing its own documentation warns against.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

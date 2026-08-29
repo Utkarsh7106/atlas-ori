@@ -503,6 +503,26 @@
           <dd>Idle life first: JS blinks each face independently on a randomised 3.2–9s timer by adding a <code>blinking</code> class for 130ms, and every character has its own offset so they never blink in unison. Because that timer is script-driven rather than CSS, it is guarded by a <code>matchMedia</code> check and every face simply holds still when <code>prefers-reduced-motion</code> is set. The mascot breathes on a 3.4s loop and waves one arm from −34deg to +8deg on a 1.5s loop, both plain CSS <code>animation</code>, so the sitewide reduced-motion rule mutes them on its own. Reaction second: hovering a card adds <code>happy</code>, which squints the eyes, widens the mouth by 1.35× and fades in the blush over 220ms with spring easing, while the card lifts 8px and tilts −1.5deg. Buttons depress into their flat shadow on <code>:active</code>. Two controls in the nav reuse the links' own hop-and-tilt hover: one moves the nav from a top bar to a left rail by relocating its flat shadow to the opposite edge, the other dims the backstage between panels from day to night, leaving every character's own colour untouched. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code>, another card in the same system, which supplies the focus trap, Escape and an inert background and returns focus to its trigger on close.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Treating the mascot as a static illustration rather than a component. The actual system is one reusable <code>.face</code> primitive (eyes, mouth, blush) scaled per character with custom properties (<code>--eye</code>, <code>--mouth</code>, <code>--blush-x</code>); hand-drawing each character separately loses the reusable personality system that is the actual point.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>Idle blinking runs on independent, randomised per-character timers (3.2–9s) specifically so characters never blink in sync. A shared timer across all characters looks robotic and synchronised, undercutting the "alive" effect the randomisation exists to create.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>A face that blinks and reacts on hover is exactly the kind of ambient motion that is disorienting for vestibular- or attention-sensitive users, even at small scale. The <code>matchMedia</code> guard checked before the blink timer starts is doing real work here, not standing in as a formality.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Regulated or high-stakes contexts (healthcare, legal, financial services) where a character reacting to the user can undercut perceived authority, or any broad professional B2B audience where personality-led UI reads as consumer rather than credible.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

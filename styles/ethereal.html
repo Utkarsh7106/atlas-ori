@@ -457,6 +457,26 @@
           <dd>Everything is long and weightless. Blocks rise 18px and fade in over 1.8s via <code>IntersectionObserver</code>, staggered 260ms — muted with every other CSS transition sitewide under <code>prefers-reduced-motion</code>. Hovers take 1–1.2s: type gains a violet glow, halos expand, and buttons breathe outward by animating <code>letter-spacing</code> together with <code>text-indent</code>, so tracking widens without the two drifting out of sync. JS spawns 26 luminous motes at random positions that drift upward and sideways for 14–26s each on individual Web Animations loops, re-seeding when they finish, so the air is never still — that spawn loop is checked live against <code>prefers-reduced-motion</code> and skipped outright under it, since a CSS mute can't reach an imperative <code>element.animate()</code> call. Two tracked-capital labels beside the nav links move the nav between the top strip and a fixed left column on a single <code>--rail</code> token, and move the hour between day and night on <code>data-theme</code>; both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Adding a container "just this once" — a card, a border, a filled button. The style is defined by having none, per its own Replication Rules; one bordered box anywhere breaks the weightless, floating premise for the whole layout.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>Letter-spacing and text-indent must always change together, in both the CSS value and any hover transition, or — per this page's own rules — "the two visibly fall out of step." A component that animates tracking without the matching indent will visibly drift mid-transition.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Already named directly in this page's own Replication Rules as a structural risk, not a hypothetical: an all soft-violet-grey-on-near-white palette "risks failing body-text contrast without ever looking obviously wrong," which is why every secondary-text colour has to be checked against its actual ground rather than assumed safe.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Information-dense or task-driven interfaces. With no cards, no borders and no filled buttons, the style has no built-in way to group or separate competing content once there is more than a handful of it on screen.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

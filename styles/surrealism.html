@@ -496,6 +496,26 @@
           <dd>The page refuses to behave, within limits. JS makes the eye's iris track the pointer within an 11px radius, so it watches the visitor — muted under reduced motion, since the tracking is a discrete style write each pointermove rather than a running loop. The <em>Explore</em> button flees: when the pointer comes within 130px it translates away over 900ms on <code>cubic-bezier(.16,1,.3,1)</code>, clamped so it can never leave its own container, and only for three dodges — the fourth approach lets it settle back to place and stay put, catchable, rather than fleeing forever. Under reduced motion the flee behaviour is skipped outright rather than merely sped up, so the button never moves at all; on touch, a tap does not generate the pointermove the flee logic listens for, so the button is reachable normally without ever needing to be caught. The CTA heading is split into per-character spans that melt on hover — each letter stretches to <code>scaleY(1.9)</code> and slides down with a staggered delay, muted the same way as every other transition-driven effect on the page. Nav links and the two controls beside them leap upward and rotate on hover. One control relocates the bar between the top strip and a fixed left column by moving a single <code>--rail</code> token; the other moves the hour between day and night on <code>data-theme</code>. Both persist to <code>localStorage</code>. The cursor itself is a crosshair everywhere except real interactive elements, which show a pointer on hover so the crosshair never hides what is clickable. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Breaking every rule on one element at once — wrong scale and wrong shadow and wrong context together. This page's own rule is exactly one broken rule per element; stacking several simultaneous "impossible" devices on one object reads as noise, not the isolated wrongness that makes surrealism unsettling.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The fleeing Explore button is explicitly clamped to its own container and capped at three dodges before it settles catchable. Copying the "flees from cursor" idea without both limits is a functional trap — an unclamped or infinitely-fleeing button can become genuinely unusable, not just surreal.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Already documented directly on the page as a real, named cost rather than a footnote: "a fleeing element is a real accessibility cost, not just a metaphor," which is why it's clamped, capped, and skipped outright — not merely sped up — under <code>prefers-reduced-motion</code>.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Any interface where the primary action must always be reliably reachable — checkout, critical alerts, accessibility settings. A button that evades the cursor, however briefly or well-guarded, is fundamentally in tension with a "click this now" guarantee.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

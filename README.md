@@ -46,6 +46,10 @@ Every page uses the same machine-parsable structure — a `<dl class="dp">` whos
 | `layout-logic` | Grid/spacing system and alignment rules |
 | `signature-techniques` | 3–5 concrete visual devices |
 | `motion-interaction` | The page's actual JS/hover/transition behaviour |
+| `common-mistake` | The most likely way an imitation of this style gets it shallow or wrong |
+| `production-caveat` | A real engineering/maintenance cost of shipping this style, not just building a demo of it |
+| `accessibility-risk` | A concern genuinely specific to this style's technique — contrast, motion, affordance or focus |
+| `when-not-to-use` | A context or product type this style is a poor fit for |
 | `replication-rules` | Exactly 5 numbered rules for rebuilding the style |
 
 To extract every style's palette programmatically:

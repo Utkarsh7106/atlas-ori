@@ -492,6 +492,26 @@
           <dd>Almost none, by discipline. A 3px red reading-progress bar is fixed at the top and its width is set from <code>scrollTop / (scrollHeight − innerHeight)</code> on a passive scroll listener, clamped to 0–100% and hidden outright when the article already fits the viewport and there is no progress to report — the only motion tied to content length rather than decoration. Nav links reveal a 2px red underline and buttons swap between ink and red over 200ms. Nothing fades in, nothing parallaxes: text should be readable the instant it renders. Two controls are set on the masthead's left to mirror the dateline on its right, in the same 10px Archivo caps the rest of the apparatus uses: one re-sets the masthead as a fixed left-hand standing column by changing a single <code>--rail</code> token, the other switches the edition between day and night, which re-resolves every colour on the page through six tokens; both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Using red as a general accent throughout the page. The rule is red used only on apparatus — kicker, quote marks, progress bar, button — never on body text; colouring headlines or body copy red collapses editorial hierarchy into decoration.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The reading-progress bar computes width from scroll position and is explicitly hidden when the article already fits the viewport. A copy of just the progress-bar CSS without that content-length check shows a permanently-full or nonsensical bar on any short page.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Nothing fades in and nothing parallaxes, "by discipline," specifically so text is readable the instant it renders. Any future addition that reveals text on scroll or hover would be a regression against this page's own stated principle, not just a style deviation.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Short-form or glanceable content (notifications, status updates). The full magazine apparatus — dateline, kicker, standfirst, byline, pull quote, folio — assumes a genuine long-form reading commitment that a two-sentence card can't support.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

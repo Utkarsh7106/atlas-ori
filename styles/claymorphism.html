@@ -643,6 +643,26 @@
           <dd>Bouncy, with overshoot: every hover uses <code>cubic-bezier(.34, 1.56, .64, 1)</code> over ~320ms, lifting cards −10px with a −1deg tilt and buttons −6px at 1.05 scale. Pressing any control applies a JS <code>squish</code> class that scales it to <code>1.06 × 0.9</code> so the clay visibly deforms and springs back — driven from <code>pointerdown</code> and held a minimum 170ms, because a touchscreen resolves a click only after the finger has gone, and the deformation has to happen while it is still there. Three background blobs drift and scale on 13–21s loops. Every one of those is a CSS transition or animation and a single class write per press, so the sitewide reduced-motion rule mutes all of it and no motion here needs to test for it. Two small lumps are set into the bar: one turns the bar on its side to stand in a shelf down the left margin, moving the whole page by a single <code>--shelf</code> token; the other takes the studio lights down. A control that is on is clay pressed <em>into</em> the bar rather than sitting on it — the same three-part recipe run backwards, highlight and shade swapped ends and the cast turned inward. Lights down keeps the four pigments exactly as they are, because loudly pastel is the point, and rebuilds the extrusion instead: a cast shadow is an absence of light and cannot carry depth on a dark ground, so it becomes a coloured glow, which is what the coloured shadow was already described as doing. Both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Applying neumorphism's monochrome logic to clay's inflated radii. The actual differentiator, per this page's own rules, is that clay objects use colours that differ from the ground — bright pastels on a soft gradient; one hue everywhere produces neumorphism with rounder corners, not clay.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The squish-on-press interaction is a JS class held a minimum 170ms specifically to survive touch's "finger already gone" timing. Copying only the CSS <code>cubic-bezier</code> easing without that minimum-hold logic makes the press feedback disappear on real touch devices even though it works fine with a mouse.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Shadows are tinted to each card's own hue, which adds a contrast surface to check per card colour. A card colour introduced later without re-checking its own tinted-shadow-adjacent text is exactly the kind of one-off value this project's per-page palette review exists to catch.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Serious or professional B2B tooling. The bouncy overshoot easing and inflated, toy-like forms read as playful in a way that undercuts perceived trustworthiness for high-stakes tasks.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

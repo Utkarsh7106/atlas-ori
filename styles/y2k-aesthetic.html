@@ -507,6 +507,26 @@
           <dd>JS drops a sparkle at the pointer roughly every 45ms of movement — a ✦ or ✧ that scales up, drifts 22px and fades over 700ms before removing itself via the Web Animations API, capped so the DOM never accumulates. That call is checked live against <code>prefers-reduced-motion</code> and skipped outright under it, since a CSS mute can't reach an imperative <code>element.animate()</code>. A <code>pointermove</code> trail has no equivalent on a tap, so a <code>pointerdown</code> from a touch pointer drops a small fixed burst of sparkles at the tap point instead, giving touch the same feedback a mouse gets for free. Hover states use <code>filter: brightness() saturate()</code> plus a 2px lift rather than colour changes, so plastic looks catch the light; the foil layer on cards rotates 38deg and scales 1.5 over 600ms. Buttons depress on <code>:active</code> by swapping their outer shadow for an inset one. Two gel pills beside the nav links match that language: one moves the nav between the top strip and a fixed left column on a single <code>--rail</code> token, the other swaps the plastic's colourway on <code>data-theme</code>; both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Using a dark or muted palette for "Y2K vibes." The page's own rule states this directly: Y2K is optimistic, not dystopian, and needs a light iridescent ground; a dark Y2K page is actually reaching for cybercore or cyberpunk's register instead.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The sparkle-trail cursor effect drops a new element roughly every 45ms of pointer movement, capped so the DOM never accumulates. A copy of the visual idea without that cap risks unbounded DOM growth on a page with a very active mouse user.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Hover states on gel buttons use CSS <code>filter</code> (brightness/saturate) rather than a colour swap, and filters compound non-linearly rather than as a simple combined multiplier. Any new hover treatment on this page needs its worst-case contrast checked at the actual gradient stop boundaries, not estimated from the filter values alone.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Interfaces trying to read as contemporary or premium. Chrome word art, chunky gel buttons and chip textures are specifically a period signifier; using them outside a deliberate nostalgia context reads as dated rather than stylish.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

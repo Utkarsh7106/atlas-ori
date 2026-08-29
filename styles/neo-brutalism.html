@@ -501,6 +501,26 @@
           <dd>Physical and mechanical, all at 80ms linear — no easing curves. Hovering a card or button moves it −2px on both axes and grows the shadow to 9px; pressing it translates +6px into its own shadow, which collapses to 0 so the element appears to depress into the page. Every interactive element also carries a hard 3px offset focus ring in the same vocabulary — no blur, no radius. JS counts the hero badge number from 00 up on load using <code>requestAnimationFrame</code>, padded to two digits, reading its target from a <code>data-target</code> attribute; because that is a script-driven animation rather than CSS, it is guarded by a <code>matchMedia</code> check and the final figure is written immediately when <code>prefers-reduced-motion</code> is set. Two controls sit in the nav as the same block primitive at pill scale: one moves the nav between a top bar and a fixed left rail through a single <code>--rail</code> token, the other flips <code>data-theme</code>; pressed state is a flat fill swap, never a tint, and both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Adding a gradient or soft shadow "to make it pop." The rule is strictly flat colour — no gradient, texture or pattern anywhere; one gradient undoes the entire flat-colour-plus-hard-shadow logic that gives the style its graphic punch.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The single reusable <code>.block</code> primitive (4px border, 6px hard shadow, 0 radius) needs every new component to be built as a variant of it. A one-off "this button doesn't need the full block treatment" breaks the visual system's consistency immediately.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>3px and 4px border weight is doing double duty as both decoration and hierarchy signal — badges at 3px sit inside 4px blocks. A screen-magnifier user zoomed in tight may not perceive that weight difference as meaningfully distinct from ordinary zoom artefacts.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Long-form content or data-heavy interfaces. Hard shadows and thick borders on every block get visually loud fast once there are more than a handful of blocks on screen at once.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>

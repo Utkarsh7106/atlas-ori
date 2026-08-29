@@ -611,6 +611,26 @@
           <dd>Mechanical, not easing-heavy. Pressing <code>G</code> (or clicking the hint) toggles a fixed 12-column red overlay via a class, fading in over 250ms linear; it also auto-reveals for 1.1s on first load to declare the system. Buttons and nav links swap between black and red on hover over 180ms linear. No transforms, no scroll animation — movement would contradict the objectivity of the style.</dd>
         </div>
 
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Applying the grid to type sizes but not to placement. The real discipline is that every block declares an explicit column span — headline 1–10, deck 10–13, and so on — not just "loosely aligned to 12 columns."</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>The discontinuous type ramp (nothing between 15px and 46px) means any new component needs a deliberate size decision, not an intermediate value. Teams tend to fill that gap the first time a designer isn't looking.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>The single red signal colour carries real meaning — CTA, numerals, the mark. A user with red-green colour vision deficiency loses that "this is the signal" cue and has to rely on position and weight alone, which the grid-and-mono system does provide as a fallback.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Content-first reading experiences — long-form articles, documentation — where 12-column column-span rigidity fights natural text measure rather than serving it.</dd>
+        </div>
+
         <div class="dp-row" data-field="replication-rules">
           <dt>Replication Rules</dt>
           <dd>
