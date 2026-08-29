@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -13,7 +13,12 @@
        never pure white text, never a glow. Everything is legible,
        calm and functional — the discipline is the style.           */
 
-    :root[data-theme="dark"]{
+    /* Every other style in this set treats bare :root as its LIGHT
+       default and keys dark off [data-theme="dark"]. This page is
+       the deliberate exception: its whole premise is dark mode, so
+       bare :root — and the no-script fallback — stays dark, and
+       [data-theme="light"] is the override block instead. */
+    :root{
       --bg:#0b0d12;          /* app background, not #000        */
       --surface-1:#12151c;   /* cards, nav                      */
       --surface-2:#1a1f29;   /* raised: inputs, hover, chips    */
@@ -25,6 +30,7 @@
       --accent-quiet:rgba(109,143,255,.14);
       --success:#3ddc97;
       --shadow:0 1px 2px rgba(0,0,0,.6), 0 12px 28px -14px rgba(0,0,0,.9);
+      --rail:0px;
     }
     /* The same component set, one token block later. */
     :root[data-theme="light"]{
@@ -48,6 +54,7 @@
       font-size:15px;
       -webkit-font-smoothing:antialiased;
       transition:background .25s ease,color .25s ease;
+      padding-left:var(--rail);
     }
     .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(16px,4vw,28px) 72px}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
@@ -63,6 +70,16 @@
       padding:8px 13px;border-radius:8px;transition:background .15s ease,color .15s ease}
     .nav ul a:hover{background:var(--surface-2);color:var(--text)}
     .nav ul a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+    /* Same hairline/elevation language as the nav links, not a new one. */
+    .nav-controls{display:flex;flex-wrap:wrap;gap:2px}
+    .ctl{font:500 13.5px/1 inherit;color:var(--muted);background:none;
+      border:1px solid var(--border);border-radius:8px;padding:8px 13px;cursor:pointer;
+      transition:background .15s ease,color .15s ease,border-color .15s ease}
+    .ctl:hover,.ctl[aria-pressed="true"]{background:var(--surface-2);color:var(--text);border-color:var(--border-strong)}
+    .ctl:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .ctl:active{transform:translateY(1px)}
+    .ctl__v{opacity:.75;font-weight:500}
 
     /* ── Hero ────────────────────────────────────────────────── */
     .hero{padding:88px 0 76px;max-width:44rem}
@@ -114,40 +131,147 @@
       background:var(--accent);transition:transform .25s cubic-bezier(.2,.8,.3,1)}
     :root[data-theme="light"] .switch .knob{transform:translateX(17px)}
 
+    /* ── Component reference ────────────────────────────────── */
+    .component{margin-top:16px;background:var(--surface-1);border:1px solid var(--border);border-radius:12px;
+      padding:40px 28px;text-align:center;box-shadow:var(--shadow);
+      transition:background .25s ease,border-color .25s ease}
+    .component h2{font-size:clamp(22px,2.8vw,30px);font-weight:650;letter-spacing:-.022em;margin-bottom:10px}
+    .component p{font-size:15px;line-height:1.6;color:var(--muted);max-width:52ch;margin:0 auto}
+    /* .cta-btn's bordered face, standalone: --accent/#fff (the solid
+       .btn) already falls to 2.99:1 in dark mode (pre-existing, not
+       touched here — see the shipped report), so this new trigger
+       reuses the pairing that already clears AA instead. */
+    .btn-outline{display:inline-block;margin-top:8px;font-size:14px;font-weight:600;color:var(--text);
+      background:var(--surface-2);border:1px solid var(--border-strong);padding:11px 22px;border-radius:9px;
+      transition:background .15s ease,border-color .15s ease}
+    .btn-outline:hover{background:var(--bg);border-color:var(--accent)}
+    .btn-outline:active{transform:translateY(1px)}
+    .btn-outline:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+    /* ── Dialog: the same surface ladder, nothing new ─────────── */
+    .dialog{padding:0;border:1px solid var(--border-strong);border-radius:12px;
+      max-width:none;width:min(420px, calc(100vw - 56px));
+      background:var(--surface-1);color:var(--text);box-shadow:var(--shadow)}
+    .dialog::backdrop{background:rgba(0,0,0,.5)}
+    .dialog[open]{animation:dlg-in .2s ease}
+    .dialog[open]::backdrop{animation:bg-in .2s ease}
+    @keyframes dlg-in{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+    @keyframes bg-in{from{opacity:0}to{opacity:1}}
+    .dialog__inner{padding:28px 26px}
+    .dialog h2{font-size:18px;font-weight:650;letter-spacing:-.012em;margin-bottom:10px}
+    .dialog p{font-size:14px;line-height:1.6;color:var(--muted)}
+    .dialog__close{display:inline-block;margin-top:20px;font-size:14px;font-weight:600;color:var(--text);
+      background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;cursor:pointer;
+      padding:10px 20px;transition:background .15s ease,border-color .15s ease}
+    .dialog__close:hover{background:var(--bg);border-color:var(--accent)}
+    .dialog__close:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    .foot{margin-top:16px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;
+      flex-wrap:wrap;gap:16px;background:var(--surface-1);border:1px solid var(--border);border-radius:12px;
+      box-shadow:var(--shadow);transition:background .25s ease,border-color .25s ease}
+    .foot__links{display:flex;gap:4px}
+    .foot__links a{display:block;font-size:13px;font-weight:500;color:var(--muted);
+      padding:7px 12px;border-radius:8px;transition:background .15s ease,color .15s ease}
+    .foot__links a:hover{background:var(--surface-2);color:var(--text)}
+    .foot__links a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    /* The sitewide signature is Dancing Script — this page's own
+       thesis is "load no webfont" (see Typography, Replication Rule
+       5), so the mark keeps its place and words but is set in the
+       platform stack, sized into this page's own 12–15px ramp
+       instead of importing the one face it argues against. */
+    .signature{
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+      font-style:italic;font-weight:600;font-size:15px;line-height:1.2;letter-spacing:0;text-transform:none;
+      color:var(--text);border-bottom:1px solid transparent;padding-bottom:1px;
+      transition:border-color .15s ease}
+    .signature:hover{border-bottom-color:var(--accent)}
+    .signature:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+
     @media(max-width:860px){.features{grid-template-columns:1fr}.hero{padding:56px 0 48px}}
+
+    /* ── Nav ⇄ side column ──────────────────────────────────────
+       The same hairline nav, turned into a fixed left column. */
+    :root[data-nav="side"]{--rail:224px}
+    [data-nav="side"] .nav{
+      position:fixed;top:0;left:0;bottom:0;width:192px;margin:0;padding:20px 16px;
+      flex-direction:column;align-items:flex-start;justify-content:flex-start;
+      gap:18px;overflow-y:auto;z-index:50;border-radius:0;
+      border:0;border-right:1px solid var(--border)}
+    [data-nav="side"] .nav ul{flex-direction:column;gap:2px;width:100%}
+    [data-nav="side"] .nav ul a{width:100%}
+    [data-nav="side"] .nav-controls{flex-direction:column;gap:2px;width:100%}
+    [data-nav="side"] .ctl{width:100%;text-align:left}
+
+    @media(max-width:640px){
+      :root[data-nav="side"]{--rail:0px}
+      [data-nav="side"] .nav{position:static;width:auto;height:auto;margin-top:24px;padding:12px 16px;
+        flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;
+        overflow:visible;z-index:auto;border-radius:12px;border:1px solid var(--border)}
+      [data-nav="side"] .nav ul{flex-direction:row}
+      [data-nav="side"] .nav-controls{flex-direction:row;width:auto}
+      [data-nav="side"] .ctl{width:auto}
+    }
 
     /* ══ DESIGN POINTS — documentation panel ═══════════════════════
        Intentionally neutral and IDENTICAL on all 29 style pages.
        It is reference material, not part of the styled demo above. */
-    .dp-divider{height:0;border-top:1px dashed #a1a1aa;margin:0}
-    .design-points{position:relative;z-index:80;background:#f4f4f5;color:#18181b;padding:72px 24px 96px;
-      border-top:6px solid #18181b;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal}
+    /* ══ DESIGN POINTS — rebuilt in this page's own language ═══════
+       Every colour on this page being a token is the whole thesis,
+       so the reference panel is wired to the same --surface/--text/
+       --border ladder as the demo above rather than a fixed neutral
+       grey — it inverts with everything else instead of sitting
+       apart from it. */
+    .dp-divider{height:0;border:none;margin:0}
+    .design-points{position:relative;z-index:80;background:var(--surface-1);color:var(--text);padding:72px 24px 96px;
+      border-top:1px solid var(--border-strong);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+      font-size:15px;line-height:1.65;letter-spacing:0;text-transform:none;text-align:left;font-style:normal;
+      transition:background .25s ease,color .25s ease,border-color .25s ease}
     .dp-inner{max-width:860px;margin:0 auto}
-    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-      margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid #18181b}
-    .design-points h2{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
-      text-transform:uppercase;color:#52525b;margin:0}
-    .dp-back{font-size:12px;letter-spacing:.06em;color:#52525b;text-decoration:underline;text-underline-offset:3px}
-    .dp-back:hover{color:#18181b}
+    .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+      margin-bottom:28px;padding-bottom:14px;border-bottom:1px solid var(--border-strong)}
+    .dp-actions{display:flex;gap:20px;align-items:baseline}
+    .design-points h2{font:600 12px/1 system-ui,sans-serif;letter-spacing:.2em;
+      text-transform:uppercase;color:var(--muted);margin:0}
+    .dp-skill,.dp-back{font-size:12px;letter-spacing:.06em;color:var(--muted);
+      text-decoration:underline;text-underline-offset:3px;transition:color .15s ease}
+    .dp-skill:hover,.dp-back:hover{color:var(--text)}
+    .dp-skill:focus-visible,.dp-back:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .dp{margin:0}
-    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #d4d4d8}
+    .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid var(--border)}
     .dp-row:first-child{border-top:0;padding-top:0}
-    .dp dt{font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
-      text-transform:uppercase;color:#3f3f46}
-    .dp dd{margin:0;color:#27272a}
+    .dp dt{font:600 12px/1.5 system-ui,sans-serif;letter-spacing:.08em;
+      text-transform:uppercase;color:var(--muted)}
+    .dp dd{margin:0;color:var(--text)}
     .dp dd > ul,.dp dd > ol{padding-left:20px}
     .dp dd > ul{list-style:disc}
     .dp dd > ol{list-style:decimal}
     .dp li{margin-bottom:7px}
     .dp li:last-child{margin-bottom:0}
     .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
-      background:#e4e4e7;padding:1px 6px;border-radius:3px;color:#18181b}
+      background:var(--surface-2);padding:1px 6px;border-radius:3px;color:var(--text)}
     .dp-palette{list-style:none!important;padding-left:0!important}
     .sw{display:inline-block;width:13px;height:13px;border-radius:3px;
-      border:1px solid rgba(0,0,0,.25);vertical-align:-2px;margin-right:8px;background:var(--c)}
+      border:1px solid var(--border-strong);vertical-align:-2px;margin-right:8px;background:var(--c)}
     @media(max-width:660px){.dp-row{grid-template-columns:1fr;gap:8px}.design-points{padding:56px 20px 72px}}
 </style>
+<script>
+  /* Before first paint, so the panel is never the wrong theme and
+     then corrected. Reads only, and only ever writes attributes.
+     data-theme falls back to 'dark' here — the one page in the set
+     where that's the native default, not an override. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }   /* private mode / blocked cookies */
+    }
+    root.setAttribute('data-nav',   read('atlas-dmui-nav', ['top', 'side'],   'top'));
+    root.setAttribute('data-theme', read('atlas-theme',    ['light', 'dark'], 'dark'));
+  })();
+</script>
 </head>
 <body>
 
@@ -160,6 +284,9 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
+      <div class="nav-controls">
+        <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">Nav <span class="ctl__v" id="nav-toggle-value">Top</span></button>
+      </div>
     </nav>
 
     <header class="hero">
@@ -193,9 +320,35 @@
       <a href="mailto:hello@example.com" class="cta-btn">Get in touch</a>
     </section>
 
+    <section class="component" aria-labelledby="component-title">
+      <h2 id="component-title">Component reference</h2>
+      <p>A modal built on the native dialog element — focus trapped, Escape to close, background inert.</p>
+      <br>
+      <a href="#" class="btn-outline" id="dialog-open">Open dialog</a>
+    </section>
+
+    <footer class="foot">
+      <nav class="foot__links" aria-label="Footer">
+        <a href="../index.html">All styles</a>
+        <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+      </nav>
+      <!-- TODO: replace with portfolio link -->
+      <a class="signature" href="#">Built with care</a>
+    </footer>
+
   </div>
 
-  <button class="switch" id="switch" aria-label="Toggle colour theme">
+  <dialog class="dialog" id="dialog" aria-labelledby="dialog-title">
+    <div class="dialog__inner">
+      <h2 id="dialog-title">Component reference</h2>
+      <p>A modal built on the native dialog element. The browser traps focus inside it,
+        closes it on Escape, and makes everything behind it inert. Clicking outside it
+        closes it as well, and focus returns to the button that opened it.</p>
+      <button type="button" class="dialog__close" id="dialog-close">Close</button>
+    </div>
+  </dialog>
+
+  <button class="switch" id="switch" aria-label="Toggle colour theme" aria-pressed="true">
     <span class="mono" id="switch-label">Dark</span>
     <span class="track" aria-hidden="true"><span class="knob"></span></span>
   </button>
@@ -206,7 +359,11 @@
     <div class="dp-inner">
       <div class="dp-kicker">
         <h2>Design Points</h2>
-        <a class="dp-back" href="../index.html">← All styles</a>
+        <div class="dp-actions">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </div>
       </div>
       <dl class="dp">
 
@@ -259,7 +416,7 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>Deliberately quiet: 150ms on hover states, 250ms on theme changes, nothing longer. JS drives a fixed docs-style theme switch — kept outside the nav so the navigation stays exactly three links — which flips <code>data-theme</code> on <code>&lt;html&gt;</code> between <code>dark</code> and <code>light</code>. Because every colour is a token, the entire page including the accent, borders and shadow recipe re-renders from one attribute; the choice is persisted to <code>localStorage</code> in a try/catch and restored on load.</dd>
+          <dd>Deliberately quiet: 150ms on hover states, 200&ndash;250ms on theme and dialog transitions, nothing longer. The fixed docs-style theme switch stays exactly where it was — outside the nav, so the navigation stays exactly three links — and still flips <code>data-theme</code> on <code>&lt;html&gt;</code> between <code>dark</code> and <code>light</code>; because every colour is a token, the entire page re-renders from that one attribute. A second control now sits inside the nav, a token-styled <code>Nav</code> button that moves the navigation between the top strip and a fixed left column on a single <code>--rail</code> token, exactly as it does on every other style in this set. Both choices read from and persist to <code>localStorage</code> before first paint, in a try/catch, under the shared <code>atlas-theme</code> key this page already used and a page-scoped <code>atlas-dmui-nav</code> key for the new nav mode &mdash; dark is this page's own fallback where every other style falls back to light. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
         <div class="dp-row" data-field="replication-rules">
@@ -283,23 +440,47 @@
   /* One attribute drives every colour on the page. */
   (function () {
     var root = document.documentElement;
-    var btn = document.getElementById('switch');
-    var label = document.getElementById('switch-label');
-
-    function apply(theme) {
-      root.setAttribute('data-theme', theme);
-      label.textContent = theme === 'dark' ? 'Dark' : 'Light';
-      try { localStorage.setItem('atlas-theme', theme); } catch (e) {}
+    function store(key, value) {
+      try { localStorage.setItem(key, value); } catch (e) { /* private mode / quota */ }
     }
 
-    try {
-      var saved = localStorage.getItem('atlas-theme');
-      if (saved === 'light' || saved === 'dark') apply(saved);
-    } catch (e) {}
-
-    btn.addEventListener('click', function () {
-      apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    var navBtn = document.getElementById('nav-toggle');
+    var navVal = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navVal.textContent = mode === 'side' ? 'Side' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next); store('atlas-dmui-nav', next);
     });
+
+    var switchBtn = document.getElementById('switch');
+    var switchLabel = document.getElementById('switch-label');
+    function applyTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      switchLabel.textContent = theme === 'dark' ? 'Dark' : 'Light';
+      switchBtn.setAttribute('aria-pressed', String(theme === 'dark'));
+      store('atlas-theme', theme);
+    }
+    applyTheme(root.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+    switchBtn.addEventListener('click', function () {
+      applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+
+    var dlg = document.getElementById('dialog');
+    var openBtn = document.getElementById('dialog-open');
+    var closeBtn = document.getElementById('dialog-close');
+    if (dlg && typeof dlg.showModal === 'function') {
+      openBtn.addEventListener('click', function (e) { e.preventDefault(); dlg.showModal(); });
+      closeBtn.addEventListener('click', function () { dlg.close(); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', function () { openBtn.focus(); });
+    } else {
+      openBtn.hidden = true;
+    }
   })();
 </script>
 </body>
