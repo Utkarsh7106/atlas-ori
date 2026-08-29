@@ -10,6 +10,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
+  /* Skip link: first focusable element on the page, invisible until it
+     receives keyboard focus. Fixed black-on-white/white-on-black box so
+     it reads clearly regardless of this page's own palette or theme. */
+  .skip-link{position:absolute;left:8px;top:-60px;z-index:9999;padding:10px 18px;
+    background:#111;color:#fff;border:2px solid #fff;border-radius:4px;
+    font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif;
+    text-decoration:none;transition:top .15s ease}
+  .skip-link:focus{top:8px}
     /* ══ NEUMORPHISM (SOFT UI) ════════════════════════════════════
        One surface, one colour. Nothing sits ON the page — elements
        are pushed OUT of it or pressed INTO it, using a paired light
@@ -314,6 +322,8 @@
 </script>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<main id="main-content">
 
   <div class="wrap">
 
@@ -531,5 +541,6 @@
     });
   })();
 </script>
+</main>
 </body>
 </html>
