@@ -1,0 +1,155 @@
+/* Iris Solano -- built only from skills/surrealism/SKILL.md. */
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+:root{
+  --sky-top:#cfe0ec;
+  --sky:#a8c4d8;
+  --sky-deep:#7ba0bd;
+  --sand:#e8d9c3;
+  --panel:#f6f2ea;
+  --ink:#1c2733;
+  --shadow:#5a6b7d;
+  --flesh:#e5b5a0;
+  --flesh-icon:#a04f2c;
+  --cloud:#f6f2ea;
+  --heading-scrim:rgba(28,39,51,.5);
+}
+
+body{
+  background:radial-gradient(120% 70% at 50% 0%, var(--sky-top) 0%, var(--sky) 34%, var(--sky-deep) 62%, var(--sand) 100%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:"Cormorant Garamond",Georgia,serif;
+  min-height:100vh;
+  overflow-x:hidden;
+  cursor:crosshair;
+}
+a{color:inherit;text-decoration:none}
+a:hover{cursor:pointer}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+.wrap{max-width:1060px;margin:0 auto;padding:0 clamp(16px,4vw,32px) 90px;position:relative;z-index:2}
+
+.cloud{position:fixed;border-radius:50%;background:var(--cloud);filter:blur(18px);opacity:.75;z-index:0;
+  animation:float 26s ease-in-out infinite}
+.c1{width:240px;height:80px;top:12%;left:-60px}
+.c2{width:320px;height:100px;top:44%;right:-90px;animation-duration:34s;animation-direction:reverse}
+.c3{width:190px;height:64px;bottom:14%;left:22%;animation-duration:21s}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(70px,-26px)}}
+@media(prefers-reduced-motion:reduce){.cloud{animation:none}}
+
+/* ── Nav ────────────────────────────────────────────────────────── */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  background:var(--panel);padding:16px 26px;margin-top:48px;border-radius:2px;
+  box-shadow:26px 40px 40px -22px rgba(28,39,51,.55);transform:rotate(-1.2deg)}
+.logo{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:500;font-style:italic;color:var(--ink)}
+.nav ul{display:flex;gap:22px;row-gap:10px;flex-wrap:wrap;margin-top:2px}
+.nav ul a{font-family:"Inter",sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--shadow);display:inline-block;transition:transform .5s cubic-bezier(.2,.7,.3,1),color .5s ease}
+.nav ul a:hover,.nav ul a[aria-current="page"]{color:var(--ink);transform:translateY(-12px) rotate(-6deg)}
+
+/* ── Hero ───────────────────────────────────────────────────────── */
+.hero{padding:80px 0 56px;position:relative}
+.hero h1{font-size:clamp(36px,6.6vw,80px);font-weight:300;line-height:1.05;max-width:14ch;
+  color:var(--cloud);text-shadow:0 26px 30px rgba(28,39,51,.4);
+  background:var(--heading-scrim);border-radius:.16em;
+  box-decoration-break:clone;-webkit-box-decoration-break:clone;
+  padding:.06em .12em;margin:0 0 0 -.12em}
+.hero h1 .big{font-size:1.4em;font-style:italic;display:inline-block;line-height:.8}
+.hero h1 .small{font-size:.36em;vertical-align:.85em;letter-spacing:.18em;font-family:"Inter",sans-serif;
+  font-weight:400;color:var(--ink)}
+.hero p{margin-top:36px;font-family:"Inter",sans-serif;font-size:14px;letter-spacing:.05em;color:var(--ink);
+  max-width:34ch;background:var(--panel);padding:14px 18px;display:inline-block;
+  box-shadow:-22px 26px 34px -18px rgba(28,39,51,.6);transform:rotate(.8deg)}
+
+.btn{display:inline-block;margin-top:40px;font-family:"Inter",sans-serif;font-size:12px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--cloud);background:#1c2733;padding:17px 42px;border-radius:999px;
+  box-shadow:0 28px 32px -18px rgba(28,39,51,.75);transition:transform .9s cubic-bezier(.16,1,.3,1)}
+
+.eye{position:absolute;right:6%;top:88px;width:96px;height:96px;border-radius:50%;background:var(--cloud);
+  box-shadow:inset 0 -10px 20px rgba(28,39,51,.28), 0 22px 26px -14px rgba(28,39,51,.5);
+  display:flex;align-items:center;justify-content:center}
+.iris{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 40% 35%, #4f7ea3, #1c2733 68%);
+  transition:transform .12s linear}
+.door{position:absolute;left:52%;bottom:-26px;width:64px;height:104px;background:#1c2733;
+  border-radius:3px 3px 0 0;box-shadow:16px 20px 24px -14px rgba(28,39,51,.6);transform:rotate(2deg)}
+.door::after{content:"";position:absolute;right:8px;top:56%;width:5px;height:5px;border-radius:50%;background:var(--flesh)}
+
+/* ── Features ───────────────────────────────────────────────────── */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:100px;align-items:start}
+.card{background:var(--panel);padding:28px 22px 30px;position:relative}
+.card:nth-child(1){transform:rotate(-2deg) translateY(24px);box-shadow:-28px 32px 32px -20px rgba(28,39,51,.55)}
+.card:nth-child(2){transform:rotate(1.4deg);box-shadow:0 -24px 32px -20px rgba(28,39,51,.5)}
+.card:nth-child(3){transform:rotate(-.6deg) translateY(-20px);box-shadow:32px 28px 32px -20px rgba(28,39,51,.55)}
+.icon{display:block;font-family:"Inter",sans-serif;font-size:10px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--flesh-icon);margin-bottom:12px}
+.card h3{font-size:30px;font-weight:300;font-style:italic;margin:0 0 8px}
+.card p{font-family:"Inter",sans-serif;font-size:13.5px;line-height:1.8;color:var(--shadow);margin:0}
+.card::after{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:var(--flesh);right:-7px;top:-7px}
+
+/* ── CTA ────────────────────────────────────────────────────────── */
+.cta{margin-top:100px;text-align:center;position:relative}
+.cta h2{font-size:clamp(34px,6vw,72px);font-weight:300;color:var(--cloud);
+  text-shadow:0 20px 24px rgba(28,39,51,.42);background:var(--heading-scrim);border-radius:.16em;
+  width:fit-content;margin:0 auto;padding:.06em .12em}
+.cta h2 span{display:inline-block;transform-origin:top center}
+.cta .cta-btn{display:inline-block;margin-top:34px;font-family:"Inter",sans-serif;font-size:12px;
+  letter-spacing:.28em;text-transform:uppercase;color:#1c2733;background:var(--flesh);padding:17px 40px;
+  border-radius:999px;box-shadow:0 26px 28px -16px rgba(28,39,51,.6);
+  transition:border-radius .8s ease,transform .8s ease}
+.cta .cta-btn:hover{border-radius:60% 40% 55% 45% / 50% 55% 45% 50%;transform:scale(1.06) rotate(-2deg)}
+
+/* ── Page heading ───────────────────────────────────────────────── */
+.page-head{margin-top:48px;padding:52px 36px;text-align:center;background:var(--panel);
+  box-shadow:0 -24px 32px -20px rgba(28,39,51,.4);transform:rotate(-.5deg)}
+.page-head h1{font-size:clamp(30px,4.6vw,52px);font-weight:300;font-style:italic;margin:0;color:var(--ink)}
+.page-head p{margin-top:14px;font-family:"Inter",sans-serif;font-size:14px;color:var(--shadow)}
+
+/* ── Work list ──────────────────────────────────────────────────── */
+.work-list{display:grid;gap:26px;margin-top:70px;margin-bottom:70px}
+.work-card{background:var(--panel);padding:26px 30px;display:flex;justify-content:space-between;
+  align-items:center;gap:20px;flex-wrap:wrap;position:relative}
+.work-card:nth-child(3n+1){transform:rotate(-1deg);box-shadow:-24px 28px 30px -20px rgba(28,39,51,.5)}
+.work-card:nth-child(3n+2){transform:rotate(.8deg);box-shadow:0 -22px 28px -20px rgba(28,39,51,.45)}
+.work-card:nth-child(3n+3){transform:rotate(-.5deg);box-shadow:24px 26px 30px -20px rgba(28,39,51,.5)}
+.work-card h2{font-size:22px;font-weight:300;font-style:italic;margin:0 0 6px;color:var(--ink)}
+.work-card p{font-family:"Inter",sans-serif;font-size:13.5px;color:var(--shadow);line-height:1.7;
+  margin:0;max-width:44ch}
+.work-card .tag{flex:none;font-family:"Inter",sans-serif;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--flesh-icon)}
+
+/* ── About ──────────────────────────────────────────────────────── */
+.about-lead{margin-top:70px;padding:44px 40px;background:var(--panel);
+  box-shadow:-24px 30px 34px -20px rgba(28,39,51,.5);transform:rotate(.6deg);margin-bottom:56px}
+.about-lead p{font-family:"Inter",sans-serif;font-size:15px;line-height:1.8;color:var(--ink);
+  max-width:58ch;margin:0 0 14px}
+.about-lead p:last-child{margin-bottom:0}
+
+/* ── Contact ────────────────────────────────────────────────────── */
+.contact{margin-top:70px;text-align:center;margin-bottom:56px}
+.contact-list{margin-top:30px;display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+.contact-list .chip{display:inline-block;font-family:"Inter",sans-serif;font-size:13px;
+  background:var(--panel);color:var(--ink);padding:10px 18px;
+  box-shadow:0 14px 18px -10px rgba(28,39,51,.5)}
+.contact-list a.chip{color:var(--ink)}
+
+/* ── Footer ─────────────────────────────────────────────────────── */
+.foot{margin-top:70px;padding:24px 28px;display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:16px;background:var(--panel);border-radius:2px;
+  box-shadow:-18px 24px 28px -18px rgba(28,39,51,.5);transform:rotate(.7deg)}
+.foot__links{display:flex;gap:22px;flex-wrap:wrap}
+.foot__links a{font-family:"Inter",sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--shadow);display:inline-block;transition:transform .5s cubic-bezier(.2,.7,.3,1),color .5s ease}
+.foot__links a:hover{color:var(--ink);transform:translateY(-6px) rotate(-6deg)}
+
+@media(max-width:860px){
+  .features{grid-template-columns:1fr;margin-top:70px}
+  .card{transform:none!important;box-shadow:0 18px 24px -16px rgba(28,39,51,.5)!important}
+  .eye,.door{display:none}
+  .page-head,.foot{transform:none!important}
+  .work-card{transform:none!important;box-shadow:0 16px 22px -16px rgba(28,39,51,.45)!important}
+}
