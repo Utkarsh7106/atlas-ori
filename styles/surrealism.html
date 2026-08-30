@@ -322,10 +322,10 @@
     .dp-actions{display:flex;gap:24px;align-items:baseline}
     .design-points h2{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:500;font-style:italic;
       color:var(--ink);margin:0}
-    .dp-skill,.dp-back{font-family:"Inter",sans-serif;font-size:12px;letter-spacing:.06em;color:var(--shadow);
+    .dp-skill,.dp-example,.dp-back{font-family:"Inter",sans-serif;font-size:12px;letter-spacing:.06em;color:var(--shadow);
       text-decoration:underline;text-underline-offset:3px;transition:color .5s ease}
-    .dp-skill:hover,.dp-back:hover{color:var(--ink)}
-    .dp-skill:focus-visible,.dp-back:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+    .dp-skill:hover,.dp-example:hover,.dp-back:hover{color:var(--ink)}
+    .dp-skill:focus-visible,.dp-example:focus-visible,.dp-back:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
     .dp{margin:0}
     .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid color-mix(in srgb, var(--shadow) 30%, transparent)}
     .dp-row:first-child{border-top:0;padding-top:0}
@@ -451,8 +451,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/surrealism/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/surrealism/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>
