@@ -260,10 +260,10 @@
     .dp-actions{display:flex;gap:18px;align-items:baseline}
     .design-points h2{font-family:"VT323",monospace;font-size:20px;font-weight:400;letter-spacing:.1em;
       text-transform:uppercase;color:var(--phos);margin:0}
-    .dp-skill,.dp-back{font-size:12px;letter-spacing:.04em;color:var(--phos-dim);
+    .dp-skill,.dp-example,.dp-back{font-size:12px;letter-spacing:.04em;color:var(--phos-dim);
       text-decoration:underline;text-underline-offset:3px;transition:color .1s steps(1)}
-    .dp-skill:hover,.dp-back:hover{color:var(--phos)}
-    .dp-skill:focus-visible,.dp-back:focus-visible{outline:1px solid var(--phos);outline-offset:2px}
+    .dp-skill:hover,.dp-example:hover,.dp-back:hover{color:var(--phos)}
+    .dp-skill:focus-visible,.dp-example:focus-visible,.dp-back:focus-visible{outline:1px solid var(--phos);outline-offset:2px}
     .dp{margin:0}
     .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid color-mix(in srgb, var(--phos-dim) 45%, transparent)}
     .dp-row:first-child{border-top:0;padding-top:0}
@@ -398,8 +398,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/cybercore/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/cybercore/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>
