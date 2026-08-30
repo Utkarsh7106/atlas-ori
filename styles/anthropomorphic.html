@@ -332,10 +332,10 @@
     .dp-actions{display:flex;gap:18px;align-items:baseline}
     .design-points h2{font-family:"Nunito",sans-serif;font-size:12px;font-weight:800;line-height:1;
       letter-spacing:.14em;text-transform:uppercase;color:var(--ink);margin:0}
-    .dp-skill,.dp-back{font-size:14px;font-weight:700;color:var(--ink);text-decoration:none;
+    .dp-skill,.dp-example,.dp-back{font-size:14px;font-weight:700;color:var(--ink);text-decoration:none;
       border-bottom:2px solid transparent;padding-bottom:1px;transition:border-color .2s ease}
-    .dp-skill:hover,.dp-back:hover{border-bottom-color:var(--plum)}
-    .dp-skill:focus-visible,.dp-back:focus-visible{outline:3px solid var(--plum);outline-offset:3px}
+    .dp-skill:hover,.dp-example:hover,.dp-back:hover{border-bottom-color:var(--plum)}
+    .dp-skill:focus-visible,.dp-example:focus-visible,.dp-back:focus-visible{outline:3px solid var(--plum);outline-offset:3px}
     .dp{margin:0}
     .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid #e7e0d6}
     .dp-row:first-child{border-top:0;padding-top:0}
@@ -482,8 +482,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/anthropomorphic/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/anthropomorphic/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>
