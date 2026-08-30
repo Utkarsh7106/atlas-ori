@@ -269,11 +269,11 @@
     .dp-actions{display:flex;gap:24px;align-items:baseline}
     .design-points h2{font-family:"Cinzel",serif;font-size:12px;font-weight:400;line-height:1;
       letter-spacing:.26em;text-transform:uppercase;color:var(--sepia);margin:0}
-    .dp-skill,.dp-back{font-family:"Cinzel",serif;font-size:11px;letter-spacing:.16em;
+    .dp-skill,.dp-example,.dp-back{font-family:"Cinzel",serif;font-size:11px;letter-spacing:.16em;
       text-transform:uppercase;color:var(--sepia);text-decoration:none;
       border-bottom:1px solid transparent;padding-bottom:2px;transition:border-color .3s ease,color .3s ease}
-    .dp-skill:hover,.dp-back:hover{color:var(--ink);border-bottom-color:var(--gilt)}
-    .dp-skill:focus-visible,.dp-back:focus-visible{outline:1px solid var(--gilt);outline-offset:4px}
+    .dp-skill:hover,.dp-example:hover,.dp-back:hover{color:var(--ink);border-bottom-color:var(--gilt)}
+    .dp-skill:focus-visible,.dp-example:focus-visible,.dp-back:focus-visible{outline:1px solid var(--gilt);outline-offset:4px}
     .dp{margin:0}
     .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid var(--line)}
     .dp-row:first-child{border-top:0;padding-top:0}
@@ -395,8 +395,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/neo-classical/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/neo-classical/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>

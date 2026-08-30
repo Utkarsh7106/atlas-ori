@@ -291,10 +291,10 @@
     .dp-actions{display:flex;gap:18px;align-items:baseline}
     .design-points h2{font:600 12px/1 "Poppins",sans-serif;letter-spacing:.2em;
       text-transform:uppercase;color:var(--muted);margin:0}
-    .dp-skill,.dp-back{font-size:13px;letter-spacing:.02em;color:var(--accent);text-decoration:none;
+    .dp-skill,.dp-example,.dp-back{font-size:13px;letter-spacing:.02em;color:var(--accent);text-decoration:none;
       border-bottom:1px solid transparent;padding-bottom:1px;transition:border-color .18s linear}
-    .dp-skill:hover,.dp-back:hover{border-bottom-color:var(--accent)}
-    .dp-skill:focus-visible,.dp-back:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+    .dp-skill:hover,.dp-example:hover,.dp-back:hover{border-bottom-color:var(--accent)}
+    .dp-skill:focus-visible,.dp-example:focus-visible,.dp-back:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
     .dp{margin:0}
     .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid var(--dark)}
     .dp-row:first-child{border-top:0;padding-top:0}
@@ -413,8 +413,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/neumorphism/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/neumorphism/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>
