@@ -1,0 +1,163 @@
+/* Frostbyte -- built only from skills/y2k-aesthetic/SKILL.md.
+   Light iridescent ground, Aqua gel buttons, chrome word art, foil
+   overlay, sparkle trail. Never dark -- Y2K is optimistic, not
+   dystopian. */
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+:root{
+  --baby-blue:#bfe4ff;
+  --lilac:#c8a2ff;
+  --pink:#ff7ac6;
+  --aqua:#2aa3ff;
+  --ink:#1d2436;
+  --silver:#dfe6f0;
+  --chrome:#8d9bb5;
+  --display:"Audiowide","Arial Narrow",sans-serif;
+  --body-font:Verdana,Tahoma,Geneva,sans-serif;
+}
+
+body{
+  background:
+    conic-gradient(from 200deg at 20% -10%, var(--lilac), var(--baby-blue), #eaf7ff, var(--pink), var(--lilac));
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--body-font);
+  font-size:13px;
+  line-height:1.82;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--aqua);outline-offset:3px}
+
+.wrap{max-width:1020px;margin:0 auto;padding:24px clamp(16px,4vw,28px) 80px}
+
+/* every panel is a rounded translucent plastic unit -- nothing sits on
+   the bare background */
+.panel{background:rgba(255,255,255,.62);border-radius:22px;padding:28px;
+  box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 18px 40px -22px rgba(29,36,54,.35);
+  border:1px solid rgba(255,255,255,.7)}
+
+/* chrome word art: multi-stop vertical gradient clipped to text, plus
+   stacked drop-shadows for the bevel -- never a flat heading color */
+.chrome{font-family:var(--display);font-weight:400;
+  background:linear-gradient(180deg,#ffffff 0%,#cfe0ee 22%,#8d9bb5 46%,#5c6b85 54%,#c9d6e6 76%,#ffffff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 1px 0 #fff) drop-shadow(0 3px 2px rgba(29,36,54,.35))}
+
+.label{font-family:var(--body-font);font-weight:700;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink)}
+
+/* Aqua gel: hard mid-stop gradient + inset highlight + cast shadow,
+   with a separate top-light lozenge riding on top */
+.gel{position:relative;display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--body-font);font-weight:700;font-size:13px;letter-spacing:.02em;
+  color:#fff;border-radius:999px;padding:13px 30px;overflow:hidden;
+  background:linear-gradient(180deg,#7cc8ff 0%,#7cc8ff 46%,#0f7fe0 54%,#0f7fe0 100%);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.85),inset 0 -6px 10px -4px rgba(6,50,92,.55),
+    0 10px 20px -8px rgba(15,127,224,.55);
+  transition:filter .18s ease,transform .18s ease}
+.gel::before{content:"";position:absolute;top:8%;left:12%;width:60%;height:38%;
+  border-radius:18px 18px 60% 60%;background:rgba(255,255,255,.55);pointer-events:none}
+.gel:hover{filter:brightness(1.08) saturate(1.15);transform:translateY(-2px)}
+.gel:active{box-shadow:inset 0 3px 8px -2px rgba(6,50,92,.6);transform:translateY(0)}
+.gel.pink{background:linear-gradient(180deg,#ffa7dd 0%,#ffa7dd 46%,#e6459c 54%,#e6459c 100%);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.85),inset 0 -6px 10px -4px rgba(120,10,70,.5),
+    0 10px 20px -8px rgba(230,69,156,.55)}
+
+/* holographic foil overlay: conic-gradient, soft-light blend (not
+   overlay -- overlay pushes the panel gloss to flat white), rotates
+   and scales on hover */
+.foil{position:relative;overflow:hidden}
+.foil::after{content:"";position:absolute;inset:-40%;pointer-events:none;
+  background:conic-gradient(from 0deg,#ffb3e6,#b3d9ff,#c9b3ff,#b3ffe0,#fff2b3,#ffb3e6);
+  opacity:.62;mix-blend-mode:soft-light;transform:rotate(0deg) scale(1);
+  transition:transform .6s ease}
+.foil:hover::after{transform:rotate(38deg) scale(1.5)}
+
+/* sparkle trail glyphs */
+.spark{position:fixed;pointer-events:none;font-size:14px;color:var(--pink);z-index:50;
+  text-shadow:0 0 6px rgba(255,122,198,.8)}
+
+/* ── Nav ─────────────────────────────────────────────────────────────── */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:16px 22px;margin-bottom:22px}
+.logo{font-family:var(--display);font-size:20px}
+.nav ul{display:flex;gap:8px;flex-wrap:wrap}
+.nav ul a{display:inline-block;font-family:var(--body-font);font-weight:700;font-size:11px;
+  letter-spacing:.05em;padding:8px 16px;border-radius:999px;color:var(--ink)}
+.nav ul a:hover{background:rgba(255,255,255,.6)}
+.nav ul a[aria-current="page"]{background:rgba(255,255,255,.85);
+  box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 4px 10px -4px rgba(29,36,54,.3)}
+
+/* ambient twinkle sparkles -- separate from the pointer-trail sparkles */
+.ambient-spark{position:absolute;font-size:16px;color:var(--pink);pointer-events:none;
+  animation:twinkle 1.8s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.ambient-spark{animation:none;opacity:.55}}
+
+/* ── Hero ────────────────────────────────────────────────────────────── */
+.hero{position:relative;text-align:center;padding:48px 32px}
+.hero .label{color:var(--pink);display:block;margin-bottom:10px}
+.hero h1{font-size:clamp(34px,6.4vw,64px);line-height:1.06;margin:0}
+.hero p{margin:20px auto 0;max-width:44ch;font-size:14px}
+.hero .actions{margin-top:28px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* ── Features ────────────────────────────────────────────────────────── */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+.card h3{font-size:19px;margin:14px 0 8px}
+.card p{margin:0;font-size:12.5px}
+.chip{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;
+  border-radius:999px;font-size:19px;background:linear-gradient(180deg,#fff 0%,#fff 46%,var(--silver) 54%,var(--silver) 100%);
+  box-shadow:inset 0 1px 0 #fff,0 4px 10px -4px rgba(29,36,54,.35)}
+
+/* ── CTA ────────────────────────────────────────────────────────────── */
+.cta{margin-top:18px;text-align:center;padding:44px 28px}
+.cta h2{font-size:clamp(24px,3.6vw,36px);margin:0 0 20px}
+
+/* ── Page heading ────────────────────────────────────────────────────── */
+.page-head{text-align:center;padding:40px 28px;margin-bottom:18px}
+.page-head h1{font-size:clamp(30px,4.6vw,48px);margin:0}
+.page-head p{margin:14px auto 0;max-width:46ch;font-size:13.5px}
+
+/* ── Work / product grid ────────────────────────────────────────────── */
+.products{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:18px}
+.product{display:flex;gap:18px;align-items:center}
+.product .swatch{flex:none;width:88px;height:88px;border-radius:22px;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.85),inset 0 -8px 14px -6px rgba(6,50,92,.35),
+    0 10px 18px -10px rgba(29,36,54,.4)}
+.product h3{margin:0 0 6px;font-size:17px}
+.product p{margin:0;font-size:12px}
+.product .price{margin-top:8px;font-family:var(--body-font);font-weight:700;font-size:12px;color:var(--aqua)}
+
+/* ── About ───────────────────────────────────────────────────────────── */
+.about-lead{padding:32px 28px;margin-bottom:18px}
+.about-lead p{margin:0 0 16px;font-size:13.5px}
+.about-lead p:last-child{margin-bottom:0}
+.about-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.fact{text-align:center;padding:22px 16px}
+.fact .label{display:block;margin-bottom:8px;color:var(--chrome)}
+.fact p{margin:0;font-size:13px}
+
+/* ── Contact ─────────────────────────────────────────────────────────── */
+.contact{text-align:center;padding:44px 28px;margin-bottom:18px}
+.contact-list{margin-top:22px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.contact-list .chip-label{display:inline-block;font-family:var(--body-font);font-weight:700;font-size:11px;
+  padding:9px 16px;border-radius:999px;background:rgba(255,255,255,.7);
+  box-shadow:inset 0 1px 0 #fff}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+.foot{padding:20px 22px;display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:14px}
+.foot p{margin:0;font-size:11px;color:var(--chrome)}
+.foot__links{display:flex;gap:16px;flex-wrap:wrap}
+.foot__links a{font-size:11px;font-weight:700;color:var(--ink)}
+.foot__links a:hover{color:var(--aqua)}
+
+@media(max-width:760px){
+  .features{grid-template-columns:1fr}
+  .products{grid-template-columns:1fr}
+  .about-facts{grid-template-columns:1fr}
+}
