@@ -1,0 +1,176 @@
+/* Rin Asano -- built only from skills/wabi-sabi/SKILL.md.
+   Systematic asymmetry: no two columns share a width, no two blocks
+   share a vertical offset. Every rounded form is hand-formed, never a
+   true circle or rectangle. Gold appears only along cracks. */
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+:root{
+  --wall:#e9e3d7;
+  --ink:#33302a;
+  --ash:#5f5b52;
+  --clay:#bda98f;
+  --bronze:#7d8471;
+  --gold:#a9884f;
+  --mincho:"Shippori Mincho",Georgia,serif;
+  --sans:Karla,Verdana,sans-serif;
+}
+
+body{
+  background:
+    repeating-linear-gradient(74deg, rgba(51,48,42,.025) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(4deg, rgba(51,48,42,.02) 0 1px, transparent 1px 9px),
+    var(--wall);
+  color:var(--ash);
+  font-family:var(--sans);
+  font-weight:300;
+  font-size:14.5px;
+  line-height:2.05;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:1px solid var(--gold);outline-offset:4px}
+
+.wrap{max-width:1100px;margin:0 auto;padding:0 clamp(20px,4vw,36px) clamp(60px,10vh,120px)}
+
+/* slow, one-shot reveal -- deliberately no reduced-motion guard on the
+   observer itself; it writes one class and stops, the sitewide rule
+   already collapses the transition duration */
+.fade{opacity:0;transform:translateY(8px);transition:opacity 2.4s ease,transform 2.4s ease}
+.fade.in{opacity:1;transform:translateY(0)}
+
+/* hand-formed rim: eight-value asymmetric border-radius, never a true
+   circle or rectangle */
+.formed{border-radius:48% 52% 47% 53% / 54% 46% 55% 45%;background:#fff;
+  box-shadow:0 1px 0 rgba(51,48,42,.06)}
+
+.mono{font-family:var(--sans);font-weight:400;font-size:11px;letter-spacing:.14em;color:var(--ash)}
+
+.mincho{font-family:var(--mincho);font-weight:400;color:var(--ink);line-height:1.62}
+
+/* kintsugi seam: gold gradient with a visible gap, repairing not hiding */
+.seam{position:relative;display:inline-block}
+.seam::after{content:"";position:absolute;left:8%;right:8%;bottom:-.14em;height:2px;
+  background:linear-gradient(90deg, var(--gold) 0 38%, transparent 38% 46%, var(--gold) 46% 100%)}
+
+/* ensō: an open circle, one side removed, another faded */
+.enso{width:74px;height:74px;border-radius:50%;border:2px solid var(--gold);
+  border-bottom-color:transparent;
+  -webkit-mask-image:linear-gradient(200deg, #000 0%, #000 55%, transparent 78%);
+  mask-image:linear-gradient(200deg, #000 0%, #000 55%, transparent 78%);
+  animation:enso-turn 90s linear infinite}
+@keyframes enso-turn{to{rotate:360deg}}
+@media(prefers-reduced-motion:reduce){.enso{animation:none}}
+
+.btn{display:inline-block;font-family:var(--sans);font-weight:400;font-size:13px;
+  letter-spacing:.04em;color:var(--ink);background:#fff;border:1px solid var(--clay);
+  padding:13px 28px;border-radius:52% 48% 55% 45% / 46% 54% 44% 56%;
+  transition:border-radius 1.3s ease,background 1.3s ease}
+.btn:hover{border-radius:44% 56% 48% 52% / 58% 42% 54% 46%;background:var(--wall)}
+.btn.is-pressed{transition-duration:.01ms}
+
+/* clay vessel with a single hairline gold crack */
+.vessel{background:var(--clay);position:relative}
+.vessel::after{content:"";position:absolute;top:14%;left:52%;width:1px;height:60%;
+  background:var(--gold);rotate:8deg;opacity:.85}
+
+/* ── Nav ─────────────────────────────────────────────────────────────── */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:clamp(28px,5vh,50px) 0 0}
+.logo{font-family:var(--mincho);font-size:20px;color:var(--ink)}
+.nav ul{display:flex;gap:28px;flex-wrap:wrap}
+.nav ul a{font-size:13px;color:var(--ash);transition:color 1.1s ease}
+.nav ul a:hover{color:var(--ink)}
+.nav ul a[aria-current="page"]{color:var(--ink)}
+
+/* ── Hero: 1.42fr / 0.58fr, systematic asymmetry ────────────────────── */
+.hero{display:grid;grid-template-columns:1.42fr .58fr;gap:clamp(30px,5vw,60px);
+  align-items:end;padding-top:clamp(50px,9vh,110px)}
+.hero .mono{display:block;margin-bottom:18px}
+.hero h1{font-size:clamp(32px,5vw,58px);margin:0;max-width:16ch}
+.hero p{margin-top:24px;max-width:48ch;font-size:15px}
+.hero .actions{margin-top:30px}
+.hero .enso{justify-self:end}
+
+/* ── Features: 1.06 / 0.92 / 1.02fr, offset vertically ──────────────── */
+.features{display:grid;grid-template-columns:1.06fr .92fr 1.02fr;gap:clamp(20px,3vw,32px);
+  padding-top:clamp(60px,11vh,130px)}
+.card{padding:26px 24px}
+.card:nth-child(1){margin-top:0}
+.card:nth-child(2){margin-top:46px}
+.card:nth-child(3){margin-top:18px}
+.card h3{font-family:var(--mincho);font-weight:400;font-size:22px;color:var(--ink);margin:0 0 12px}
+.card p{margin:0;font-size:13.5px}
+
+/* ── CTA: 0.44 / 1.56fr ──────────────────────────────────────────────── */
+.cta{display:grid;grid-template-columns:.44fr 1.56fr;gap:clamp(20px,4vw,40px);align-items:center;
+  padding:clamp(60px,11vh,130px) 0}
+.cta .vessel{width:100%;aspect-ratio:.8;border-radius:38% 62% 45% 55% / 60% 40% 58% 42%}
+.cta h2{font-family:var(--mincho);font-weight:400;font-size:clamp(24px,3.4vw,36px);margin:0 0 22px}
+
+/* ── Page heading ────────────────────────────────────────────────────── */
+.page-head{display:grid;grid-template-columns:1.3fr .7fr;gap:clamp(24px,4vw,44px);
+  padding-top:clamp(50px,9vh,110px);align-items:end}
+.page-head .mono{display:block;margin-bottom:16px}
+.page-head h1{font-size:clamp(30px,4.6vw,50px);margin:0}
+.page-head p{margin-top:20px;max-width:44ch;font-size:14px}
+
+/* ── Pieces (Work) ──────────────────────────────────────────────────── */
+.pieces{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(24px,4vw,44px);
+  padding-top:clamp(50px,9vh,100px)}
+.piece{display:flex;gap:22px;align-items:flex-start;padding-bottom:clamp(30px,5vh,54px)}
+.piece:nth-child(1){margin-top:0}
+.piece:nth-child(2){margin-top:38px}
+.piece:nth-child(3){margin-top:12px}
+.piece:nth-child(4){margin-top:50px}
+.piece .vessel{width:64px;height:64px;flex:none;border-radius:44% 56% 48% 52% / 58% 42% 54% 46%}
+.piece h2{font-family:var(--mincho);font-weight:400;font-size:21px;color:var(--ink);margin:0 0 8px}
+.piece p{margin:0;font-size:13.5px}
+
+/* ── About ───────────────────────────────────────────────────────────── */
+.about-lead{display:grid;grid-template-columns:1.5fr .5fr;gap:clamp(24px,4vw,44px);
+  padding-top:clamp(50px,9vh,100px);align-items:start}
+.about-lead p{margin:0 0 20px;max-width:58ch}
+.about-lead p:last-child{margin-bottom:0}
+.about-lead .vessel{width:100%;aspect-ratio:1.1;border-radius:56% 44% 60% 40% / 42% 58% 44% 56%}
+.about-facts{display:grid;grid-template-columns:1fr 1.2fr .95fr;gap:clamp(20px,3vw,32px);
+  padding-top:clamp(50px,9vh,100px)}
+.fact:nth-child(2){margin-top:30px}
+.fact:nth-child(3){margin-top:10px}
+.fact h3{font-family:var(--mincho);font-weight:400;font-size:30px;color:var(--gold);margin:0 0 8px}
+.fact p{margin:0;font-size:13px}
+
+/* ── Contact ─────────────────────────────────────────────────────────── */
+.contact{display:grid;grid-template-columns:.6fr 1.4fr;gap:clamp(24px,4vw,44px);
+  padding-top:clamp(50px,9vh,100px);align-items:start}
+.contact p{margin:0 0 24px;max-width:44ch}
+.contact-list{display:flex;flex-direction:column;gap:12px}
+.contact-list span{font-size:13.5px}
+.contact-list .mono{color:var(--gold)}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+.foot{margin-top:clamp(60px,10vh,110px);padding:28px 0;border-top:1px solid rgba(51,48,42,.12);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.foot p{margin:0;font-size:12.5px}
+.foot__links{display:flex;gap:20px;flex-wrap:wrap}
+.foot__links a{font-size:12.5px;transition:color 1.1s ease}
+.foot__links a:hover{color:var(--ink)}
+
+@media(max-width:760px){
+  .hero{grid-template-columns:1fr}
+  .hero .enso{justify-self:start;margin-top:20px}
+  .features{grid-template-columns:1fr}
+  .card:nth-child(2),.card:nth-child(3){margin-top:20px}
+  .cta{grid-template-columns:1fr}
+  .cta .vessel{max-width:160px}
+  .page-head{grid-template-columns:1fr}
+  .pieces{grid-template-columns:1fr}
+  .piece:nth-child(2),.piece:nth-child(3),.piece:nth-child(4){margin-top:0}
+  .about-lead{grid-template-columns:1fr}
+  .about-lead .vessel{max-width:200px}
+  .about-facts{grid-template-columns:1fr}
+  .fact:nth-child(2),.fact:nth-child(3){margin-top:0}
+  .contact{grid-template-columns:1fr}
+}
