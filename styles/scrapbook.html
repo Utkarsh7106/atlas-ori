@@ -385,7 +385,7 @@
       border-bottom:2px solid transparent;transition:border-color .2s ease,color .2s ease}
     .foot__links a:hover{border-bottom-color:var(--red);color:var(--red)}
     .foot__links a:focus-visible,.signature:focus-visible,.dp-skill:focus-visible,
-    .dp-back:focus-visible{outline:2px dashed var(--red);outline-offset:4px}
+    .dp-example:focus-visible,.dp-back:focus-visible{outline:2px dashed var(--red);outline-offset:4px}
     .foot .tape.bl{bottom:-14px;left:-16px;transform:rotate(-23deg)}
     .foot .tape.br{position:absolute;bottom:-15px;right:-16px;transform:rotate(26deg)}
 
@@ -456,18 +456,19 @@
     .design-points h2{font-family:"Caveat",cursive;font-size:38px;font-weight:700;
       letter-spacing:0;text-transform:none;color:var(--red);margin:0;transform:rotate(-1.2deg)}
     .dp-actions{display:flex;gap:12px;flex-wrap:wrap}
-    .dp-skill,.dp-back{display:inline-block;font-family:"Special Elite",Courier,monospace;
+    .dp-skill,.dp-example,.dp-back{display:inline-block;font-family:"Special Elite",Courier,monospace;
       font-size:12px;letter-spacing:.08em;text-transform:uppercase;
       color:var(--ink);background:var(--card-2);padding:7px 14px;
       box-shadow:2px 2px 0 var(--edge);transform:rotate(-1deg);
       transition:transform .18s ease,box-shadow .18s ease}
+    .dp-example{transform:rotate(-.4deg)}
     .dp-back{transform:rotate(1.2deg)}
-    .dp-skill:hover,.dp-back:hover{transform:rotate(.4deg) translateY(-2px);box-shadow:3px 4px 0 var(--edge)}
+    .dp-skill:hover,.dp-example:hover,.dp-back:hover{transform:rotate(.4deg) translateY(-2px);box-shadow:3px 4px 0 var(--edge)}
     /* biro on the sage is 3.83:1 — enough for the 27px handwritten
-       buttons, not for 12px type, so this one takes the stamped ink block
+       buttons, not for 12px type, so these two take the stamped ink block
        the field names and card labels already use rather than the
        cut-out's green */
-    .dp-skill{background:var(--ink);color:var(--on-stamp)}
+    .dp-skill,.dp-example{background:var(--ink);color:var(--on-stamp)}
     .dp{margin:0}
     .dp-row{display:grid;grid-template-columns:180px 1fr;gap:22px;padding:20px 0;
       border-top:1px dashed var(--dash)}
@@ -507,7 +508,7 @@
        ownership of pointerdown on [data-drag].
 
        Placed after every rule it overrides, including the panel's. */
-    .tab.is-pressed,.dp-skill.is-pressed,.dp-back.is-pressed{
+    .tab.is-pressed,.dp-skill.is-pressed,.dp-example.is-pressed,.dp-back.is-pressed{
       transform:rotate(0deg) translateY(1px);box-shadow:0 0 0 1px var(--cut-line), 1px 1px 0 var(--edge)}
     .btn.is-pressed,.dialog__close.is-pressed{
       transform:rotate(0deg) translateY(2px);box-shadow:inset 0 0 0 2px var(--cut-line), 1px 1px 0 var(--cut)}
@@ -633,8 +634,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/scrapbook/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/scrapbook/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>
@@ -823,7 +824,7 @@
        until it knows the gesture is not a scroll, so the state is driven
        from pointer events and held a minimum whether or not the finger
        stays down. */
-    var PRESSABLE = '.tab, .nav ul a, .btn, .cta .cta-btn, .foot__links a, .dp-skill, .dp-back, .dialog__close';
+    var PRESSABLE = '.tab, .nav ul a, .btn, .cta .cta-btn, .foot__links a, .dp-skill, .dp-example, .dp-back, .dialog__close';
     var MIN_HOLD = 170;
     document.querySelectorAll(PRESSABLE).forEach(function (el) {
       if (el.closest('[data-drag]')) return;   /* belt and braces */
