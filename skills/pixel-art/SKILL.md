@@ -32,7 +32,7 @@ indie games from the late 2000s onward.
 1. Define one pixel unit as a custom property (e.g. `--px: 4px`) and express every dimension on the page — padding, gaps, margins, shadow offsets — as `calc(var(--px) * n)`. No arbitrary, non-multiple values anywhere.
 2. Ban `border-radius`, blur, and anti-aliasing outright: draw borders and bevels with stacked hard `box-shadow` steps and disable font smoothing (`-webkit-font-smoothing: none`).
 3. Fix a small palette (8–16 colors, named by role) and replace every gradient with a dither pattern instead.
-4. Use genuine bitmap typefaces (Press Start 2P, Silkscreen, or similar) at whole-pixel sizes only, with a single hard-offset text-shadow (never blurred).
+4. Use genuine bitmap typefaces (Press Start 2P, Silkscreen, or similar) at whole-pixel sizes only, with a single hard-offset text-shadow (never blurred). This one has no acceptable system-font fallback: a generic `monospace` stack guarantees fixed character width, not pixel-quantized letterforms, so it silently fails this rule rather than just looking slightly off — the font files themselves must actually load.
 5. Make all motion use `steps()` and every hover/active state instant — interpolation is the one thing that immediately breaks the illusion.
 
 ## Reference Implementation Details
