@@ -1,0 +1,58 @@
+/* Dana Kessler -- built only from skills/brutalism/SKILL.md.
+   No webfonts, no radius, no shadow, no transition anywhere. */
+
+*{box-sizing:border-box}
+body{margin:0;background:#ffffff;color:#000000;
+  font-family:"Times New Roman",Times,serif;font-size:16px;line-height:1.35}
+a{color:#0000ee;text-decoration:underline}
+a:visited{color:#551a8b}
+a:hover{background:#ff0000;color:#000000}
+a:focus-visible,button:focus-visible{outline:2px solid #000000;outline-offset:1px}
+
+nav,header,section,footer{border:1px solid #000000;margin:0;padding:8px}
+
+.logo{font-size:34px;font-weight:700;display:block;text-decoration:underline;color:#000000}
+.nav ul{margin:4px 0 0;padding:0}
+.nav li{display:inline;list-style:none}
+.nav li::after{content:" | "}
+.nav li:last-child::after{content:""}
+
+.tag{font-family:"Courier New",Courier,monospace;font-size:11px;display:block;margin-bottom:4px}
+
+.hero h1{font-size:48px;font-weight:700;line-height:1.05;margin:0 0 12px;font-family:inherit}
+.hero p{font-size:16px;margin:0 0 12px}
+
+.btn{color:#0000ee;text-decoration:underline;background:none;border:none;padding:0;
+  font:inherit;font-size:16px;display:inline;cursor:pointer}
+.btn::before{content:"[ "}
+.btn::after{content:" ]"}
+.btn:hover{background:#ff0000;color:#000000}
+
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #000000;padding:8px;vertical-align:top;text-align:left}
+th{background:#c0c0c0;font-weight:700;width:120px;font-size:14px;text-transform:uppercase;letter-spacing:.02em}
+h3{font-size:22px;font-weight:700;display:inline;font-family:inherit;margin:0}
+td p{display:inline;font-size:16px;margin:0}
+.icon{font-family:"Courier New",Courier,monospace;font-size:13px;text-transform:uppercase}
+
+.cta h2{font-size:36px;font-weight:700;margin:0 0 10px;font-family:inherit}
+.cta .cta-btn{font-family:inherit;font-size:16px;color:#0000ee;text-decoration:underline;display:inline}
+.cta .cta-btn::before{content:"[ "}
+.cta .cta-btn::after{content:" ]"}
+.cta .cta-btn:hover{background:#ff0000;color:#000000}
+
+.blink{font-family:"Courier New",Courier,monospace;font-size:12px;color:#e60000}
+.meta{font-family:"Courier New",Courier,monospace;font-size:11px;padding:6px 8px;border:1px solid #000000}
+
+.site-footer ul{margin:0 0 8px;padding:0}
+.site-footer li{display:inline;list-style:none}
+.site-footer li::after{content:" | "}
+.site-footer li:last-child::after{content:""}
+.site-footer a:not(.signature){color:#0000ee;text-decoration:underline}
+.site-footer a:not(.signature):visited{color:#551a8b}
+.site-footer a:not(.signature):hover{background:#ff0000;color:#000000}
+
+.page-head h1{font-size:48px;font-weight:700;margin:0 0 6px;font-family:inherit}
+.page-head p{margin:0;font-size:16px}
+
+.about p{margin:0 0 10px}
