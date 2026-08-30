@@ -1,0 +1,137 @@
+/* Maison Solène -- built only from skills/luxury-typography/SKILL.md.
+   Two faces only, scale contrast instead of many sizes, a two-track
+   label/content grid, one full-bleed black field used exactly once,
+   and a third of the page left empty on purpose. */
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+:root{
+  --ivory:#f7f4ef;
+  --ink:#12100e;
+  --champagne:#b09a72;     /* only for hover text sitting on the black field */
+  --champagne-ink:#78694e; /* deepened -- every other, ivory-background use */
+  --grey:#6a655e;
+  --line:#ddd7cc;
+  --serif:"Bodoni Moda","Didot","Bodoni MT",Georgia,serif;
+  --sans:"Jost",Verdana,sans-serif;
+}
+
+body{
+  background:var(--ivory);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-weight:300;
+  font-size:15px;
+  line-height:1.8;
+}
+a{color:inherit;text-decoration:none}
+em{font-style:italic;color:var(--champagne-ink)}
+:focus-visible{outline:1px solid var(--champagne-ink);outline-offset:4px}
+
+.wrap{max-width:1200px;margin:0 auto;padding:0 clamp(24px,5vw,64px)}
+
+.label{font-family:var(--sans);font-weight:400;font-size:9px;letter-spacing:.44em;
+  text-indent:.44em;text-transform:uppercase;color:var(--grey)}
+
+.hairline{border:0;border-top:1px solid var(--line);margin:0}
+
+/* two-track grid: a slim label column against a wide content column,
+   reused in the hero and any CTA band -- Core Rule 3 */
+.track{display:grid;grid-template-columns:minmax(120px,1fr) 4.4fr;gap:28px;align-items:start}
+
+/* tracked-capital button: 1px underline, no fill, no radius, no box */
+.btn{display:inline-block;font-family:var(--sans);font-weight:400;font-size:11px;
+  letter-spacing:.3em;text-indent:.3em;text-transform:uppercase;color:var(--ink);
+  padding-bottom:6px;border-bottom:1px solid var(--ink);
+  transition:padding .65s cubic-bezier(.16,1,.3,1),border-color .65s cubic-bezier(.16,1,.3,1),color .65s cubic-bezier(.16,1,.3,1)}
+.btn:hover{padding-left:14px;padding-right:14px;color:var(--champagne-ink);border-color:var(--champagne-ink)}
+.btn--on-black{color:var(--ivory);border-color:var(--ivory)}
+.btn--on-black:hover{color:var(--champagne);border-color:var(--champagne)}
+
+/* ── Nav ─────────────────────────────────────────────────────────────── */
+.nav{padding:32px 0}
+.nav .track{align-items:center}
+.logo{font-family:var(--serif);font-size:22px}
+.nav ul{display:flex;gap:34px;flex-wrap:wrap}
+.nav ul a{font-family:var(--sans);font-weight:400;font-size:11px;letter-spacing:.3em;
+  text-indent:.3em;text-transform:uppercase;padding-bottom:4px;border-bottom:1px solid transparent;
+  transition:border-color .5s ease,color .5s ease}
+.nav ul a:hover,.nav ul a[aria-current="page"]{color:var(--champagne-ink);border-color:var(--champagne-ink)}
+
+/* ── Hero ────────────────────────────────────────────────────────────── */
+.hero{padding:clamp(48px,10vh,110px) 0 clamp(56px,11vh,120px)}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(42px,8.4vw,104px);
+  line-height:.98;max-width:13ch;margin:0}
+.hero .word{display:inline-block;opacity:0;transform:translateY(14px);
+  transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
+.hero .word.in{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){
+  .hero .word{transition-duration:.01ms}
+}
+.hero .deck{margin-top:34px;max-width:34ch}
+.hero .deck p{margin:12px 0 0;color:var(--grey)}
+.hero .btn{margin-top:34px}
+
+/* ── Philosophy band ─────────────────────────────────────────────────── */
+.philosophy{padding:clamp(40px,8vh,90px) 0}
+.philosophy p{font-family:var(--serif);font-size:clamp(20px,2.6vw,30px);font-weight:400;
+  line-height:1.3;max-width:22ch;margin:0}
+
+/* ── Full-bleed black field: negative-margin escape, used once ─────── */
+.field-black{background:var(--ink);color:var(--ivory);
+  margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
+  padding:clamp(56px,10vh,120px) clamp(24px,5vw,64px)}
+.field-black .inner{max-width:1200px;margin:0 auto}
+.field-black .track .label{color:#a8a297}
+.field-black h2{font-family:var(--serif);font-weight:400;font-size:clamp(28px,4vw,48px);
+  margin:0 0 22px;max-width:16ch}
+
+/* ── Page heading ────────────────────────────────────────────────────── */
+.page-head{padding:clamp(44px,9vh,100px) 0 clamp(28px,5vh,56px)}
+.page-head h1{font-family:var(--serif);font-weight:400;font-size:clamp(36px,5.6vw,66px);margin:0}
+.page-head .deck p{margin:12px 0 0;color:var(--grey);max-width:40ch}
+
+/* ── Collection (Work) list ─────────────────────────────────────────── */
+.collection{padding-bottom:clamp(40px,8vh,90px)}
+.piece{padding:34px 0;border-bottom:1px solid var(--line)}
+.piece:first-child{border-top:1px solid var(--line)}
+.piece .num{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--champagne-ink)}
+.piece h2{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3vw,34px);margin:6px 0 10px}
+.piece p{margin:0;color:var(--grey);max-width:46ch}
+
+/* ── About ───────────────────────────────────────────────────────────── */
+.about{padding-bottom:clamp(40px,8vh,90px)}
+.about .track{margin-bottom:40px}
+.about p{margin:0 0 18px;max-width:56ch}
+.about p:last-child{margin-bottom:0}
+.about blockquote{font-family:var(--serif);font-style:italic;font-size:clamp(22px,2.8vw,32px);
+  color:var(--champagne-ink);margin:44px 0;max-width:20ch;line-height:1.3}
+
+/* ── Contact ─────────────────────────────────────────────────────────── */
+.contact{padding-bottom:clamp(40px,8vh,90px)}
+.contact .track{row-gap:18px}
+.contact dl{display:grid;grid-template-columns:auto 1fr;gap:10px 24px;margin:0;max-width:44ch}
+.contact dt{grid-column:1;font-family:var(--sans);font-weight:400;font-size:9px;letter-spacing:.3em;
+  text-indent:.3em;text-transform:uppercase;color:var(--grey);align-self:center}
+.contact dd{grid-column:2;margin:0;align-self:center}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+.foot{padding:32px 0 clamp(40px,8vh,80px)}
+.foot .track{align-items:center}
+.foot p{margin:0;font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-indent:.2em;
+  text-transform:uppercase;color:var(--grey)}
+.foot__links{display:flex;gap:26px;flex-wrap:wrap}
+.foot__links a{font-family:var(--sans);font-weight:400;font-size:11px;letter-spacing:.2em;
+  text-indent:.2em;text-transform:uppercase;padding-bottom:3px;border-bottom:1px solid transparent;
+  transition:border-color .5s ease,color .5s ease}
+.foot__links a:hover{color:var(--champagne-ink);border-color:var(--champagne-ink)}
+
+@media(max-width:720px){
+  .track{grid-template-columns:1fr}
+  .nav ul{margin-top:14px}
+  .contact dl{grid-template-columns:1fr}
+  .contact dd{margin-bottom:6px}
+}
