@@ -289,11 +289,11 @@
     .dp-actions{display:flex;gap:28px;align-items:baseline}
     .design-points h2{font-family:"Bodoni Moda",serif;font-size:22px;font-weight:400;
       letter-spacing:-.005em;color:var(--ink);margin:0}
-    .dp-skill,.dp-back{font-size:9px;font-weight:400;letter-spacing:.3em;text-indent:.3em;
+    .dp-skill,.dp-example,.dp-back{font-size:9px;font-weight:400;letter-spacing:.3em;text-indent:.3em;
       text-transform:uppercase;color:var(--grey);text-decoration:none;
       border-bottom:1px solid transparent;padding-bottom:3px;transition:color .6s ease,border-color .6s ease}
-    .dp-skill:hover,.dp-back:hover{color:var(--ink);border-bottom-color:var(--champagne)}
-    .dp-skill:focus-visible,.dp-back:focus-visible{outline:1px solid var(--champagne);outline-offset:4px}
+    .dp-skill:hover,.dp-example:hover,.dp-back:hover{color:var(--ink);border-bottom-color:var(--champagne)}
+    .dp-skill:focus-visible,.dp-example:focus-visible,.dp-back:focus-visible{outline:1px solid var(--champagne);outline-offset:4px}
     .dp{margin:0}
     .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:20px 0;border-top:1px solid var(--hair)}
     .dp-row:first-child{border-top:0;padding-top:0}
@@ -426,8 +426,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/luxury-typography/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/luxury-typography/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>
