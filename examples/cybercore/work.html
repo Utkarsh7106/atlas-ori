@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Work — Vex Okafor</title>
+<meta name="description" content="Command-line tools built by Vex Okafor.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="crt" aria-hidden="true"></div>
+
+<div class="wrap">
+  <nav class="nav">
+    <span class="logo">root@vex:~$</span>
+    <ul>
+      <li><a href="index.html">home</a></li>
+      <li><a href="work.html" aria-current="page">work</a></li>
+      <li><a href="about.html">about</a></li>
+      <li><a href="contact.html">contact</a></li>
+    </ul>
+  </nav>
+
+  <header class="page-head">
+    <span class="dim">[stdout] // ls ./tools</span>
+    <h1 id="headline" class="glitch" data-text="WORK">WORK</h1>
+    <p>Five tools, three of them at v1.0, two still pre-release.</p>
+  </header>
+
+  <div class="tools">
+    <article class="tool box" data-tag="v1.4">
+      <div class="tool__top">
+        <h2>gitwatch</h2>
+        <span class="dim">stable</span>
+      </div>
+      <p>Watches a repo and runs a command on every commit, using
+      inotify instead of polling — near-zero overhead even on huge
+      monorepos.</p>
+    </article>
+    <article class="tool box" data-tag="v2.1">
+      <div class="tool__top">
+        <h2>envdiff</h2>
+        <span class="dim">stable</span>
+      </div>
+      <p>Diffs two .env files and flags anything missing, renamed, or
+      accidentally left in plaintext before you deploy.</p>
+    </article>
+    <article class="tool box" data-tag="v1.0">
+      <div class="tool__top">
+        <h2>pgtail</h2>
+        <span class="dim">stable</span>
+      </div>
+      <p>Tails a Postgres slow-query log in real time and formats it
+      into something you can actually read at 2am.</p>
+    </article>
+    <article class="tool box" data-tag="v0.3">
+      <div class="tool__top">
+        <h2>portwatch</h2>
+        <span class="dim">beta</span>
+      </div>
+      <p>Alerts you the moment a local dev port gets bound by something
+      you didn't start yourself.</p>
+    </article>
+    <article class="tool box" data-tag="v0.1">
+      <div class="tool__top">
+        <h2>cronlint</h2>
+        <span class="dim">pre-release</span>
+      </div>
+      <p>Catches cron expressions that will silently never fire, before
+      they ship to production.</p>
+    </article>
+  </div>
+
+  <section class="cta box" data-tag="exec">
+    <h2>./request-access portwatch cronlint</h2>
+    <a href="contact.html" class="btn">./contact</a>
+  </section>
+
+  <footer class="foot">
+    <p>vex@okafor.dev // uid=1000</p>
+    <nav class="foot__links" aria-label="Footer">
+      <a href="index.html">home</a>
+      <a href="about.html">about</a>
+      <a href="contact.html">contact</a>
+    </nav>
+  </footer>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
