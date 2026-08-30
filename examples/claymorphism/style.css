@@ -1,0 +1,161 @@
+/* Milo Chen -- built only from skills/claymorphism/SKILL.md. */
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+:root{
+  --purple:#6d55e0;
+  --pink:#ff8fab;
+  --yellow:#ffd166;
+  --mint:#7ee0c9;
+  --on-purple:#ffffff;
+  --on-pastel:#3d3563;
+  --well:rgba(255,255,255,.75);
+  --ground1:#dcd6ff;
+  --ground2:#ffe3f1;
+  --ground3:#d9f5ee;
+  --ground-mid:#efe9ff;
+  --clay:#ffffff;
+  --ink:#3d3563;
+  --muted:#635b85;
+  --accent-ink:#6248d6;
+  --chip:#f3f0ff;
+  --hi-neutral:rgba(255,255,255,.95);
+  --lo-neutral:rgba(126,110,190,.22);
+  --cast-neutral:rgba(102,84,190,.45);
+  --hi-purple:rgba(255,255,255,.42);
+  --lo-purple:rgba(60,40,140,.4);
+  --cast-purple:rgba(102,84,190,.6);
+  --hi-pink:rgba(255,255,255,.55);
+  --lo-pink:rgba(190,70,110,.32);
+  --cast-pink:rgba(255,143,171,.7);
+  --hi-yellow:rgba(255,255,255,.6);
+  --lo-yellow:rgba(190,140,40,.3);
+  --cast-yellow:rgba(255,209,102,.75);
+  --hi-mint:rgba(255,255,255,.6);
+  --lo-mint:rgba(40,150,130,.3);
+  --cast-mint:rgba(126,224,201,.75);
+  --hi-well:rgba(255,255,255,.9);
+  --lo-well:rgba(120,100,180,.25);
+  --cast-well:rgba(102,84,190,.45);
+  --r:38px;
+}
+
+body{
+  background:
+    radial-gradient(1000px 600px at 12% -5%, var(--ground2) 0%, transparent 60%),
+    radial-gradient(900px 700px at 92% 8%, var(--ground3) 0%, transparent 55%),
+    linear-gradient(165deg, var(--ground1) 0%, var(--ground-mid) 55%, var(--ground2) 100%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:"Quicksand",-apple-system,"Segoe UI",sans-serif;
+  font-weight:500;
+  padding:0 clamp(16px,4vw,36px);
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--accent-ink);outline-offset:4px}
+
+.wrap{max-width:1040px;margin:0 auto;padding:34px 0 80px;position:relative;z-index:1}
+
+.clay{background:var(--clay);border-radius:var(--r);
+  box-shadow:inset 0 10px 16px var(--hi-neutral), inset 0 -12px 18px var(--lo-neutral),
+    0 26px 40px -16px var(--cast-neutral)}
+.clay-purple{background:var(--purple);color:var(--on-purple);
+  box-shadow:inset 0 10px 16px var(--hi-purple), inset 0 -12px 18px var(--lo-purple), 0 26px 40px -16px var(--cast-purple)}
+.clay-pink{background:var(--pink);
+  box-shadow:inset 0 10px 16px var(--hi-pink), inset 0 -12px 18px var(--lo-pink), 0 24px 36px -16px var(--cast-pink)}
+.clay-yellow{background:var(--yellow);
+  box-shadow:inset 0 10px 16px var(--hi-yellow), inset 0 -12px 18px var(--lo-yellow), 0 24px 36px -16px var(--cast-yellow)}
+.clay-mint{background:var(--mint);
+  box-shadow:inset 0 10px 16px var(--hi-mint), inset 0 -12px 18px var(--lo-mint), 0 24px 36px -16px var(--cast-mint)}
+
+.blob{position:fixed;border-radius:50%;filter:blur(46px);opacity:.5;z-index:0;pointer-events:none;
+  animation:drift 16s ease-in-out infinite}
+.b1{width:200px;height:200px;background:var(--pink);top:12%;left:-70px}
+.b2{width:280px;height:280px;background:var(--mint);bottom:-90px;right:-80px;animation-duration:21s}
+.b3{width:140px;height:140px;background:var(--yellow);top:62%;left:8%;animation-duration:13s}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(28px,-34px) scale(1.08)}}
+@media(prefers-reduced-motion:reduce){.blob{animation:none}}
+
+/* ── Nav ────────────────────────────────────────────────────────── */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:16px 22px;border-radius:30px}
+.logo{font-family:"Baloo 2",cursive;font-size:24px;font-weight:700;color:var(--accent-ink)}
+.nav ul{display:flex;gap:8px;flex-wrap:wrap}
+.nav ul a{display:block;padding:10px 18px;border-radius:22px;font-size:14px;font-weight:600;color:var(--muted);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .3s ease,color .3s ease}
+.nav ul a:hover,.nav ul a[aria-current="page"]{background:var(--chip);color:var(--accent-ink);transform:translateY(-3px) scale(1.05)}
+
+/* ── Hero ───────────────────────────────────────────────────────── */
+.hero{margin-top:26px;padding:56px 40px;text-align:center;border-radius:48px}
+.hero h1{font-family:"Baloo 2",cursive;font-size:clamp(30px,4.8vw,54px);font-weight:700;line-height:1.1;
+  max-width:15ch;margin:0 auto;color:var(--ink)}
+.hero p{margin-top:14px;font-size:16px;color:var(--muted);max-width:38ch;margin-left:auto;margin-right:auto}
+.btn{display:inline-block;margin-top:30px;padding:18px 44px;border-radius:34px;
+  font-family:"Baloo 2",cursive;font-size:19px;font-weight:700;color:var(--on-purple);
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1)}
+.btn:hover{transform:translateY(-6px) scale(1.05)}
+.squish{transform:translateY(3px) scale(1.06,.9)!important}
+
+/* ── Features ───────────────────────────────────────────────────── */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:38px}
+.card{padding:34px 24px 36px;text-align:center;border-radius:40px;
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1)}
+.card:hover{transform:translateY(-10px) rotate(-1deg)}
+.icon{display:inline-flex;align-items:center;justify-content:center;width:76px;height:76px;border-radius:50%;
+  font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--on-pastel);margin-bottom:18px;
+  background:var(--well);
+  box-shadow:inset 0 8px 12px var(--hi-well), inset 0 -9px 14px var(--lo-well), 0 12px 18px -8px var(--cast-well)}
+.card h3{font-family:"Baloo 2",cursive;font-size:24px;font-weight:700;margin:0 0 6px;color:var(--on-pastel)}
+.card p{font-size:14.5px;color:var(--on-pastel);line-height:1.55;margin:0}
+
+/* ── CTA ────────────────────────────────────────────────────────── */
+.cta{margin-top:38px;padding:52px 36px;text-align:center;border-radius:48px}
+.cta h2{font-family:"Baloo 2",cursive;font-size:clamp(26px,3.8vw,44px);font-weight:700;color:var(--on-purple);margin:0}
+.cta .cta-btn{display:inline-block;margin-top:24px;padding:17px 38px;border-radius:32px;
+  font-family:"Baloo 2",cursive;font-size:18px;font-weight:700;color:var(--on-pastel);
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1)}
+.cta .cta-btn:hover{transform:translateY(-6px) scale(1.05)}
+
+/* ── Page heading ───────────────────────────────────────────────── */
+.page-head{margin-top:26px;padding:44px 36px;text-align:center;border-radius:48px}
+.page-head h1{font-family:"Baloo 2",cursive;font-size:clamp(28px,4.4vw,46px);font-weight:700;margin:0;color:var(--ink)}
+.page-head p{margin-top:12px;font-size:15.5px;color:var(--muted)}
+
+/* ── Work list ──────────────────────────────────────────────────── */
+.work-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:38px;margin-bottom:38px}
+.work-card{padding:28px 24px;text-align:center;border-radius:40px}
+.work-card .icon{margin-bottom:14px}
+.work-card h2{font-family:"Baloo 2",cursive;font-size:20px;font-weight:700;margin:0 0 8px;color:var(--on-pastel)}
+.work-card p{font-size:14px;color:var(--on-pastel);line-height:1.55;margin:0}
+
+/* ── About ──────────────────────────────────────────────────────── */
+.about-lead{margin-top:26px;padding:40px 38px;text-align:center;border-radius:48px;margin-bottom:38px}
+.about-lead p{font-size:16px;color:var(--muted);line-height:1.7;max-width:56ch;margin:0 auto 14px}
+.about-lead p:last-child{margin-bottom:0}
+
+/* ── Contact ────────────────────────────────────────────────────── */
+.contact{margin-top:26px;padding:48px 36px;text-align:center;border-radius:48px;margin-bottom:38px}
+.contact-list{margin-top:24px;display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.contact-list .chip-pill{display:inline-block;padding:10px 20px;border-radius:22px;font-size:13.5px;
+  font-weight:600;color:var(--accent-ink);background:var(--chip)}
+
+/* ── Footer ─────────────────────────────────────────────────────── */
+.foot{margin-top:38px;padding:22px 30px;border-radius:34px;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  background:var(--clay);
+  box-shadow:inset 0 -10px 16px var(--hi-neutral), inset 0 12px 18px var(--lo-neutral),
+    0 3px 5px -2px var(--cast-neutral)}
+.foot__links{display:flex;gap:10px;flex-wrap:wrap}
+.foot__links a{display:block;padding:10px 20px;border-radius:22px;font-size:14px;font-weight:600;color:var(--muted);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .3s ease,color .3s ease}
+.foot__links a:hover{background:var(--chip);color:var(--accent-ink);transform:translateY(-3px) scale(1.05)}
+
+@media(max-width:820px){
+  .features{grid-template-columns:1fr}
+  .hero{padding:44px 22px}
+  .foot{justify-content:center;text-align:center}
+}
