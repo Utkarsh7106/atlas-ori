@@ -244,13 +244,13 @@
     .design-points h2{font-size:34px;font-weight:700;font-family:inherit;
       letter-spacing:-.02em;margin:0 0 4px;color:var(--ink)}
     .dp-actions{font-family:"Courier New",Courier,monospace;font-size:12px}
-    .dp-skill,.dp-back{color:var(--link);text-decoration:underline;font-family:inherit;font-size:inherit}
-    .dp-skill::before,.dp-back::before{content:"[ "}
-    .dp-skill::after,.dp-back::after{content:" ]"}
-    .dp-skill{margin-right:8px}
-    .dp-skill:visited,.dp-back:visited{color:var(--visited)}
-    .dp-skill:hover,.dp-back:hover{background:var(--alert);color:var(--on-alert)}
-    .dp-skill:focus-visible,.dp-back:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+    .dp-skill,.dp-example,.dp-back{color:var(--link);text-decoration:underline;font-family:inherit;font-size:inherit}
+    .dp-skill::before,.dp-example::before,.dp-back::before{content:"[ "}
+    .dp-skill::after,.dp-example::after,.dp-back::after{content:" ]"}
+    .dp-skill,.dp-example{margin-right:8px}
+    .dp-skill:visited,.dp-example:visited,.dp-back:visited{color:var(--visited)}
+    .dp-skill:hover,.dp-example:hover,.dp-back:hover{background:var(--alert);color:var(--on-alert)}
+    .dp-skill:focus-visible,.dp-example:focus-visible,.dp-back:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
     .dp{margin:0;border:1px solid var(--ink);border-bottom:0}
     .dp-row{display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid var(--ink)}
     .dp dt{font-family:"Courier New",Courier,monospace;font-size:12px;font-weight:700;
@@ -393,8 +393,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/brutalism/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/brutalism/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>
