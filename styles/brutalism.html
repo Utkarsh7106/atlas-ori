@@ -4,10 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Brutalism — Atlas</title>
-<meta name="description" content="Brutalism: raw HTML, default blue links, Times New Roman, no comfort.">
+<meta name="description" content="Brutalism: raw HTML, visible structure, one load-bearing red, no comfort.">
 <link rel="stylesheet" href="../assets/reset.css">
-<!-- The only external asset this page loads. It exists solely for the
-     signature mark, which is deliberately not a browser default. -->
+<!-- External assets this page loads: the display face on headings, the
+     accent's crafted red, and the signature mark's script face — the
+     three departures from a literally unstyled document. -->
 <style>
   /* Self-hosted webfonts -- see assets/fonts/. Downloaded once from
      Google Fonts and served locally so the page has zero external
@@ -16,6 +17,11 @@
      needed to change. */
   @font-face{font-family:'Dancing Script';font-style:normal;font-weight:700;font-display:swap;src:url('../assets/fonts/dancing-script/dancing-script-700.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
   @font-face{font-family:'Dancing Script';font-style:normal;font-weight:700;font-display:swap;src:url('../assets/fonts/dancing-script/dancing-script-700-ext.woff2') format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+  /* Headings only. Already self-hosted for Maximalism; reused here rather
+     than adding a second display face for the same "bold condensed
+     impact" register. */
+  @font-face{font-family:'Archivo Black';font-style:normal;font-weight:400;font-display:swap;src:url('../assets/fonts/archivo-black/archivo-black-400.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+  @font-face{font-family:'Archivo Black';font-style:normal;font-weight:400;font-display:swap;src:url('../assets/fonts/archivo-black/archivo-black-400-ext.woff2') format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
 
   /* Skip link: first focusable element on the page, invisible until it
      receives keyboard focus. Fixed black-on-white/white-on-black box so
@@ -26,76 +32,75 @@
     text-decoration:none;transition:top .15s ease}
   .skip-link:focus{top:8px}
     /* ══ BRUTALISM (WEB BRUTALISM) ════════════════════════════════
-       The honest document. Nothing is designed away: default link
-       blue, underlines, Times New Roman, visible structure, no
-       radius, no shadow, no easing. It looks like the browser won.
-       Ugly is not the goal — INDIFFERENCE to beauty is.
+       The honest document. Structure is never designed away: visible
+       tag names, a real <table>, hard 1px borders, no radius, no
+       shadow, no easing. What IS designed is the type and colour: a
+       bold uppercase display face on headings and one accent red,
+       spent only where something is actually acting on the reader,
+       standing in for the literal browser defaults this page used to
+       lean on — craft, not indifference. It looks like a raw document
+       that someone actually built, not one nobody touched.
 
-       Everything added in Phase 3 obeys that: the controls are
-       bracketed text like the existing [ Explore ] link, the dialog
-       is a 1px box, and NOTHING here has a transition. */
+       The controls are bracketed text like the existing [ Explore ]
+       link, the dialog is a 1px box, and NOTHING here has a
+       transition. */
 
     :root{
       color-scheme:light;
       /* --th-* are the source of truth; every palette variable below is
          an ALIAS onto them, so [data-theme="dark"] re-resolves the whole
          page without editing a single colour declaration. */
-      --th-paper:#ffffff;
-      --th-ink:#000000;
-      --th-link:#0000ee;      /* the browser default, untouched */
-      --th-visited:#551a8b;
-      --th-alert:#ff0000;
-      --th-grey:#c0c0c0;
-      --th-on-alert:#000000;  /* text on the hover inversion */
-      /* --th-alert was doing two jobs: the hover-inversion background
-         AND the .blink cursor's text colour direct on paper. Darkening
-         it to fix the cursor (4.0:1 on white) broke the hover pairs —
-         black-on-alert dropped from 5.25:1 to 4.36:1 light, 4.69:1 to
-         3.89:1 dark — because on-alert's dark value (#121212, not pure
-         black) leaves less room than the cursor-on-white pairing can
-         spare. Split instead: --th-alert stays untouched, --th-cursor
-         is its own value per theme, since paper itself is #ffffff light
-         / #121212 dark and one value can't serve both — #e60000 clears
-         4.81:1 on white; on dark paper's near-black, the ORIGINAL
-         #ff0000 already clears 4.69:1 on its own, so dark just keeps it. */
-      --th-cursor:#e60000;
+      --th-paper:#f2efe9;   /* warm cream, not stark white */
+      --th-ink:#0a0a0a;     /* near-black, not pure #000 */
+      --th-grey:#6b6b6b;    /* secondary text: annotations, captions —
+                                4.64:1 on paper */
+      --th-accent:#cc2f1a;        /* accent AS TEXT on paper: feature/
+                                      field labels, the hero's one accent
+                                      word, nav-link underlines, and (as a
+                                      fill under on-accent text) the two
+                                      primary CTA links' hover state.
+                                      4.59:1 on paper, 5.26:1 under white */
+      --th-on-accent:#ffffff;     /* text placed on an --accent fill */
+      --th-accent-on-ink:#ff5a3c; /* accent AS TEXT directly on an ink-
+                                      coloured surface (the CTA panel):
+                                      6.39:1 on ink */
+      /* Two reds, not one, because "on paper" and "on ink" are different
+         problems: --accent only has to clear AA against paper, and
+         --accent-on-ink only has to clear it against ink. Each theme
+         below hands the OTHER theme's --accent to --accent-on-ink,
+         because the CTA panel is painted with --ink, and --ink is
+         cream once dark mode swaps it — so what's "on ink" inside the
+         CTA is always whichever red was tuned for the surface ink
+         currently equals. */
 
       --paper:var(--th-paper);
       --ink:var(--th-ink);
-      --link:var(--th-link);
-      --visited:var(--th-visited);
-      --alert:var(--th-alert);
       --grey:var(--th-grey);
-      --on-alert:var(--th-on-alert);
-      --cursor:var(--th-cursor);
+      --accent:var(--th-accent);
+      --on-accent:var(--th-on-accent);
+      --accent-on-ink:var(--th-accent-on-ink);
 
       --rail:0px;             /* the one token the nav mode drives */
     }
 
-    /* Dark mode here is NOT an inversion of the light page. This page's
-       premise is that the browser won, so its dark mode is the browser's
-       OWN dark defaults: Chrome's dark canvas, and the dark-mode UA link
-       colours (#9e9eff / #d0adf0) that replace #0000ee / #551a8b when
-       color-scheme is dark. The palette entries stay true, because what
-       they document is the rule — "the browser's default link blue,
-       deliberately untouched" — not the hex. Inverting #0000ee instead
-       would be both unreadable (1.3:1) and less honest. */
     :root[data-theme="dark"]{
       color-scheme:dark;
-      --th-paper:#121212;
-      --th-ink:#e8e6e3;
-      --th-link:#9e9eff;
-      --th-visited:#d0adf0;
-      --th-grey:#2b2b2b;
-      --th-on-alert:#121212;
-      --th-cursor:#ff0000;    /* the untouched original red already clears
-                                 4.69:1 on this paper on its own */
+      --th-paper:#141414;
+      --th-ink:#f2efe9;
+      --th-grey:#9a9a9a;         /* 6.55:1 on dark paper */
+      --th-accent:#ff5a3c;       /* 5.95:1 on dark paper */
+      --th-on-accent:#0a0a0a;    /* this accent reads on dark, not
+                                     light, so its fill needs dark text:
+                                     6.78:1, where white would be 3.1:1 */
+      --th-accent-on-ink:#cc2f1a; /* the CTA's "ink" is cream now — this
+                                      is light mode's paper-red, which
+                                      already clears cream at 4.59:1 */
     }
 
     body{
       background:var(--paper);
       color:var(--ink);
-      font-family:"Times New Roman",Times,serif;
+      font-family:"Courier New",Courier,monospace;
       font-size:16px;
       line-height:1.35;
       max-width:none;
@@ -106,16 +111,24 @@
     nav,header,section,footer{border:1px solid var(--ink);margin:0;padding:8px}
 
     /* ── Nav: an inline list of underlined links ─────────────── */
-    .nav{display:block;background:var(--grey)}
+    /* No grey fill — nav sits on the page's own paper colour. The
+       bottom edge is bumped past the ambient 1px so removing the band
+       doesn't read as removing the separation. */
+    .nav{display:block;border-bottom-width:2px}
+    /* The one deliberate serif in the page: a small mark distinct from
+       both the display headings and the monospace body, same as it
+       always was. */
     .logo{font-size:34px;font-weight:700;font-family:"Times New Roman",Times,serif;
       display:block;text-decoration:underline;color:var(--ink);letter-spacing:-.02em}
     .nav ul{display:block;margin-top:4px}
     .nav li{display:inline}
     .nav li::after{content:" | "}
     .nav li:last-child::after{content:""}
-    .nav ul a{color:var(--link);text-decoration:underline}
-    .nav ul a:visited{color:var(--visited)}
-    .nav ul a:hover{background:var(--alert);color:var(--on-alert)}
+    /* Text stays ink — the accent marks these as links via the underline
+       alone, rather than tinting running text red. */
+    .nav ul a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);
+      text-decoration-thickness:2px;text-underline-offset:3px}
+    .nav ul a:hover{background:var(--ink);color:var(--paper);text-decoration-color:var(--paper)}
 
     /* ── Controls ────────────────────────────────────────────────
        Bracketed text, exactly like [ Explore ]. Mono, because this
@@ -124,12 +137,12 @@
        styling — the state is written out in the label, which is the
        most honest indicator available. */
     .controls{display:block;margin-top:6px;font-family:"Courier New",Courier,monospace;font-size:12px}
-    .ctl{font-family:inherit;font-size:inherit;color:var(--link);text-decoration:underline;
+    .ctl{font-family:inherit;font-size:inherit;color:var(--ink);text-decoration:underline;
       background:none;border:none;padding:0;display:inline}
     .ctl::before{content:"[ "}
     .ctl::after{content:" ]"}
     .ctl + .ctl{margin-left:8px}
-    .ctl:hover{background:var(--alert);color:var(--on-alert)}
+    .ctl:hover{background:var(--ink);color:var(--paper)}
     .ctl:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 
     /* ── Sidebar mode ────────────────────────────────────────────
@@ -143,37 +156,58 @@
     [data-nav="side"] .nav li{display:block}
     [data-nav="side"] .nav li::after{content:""}
 
-    /* ── Hero: unstyled type at document scale ───────────────── */
-    .hero h1{font-size:48px;font-weight:700;line-height:1.05;margin-bottom:12px;font-family:inherit}
+    /* ── Hero: display type on the headline, document type on the copy ── */
+    .hero h1{font-family:"Archivo Black",sans-serif;font-size:48px;line-height:1;
+      letter-spacing:-.01em;text-transform:uppercase;margin-bottom:12px}
+    .hero h1 .accent{color:var(--accent)}
     .hero p{font-size:16px;margin-bottom:12px}
-    .btn{color:var(--link);text-decoration:underline;font-size:16px;font-family:inherit;
+    /* The page's one primary call-to-action link: ink by default like any
+       other text, snapping to the accent (not a plain ink invert) on
+       hover/focus — the one hover that's allowed to be red instead of a
+       plain ink/paper swap, because this is the action the accent exists
+       to point at. */
+    .btn{color:var(--ink);text-decoration:underline;font-size:16px;
+      font-family:"Courier New",Courier,monospace;
       background:none;border:none;padding:0;display:inline}
     .btn::before{content:"[ "}
     .btn::after{content:" ]"}
-    .btn:hover{background:var(--alert);color:var(--on-alert)}
+    .btn:hover{background:var(--accent);color:var(--on-accent)}
     .btn:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 
     /* ── Features: an actual HTML table, because that is honest ─ */
     .features{padding:0}
     .features table{border-collapse:collapse;width:100%}
     .features th,.features td{border:1px solid var(--ink);padding:8px;vertical-align:top;text-align:left}
-    .features th{background:var(--grey);font-weight:700;width:110px;font-size:14px;
-      text-transform:uppercase;letter-spacing:.02em}
-    .features h3{font-size:22px;font-weight:700;display:inline;font-family:inherit}
-    .features p{display:inline;font-size:16px}
+    .features th{color:var(--accent);font-weight:700;
+      width:110px;font-size:14px;text-transform:uppercase;letter-spacing:.02em}
+    .features h3{font-family:"Archivo Black",sans-serif;font-size:22px;text-transform:uppercase;display:inline}
+    .features p{display:inline;font-size:16px;color:var(--grey)}
     .icon{font-family:"Courier New",Courier,monospace;font-size:13px;text-transform:uppercase}
 
-    /* ── CTA ─────────────────────────────────────────────────── */
-    .cta h2{font-size:36px;font-weight:700;margin-bottom:10px;font-family:inherit}
-    .cta .cta-btn{font-family:inherit;font-size:16px;color:var(--link);text-decoration:underline;display:inline}
+    /* ── CTA: the one reverse-video panel on the page ──────────
+       Ink and paper swap wholesale (background:ink, color:paper), which
+       inverts correctly in dark mode for free since --ink/--paper already
+       swap per theme — no separate dark-mode override needed. The status
+       line and the CTA's own bracket-link use --accent-on-ink, the red
+       tuned for whatever "ink" resolves to in the current theme, rather
+       than --accent, which is tuned for paper. */
+    .cta{background:var(--ink);color:var(--paper)}
+    .cta h2{font-family:"Archivo Black",sans-serif;font-size:36px;text-transform:uppercase;margin-bottom:10px}
+    .cta .cta-btn{font-family:"Courier New",Courier,monospace;font-size:16px;
+      color:var(--accent-on-ink);text-decoration:underline;display:inline}
     .cta .cta-btn::before{content:"[ "}
     .cta .cta-btn::after{content:" ]"}
-    .cta .cta-btn:hover{background:var(--alert);color:var(--on-alert)}
-    .cta .cta-btn:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+    .cta .cta-btn:hover{background:var(--paper);color:var(--ink)}
+    .cta .cta-btn:focus-visible{outline:2px solid var(--paper);outline-offset:1px}
+    .cta .blink{color:var(--accent-on-ink)}
+    /* .tag's own colour assumes a paper-coloured parent; on the inverted
+       CTA panel it just inherits the section's own paper-on-ink text
+       instead of trying to find a grey that works on both. */
+    .cta .tag{color:inherit}
 
     /* ── Component reference ─────────────────────────────────── */
-    .component h2{font-size:22px;font-weight:700;margin-bottom:6px;font-family:inherit}
-    .component p{font-size:16px;margin-bottom:10px}
+    .component h2{font-family:"Archivo Black",sans-serif;font-size:22px;text-transform:uppercase;margin-bottom:6px}
+    .component p{font-size:16px;margin-bottom:10px;color:var(--grey)}
 
     /* ── Dialog ──────────────────────────────────────────────────
        Native <dialog>: the browser supplies the focus trap, Escape
@@ -182,15 +216,15 @@
        animation: this page does not have one. */
     .dialog{max-width:44em;width:calc(100vw - 32px);padding:8px;
       border:1px solid var(--ink);background:var(--paper);color:var(--ink);
-      font-family:"Times New Roman",Times,serif;font-size:16px;line-height:1.35}
+      font-size:16px;line-height:1.35}
     .dialog::backdrop{background:rgba(0,0,0,.55)}
-    .dialog h2{font-size:22px;font-weight:700;margin-bottom:6px;font-family:inherit}
-    .dialog p{margin-bottom:10px}
-    .dialog__close{font-family:inherit;font-size:16px;color:var(--link);text-decoration:underline;
+    .dialog h2{font-family:"Archivo Black",sans-serif;font-size:22px;text-transform:uppercase;margin-bottom:6px}
+    .dialog p{margin-bottom:10px;color:var(--grey)}
+    .dialog__close{font-family:"Courier New",Courier,monospace;font-size:16px;color:var(--ink);text-decoration:underline;
       background:none;border:none;padding:0;display:inline}
     .dialog__close::before{content:"[ "}
     .dialog__close::after{content:" ]"}
-    .dialog__close:hover{background:var(--alert);color:var(--on-alert)}
+    .dialog__close:hover{background:var(--ink);color:var(--paper)}
     .dialog__close:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 
     /* ── Footer: one more bordered box, labelled like the rest ── */
@@ -202,18 +236,15 @@
     /* :not(.signature) is load-bearing — ".site-footer a" (0-0-1-1) outranks
        ".signature" (0-0-1-0), so without it the footer link rule repaints the
        signature in link blue and underlines it. */
-    .site-footer a:not(.signature){color:var(--link);text-decoration:underline}
-    .site-footer a:not(.signature):visited{color:var(--visited)}
-    .site-footer a:not(.signature):hover{background:var(--alert);color:var(--on-alert)}
+    .site-footer a:not(.signature){color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+    .site-footer a:not(.signature):hover{background:var(--ink);color:var(--paper)}
     .site-footer a:not(.signature):focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 
     /* ── Signature mark ──────────────────────────────────────────
        Copied verbatim from styles/swiss-design.html and deliberately
-       NOT adapted to this page. Brutalism owns Times New Roman and
-       the browser's defaults; this is a hand, and it is the same hand
-       on every page. It is the only thing here that is not a browser
-       default, and the only reason this page loads a webfont at all.
-       Do not restyle it. */
+       NOT adapted to this page — it is the same hand on every page,
+       untouched by this page's own accent or display face. Do not
+       restyle it. */
     .signature{display:inline-block;
       font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
       font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
@@ -223,38 +254,41 @@
     .signature:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 
     /* ── Structural annotations: the page describes itself ───── */
-    .tag{font-family:"Courier New",Courier,monospace;font-size:11px;color:var(--ink);
-      background:var(--paper);display:block;margin-bottom:4px}
+    /* No background here any more — it used to hardcode paper, which
+       broke the one place a tag sits on a non-paper surface (the CTA
+       panel, handled by .cta .tag above). Grey recedes annotations
+       behind the content they're labelling. */
+    .tag{font-family:"Courier New",Courier,monospace;font-size:11px;color:var(--grey);
+      text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px}
     .rule{border:none;border-top:1px solid var(--ink);margin:0}
-    .blink{font-family:"Courier New",Courier,monospace;font-size:12px;color:var(--cursor)}
+    .blink{font-family:"Courier New",Courier,monospace;font-size:12px}
     .meta{font-family:"Courier New",Courier,monospace;font-size:11px;padding:6px 8px;border:1px solid var(--ink)}
 
     /* ══ DESIGN POINTS ═════════════════════════════════════════════
        Rebuilt in this page's own language: a real bordered table-like
-       definition list, Times for content, Courier for the field names
-       in the same grey band the features table uses. No panel fill, no
-       radius, no shadow. Content is unchanged — only its presentation. */
+       definition list, body copy in Courier like the rest of the page,
+       field names in accent red like the feature-row labels. No panel
+       fill, no radius, no shadow. */
     .dp-divider{height:0;border:none;border-top:1px solid var(--ink);margin:0}
     .design-points{position:relative;z-index:80;background:var(--paper);color:var(--ink);
       border:1px solid var(--ink);padding:8px;
-      font-family:"Times New Roman",Times,serif;font-size:16px;line-height:1.35;
+      font-size:16px;line-height:1.35;
       letter-spacing:0;text-transform:none;text-align:left;font-style:normal;font-weight:400}
     .dp-inner{max-width:none;margin:0}
     .dp-kicker{display:block;margin-bottom:8px}
-    .design-points h2{font-size:34px;font-weight:700;font-family:inherit;
+    .design-points h2{font-family:"Archivo Black",sans-serif;font-size:34px;text-transform:uppercase;
       letter-spacing:-.02em;margin:0 0 4px;color:var(--ink)}
     .dp-actions{font-family:"Courier New",Courier,monospace;font-size:12px}
-    .dp-skill,.dp-example,.dp-back{color:var(--link);text-decoration:underline;font-family:inherit;font-size:inherit}
+    .dp-skill,.dp-example,.dp-back{color:var(--ink);text-decoration:underline;font-family:inherit;font-size:inherit}
     .dp-skill::before,.dp-example::before,.dp-back::before{content:"[ "}
     .dp-skill::after,.dp-example::after,.dp-back::after{content:" ]"}
     .dp-skill,.dp-example{margin-right:8px}
-    .dp-skill:visited,.dp-example:visited,.dp-back:visited{color:var(--visited)}
-    .dp-skill:hover,.dp-example:hover,.dp-back:hover{background:var(--alert);color:var(--on-alert)}
+    .dp-skill:hover,.dp-example:hover,.dp-back:hover{background:var(--ink);color:var(--paper)}
     .dp-skill:focus-visible,.dp-example:focus-visible,.dp-back:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
     .dp{margin:0;border:1px solid var(--ink);border-bottom:0}
     .dp-row{display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid var(--ink)}
     .dp dt{font-family:"Courier New",Courier,monospace;font-size:12px;font-weight:700;
-      text-transform:uppercase;background:var(--grey);color:var(--ink);
+      text-transform:uppercase;color:var(--accent);
       padding:8px;border-right:1px solid var(--ink)}
     .dp dd{margin:0;padding:8px;color:var(--ink)}
     .dp dd > ul,.dp dd > ol{padding-left:22px;margin-top:4px}
@@ -324,7 +358,7 @@
 
   <header class="hero">
     <span class="tag">&lt;header&gt;</span>
-    <h1>Design is how it feels to use.</h1>
+    <h1>Design is how it <span class="accent">feels</span> to use.</h1>
     <p>A study in visual language, one style at a time.</p>
     <p><a href="#" class="btn">Explore</a></p>
   </header>
@@ -414,20 +448,19 @@
           <dt>Color Palette</dt>
           <dd>
             <ul class="dp-palette">
-              <li><span class="sw" style="--c:#ffffff"></span><code>#ffffff</code> — page background, never tinted</li>
-              <li><span class="sw" style="--c:#000000"></span><code>#000000</code> — text and every 1px border</li>
-              <li><span class="sw" style="--c:#0000ee"></span><code>#0000ee</code> — the browser's default unvisited link blue, deliberately untouched</li>
-              <li><span class="sw" style="--c:#551a8b"></span><code>#551a8b</code> — the browser's default visited purple</li>
-              <li><span class="sw" style="--c:#ff0000"></span><code>#ff0000</code> — pure red for hover inversion</li>
-              <li><span class="sw" style="--c:#e60000"></span><code>#e60000</code> — the blinking cursor</li>
-              <li><span class="sw" style="--c:#c0c0c0"></span><code>#c0c0c0</code> — system grey for table headers and the nav band</li>
+              <li><span class="sw" style="--c:#f2efe9"></span><code>#f2efe9</code> — page background, a warm cream rather than stark white</li>
+              <li><span class="sw" style="--c:#0a0a0a"></span><code>#0a0a0a</code> — text and every 1px border, near-black rather than pure</li>
+              <li><span class="sw" style="--c:#6b6b6b"></span><code>#6b6b6b</code> — secondary text: tag annotations, feature and dialog copy, anything describing the page rather than acting on it. 4.64:1 on paper</li>
+              <li><span class="sw" style="--c:#cc2f1a"></span><code>#cc2f1a</code> — the accent, used on paper: feature-row labels, the Design Points field column, one word of the headline, and (as a fill under white text) the hero's hover state. 4.59:1 as text on paper, 5.26:1 as a fill under white</li>
+              <li><span class="sw" style="--c:#ff5a3c"></span><code>#ff5a3c</code> — the same accent's counterpart for ink-coloured surfaces: the CTA panel's own link and status line sit on ink rather than paper, so they need a value tuned against ink instead (6.39:1)</li>
             </ul>
+            <p style="margin-top:8px">Dark mode doesn't swap these in wholesale — it swaps the roles. <code>#0a0a0a</code>/<code>#f2efe9</code> trade places as ink/paper, <code>#9a9a9a</code> replaces the secondary grey, and the two accents trade places too: whichever one was tuned for "on paper" becomes the "on ink" value and vice versa, because the CTA panel is always painted with <code>--ink</code>, and ink itself is a different colour per theme.</p>
           </dd>
         </div>
 
         <div class="dp-row" data-field="typography">
           <dt>Typography</dt>
-          <dd>Times New Roman for everything structural, paired with Courier New for machine annotations — both browser defaults, no webfont is loaded at all. Weights are only 400 and 700 because that is all the default stack guarantees. Sizes come straight off a document scale: 48px h1, 36px h2, 22px h3, 16px body, 11–13px mono. Line-height sits at a cramped 1.35 and no tracking is applied anywhere.</dd>
+          <dd>Two registers: Archivo Black, uppercase, on every heading and dialog title; Courier New for everything else on the page — running body copy, structural tag annotations, the status/cursor line, plain links and every bracketed control. The one deliberate exception is the "Atlas" wordmark, kept in Times New Roman as a small serif mark distinct from both. Sizes come straight off a document scale: 48px h1, 36px h2, 22px h3, 16px body, 11–13px mono. Line-height sits at a cramped 1.35 and no tracking is applied anywhere except a slight <code>-0.01em</code> on the display headings.</dd>
         </div>
 
         <div class="dp-row" data-field="layout-logic">
@@ -439,7 +472,8 @@
           <dt>Signature Techniques</dt>
           <dd>
             <ul>
-              <li>Default browser link styling preserved intact — blue, purple when visited, always underlined.</li>
+              <li>The accent is spent with intent, not sprayed everywhere: plain nav and footer links stay ink, and red marks only the things that are actually acting on the reader — feature labels, the headline's one accented word, the status line, and the page's two calls to action.</li>
+              <li>The CTA section is a full reverse-video panel (ink background, paper text) rather than a coloured block — which inverts correctly in dark mode for free, since ink and paper already swap roles per theme.</li>
               <li>Visible structural annotations (<code>&lt;nav&gt;</code>, <code>&lt;section id="cta"&gt;</code>) printed in mono above each block, so the page documents its own markup.</li>
               <li>Buttons rendered as bracketed text links — <code>[ Explore ]</code> via <code>::before</code>/<code>::after</code> — rather than as styled objects.</li>
               <li>Uniform 1px black borders with no radius, no shadow, and no margin collapse control.</li>
@@ -450,12 +484,12 @@
 
         <div class="dp-row" data-field="motion-interaction">
           <dt>Motion/Interaction</dt>
-          <dd>Deliberately unrefined: there is not a single <code>transition</code> on the page, including on everything added since. Hover states snap instantly to a red background with the page's darkest neutral as text. JS blinks the <code>READY_</code> cursor by toggling <code>visibility</code> every 600ms — because that is a script-driven interval rather than CSS, it is guarded by a <code>matchMedia</code> check and the cursor is left solid when <code>prefers-reduced-motion</code> is set — and writes the document's real viewport width and load timestamp into the mono status line, updating on resize; information, not decoration. Two bracketed controls sit in the nav, written in the same <code>[ ]</code> form as every other action: one moves the nav between a stacked box and a fixed left rail by changing a single <code>--rail</code> token, the other flips <code>data-theme</code>. Dark mode is not an inversion — it swaps in the browser's own dark defaults, including the dark-mode UA link colours — and both controls persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
+          <dd>Deliberately unrefined: there is not a single <code>transition</code> on the page, including on everything added since. Most hover states snap to a plain ink/paper invert — nav links, the nav's own toggles, the dialog's close control, the Design Points actions. The page's two calls to action snap to the accent instead, since they're what the accent exists to point at: "Explore" flashes to a red fill on hover, and "Get in touch" (already sitting on the CTA's inverted ink panel) flashes back to paper. JS blinks the <code>READY_</code> cursor by toggling <code>visibility</code> every 600ms — because that is a script-driven interval rather than CSS, it is guarded by a <code>matchMedia</code> check and the cursor is left solid when <code>prefers-reduced-motion</code> is set — and writes the document's real viewport width and load timestamp into the mono status line, updating on resize; information, not decoration. Two bracketed controls sit in the nav, written in the same <code>[ ]</code> form as every other action: one moves the nav between a stacked box and a fixed left rail by changing a single <code>--rail</code> token, the other flips <code>data-theme</code>, and both persist to <code>localStorage</code>. The component reference opens a native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, which supplies the focus trap, Escape and an inert background, and returns focus to its trigger on close.</dd>
         </div>
 
         <div class="dp-row" data-field="common-mistake">
           <dt>Common Mistake</dt>
-          <dd>Restyling links or adding a webfont "for polish." The entire point is unmodified browser defaults — <code>#0000ee</code> links, Times New Roman; the moment either is touched, this stops being brutalism and becomes a plain page with a brutalist theme layered on top.</dd>
+          <dd>Two, in opposite directions. Restyling every link red "for consistency" — the accent's whole point is that it marks the handful of things actually worth marking; give it to every link and it stops meaning anything, exactly like the browser-default blue it replaced. The opposite failure is treating the surviving structural rules as loose: reach for a soft shadow, a rounded corner or an eased hover "for polish" and this stops being brutalism and becomes a plain page with a brutalist theme layered on top — hard 1px borders, zero radius, zero shadow and zero transitions (but the cursor and status line) are still the whole floor this page stands on.</dd>
         </div>
 
         <div class="dp-row" data-field="production-caveat">
@@ -465,7 +499,7 @@
 
         <div class="dp-row" data-field="accessibility-risk">
           <dt>Accessibility Risk</dt>
-          <dd>One of the safer styles here by construction: default link colours and states are exactly what a screen reader or user stylesheet already expects. The 1.35 body line-height is tighter than WCAG's 1.5 recommendation, though, and is inherited unchanged from the document default this page deliberately never overrides.</dd>
+          <dd>Every colour here is now custom rather than a browser default, so every pairing was measured rather than inherited for free: <code>#cc2f1a</code> reads 4.59:1 on the cream paper, <code>#ff5a3c</code> reads 6.39:1 on ink, and <code>#6b6b6b</code>'s secondary text reads 4.64:1 on paper — all comfortably clear AA, and each swaps to the value tuned for its surface's counterpart colour in dark mode rather than reusing the same hex. The 1.35 body line-height is still tighter than WCAG's 1.5 recommendation, and is inherited unchanged from the document default this page deliberately never overrides.</dd>
         </div>
 
         <div class="dp-row" data-field="when-not-to-use">
@@ -477,9 +511,9 @@
           <dt>Replication Rules</dt>
           <dd>
             <ol>
-              <li>Load no webfonts. Use Times New Roman for content and Courier New for machine text, at browser-default sizes.</li>
-              <li>Leave links at <code>#0000ee</code>, underlined, with visited purple intact — never restyle an anchor into a button.</li>
-              <li>Give every block a 1px solid black border, 8px padding, no radius, no shadow, no margin, and let borders touch.</li>
+              <li>Load at most one bold, uppercase display face for headings. Use one monospace face for everything else — body copy, machine text, every plain link and bracketed control — with at most one small serif exception for a wordmark, kept deliberately apart from both.</li>
+              <li>Pick one accent colour and spend it only on things that act — labels, one accented word, a status line, the calls to action — never on plain navigational or footer links. Verify it at 4.5:1 wherever it lands as text, and derive a second value tuned for the opposite (ink vs. paper) surface rather than reusing the same hex everywhere.</li>
+              <li>Give every block a 1px solid black border, 8px padding, no radius, no shadow, no margin, and let borders touch. Links stay underlined text, never restyled into buttons.</li>
               <li>Ban all transitions and animations except utilitarian ones (a blinking cursor, a live counter); hover states must snap.</li>
               <li>Expose structure instead of hiding it — print tag names, use real tables for tabular data, and let the page read as a document rather than a product.</li>
             </ol>
