@@ -181,7 +181,13 @@
      Variants 2–5 override only what changes, below. Padding now reads
      var(--vgap) — each variant's own rhythm token — instead of the
      shared var(--gap), which stays reserved for the footer/Design
-     Points section further down the page. */
+     Points section further down the page.
+
+     Variant 1's nav, toggles and logo carry NO override anywhere in
+     this file — deliberately. It is the "baseline, unchanged" case,
+     so its chrome matches the live minimalism.html page's own nav
+     exactly; giving it a bespoke look here would contradict the one
+     thing it is supposed to demonstrate. */
   .variant-1,.variant-2,.variant-5{--vgap:var(--gap)}
   .variant-3{--vgap:clamp(88px,13vh,144px)}
   .variant-4{--vgap:clamp(120px,18vh,220px)}
@@ -215,8 +221,15 @@
      the page's one separator device also frames its own chrome; the
      three cards trade their equal gap for a shared vertical hairline,
      turning three independent blocks into one ruled row. */
-  .variant-2 .nav{border-bottom:1px solid var(--rule)}
-  .variant-2 .nav ul a{letter-spacing:.01em}
+  /* Nav/logo/toggles live OUTSIDE .variant-N (one shared shell element,
+     sibling of .variant-viewport, not a descendant) — so their per-
+     variant skin is keyed off #carousel-shell[data-active-variant]
+     instead of a .variant-N ancestor, which would never match. */
+  #carousel-shell[data-active-variant="2"] .nav{border-bottom:1px solid var(--rule)}
+  #carousel-shell[data-active-variant="2"] .nav ul a{letter-spacing:.01em}
+  /* the ruled motif reaches the logo too, not just the nav row and the
+     cards — the one nav element the hairline was otherwise skipping */
+  #carousel-shell[data-active-variant="2"] .logo{border-bottom:1px solid var(--rule);padding-bottom:2px}
   .variant-2 .features{gap:0}
   .variant-2 .card{padding:22px 32px 0}
   .variant-2 .card:first-child{padding-left:0}
@@ -228,7 +241,18 @@
      distinctly non-body at 11px, so a tabular mono numeral is added —
      via a CSS counter, not new markup — only for these three index
      marks; headline, body and nav text stay Inter-only. */
-  .variant-3 .nav{display:grid;grid-template-columns:7fr 4fr;column-gap:24px;align-items:baseline}
+  #carousel-shell[data-active-variant="3"] .nav{display:grid;grid-template-columns:7fr 4fr;column-gap:24px;align-items:baseline}
+  /* the toggles pick up the same tighter tracking already used on the
+     card numerals (.06em), so the controls read as part of this
+     variant's own type system rather than the default label style */
+  #carousel-shell[data-active-variant="3"] .ctl{letter-spacing:.14em}
+  /* the narrower 4fr column isn't wide enough for links + controls
+     side by side at the base nav's baseline-row layout — stacking
+     them (links above, controls below, both flush right) reads as a
+     small editorial/masthead device rather than an awkward mid-word
+     wrap, and comfortably fits either row on its own */
+  #carousel-shell[data-active-variant="3"] .nav-right{flex-direction:column;align-items:flex-end;gap:10px}
+  #carousel-shell[data-active-variant="3"] .controls{gap:16px}
   .variant-3 .hero{display:grid;grid-template-columns:7fr 4fr;column-gap:48px;align-items:start}
   .variant-3 .hero h1{grid-column:1;grid-row:1/3;margin:0}
   .variant-3 .hero p{grid-column:2;grid-row:1;margin-top:0}
@@ -248,9 +272,12 @@
      asymmetric bento-style span, but bento-grid.html's usual filled
      tile is forbidden here — Minimalism has no fills — so the same
      effect is drawn entirely in borders and whitespace instead. */
-  .variant-4 .nav{padding:56px 0}
-  .variant-4 .nav ul a{letter-spacing:.03em}
-  .variant-4 .logo{letter-spacing:.02em}
+  #carousel-shell[data-active-variant="4"] .nav{padding:56px 0}
+  #carousel-shell[data-active-variant="4"] .nav ul a{letter-spacing:.03em}
+  #carousel-shell[data-active-variant="4"] .logo{letter-spacing:.02em}
+  /* toggles scale up in step with everything else here — a small,
+     controlled echo of "push harder," not a new device */
+  #carousel-shell[data-active-variant="4"] .ctl{font-size:12px;letter-spacing:.22em}
   .variant-4 .hero h1{font-size:clamp(48px,9vw,120px);max-width:11ch}
   .variant-4 .card h3{font-size:11px;letter-spacing:.14em;text-transform:uppercase}
   .variant-4 .card p{font-size:13px}
@@ -272,7 +299,11 @@
      illustration sits behind the top of the page, this is the one
      variant whose nav gets an opaque backing — a legibility fix, not
      decoration. */
-  .variant-5 .nav{background:var(--paper);border-bottom:1px solid var(--rule)}
+  #carousel-shell[data-active-variant="5"] .nav{background:var(--paper);border-bottom:1px solid var(--rule)}
+  /* a little extra room now that the nav is a solid strip rather than
+     a transparent bar over the page — the controls get more air
+     against the busier backdrop */
+  #carousel-shell[data-active-variant="5"] .nav-right{gap:64px}
   .variant-5 .hero{display:flex;align-items:center;gap:clamp(32px,6vw,72px)}
   .variant-5 .hero-copy{flex:0 1 55%;min-width:0}
   .variant-5 .hero-copy h1,.variant-5 .hero-copy p,.variant-5 .hero-copy .btn{max-width:none}
@@ -287,6 +318,18 @@
   .variant-5 .card:first-child{border-left:0;padding-left:0}
   .variant-5 .card:nth-child(2){transform:translateY(28px)}
   .variant-5 .card:nth-child(3){transform:translateY(56px)}
+
+  /* Sidebar mode's own layout must always win over whichever variant's
+     nav skin is active (e.g. Variant 3's grid split, Variant 4's
+     padding) — restated here, after the per-variant rules, with equal
+     specificity (#carousel-shell id + attribute + class) so source
+     order decides in its favor, rather than repeating this in every
+     variant block above. */
+  html[data-nav="side"] #carousel-shell .nav{
+    display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;
+    gap:0;padding:40px 28px}
+  html[data-nav="side"] #carousel-shell .nav-right{
+    flex-direction:column;align-items:flex-start;gap:40px;margin-top:44px}
 
   /* ── Footer (shared, identical across all five, appears once) ──── */
   .site-footer{border-top:1px solid var(--rule);padding:56px 0 var(--gap);
@@ -372,7 +415,13 @@
        device here, not something asked to survive at phone width. */
     .variant-2 .features{gap:36px}
     .variant-2 .card{padding:22px 0 0;border-left:0}
-    .variant-3 .nav{display:flex}
+    /* same nav-is-outside-.variant-N caveat as the desktop rules above:
+       this has to be #carousel-shell[data-active-variant] to actually
+       match, and needs align-items reset alongside display since V3's
+       own align-items:baseline would otherwise outrank the mobile
+       base rule's flex-start at equal-or-lower specificity. */
+    #carousel-shell[data-active-variant="3"] .nav{display:flex;align-items:flex-start}
+    #carousel-shell[data-active-variant="3"] .nav-right{flex-direction:row;align-items:baseline;gap:22px 32px}
     .variant-3 .hero{display:block}
     .variant-3 .hero h1,.variant-3 .hero p,.variant-3 .hero .btn{grid-column:auto;grid-row:auto}
     .variant-3 .features{grid-template-columns:1fr}
@@ -394,6 +443,14 @@
       flex-wrap:wrap;gap:20px;margin-top:40px}
     .discover-arrow,.variant-nav,.variant-dots{position:static;top:auto;left:auto;
       right:auto;bottom:auto;transform:none}
+
+    /* Same sidebar-always-wins restatement as the desktop rule above,
+       for the mobile-collapsed sidebar layout (position:static, 40px
+       0 padding) — otherwise Variant 4's padding:56px 0 would still
+       outrank it here too. */
+    html[data-nav="side"] #carousel-shell .nav{
+      position:static;width:auto;padding:40px 0;border-right:0;overflow:visible;background:none;
+      flex-direction:column;align-items:flex-start;gap:22px}
   }
 </style>
 <script>
