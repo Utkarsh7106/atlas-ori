@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sten Aalto — Product Design</title>
+<meta name="description" content="Sten Aalto is an independent product designer working in reduced, unornamented form.">
+<link rel="stylesheet" href="style.css">
+<script>
+  (function () {
+    var items;
+    document.addEventListener('DOMContentLoaded', function () {
+      items = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) { items.forEach(function(el){el.classList.add('in')}); return; }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: .15 });
+      items.forEach(function (el) { io.observe(el); });
+    });
+  })();
+</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav">
+    <a href="index.html" class="logo">Sten Aalto</a>
+    <ul>
+      <li><a href="index.html" aria-current="page">Home</a></li>
+      <li><a href="work.html">Work</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <header class="hero reveal">
+      <h1>Form that asks for nothing.</h1>
+      <p>Product design for people who don't want to think about the product — only use it.</p>
+      <a href="work.html" class="btn">View work</a>
+    </header>
+
+    <section class="features">
+      <article class="card reveal">
+        <span class="icon">Form</span>
+        <h3>Reduction</h3>
+        <p>Every part earns its place, or it doesn't ship.</p>
+      </article>
+      <article class="card reveal">
+        <span class="icon">Material</span>
+        <h3>Honesty</h3>
+        <p>A material looks like what it is, not like something else.</p>
+      </article>
+      <article class="card reveal">
+        <span class="icon">Use</span>
+        <h3>Clarity</h3>
+        <p>If a function needs a label to explain it, redesign the function.</p>
+      </article>
+    </section>
+
+    <section class="cta reveal">
+      <h2>Let's talk.</h2>
+      <p>Available for select product and furniture commissions.</p>
+      <a href="contact.html" class="btn">Get in touch</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p class="site-footer__mark">Sten Aalto</p>
+    <p class="site-footer__note">Product Design · Helsinki</p>
+    <nav class="site-footer__links" aria-label="Footer">
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </footer>
+</div>
+</body>
+</html>

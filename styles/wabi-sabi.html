@@ -331,7 +331,7 @@
       color:var(--ash);transition:color 1.1s ease}
     .foot__links a:hover{color:var(--sumi)}
     .foot__links a:focus-visible,.signature:focus-visible,.dp-skill:focus-visible,
-    .dp-back:focus-visible{outline:2px solid var(--kintsugi);outline-offset:4px}
+    .dp-example:focus-visible,.dp-back:focus-visible{outline:2px solid var(--kintsugi);outline-offset:4px}
 
     /* ── Signature mark ──────────────────────────────────────────
        Copied verbatim from styles/swiss-design.html and deliberately
@@ -398,18 +398,18 @@
     .design-points h2{font-family:"Shippori Mincho",serif;font-size:20px;font-weight:400;
       letter-spacing:.22em;text-indent:.22em;text-transform:lowercase;color:var(--sumi);margin:0}
     .dp-actions{display:flex;gap:12px;flex-wrap:wrap}
-    .dp-skill,.dp-back{position:relative;display:inline-block;
+    .dp-skill,.dp-example,.dp-back{position:relative;display:inline-block;
       font-family:"Karla",sans-serif;font-size:11px;font-weight:400;letter-spacing:.2em;
       text-transform:lowercase;color:var(--ash);padding:9px 18px;
       border:1px solid var(--rim);
       border-radius:47% 53% 49% 51%/53% 47% 52% 48%;
       transition:background 1.2s ease,color 1.2s ease,border-radius 1.6s ease}
-    .dp-skill:hover,.dp-back:hover{background:var(--sumi);color:var(--on-ink);
+    .dp-skill:hover,.dp-example:hover,.dp-back:hover{background:var(--sumi);color:var(--on-ink);
       border-radius:52% 48% 53% 47%/47% 54% 46% 53%}
     /* the panel's own mended edge — decorative only; the rim and the
        label carry the affordance */
-    .dp-skill{padding-left:26px}
-    .dp-skill::before{content:"";position:absolute;left:13px;top:9px;bottom:9px;width:2px;
+    .dp-skill,.dp-example{padding-left:26px}
+    .dp-skill::before,.dp-example::before{content:"";position:absolute;left:13px;top:9px;bottom:9px;width:2px;
       background:linear-gradient(180deg, transparent, var(--kintsugi) 18%, var(--kintsugi) 42%,
         transparent 50%, var(--kintsugi) 58%, var(--kintsugi) 82%, transparent);
       pointer-events:none}
@@ -449,7 +449,7 @@
        the class is on, so only the return is eased).
 
        Placed after every rule it overrides, including the panel's. */
-    .btn.is-pressed,.ctl.is-pressed,.dp-skill.is-pressed,.dp-back.is-pressed{
+    .btn.is-pressed,.ctl.is-pressed,.dp-skill.is-pressed,.dp-example.is-pressed,.dp-back.is-pressed{
       transition:none;background:var(--sumi);color:var(--on-ink);border-color:transparent;
       border-radius:56% 44% 51% 49%/44% 56% 44% 56%;transform:translateY(1px)}
     .ctl.is-pressed .ctl__v{transition:none;color:var(--on-ink)}
@@ -569,8 +569,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/wabi-sabi/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/wabi-sabi/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>
@@ -744,7 +744,7 @@
        :active on touch until it knows the gesture is not a scroll, so
        the state is driven from pointer events and held for a minimum
        whether or not the finger stays down. */
-    var PRESSABLE = '.ctl, .nav ul a, .btn, .cta .cta-btn, .foot__links a, .dp-skill, .dp-back, .dialog__close';
+    var PRESSABLE = '.ctl, .nav ul a, .btn, .cta .cta-btn, .foot__links a, .dp-skill, .dp-example, .dp-back, .dialog__close';
     var MIN_HOLD = 160;
     document.querySelectorAll(PRESSABLE).forEach(function (el) {
       var at = 0, timer = null;

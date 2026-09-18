@@ -255,12 +255,12 @@
     .hero-side .stack i{border-color:var(--ink)}
     /* chips that swap to a bright fill on hover/press swap their edge too */
     .nav ul a:hover,.ctl:hover,.ctl[aria-pressed="true"],
-    .site-footer__links a:hover,.dp-skill:hover,.dp-back:hover{
+    .site-footer__links a:hover,.dp-skill:hover,.dp-example:hover,.dp-back:hover{
       border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
     .nav ul a:active,.ctl:active,
-    .site-footer__links a:active,.dp-skill:active,.dp-back:active,
+    .site-footer__links a:active,.dp-skill:active,.dp-example:active,.dp-back:active,
     .nav ul a.is-pressed,.ctl.is-pressed,
-    .site-footer__links a.is-pressed,.dp-skill.is-pressed,.dp-back.is-pressed{
+    .site-footer__links a.is-pressed,.dp-skill.is-pressed,.dp-example.is-pressed,.dp-back.is-pressed{
       box-shadow:0 0 0 var(--ink)}
 
     /* Chromium withholds :active on touch until it knows the gesture is not
@@ -270,7 +270,7 @@
        the same CSS transition, so prefers-reduced-motion still mutes it. */
     .btn.is-pressed,.cta .cta-btn.is-pressed,.dialog__close.is-pressed{transform:translate(6px,6px)}
     .nav ul a.is-pressed,.ctl.is-pressed,
-    .site-footer__links a.is-pressed,.dp-skill.is-pressed,.dp-back.is-pressed{transform:translate(3px,3px)}
+    .site-footer__links a.is-pressed,.dp-skill.is-pressed,.dp-example.is-pressed,.dp-back.is-pressed{transform:translate(3px,3px)}
     .cta .cta-btn.is-pressed{box-shadow:0 0 0 var(--ink)}
 
     @media(max-width:820px){
@@ -311,13 +311,14 @@
     .design-points h2{font-size:clamp(26px,3.6vw,38px);font-weight:700;letter-spacing:-.035em;
       line-height:1;margin:0;color:var(--ink)}
     .dp-actions{display:flex;gap:10px;flex-wrap:wrap}
-    .dp-skill,.dp-back{display:block;border:3px solid var(--edge);background:var(--card);color:var(--on-card);
+    .dp-skill,.dp-example,.dp-back{display:block;border:3px solid var(--edge);background:var(--card);color:var(--on-card);
       padding:7px 16px;font-size:13px;font-weight:700;box-shadow:3px 3px 0 var(--edge);
       transition:transform .08s linear,box-shadow .08s linear,background .08s linear}
     .dp-skill:hover{background:var(--coral);color:var(--ink)}
+    .dp-example:hover{background:var(--yellow);color:var(--ink)}
     .dp-back:hover{background:var(--mint);color:var(--ink)}
-    .dp-skill:active,.dp-back:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--edge)}
-    .dp-skill:focus-visible,.dp-back:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+    .dp-skill:active,.dp-example:active,.dp-back:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--edge)}
+    .dp-skill:focus-visible,.dp-example:focus-visible,.dp-back:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
     .dp{margin:0}
     .dp-row{display:grid;grid-template-columns:210px 1fr;gap:20px;align-items:start;
       background:var(--card);color:var(--on-card);
@@ -451,8 +452,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/neo-brutalism/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/neo-brutalism/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>
@@ -586,7 +587,7 @@
        in the stylesheet. Held for a minimum so a fast tap still completes
        the 80ms move; pointercancel covers the case where the tap turns out
        to be the start of a scroll. */
-    var PRESSABLE = '.btn, .cta .cta-btn, .nav ul a, .ctl, .site-footer__links a, .dp-skill, .dp-back, .dialog__close';
+    var PRESSABLE = '.btn, .cta .cta-btn, .nav ul a, .ctl, .site-footer__links a, .dp-skill, .dp-example, .dp-back, .dialog__close';
     var MIN_HOLD = 140;
     document.querySelectorAll(PRESSABLE).forEach(function (el) {
       var at = 0, timer = null;

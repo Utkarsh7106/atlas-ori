@@ -247,10 +247,10 @@
     .dp-actions{display:flex;gap:20px;align-items:baseline}
     .design-points h2{font:600 12px/1 system-ui,sans-serif;letter-spacing:.2em;
       text-transform:uppercase;color:var(--muted);margin:0}
-    .dp-skill,.dp-back{font-size:12px;letter-spacing:.06em;color:var(--muted);
+    .dp-skill,.dp-example,.dp-back{font-size:12px;letter-spacing:.06em;color:var(--muted);
       text-decoration:underline;text-underline-offset:3px;transition:color .15s ease}
-    .dp-skill:hover,.dp-back:hover{color:var(--text)}
-    .dp-skill:focus-visible,.dp-back:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .dp-skill:hover,.dp-example:hover,.dp-back:hover{color:var(--text)}
+    .dp-skill:focus-visible,.dp-example:focus-visible,.dp-back:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .dp{margin:0}
     .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid var(--border)}
     .dp-row:first-child{border-top:0;padding-top:0}
@@ -376,8 +376,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/dark-mode-ui/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/dark-mode-ui/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>

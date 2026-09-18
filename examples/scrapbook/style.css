@@ -1,0 +1,178 @@
+/* Wren Ashby -- built only from skills/scrapbook/SKILL.md. */
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+ul{margin:0;padding:0;list-style:none}
+html,body{overflow-x:hidden}
+
+:root{
+  --board:#d8c3a5;
+  --card:#fdf6e8;
+  --card-2:#f6efdd;
+  --ink:#2f3a4a;
+  --on-stamp:#fdf6e8;
+  --red:#c1483b;
+  --sage:#8a9a7b;
+  --lamp:rgba(255,255,255,.30);
+  --shade:rgba(120,90,50,.16);
+  --grain:rgba(140,110,70,.05);
+  --edge:rgba(90,66,40,.22);
+  --lift:rgba(60,42,22,.6);
+  --lift-hi:rgba(60,42,22,.75);
+  --cut:rgba(60,45,25,.45);
+  --cut-line:rgba(47,58,74,.62);
+  --tape-color:rgba(238,214,140,.72);
+  --tape-shadow:rgba(80,60,30,.28);
+  --tape-edge:rgba(255,255,255,.55);
+  --rule:rgba(47,58,74,.16);
+  --rule-2:rgba(47,58,74,.13);
+  --margin-rule:rgba(193,72,59,.4);
+  --marker:rgba(193,72,59,.32);
+  --dash:rgba(47,58,74,.4);
+  --stamp-frame:rgba(193,72,59,.78);
+}
+
+body{
+  background:
+    radial-gradient(circle at 22% 18%, var(--lamp) 0, transparent 38%),
+    radial-gradient(circle at 78% 72%, var(--shade) 0, transparent 42%),
+    repeating-linear-gradient(52deg, var(--grain) 0 2px, transparent 2px 5px),
+    var(--board);
+  color:var(--ink);
+  font-family:"Special Elite",Courier,monospace;
+  padding:clamp(16px,3vw,34px);
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px dashed var(--red);outline-offset:4px}
+
+.board{max-width:1060px;margin:0 auto;position:relative}
+
+/* ── Shared paper physics ─────────────────────────────────────────── */
+.paper{background:var(--card);position:relative;
+  box-shadow:2px 4px 0 var(--edge), 0 14px 24px -14px var(--lift)}
+.tape{position:absolute;width:104px;height:28px;background:var(--tape-color);
+  box-shadow:0 1px 3px var(--tape-shadow);
+  border-left:1px dashed var(--tape-edge);border-right:1px dashed var(--tape-edge)}
+.tape.tl{top:-13px;left:-16px;transform:rotate(-28deg)}
+.tape.tr{top:-15px;right:-15px;transform:rotate(23deg)}
+.tape.bl{bottom:-13px;left:24px;transform:rotate(8deg)}
+.tape.br{position:absolute;bottom:-14px;right:-15px;transform:rotate(26deg)}
+
+.clip{position:absolute;top:-18px;right:20px;width:24px;height:48px;border:4px solid #9aa3ab;
+  border-radius:14px;border-bottom-color:transparent;box-shadow:1px 2px 2px rgba(0,0,0,.25)}
+
+/* ── Nav: a torn strip pinned to the top ─────────────────────────── */
+.nav{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;
+  padding:16px 24px;transform:rotate(-.7deg);margin-bottom:40px;
+  clip-path:polygon(0 6%,4% 0,12% 7%,22% 1%,33% 8%,45% 2%,57% 9%,68% 2%,79% 8%,90% 1%,100% 7%,100% 94%,92% 100%,80% 93%,69% 99%,57% 92%,44% 99%,32% 92%,20% 99%,9% 93%,0 100%)}
+.logo{font-family:"Caveat",cursive;font-size:38px;font-weight:700;color:var(--ink);transform:rotate(-2deg)}
+.nav ul{display:flex;gap:18px;flex-wrap:wrap}
+.nav ul a{font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:3px 2px;
+  border-bottom:2px solid transparent;transition:border-color .2s ease,color .2s ease}
+.nav ul a:hover,.nav ul a[aria-current="page"]{border-bottom-color:var(--red);color:var(--red)}
+
+/* ── Hero: a big ruled sheet, taped down ─────────────────────────── */
+.hero{padding:48px 36px 42px 56px;transform:rotate(.8deg);margin-bottom:60px;
+  background-image:
+    linear-gradient(90deg, transparent 42px, var(--margin-rule) 42px 43px, transparent 43px),
+    repeating-linear-gradient(180deg, transparent 0 31px, var(--rule) 31px 32px);
+  background-color:var(--card)}
+.hero h1{font-family:"Caveat",cursive;font-weight:700;font-size:clamp(36px,6.8vw,72px);
+  line-height:1.05;max-width:15ch;color:var(--ink);margin:0}
+.hero h1::after{content:"";display:block;width:56%;height:9px;margin-top:6px;
+  background:var(--marker);transform:rotate(-.6deg) skewX(-12deg);border-radius:4px}
+.hero p{margin-top:24px;font-size:14px;line-height:2;max-width:44ch;letter-spacing:.01em}
+
+.btn{display:inline-block;margin-top:30px;font-family:"Caveat",cursive;font-size:25px;font-weight:700;
+  background:var(--sage);color:var(--ink);padding:8px 28px;transform:rotate(-1.6deg);
+  box-shadow:inset 0 0 0 2px var(--cut-line), 3px 3px 0 var(--cut);
+  clip-path:polygon(1% 8%,99% 0,100% 88%,50% 100%,0 92%);
+  transition:transform .18s ease,box-shadow .18s ease}
+.btn:hover{transform:rotate(1.4deg) translateY(-3px);box-shadow:inset 0 0 0 2px var(--cut-line), 5px 7px 0 var(--cut)}
+
+.doodle{position:absolute;font-family:"Caveat",cursive;font-size:20px;color:var(--red);
+  transform:rotate(-9deg);pointer-events:none}
+
+/* ── Features: three pinned cut-outs ─────────────────────────────── */
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:36px;margin-bottom:66px}
+.card{padding:24px 20px 28px;position:relative}
+.card:nth-child(1){transform:rotate(-2.4deg)}
+.card:nth-child(2){transform:rotate(1.6deg);background:var(--card-2)}
+.card:nth-child(3){transform:rotate(-1.1deg)}
+.icon{display:inline-block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--on-stamp);background:var(--ink);padding:4px 10px;transform:rotate(-1.5deg)}
+.card h3{font-family:"Caveat",cursive;font-size:34px;font-weight:700;margin:12px 0 4px;color:var(--red)}
+.card p{font-size:13px;line-height:1.9;border-top:1px dashed var(--dash);padding-top:12px;margin:0}
+
+/* ── CTA: an index card stamped ───────────────────────────────────── */
+.cta{padding:42px 26px;text-align:center;transform:rotate(-.6deg);margin-bottom:56px;position:relative;
+  background:var(--card);
+  background-image:repeating-linear-gradient(180deg, transparent 0 29px, var(--rule-2) 29px 30px)}
+.cta h2{font-family:"Caveat",cursive;font-size:clamp(34px,5.4vw,58px);font-weight:700;margin:0}
+.cta .cta-btn{display:inline-block;margin-top:20px;font-family:"Special Elite",monospace;font-size:14px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--red);border:3px double var(--stamp-frame);
+  padding:11px 24px;transform:rotate(1.2deg);transition:transform .18s ease}
+.cta .cta-btn:hover{transform:rotate(-2deg) scale(1.04)}
+.stamp{position:absolute;right:24px;top:18px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--red);border:2px solid var(--stamp-frame);padding:8px 12px;transform:rotate(13deg);border-radius:4px}
+
+/* ── Page heading ─────────────────────────────────────────────────── */
+.page-head{padding:38px 40px;transform:rotate(-.5deg);margin-bottom:50px;position:relative;
+  background:var(--card);
+  background-image:repeating-linear-gradient(180deg, transparent 0 29px, var(--rule-2) 29px 30px)}
+.page-head h1{font-family:"Caveat",cursive;font-size:clamp(38px,6vw,60px);font-weight:700;margin:0;color:var(--ink)}
+.page-head p{margin-top:10px;font-size:14px}
+
+/* ── Work list: taped index cards ────────────────────────────────── */
+.work-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:36px;margin-bottom:60px}
+.work-card{padding:24px 22px 26px;position:relative}
+.work-card:nth-child(4n+1){transform:rotate(-1.8deg)}
+.work-card:nth-child(4n+2){transform:rotate(1.3deg);background:var(--card-2)}
+.work-card:nth-child(4n+3){transform:rotate(-.9deg)}
+.work-card:nth-child(4n+4){transform:rotate(2deg);background:var(--card-2)}
+.work-card .icon{margin-bottom:12px}
+.work-card h2{font-family:"Caveat",cursive;font-size:30px;font-weight:700;margin:0 0 8px;color:var(--red)}
+.work-card p{font-size:13px;line-height:1.9;border-top:1px dashed var(--dash);padding-top:10px;margin:0}
+
+/* ── About ────────────────────────────────────────────────────────── */
+.about-lead{padding:38px 40px;transform:rotate(.5deg);margin-bottom:44px;position:relative;
+  background:var(--card);
+  background-image:repeating-linear-gradient(180deg, transparent 0 29px, var(--rule-2) 29px 30px)}
+.about-lead p{font-size:14px;line-height:2;max-width:60ch;margin:0 0 16px}
+.about-lead p:last-child{margin-bottom:0}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:30px;margin-bottom:56px}
+.note{padding:20px 18px 22px;position:relative}
+.note:nth-child(1){transform:rotate(-2deg)}
+.note:nth-child(2){transform:rotate(1.5deg);background:var(--card-2)}
+.note h3{font-family:"Caveat",cursive;font-size:26px;font-weight:700;margin:0 0 6px;color:var(--red)}
+.note p{font-size:13px;line-height:1.8;margin:0}
+
+/* ── Contact ──────────────────────────────────────────────────────── */
+.contact{padding:40px 34px;text-align:center;transform:rotate(-.4deg);margin-bottom:56px;position:relative;
+  background:var(--card);
+  background-image:repeating-linear-gradient(180deg, transparent 0 29px, var(--rule-2) 29px 30px)}
+.contact-list{margin-top:22px;display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.contact-list .chip{display:inline-block;font-family:"Special Elite",Courier,monospace;font-size:12px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--ink);background:var(--card-2);
+  padding:7px 14px;transform:rotate(-1.2deg);box-shadow:0 0 0 1px var(--cut-line), 2px 2px 0 var(--edge)}
+.contact-list a.chip{color:var(--red)}
+
+/* ── Footer ───────────────────────────────────────────────────────── */
+.foot{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;
+  padding:18px 24px;transform:rotate(.7deg);margin-bottom:26px;position:relative;
+  clip-path:polygon(0 6%,4% 0,12% 7%,22% 1%,33% 8%,45% 2%,57% 9%,68% 2%,79% 8%,90% 1%,100% 7%,100% 94%,92% 100%,80% 93%,69% 99%,57% 92%,44% 99%,32% 92%,20% 99%,9% 93%,0 100%)}
+.foot__links{display:flex;gap:18px;flex-wrap:wrap}
+.foot__links a{font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:3px 2px;
+  border-bottom:2px solid transparent;transition:border-color .2s ease,color .2s ease}
+.foot__links a:hover{border-bottom-color:var(--red);color:var(--red)}
+.signature{font-family:"Caveat",cursive;font-weight:700;font-size:22px;color:var(--ink)}
+
+@media(max-width:640px){
+  .hero{padding:36px 20px 34px 44px}
+  .logo{font-size:30px}
+  /* Purely decorative and absolutely positioned at a fixed corner offset,
+     so it collides with the button once the hero's content height
+     changes at narrow widths -- simplest safe fix is to drop it here. */
+  .doodle{display:none}
+}

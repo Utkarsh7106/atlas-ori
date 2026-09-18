@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vex Okafor — Command-Line Tools</title>
+<meta name="description" content="Vex Okafor builds small command-line tools for people who live in a terminal.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="crt" aria-hidden="true"></div>
+
+<div class="wrap">
+  <nav class="nav">
+    <span class="logo">root@vex:~$</span>
+    <ul>
+      <li><a href="index.html" aria-current="page">home</a></li>
+      <li><a href="work.html">work</a></li>
+      <li><a href="about.html">about</a></li>
+      <li><a href="contact.html">contact</a></li>
+    </ul>
+  </nav>
+
+  <pre class="ascii">┌──────────────────────────────────────────────────────┐
+│ session 0x4F2A  //  uptime 118d 06:12  //  status: OK │
+└──────────────────────────────────────────────────────┘</pre>
+
+  <header class="hero">
+    <span class="dim">[stdout] // whoami</span>
+    <h1 id="headline" class="glitch" data-text="TOOLS THAT LIVE IN YOUR TERMINAL">TOOLS THAT LIVE IN YOUR TERMINAL</h1>
+    <p>Small, single-purpose CLI tools — no daemons, no telemetry, no
+    config file you didn't write yourself.<span class="cursor" aria-hidden="true"></span></p>
+    <div class="actions">
+      <a href="work.html" class="btn">./view-tools</a>
+      <a href="contact.html" class="btn btn--ghost">./contact</a>
+    </div>
+  </header>
+
+  <section class="features">
+    <article class="card box" data-tag="0x01">
+      <h3>gitwatch</h3>
+      <p>Watches a repo and runs a command on every commit. No polling
+      — uses inotify.</p>
+      <p class="hex">4769747761746368</p>
+    </article>
+    <article class="card box" data-tag="0x02">
+      <h3>envdiff</h3>
+      <p>Diffs two .env files and flags anything missing before you
+      deploy.</p>
+      <p class="hex">656e76646966663031</p>
+    </article>
+    <article class="card box" data-tag="0x03">
+      <h3>pgtail</h3>
+      <p>Tails a Postgres slow-query log and formats it into something
+      readable.</p>
+      <p class="hex">7067746169</p>
+    </article>
+  </section>
+
+  <section class="cta box" data-tag="exec">
+    <h2>./install --now</h2>
+    <a href="contact.html" class="btn">./get-access</a>
+  </section>
+
+  <footer class="foot">
+    <p>vex@okafor.dev // uid=1000</p>
+    <nav class="foot__links" aria-label="Footer">
+      <a href="work.html">work</a>
+      <a href="about.html">about</a>
+      <a href="contact.html">contact</a>
+    </nav>
+  </footer>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

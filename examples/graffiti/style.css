@@ -1,0 +1,166 @@
+/* Deco One -- built only from skills/graffiti/SKILL.md.
+   Wall first, layered outlined letterforms, randomised drips per load,
+   sticker nav, handstyle tag on top as the last pass. */
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+:root{
+  --wall:#3c3c40;
+  --outline:#0c0c0e;
+  --cyan:#12c8ff;
+  --yellow:#ffd400;
+  --red:#ff2f3c;
+  --violet:#a83bff;
+  --chalk:#f2f2ef;
+  --piece:Bungee,"Arial Black",sans-serif;
+  --tag:"Permanent Marker",cursive;
+  --label-font:Oswald,Verdana,sans-serif;
+}
+
+body{
+  background:
+    radial-gradient(ellipse 500px 300px at 12% 18%, rgba(0,0,0,.18), transparent 60%),
+    radial-gradient(ellipse 420px 260px at 82% 68%, rgba(0,0,0,.15), transparent 60%),
+    repeating-linear-gradient(78deg, rgba(255,255,255,.025) 0 2px, transparent 2px 6px),
+    repeating-linear-gradient(12deg, rgba(0,0,0,.03) 0 2px, transparent 2px 7px),
+    linear-gradient(155deg, #414146 0%, var(--wall) 55%, #343438 100%);
+  color:var(--chalk);
+  font-family:var(--label-font);
+  font-weight:300;
+  font-size:16px;
+  line-height:1.7;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--chalk);outline-offset:3px}
+
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px 70px}
+
+/* piece lettering: fill, stroke-behind-fill outline, hard shadow, glow */
+.piece{font-family:var(--piece);font-weight:400;text-transform:uppercase;
+  -webkit-text-stroke:9px var(--outline);paint-order:stroke fill;
+  text-shadow:6px 6px 0 var(--outline);position:relative}
+.piece::before{content:attr(data-text);position:absolute;inset:0;z-index:-1;
+  -webkit-text-stroke:0;filter:blur(14px);opacity:.55}
+.piece--cyan{color:var(--cyan)}
+.piece--cyan::before{color:var(--cyan)}
+.piece--yellow{color:var(--yellow)}
+.piece--yellow::before{color:var(--yellow)}
+.piece--red{color:var(--red)}
+.piece--red::before{color:var(--red)}
+.piece--violet{color:var(--violet)}
+.piece--violet::before{color:var(--violet)}
+
+/* handstyle tag, last layer, on top of everything */
+.tag{font-family:var(--tag);color:var(--violet);text-shadow:2px 2px 0 rgba(0,0,0,.4);
+  display:inline-block}
+
+/* sticker: chalk box, thick border, hard shadow, own angle */
+.sticker{display:inline-block;background:var(--chalk);color:var(--outline);
+  border:3px solid var(--outline);padding:6px 12px;font-family:var(--label-font);
+  font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;
+  box-shadow:4px 4px 0 var(--outline)}
+
+/* stencil block: dashed chalk outline + 135deg hatch */
+.stencil{border:5px dashed var(--chalk);padding:26px 22px;position:relative;overflow:hidden}
+.stencil::before{content:"";position:absolute;inset:0;
+  background-image:repeating-linear-gradient(135deg, rgba(242,242,239,.08) 0 2px, transparent 2px 12px)}
+.stencil > *{position:relative}
+
+.btn{display:inline-block;font-family:var(--label-font);font-weight:700;font-size:14px;
+  text-transform:uppercase;letter-spacing:.04em;color:var(--chalk);background:var(--red);
+  border:3px solid var(--outline);padding:12px 26px;box-shadow:5px 5px 0 var(--outline);
+  transition:transform 120ms linear,box-shadow 120ms linear}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--outline)}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--outline)}
+
+/* drips: generated per load via JS, rounded bottom + bead */
+.drips{position:relative;height:60px;margin-top:-6px}
+.drips i{position:absolute;top:0;border-radius:0 0 50% 50%}
+.drips i::after{content:"";position:absolute;left:50%;bottom:-5px;translate:-50% 0;
+  width:70%;aspect-ratio:1;border-radius:50%}
+
+.aerosol-dot{position:fixed;border-radius:50%;pointer-events:none;z-index:50}
+
+/* ── Nav ─────────────────────────────────────────────────────────────── */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:22px 0}
+.logo{font-family:var(--piece);font-size:22px;color:var(--yellow);
+  -webkit-text-stroke:3px var(--outline);paint-order:stroke fill;text-shadow:2px 2px 0 var(--outline)}
+.nav ul{display:flex;gap:16px;flex-wrap:wrap}
+.nav ul a.sticker{rotate:-2deg}
+.nav ul li:nth-child(2) a.sticker{rotate:1.5deg}
+.nav ul li:nth-child(3) a.sticker{rotate:-1deg}
+.nav ul li:nth-child(4) a.sticker{rotate:2deg}
+.nav ul a[aria-current="page"]{background:var(--yellow)}
+
+/* ── Hero ────────────────────────────────────────────────────────────── */
+.hero{padding:30px 6px 0;position:relative;rotate:-.6deg}
+.hero .piece{font-size:clamp(38px,8vw,96px);line-height:.96;margin:0}
+.hero p{margin:22px 0 0;max-width:56ch;color:var(--chalk);font-size:16px;rotate:.3deg}
+.hero .actions{margin-top:26px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;rotate:.3deg}
+.hero .tag{font-size:22px;margin-left:6px;rotate:-3deg}
+
+/* ── Features ────────────────────────────────────────────────────────── */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px}
+.card{padding:22px 20px}
+.card:nth-child(1){rotate:-1.5deg}
+.card:nth-child(2){rotate:1deg}
+.card:nth-child(3){rotate:-.8deg}
+.card h3{font-family:var(--piece);font-weight:400;font-size:19px;color:var(--chalk);
+  -webkit-text-stroke:2.5px var(--outline);paint-order:stroke fill;text-shadow:2px 2px 0 var(--outline);
+  margin:0 0 10px;text-transform:uppercase}
+.card p{margin:0;font-size:14px;color:var(--chalk)}
+
+/* ── CTA ────────────────────────────────────────────────────────────── */
+.cta{margin-top:28px;text-align:center;padding:30px 20px;rotate:.4deg}
+.cta .piece{font-size:clamp(26px,4vw,44px);margin:0 0 20px}
+
+/* ── Page heading ────────────────────────────────────────────────────── */
+.page-head{padding:26px 6px 0;rotate:-.5deg}
+.page-head .piece{font-size:clamp(36px,6.4vw,72px);margin:0}
+.page-head p{margin:18px 0 0;max-width:56ch;font-size:15px;rotate:.3deg}
+
+/* ── Murals (Work) ───────────────────────────────────────────────────── */
+.murals{display:grid;gap:22px;margin-top:24px;margin-bottom:24px}
+.mural{padding:22px;display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center}
+.mural:nth-child(odd){rotate:-.7deg}
+.mural:nth-child(even){rotate:.7deg}
+.mural__swatch{width:64px;height:64px;flex:none;border:3px solid var(--outline);
+  box-shadow:4px 4px 0 var(--outline)}
+.mural h2{font-family:var(--piece);font-weight:400;font-size:22px;text-transform:uppercase;
+  color:var(--chalk);-webkit-text-stroke:2px var(--outline);paint-order:stroke fill;
+  text-shadow:2px 2px 0 var(--outline);margin:0 0 6px}
+.mural p{margin:0;font-size:13.5px;color:var(--chalk)}
+
+/* ── About ───────────────────────────────────────────────────────────── */
+.about-lead{padding:24px;margin-top:24px;margin-bottom:24px;rotate:-.4deg}
+.about-lead p{margin:0 0 16px}
+.about-lead p:last-child{margin-bottom:0}
+.about-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.fact{text-align:center;padding:18px}
+.fact:nth-child(1){rotate:-1deg}
+.fact:nth-child(2){rotate:.8deg}
+.fact:nth-child(3){rotate:-.6deg}
+.fact h3{font-family:var(--piece);font-weight:400;font-size:26px;color:var(--yellow);
+  -webkit-text-stroke:2px var(--outline);paint-order:stroke fill;margin:0 0 6px}
+.fact p{margin:0;font-size:13px}
+
+/* ── Contact ─────────────────────────────────────────────────────────── */
+.contact{text-align:center;padding:30px 20px;margin-top:24px;margin-bottom:24px;rotate:.3deg}
+.contact-list{margin-top:22px;display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+.foot{margin-top:24px;padding:18px 0;display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:14px}
+.foot p{margin:0;font-size:13px;color:var(--chalk)}
+.foot__links{display:flex;gap:16px;flex-wrap:wrap}
+
+@media(max-width:760px){
+  .features{grid-template-columns:1fr}
+  .about-facts{grid-template-columns:1fr}
+  .mural{grid-template-columns:auto 1fr}
+  .mural .sticker{display:none}
+}

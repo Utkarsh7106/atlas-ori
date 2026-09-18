@@ -1,0 +1,150 @@
+/* The Corvid & Quill -- built only from skills/victorian/SKILL.md.
+   Papered ground, double gilt frames, playbill type stack, packed
+   16-18px block spacing. Gaslight flicker uses the fixed safety
+   parameters (700-1400ms, 0.85-1 opacity) verbatim -- not the
+   original fast/deep version the skill explicitly warns against. */
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+:root{
+  --paper:#f3e7cf;
+  --burgundy:#5d1f2b;
+  --forest:#24402f;
+  --gold:#c39a4b;
+  --gold-dim:#7a5e25;
+  --ink:#2a1a10;
+  --display:"Abril Fatface",Georgia,serif;
+  --caps:"Playfair Display",Georgia,serif;
+  --body-font:"IM Fell English",Georgia,serif;
+}
+
+body{
+  background:
+    radial-gradient(rgba(93,31,43,.05) 1px, transparent 1.4px) 0 0/120px 120px,
+    radial-gradient(rgba(93,31,43,.05) 1px, transparent 1.4px) 60px 60px/120px 120px,
+    radial-gradient(rgba(195,154,75,.06) 1.4px, transparent 1.8px) 30px 90px/120px 120px,
+    repeating-linear-gradient(45deg, rgba(93,31,43,.035) 0 2px, transparent 2px 14px),
+    var(--paper);
+  color:var(--ink);
+  font-family:var(--body-font);
+  font-size:17px;
+  line-height:1.7;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--burgundy);outline-offset:3px}
+
+.wrap{max-width:960px;margin:0 auto;padding:0 16px 60px}
+
+/* double gilt border + inset shadow, a frame within a frame */
+.frame{background:#fbf4e4;border:3px double var(--gold);
+  box-shadow:inset 0 0 0 1px rgba(122,94,37,.55);position:relative;padding:26px 24px}
+.frame--dark{background:var(--burgundy);color:#f3e7cf;
+  border-color:var(--gold);box-shadow:inset 0 0 0 1px rgba(195,154,75,.5)}
+
+/* fleuron corner marks */
+.frame::before,.frame::after{position:absolute;color:var(--gold-dim);font-size:15px;line-height:1}
+.frame::before{content:"\2766";top:6px;left:9px}
+.frame::after{content:"\2766";top:6px;right:9px}
+.frame--dark::before,.frame--dark::after{color:var(--gold)}
+
+.caps{font-family:var(--caps);font-weight:700;font-size:11px;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--gold-dim)}
+.frame--dark .caps{color:var(--gold)}
+
+/* compound rule: 1px line above a 3px double line, 74% width, centred */
+.rule{width:74%;margin:16px auto}
+.rule .a{height:1px;background:var(--gold-dim);opacity:.6}
+.rule .b{height:3px;border-top:1px solid var(--gold-dim);border-bottom:1px solid var(--gold-dim);
+  margin-top:3px;opacity:.6}
+
+.drop::first-letter{font-family:var(--display);font-weight:400;font-size:3.4em;
+  float:left;line-height:.8;padding:6px 8px 0 0;color:var(--burgundy)}
+
+.btn{display:inline-block;font-family:var(--caps);font-weight:700;font-size:12px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--paper);background:var(--burgundy);
+  border:2px solid var(--gold);padding:12px 26px;transition:background .3s ease,color .3s ease}
+.btn:hover{background:var(--forest)}
+
+/* gaslight lamp: opacity nudged by JS within the fixed safety range */
+.lamp{opacity:1}
+
+/* ── Nav ─────────────────────────────────────────────────────────────── */
+.nav{background:var(--burgundy);color:var(--paper);border:3px double var(--gold);
+  box-shadow:inset 0 0 0 1px rgba(195,154,75,.5);
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:16px 22px;margin:18px 0}
+.nav__brand{text-align:left}
+.logo{font-family:var(--display);font-size:26px;color:var(--paper)}
+.est{display:block;font-family:var(--caps);font-size:10px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--gold);margin-top:2px}
+.nav ul{display:flex;gap:22px;flex-wrap:wrap}
+.nav ul a{font-family:var(--caps);font-weight:700;font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--paper);transition:color .3s ease}
+.nav ul a:hover,.nav ul a[aria-current="page"]{color:var(--gold)}
+
+/* ── Hero ────────────────────────────────────────────────────────────── */
+.hero{text-align:center;padding:34px 30px}
+.hero .caps{display:block;margin-bottom:14px}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(34px,5.6vw,66px);
+  color:var(--burgundy);margin:0;line-height:1.1}
+.hero .deck{font-family:var(--body-font);font-style:italic;font-size:20px;margin:16px 0 0}
+.hero .btn{margin-top:22px}
+
+/* ── Features ────────────────────────────────────────────────────────── */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.card{text-align:center;padding-top:36px}
+.card h3{font-family:var(--display);font-weight:400;font-size:27px;color:var(--burgundy);margin:0 0 10px}
+.card p{margin:0;font-size:15px}
+
+/* ── CTA ────────────────────────────────────────────────────────────── */
+.cta{margin-top:16px;text-align:center;padding:36px 30px}
+.cta h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3.6vw,34px);
+  margin:0 0 20px;color:var(--paper)}
+
+/* ── Page heading ────────────────────────────────────────────────────── */
+.page-head{text-align:center;padding:30px}
+.page-head .caps{display:block;margin-bottom:14px}
+.page-head h1{font-family:var(--display);font-weight:400;font-size:clamp(30px,4.6vw,50px);
+  color:var(--burgundy);margin:0}
+.page-head .deck{font-family:var(--body-font);font-style:italic;font-size:18px;margin:16px 0 0}
+
+/* ── Wares (Work) ───────────────────────────────────────────────────── */
+.wares{display:grid;gap:16px;margin-top:16px;margin-bottom:16px}
+.ware{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;padding:24px}
+.ware__mark{font-family:var(--display);font-size:34px;color:var(--gold-dim)}
+.ware h2{font-family:var(--display);font-weight:400;font-size:24px;color:var(--burgundy);margin:0 0 8px}
+.ware p{margin:0;font-size:15px}
+
+/* ── About ───────────────────────────────────────────────────────────── */
+.about-lead{padding:30px;margin-top:16px;margin-bottom:16px}
+.about-lead p{margin:0 0 16px}
+.about-lead p:last-child{margin-bottom:0}
+.about-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.fact{text-align:center;padding:20px}
+.fact h3{font-family:var(--display);font-weight:400;font-size:26px;color:var(--burgundy);margin:0 0 6px}
+.fact p{margin:0;font-size:13.5px}
+
+/* ── Contact ─────────────────────────────────────────────────────────── */
+.contact{text-align:center;padding:36px 30px;margin-top:16px;margin-bottom:16px}
+.contact-list{margin-top:22px;display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.contact-list .chip{display:inline-block;font-family:var(--caps);font-weight:700;font-size:11px;
+  letter-spacing:.1em;padding:8px 16px;border:1px solid var(--gold-dim);color:var(--gold-dim)}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+.foot{margin-top:16px;padding:16px 22px;display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:14px;background:var(--forest);color:var(--paper);
+  border:3px double var(--gold);box-shadow:inset 0 0 0 1px rgba(195,154,75,.5)}
+.foot p{margin:0;font-family:var(--caps);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.foot__links{display:flex;gap:20px;flex-wrap:wrap}
+.foot__links a{font-family:var(--caps);font-weight:700;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--paper)}
+.foot__links a:hover{color:var(--gold)}
+
+@media(max-width:760px){
+  .features{grid-template-columns:1fr}
+  .about-facts{grid-template-columns:1fr}
+  .ware{grid-template-columns:1fr;text-align:center}
+}

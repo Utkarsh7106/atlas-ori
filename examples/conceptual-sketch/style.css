@@ -1,0 +1,179 @@
+/* Renata Voss -- built only from skills/conceptual-sketch/SKILL.md.
+   A working sheet, not a finished one: visible grid, wobbly hand-drawn
+   boxes re-rolled per load, and a strict handwriting/mono type split
+   (handwriting = decided, mono = measured). Color stays to graphite +
+   one blue pencil + one red pencil -- nothing is ever filled with
+   color. */
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+:root{
+  --paper:#fcfcfa;
+  --minor:#e3e7ec;
+  --major:#d2d8e0;
+  --ink:#2b2b2b;
+  --blue:#3f6fd8;
+  --red:#d52c20;
+  --hand:"Architects Daughter",cursive;
+  --mono:"Courier Prime","Courier New",monospace;
+}
+
+body{
+  background:
+    repeating-linear-gradient(0deg, var(--major) 0 1px, transparent 1px 110px),
+    repeating-linear-gradient(90deg, var(--major) 0 1px, transparent 1px 110px),
+    repeating-linear-gradient(0deg, var(--minor) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(90deg, var(--minor) 0 1px, transparent 1px 22px),
+    var(--paper);
+  color:var(--ink);
+  font-family:var(--mono);
+  font-size:14px;
+  line-height:1.7;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 26px 96px}
+
+/* ── hand-drawn box: two strokes, asymmetric corners re-rolled by
+   script.js on load so no two boxes (or reloads) match ───────────── */
+.drawn{
+  position:relative;
+  border:2px solid var(--ink);
+  border-radius:255px 14px 225px 16px / 16px 225px 14px 255px;
+  background:color-mix(in srgb, var(--accent, var(--ink)) 5%, var(--paper));
+}
+.drawn::before{
+  content:"";
+  position:absolute;
+  inset:6px;
+  border:1px solid color-mix(in srgb, var(--ink) 32%, transparent);
+  border-radius:inherit;
+  pointer-events:none;
+}
+.drawn.blue{--accent:var(--blue)}
+.drawn.red{--accent:var(--red)}
+
+/* ── crossed placeholder: two diagonal hairlines + knocked-out label,
+   used only for content that doesn't exist yet ────────────────────── */
+.placeholder{
+  position:relative;
+  background:
+    linear-gradient(to bottom right, transparent calc(50% - .5px), var(--ink) calc(50% - .5px) calc(50% + .5px), transparent calc(50% + .5px)),
+    linear-gradient(to top right, transparent calc(50% - .5px), var(--ink) calc(50% - .5px) calc(50% + .5px), transparent calc(50% + .5px));
+  background-color:transparent;
+  opacity:1;
+}
+.placeholder__label{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:var(--paper);padding:3px 12px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);white-space:nowrap;
+}
+
+/* ── dimension line: end ticks + a mono label sitting in a gap ─────── */
+.dim{position:relative;height:1px;background:var(--ink);margin:32px 4px}
+.dim::before,.dim::after{content:"";position:absolute;top:-5px;width:1px;height:11px;background:var(--ink)}
+.dim::before{left:0}
+.dim::after{right:0}
+.dim b{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:var(--paper);padding:0 10px;
+  font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.14em;color:var(--ink)}
+
+/* ── mono tag ("01 / plan") ─────────────────────────────────────────── */
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink);border:1px solid var(--ink);padding:3px 9px}
+
+/* ── marginalia: blue/red handwritten notes, outside content flow ──── */
+.note{position:absolute;font-family:var(--hand);font-size:15px;color:var(--blue);
+  pointer-events:none;transform:rotate(-2deg);white-space:nowrap}
+.note.r{color:var(--red);transform:rotate(2.5deg)}
+
+/* ── marker-scrawl underline ────────────────────────────────────────── */
+.scrawl{display:block;height:8px;margin-top:2px;opacity:.55;
+  background-image:repeating-linear-gradient(-3deg, var(--blue) 0 2px, transparent 2px 7px)}
+
+/* ── Nav ─────────────────────────────────────────────────────────────── */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:28px 0 20px}
+.logo{font-family:var(--hand);font-size:24px;color:var(--ink);transform:rotate(-1deg)}
+.nav ul{display:flex;gap:28px;flex-wrap:wrap}
+.nav ul a{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink)}
+.nav ul a[aria-current="page"]{color:var(--blue)}
+.nav ul a:hover{color:var(--blue)}
+
+/* ── Hero ────────────────────────────────────────────────────────────── */
+.hero{position:relative;display:grid;grid-template-columns:1.35fr 1fr;gap:48px;align-items:start;
+  padding:36px 0 24px}
+.hero h1{font-family:var(--hand);font-weight:400;font-size:clamp(32px,5.4vw,60px);line-height:1.14;
+  margin:0;max-width:12ch}
+.hero .lede{margin-top:22px;font-size:14px;max-width:46ch;color:var(--ink)}
+.btn{display:inline-block;margin-top:28px;font-family:var(--hand);font-size:19px;color:var(--ink);
+  border:2px solid var(--ink);padding:10px 26px;border-radius:225px 16px 255px 14px / 14px 255px 16px 225px;
+  transition:transform .15s ease}
+.btn:hover{transform:rotate(-1.5deg)}
+
+.hero__figure{position:relative;padding:26px;min-height:220px;display:flex;align-items:center;justify-content:center}
+.hero__figure .placeholder{position:absolute;inset:0}
+.hero__figure .placeholder__label{max-width:80%;white-space:normal;text-align:center}
+
+/* ── Feature cards ───────────────────────────────────────────────────── */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:20px}
+.card{padding:24px 22px 26px}
+.card h3{font-family:var(--hand);font-weight:400;font-size:21px;margin:0 0 10px}
+.card p{margin:0;font-size:13px;color:var(--ink)}
+
+/* ── CTA band ────────────────────────────────────────────────────────── */
+.cta{margin-top:36px;padding:44px 32px;text-align:center}
+.cta h2{font-family:var(--hand);font-weight:400;font-size:clamp(24px,3.4vw,36px);margin:0}
+/* unscoped: also reused inside .contact on the Contact page */
+.cta-btn{display:inline-block;margin-top:22px;font-family:var(--hand);font-size:19px;color:var(--ink);
+  border:2px solid var(--ink);padding:10px 26px;border-radius:16px 225px 14px 255px / 255px 14px 225px 16px;
+  transition:transform .15s ease}
+.cta-btn:hover{transform:rotate(1.5deg)}
+
+/* ── Page heading ────────────────────────────────────────────────────── */
+.page-head{padding:36px 0 8px}
+.page-head h1{font-family:var(--hand);font-weight:400;font-size:clamp(30px,4.4vw,46px);margin:0}
+.page-head p{margin-top:14px;font-size:13px;max-width:52ch}
+
+/* ── Work list ───────────────────────────────────────────────────────── */
+.work-list{display:grid;gap:24px;margin-top:24px;margin-bottom:12px}
+.work-row{position:relative;padding:22px 24px;display:grid;grid-template-columns:auto 1fr auto;
+  gap:20px;align-items:start}
+.work-row h2{font-family:var(--hand);font-weight:400;font-size:22px;margin:0 0 6px}
+.work-row p{margin:0;font-size:13px;max-width:44ch}
+.work-row .tag{align-self:start}
+.work-row .placeholder{min-height:96px}
+
+/* ── About ───────────────────────────────────────────────────────────── */
+.about-lead{position:relative;padding:30px 28px;margin-top:22px;margin-bottom:24px}
+.about-lead p{font-size:14px;max-width:62ch;margin:0 0 16px}
+.about-lead p:last-child{margin-bottom:0}
+.about-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:24px}
+.fact{padding:16px 18px}
+.fact .tag{margin-bottom:10px}
+.fact p{margin:0;font-size:13px}
+
+/* ── Contact ─────────────────────────────────────────────────────────── */
+.contact{position:relative;padding:44px 28px;text-align:center;margin-top:22px;margin-bottom:24px}
+.contact-list{margin-top:26px;display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+.foot{margin-top:36px;padding:24px 0 8px;display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:16px;border-top:1px solid var(--major)}
+.foot p{margin:0;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.foot__links{display:flex;gap:22px;flex-wrap:wrap}
+.foot__links a{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.foot__links a:hover{color:var(--blue)}
+
+@media(max-width:760px){
+  .hero{grid-template-columns:1fr}
+  .features{grid-template-columns:1fr}
+  .about-facts{grid-template-columns:1fr}
+  .work-row{grid-template-columns:1fr;gap:12px}
+  .note{position:static;display:block;transform:none;margin-top:8px}
+}

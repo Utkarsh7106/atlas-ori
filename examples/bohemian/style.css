@@ -1,0 +1,145 @@
+/* Sela Ruiz -- built only from skills/bohemian/SKILL.md.
+   Arches instead of rectangles, a woven ground, and real generated
+   macramé fringe -- not a single stamped pattern. */
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+:root{
+  --sand:#f3e7d8;
+  --terracotta:#c56b4a;
+  --terracotta-deep:#9e563b;
+  --ochre:#d9a441;
+  --rose:#c98b8b;
+  --olive:#626642;
+  --walnut:#4a3627;
+  --hand:"Amatic SC",cursive;
+  --serif:Cardo,Georgia,serif;
+  --label-font:"Outfit",Verdana,sans-serif;
+}
+
+body{
+  background:
+    repeating-linear-gradient(90deg, rgba(74,54,39,.04) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(0deg, rgba(74,54,39,.035) 0 1px, transparent 1px 7px),
+    radial-gradient(circle at 30% 0%, rgba(217,164,65,.18), transparent 60%),
+    var(--sand);
+  color:var(--walnut);
+  font-family:var(--serif);
+  font-size:16px;
+  line-height:1.75;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--terracotta-deep);outline-offset:3px}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(18px,4vw,32px) 90px;text-align:center}
+
+.label{font-family:var(--label-font);font-weight:300;font-size:11px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--olive)}
+
+/* the arch: split border-radius, rounded top / squared base */
+.arch{background:color-mix(in srgb, var(--terracotta) 8%, var(--sand));
+  border:2px solid var(--terracotta);
+  border-radius:50% 50% 12px 12px / 34% 34% 12px 12px;
+  padding:40px 32px 32px;position:relative}
+.arch--ring{box-shadow:inset 0 0 0 7px var(--ochre)}
+
+/* block-print rule: two offset dot patterns + a warp line */
+.rule{height:22px;margin:0 auto;max-width:260px;position:relative;
+  background:
+    radial-gradient(var(--terracotta) 2px, transparent 2.4px) 0 0/32px 32px,
+    radial-gradient(var(--ochre) 2px, transparent 2.4px) 16px 10px/32px 32px;
+  opacity:.85}
+.rule::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;
+  background:color-mix(in srgb, var(--walnut) 30%, transparent)}
+
+.hand{font-family:var(--hand);font-weight:400;line-height:.92;color:var(--terracotta-deep)}
+
+.btn{display:inline-block;font-family:var(--label-font);font-weight:400;font-size:12px;
+  letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--terracotta);
+  padding:13px 30px;border-radius:999px 999px 6px 6px;
+  box-shadow:0 4px 0 0 #7a3f28;transition:transform .35s ease,background .35s ease}
+.btn:hover{transform:translateY(-3px);background:var(--terracotta-deep)}
+
+/* ── Nav ─────────────────────────────────────────────────────────────── */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:26px 0}
+.logo{font-family:var(--hand);font-size:34px;color:var(--terracotta-deep)}
+.nav ul{display:flex;gap:28px;flex-wrap:wrap}
+.nav ul a{font-family:var(--serif);font-size:15px;padding-bottom:3px;
+  border-bottom:1px dotted transparent}
+.nav ul a:hover,.nav ul a[aria-current="page"]{border-bottom-color:var(--terracotta-deep);
+  color:var(--terracotta-deep)}
+
+/* ── Hero ────────────────────────────────────────────────────────────── */
+.hero{padding:20px 20px 0}
+.hero .label{display:block;margin-bottom:16px}
+.hero h1{font-size:clamp(48px,9vw,94px);margin:0 0 8px}
+.hero p{margin:18px auto 0;max-width:44ch;font-size:16.5px}
+.hero .btn{margin-top:28px}
+
+/* macramé fringe hanging below the hero arch */
+.fringe{display:flex;justify-content:center;gap:5px;height:56px;margin-top:-4px;padding-top:0}
+.fringe i{display:block;width:3px;background:linear-gradient(180deg,var(--terracotta),var(--rose));
+  border-radius:0 0 3px 3px;transform-origin:top center;
+  animation:sway 4.6s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@media(prefers-reduced-motion:reduce){.fringe i{animation:none}}
+
+/* ── Features ────────────────────────────────────────────────────────── */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:56px}
+.card .hand{font-size:40px;margin:14px 0 10px}
+.card p{margin:0;font-size:14.5px;color:var(--walnut)}
+
+/* ── CTA: fixed lamplight colors regardless of theme ────────────────── */
+.cta{margin-top:60px;padding:56px 32px;background:var(--terracotta-deep);
+  border-radius:50% 50% 16px 16px / 22% 22% 16px 16px;color:#fdf2e8}
+.cta h2{font-family:var(--hand);font-weight:400;font-size:clamp(36px,6vw,58px);margin:0 0 22px}
+.cta .btn{background:var(--ochre);color:var(--walnut);box-shadow:0 4px 0 0 #a97a26}
+.cta .btn:hover{background:#e6b558}
+
+/* ── Page heading ────────────────────────────────────────────────────── */
+.page-head{padding:20px 20px 0}
+.page-head .label{display:block;margin-bottom:16px}
+.page-head h1{font-family:var(--hand);font-weight:400;font-size:clamp(44px,7.4vw,76px);margin:0}
+.page-head p{margin:18px auto 0;max-width:48ch;font-size:15.5px}
+
+/* ── Gallery (Work) ──────────────────────────────────────────────────── */
+.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;margin-top:48px;text-align:left}
+.piece{padding-top:36px}
+.piece .swatch{height:150px;border-radius:50% 50% 8px 8px / 32% 32% 8px 8px;margin-bottom:16px}
+.piece h2{font-family:var(--hand);font-weight:400;font-size:32px;margin:0 0 8px;color:var(--terracotta-deep)}
+.piece p{margin:0 0 10px;font-size:14px}
+.piece .label{display:block}
+
+/* ── About ───────────────────────────────────────────────────────────── */
+.about-lead{padding-top:20px}
+.about-lead p{max-width:60ch;margin:0 auto 18px;text-align:left;font-size:15.5px}
+.about-lead p:last-child{margin-bottom:0}
+.about-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
+.fact .hand{font-size:30px;margin:0 0 6px}
+.fact p{margin:0;font-size:14px}
+
+/* ── Contact ─────────────────────────────────────────────────────────── */
+.contact{padding-top:20px}
+.contact p{margin:0 auto 26px;max-width:46ch}
+.contact-list{margin-top:24px;display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.contact-list .chip{display:inline-block;font-family:var(--label-font);font-size:12px;
+  letter-spacing:.08em;padding:8px 16px;border-radius:999px;border:1px solid var(--terracotta);
+  color:var(--terracotta-deep)}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+.foot{margin-top:56px;padding:24px 0;display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:14px}
+.foot p{margin:0;font-size:13px;color:var(--olive)}
+.foot__links{display:flex;gap:20px;flex-wrap:wrap}
+.foot__links a{font-size:13px}
+.foot__links a:hover{color:var(--terracotta-deep)}
+
+@media(max-width:760px){
+  .features{grid-template-columns:1fr}
+  .gallery{grid-template-columns:1fr}
+  .about-facts{grid-template-columns:1fr}
+}

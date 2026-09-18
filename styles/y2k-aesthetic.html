@@ -332,10 +332,10 @@
     .dp-actions{display:flex;gap:20px;align-items:baseline}
     .design-points h2{font-family:"Audiowide",sans-serif;font:400 14px/1 "Audiowide",sans-serif;letter-spacing:.1em;
       text-transform:uppercase;color:var(--ink);margin:0}
-    .dp-skill,.dp-back{font-size:12px;letter-spacing:.02em;color:var(--ink-soft);
+    .dp-skill,.dp-example,.dp-back{font-size:12px;letter-spacing:.02em;color:var(--ink-soft);
       text-decoration:underline;text-underline-offset:3px;transition:color .18s ease}
-    .dp-skill:hover,.dp-back:hover{color:var(--ink)}
-    .dp-skill:focus-visible,.dp-back:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+    .dp-skill:hover,.dp-example:hover,.dp-back:hover{color:var(--ink)}
+    .dp-skill:focus-visible,.dp-example:focus-visible,.dp-back:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
     .dp{margin:0}
     .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid color-mix(in srgb, var(--ink) 18%, transparent)}
     .dp-row:first-child{border-top:0;padding-top:0}
@@ -453,8 +453,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/y2k-aesthetic/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/y2k-aesthetic/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>

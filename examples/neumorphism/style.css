@@ -1,0 +1,118 @@
+/* Nadia Cole -- built only from skills/neumorphism/SKILL.md.
+   One surface color everywhere; only box-shadow ever defines an edge. */
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+:root{
+  --surface:#e0e5ec;
+  --light:#ffffff;
+  --dark:#a3b1c6;
+  --text:#4a5568;
+  --muted:#576272;
+  --accent:#5b4ed6;
+  --emboss:rgba(163,177,198,.55);
+  --r:22px;
+}
+
+body{
+  background:var(--surface);
+  color:var(--text);
+  font-family:"Poppins",-apple-system,"Segoe UI",sans-serif;
+  font-weight:400;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.wrap{max-width:1020px;margin:0 auto;padding:36px clamp(16px,4vw,40px) 72px}
+
+/* The two states of every element. Nothing else exists. */
+.out{background:var(--surface);border-radius:var(--r);
+  box-shadow:-7px -7px 16px var(--light), 8px 8px 18px var(--dark);
+  transition:box-shadow .4s ease}
+.in{background:var(--surface);border-radius:var(--r);
+  box-shadow:inset -6px -6px 12px var(--light), inset 7px 7px 14px var(--dark)}
+
+/* ── Nav ────────────────────────────────────────────────────────── */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:16px 24px}
+.logo{font-size:20px;font-weight:600;letter-spacing:.01em;color:var(--text)}
+.nav ul{display:flex;gap:10px;flex-wrap:wrap}
+.nav ul a{display:block;padding:10px 18px;border-radius:14px;font-size:14px;font-weight:500;color:var(--muted);
+  transition:box-shadow .28s ease,color .28s ease}
+.nav ul a:hover,.nav ul a[aria-current="page"]{color:var(--text);box-shadow:-4px -4px 9px var(--light),5px 5px 10px var(--dark)}
+.nav ul a:active{box-shadow:inset -3px -3px 7px var(--light),inset 4px 4px 8px var(--dark)}
+
+/* ── Hero ───────────────────────────────────────────────────────── */
+.hero{margin-top:30px;padding:60px 48px;text-align:center;border-radius:34px}
+.hero h1{font-size:clamp(28px,4.4vw,48px);font-weight:600;line-height:1.14;letter-spacing:-.01em;
+  color:var(--text);max-width:16ch;margin:0 auto;
+  text-shadow:1px 1px 1px var(--light),-1px -1px 1px var(--emboss)}
+.hero p{margin:20px auto 0;font-size:16px;color:var(--muted);max-width:40ch}
+
+.btn{display:inline-block;margin-top:32px;padding:16px 40px;border-radius:18px;
+  font-size:15px;font-weight:600;color:var(--accent);background:var(--surface);
+  box-shadow:-6px -6px 14px var(--light),7px 7px 15px var(--dark);
+  transition:box-shadow .22s ease}
+.btn:hover{box-shadow:-8px -8px 18px var(--light),9px 9px 20px var(--dark)}
+.btn:active{box-shadow:inset -5px -5px 11px var(--light),inset 6px 6px 13px var(--dark)}
+
+/* ── Features ───────────────────────────────────────────────────── */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:34px}
+.card{padding:30px 24px 32px;text-align:center}
+.icon{display:inline-flex;align-items:center;justify-content:center;width:68px;height:68px;
+  border-radius:50%;margin-bottom:20px;font-size:10px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+  box-shadow:inset -4px -4px 9px var(--light),inset 5px 5px 10px var(--dark)}
+.card h3{font-size:18px;font-weight:600;color:var(--text);margin:0 0 8px}
+.card p{font-size:14.5px;color:var(--muted);line-height:1.6;margin:0}
+
+/* ── CTA ────────────────────────────────────────────────────────── */
+.cta{margin-top:34px;padding:52px 36px;text-align:center;border-radius:34px}
+.cta h2{font-size:clamp(24px,3.2vw,36px);font-weight:600;color:var(--text);margin:0;
+  text-shadow:1px 1px 1px var(--light),-1px -1px 1px var(--emboss)}
+.cta .cta-btn{display:inline-block;margin-top:26px;padding:16px 36px;border-radius:18px;
+  font-size:15px;font-weight:600;color:var(--accent);background:var(--surface);
+  box-shadow:-6px -6px 14px var(--light),7px 7px 15px var(--dark);transition:box-shadow .22s ease}
+.cta .cta-btn:active{box-shadow:inset -5px -5px 11px var(--light),inset 6px 6px 13px var(--dark)}
+
+/* ── Page heading ───────────────────────────────────────────────── */
+.page-head{margin-top:30px;padding:48px 40px;text-align:center;border-radius:34px}
+.page-head h1{font-size:clamp(28px,4.2vw,44px);font-weight:600;color:var(--text);margin:0;
+  text-shadow:1px 1px 1px var(--light),-1px -1px 1px var(--emboss)}
+.page-head p{margin:14px 0 0;font-size:15.5px;color:var(--muted)}
+
+/* ── Work list ──────────────────────────────────────────────────── */
+.work-list{display:grid;gap:26px;margin-top:34px}
+.work-card{padding:30px 32px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.work-card h2{font-size:19px;font-weight:600;color:var(--text);margin:0 0 6px}
+.work-card p{font-size:14.5px;color:var(--muted);line-height:1.55;margin:0;max-width:48ch}
+.work-card .tag{flex:none;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  padding:8px 16px;border-radius:12px;box-shadow:inset -3px -3px 6px var(--light),inset 4px 4px 8px var(--dark)}
+
+/* ── About ──────────────────────────────────────────────────────── */
+.about-lead{margin-top:34px;padding:40px 44px;text-align:center;border-radius:34px}
+.about-lead p{font-size:16px;color:var(--muted);line-height:1.65;max-width:56ch;margin:0 auto 14px}
+.about-lead p:last-child{margin-bottom:0}
+
+/* ── Contact ────────────────────────────────────────────────────── */
+.contact{margin-top:34px;padding:52px 36px;text-align:center;border-radius:34px}
+.contact-list{margin-top:26px;display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+.contact-list .chip{display:inline-block;padding:10px 18px;border-radius:14px;font-size:14px;
+  color:var(--muted);box-shadow:inset -3px -3px 6px var(--light),inset 4px 4px 8px var(--dark)}
+.contact-list a.chip{color:var(--accent)}
+
+/* ── Footer ─────────────────────────────────────────────────────── */
+.foot{margin-top:34px;padding:26px 32px;display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:16px;border-radius:28px}
+.foot__links{display:flex;gap:18px;flex-wrap:wrap}
+.foot__links a{font-size:14px;color:var(--muted);border-bottom:1px solid transparent;
+  padding-bottom:1px;transition:color .18s ease,border-color .18s ease}
+.foot__links a:hover{color:var(--text);border-bottom-color:var(--text)}
+
+@media(max-width:820px){
+  .features{grid-template-columns:1fr}
+  .hero{padding:44px 24px}
+  .work-card{flex-direction:column;align-items:flex-start}
+}

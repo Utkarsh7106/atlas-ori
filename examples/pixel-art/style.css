@@ -1,0 +1,175 @@
+/* Percy Tran -- built only from skills/pixel-art/SKILL.md.
+   Every dimension is a multiple of --px. No border-radius, no blur,
+   no interpolation anywhere. */
+
+/* Genuine bitmap fonts, embedded locally (this folder only -- not
+   reaching into the main site's /assets). Unlike every other style
+   built this session, a system-font fallback can't stand in here:
+   "monospace" guarantees fixed character width, not blocky pixel-
+   quantized letterforms, so it fails the skill's own Core Rule 4
+   ("genuine bitmap typefaces") outright rather than just looking
+   slightly different. Caught by comparing this example's screenshot
+   against the real page's -- the real page's type is visibly stepped
+   pixels; the system-fallback version was a plain smooth sans. */
+@font-face{font-family:'Press Start 2P';font-style:normal;font-weight:400;font-display:swap;
+  src:url('fonts/press-start-2p/press-start-2p-400.woff2') format('woff2')}
+@font-face{font-family:'Silkscreen';font-style:normal;font-weight:400;font-display:swap;
+  src:url('fonts/silkscreen/silkscreen-400.woff2') format('woff2')}
+
+*{box-sizing:border-box}
+html{color-scheme:dark}
+body{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+:root{
+  --px:4px;
+  --void:#1a1c2c;
+  --deep:#29366f;
+  --red:#b13e53;
+  --orange:#ef7d57;
+  --yellow:#ffcd75;
+  --green:#38b764;
+  --cyan:#41a6f6;
+  --slate:#566c86;
+  --white:#f4f4f4;
+}
+
+body{
+  background:
+    repeating-conic-gradient(rgba(65,166,246,.10) 0% 25%, transparent 0% 50%) 0 0/8px 8px,
+    linear-gradient(180deg, var(--deep) 0%, var(--void) 62%);
+  background-attachment:fixed;
+  color:var(--white);
+  font-family:"Silkscreen","Press Start 2P",monospace;
+  font-size:14px;
+  line-height:1.7;
+  image-rendering:pixelated;
+  -webkit-font-smoothing:none;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+
+.wrap{max-width:1040px;margin:0 auto;padding:calc(var(--px)*6) clamp(12px,3vw,24px) calc(var(--px)*20)}
+
+.panel{background:var(--void);position:relative;
+  box-shadow:
+    0 calc(var(--px)*-1) 0 0 var(--white),
+    0 var(--px) 0 0 var(--white),
+    calc(var(--px)*-1) 0 0 0 var(--white),
+    var(--px) 0 0 0 var(--white),
+    0 calc(var(--px)*-2) 0 0 var(--slate),
+    0 calc(var(--px)*2) 0 0 var(--slate),
+    calc(var(--px)*-2) 0 0 0 var(--slate),
+    calc(var(--px)*2) 0 0 0 var(--slate)}
+
+/* ── Nav ────────────────────────────────────────────────────────── */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:calc(var(--px)*4) calc(var(--px)*5);margin:calc(var(--px)*3) 0 calc(var(--px)*8)}
+.logo{font-family:"Press Start 2P",monospace;font-size:18px;line-height:1;color:var(--yellow);
+  text-shadow:var(--px) var(--px) 0 var(--red)}
+.nav ul{display:flex;gap:calc(var(--px)*6);flex-wrap:wrap}
+.nav ul a{font-family:"Press Start 2P",monospace;font-size:10px;color:var(--white);
+  position:relative;padding-left:calc(var(--px)*4);text-transform:uppercase}
+.nav ul a::before{content:"\25B6";position:absolute;left:0;color:var(--yellow);opacity:0}
+.nav ul a:hover,.nav ul a[aria-current="page"]{color:var(--yellow)}
+.nav ul a:hover::before,.nav ul a[aria-current="page"]::before{opacity:1}
+
+/* ── Hero ───────────────────────────────────────────────────────── */
+.hero{display:grid;grid-template-columns:1fr auto;gap:calc(var(--px)*8);align-items:center;
+  padding:calc(var(--px)*10) calc(var(--px)*7) calc(var(--px)*11)}
+.hero h1{font-family:"Press Start 2P",monospace;font-size:clamp(15px,2.6vw,26px);font-weight:400;line-height:1.62;
+  color:var(--white);text-shadow:var(--px) var(--px) 0 var(--deep);max-width:18ch;margin:0}
+.hero h1 em{font-style:normal;color:var(--yellow);text-shadow:var(--px) var(--px) 0 var(--red)}
+.hero p{margin-top:calc(var(--px)*6);font-size:15px;color:var(--cyan);max-width:42ch}
+.hero p::before{content:"* "}
+
+.btn{display:inline-block;margin-top:calc(var(--px)*7);font-family:"Press Start 2P",monospace;font-size:12px;
+  text-transform:uppercase;color:var(--void);background:var(--green);
+  padding:calc(var(--px)*3) calc(var(--px)*7);
+  box-shadow:0 var(--px) 0 0 #1f7a42, var(--px) 0 0 0 #1f7a42,
+    0 calc(var(--px)*-1) 0 0 #6ee49a, calc(var(--px)*-1) 0 0 0 #6ee49a,
+    calc(var(--px)*2) calc(var(--px)*2) 0 0 rgba(0,0,0,.55);
+  transition:none}
+.btn:active{transform:translate(var(--px),var(--px))}
+
+#sprite{--spx:7px;width:var(--spx);height:var(--spx);
+  margin:0 calc(var(--spx)*10) calc(var(--spx)*9) calc(var(--spx)*2);
+  animation:bob 1s steps(2) infinite}
+@keyframes bob{50%{transform:translateY(calc(var(--px)*-1))}}
+@media(prefers-reduced-motion:reduce){#sprite{animation:none}}
+
+/* ── Features ───────────────────────────────────────────────────── */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--px)*6);margin-top:calc(var(--px)*8)}
+.card{padding:calc(var(--px)*6) calc(var(--px)*5) calc(var(--px)*7)}
+.card:hover{background:#22253a}
+.icon{display:inline-block;font-family:"Press Start 2P",monospace;font-size:8px;text-transform:uppercase;
+  color:var(--void);background:var(--cyan);padding:calc(var(--px)*1) calc(var(--px)*2)}
+.card:nth-child(2) .icon{background:var(--orange)}
+.card:nth-child(3) .icon{background:var(--yellow)}
+.card h3{font-family:"Press Start 2P",monospace;font-size:13px;font-weight:400;margin:calc(var(--px)*4) 0 calc(var(--px)*3);
+  color:var(--white);text-shadow:var(--px) var(--px) 0 var(--deep)}
+.card p{font-size:14px;color:var(--slate);line-height:1.75;margin:0}
+.dither{height:calc(var(--px)*3);margin-top:calc(var(--px)*5);
+  background:repeating-conic-gradient(var(--cyan) 0% 25%, transparent 0% 50%) 0 0/8px 8px}
+.card:nth-child(2) .dither{background:repeating-conic-gradient(var(--orange) 0% 25%, transparent 0% 50%) 0 0/8px 8px}
+.card:nth-child(3) .dither{background:repeating-conic-gradient(var(--yellow) 0% 25%, transparent 0% 50%) 0 0/8px 8px}
+
+/* ── CTA ────────────────────────────────────────────────────────── */
+.cta{margin-top:calc(var(--px)*8);padding:calc(var(--px)*11) calc(var(--px)*6) calc(var(--px)*12);
+  text-align:center;background:var(--deep)}
+.cta h2{font-family:"Press Start 2P",monospace;font-size:clamp(14px,2.4vw,24px);font-weight:400;line-height:1.6;
+  color:var(--yellow);text-shadow:var(--px) var(--px) 0 var(--red);margin:0}
+.cta .cta-btn{display:inline-block;margin-top:calc(var(--px)*7);font-family:"Press Start 2P",monospace;font-size:12px;
+  text-transform:uppercase;color:var(--void);background:var(--yellow);
+  padding:calc(var(--px)*3) calc(var(--px)*6);
+  box-shadow:0 var(--px) 0 0 #b8913f, var(--px) 0 0 0 #b8913f,
+    0 calc(var(--px)*-1) 0 0 #ffe6b0, calc(var(--px)*-1) 0 0 0 #ffe6b0,
+    calc(var(--px)*2) calc(var(--px)*2) 0 0 rgba(0,0,0,.55)}
+.cta .cta-btn:active{transform:translate(var(--px),var(--px))}
+.press{margin-top:calc(var(--px)*6);font-family:"Press Start 2P",monospace;font-size:9px;color:var(--slate);
+  animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.press{animation:none}}
+
+/* ── Page heading ───────────────────────────────────────────────── */
+.page-head{padding:calc(var(--px)*9) calc(var(--px)*7);margin-top:calc(var(--px)*8)}
+.page-head h1{font-family:"Press Start 2P",monospace;font-size:clamp(16px,2.6vw,26px);font-weight:400;line-height:1.6;
+  color:var(--yellow);text-shadow:var(--px) var(--px) 0 var(--red);margin:0}
+.page-head p{margin-top:calc(var(--px)*5);font-size:14px;color:var(--cyan)}
+
+/* ── Work list ──────────────────────────────────────────────────── */
+.work-list{display:grid;gap:calc(var(--px)*5);margin-top:calc(var(--px)*8);margin-bottom:calc(var(--px)*8)}
+.work-row{padding:calc(var(--px)*5) calc(var(--px)*6);display:flex;justify-content:space-between;
+  align-items:center;gap:20px;flex-wrap:wrap}
+.work-row h2{font-family:"Press Start 2P",monospace;font-size:13px;font-weight:400;margin:0 0 calc(var(--px)*2);
+  color:var(--white);text-shadow:var(--px) var(--px) 0 var(--deep)}
+.work-row p{font-size:14px;color:var(--slate);line-height:1.7;margin:0;max-width:44ch}
+.work-row .icon{flex:none}
+
+/* ── About ──────────────────────────────────────────────────────── */
+.about-lead{padding:calc(var(--px)*9) calc(var(--px)*7);margin-top:calc(var(--px)*8);margin-bottom:calc(var(--px)*8)}
+.about-lead p{font-size:15px;color:var(--cyan);line-height:1.8;max-width:60ch;margin:0 0 calc(var(--px)*5)}
+.about-lead p:last-child{margin-bottom:0}
+.about-lead p::before{content:"* "}
+
+/* ── Contact ────────────────────────────────────────────────────── */
+.contact{padding:calc(var(--px)*10) calc(var(--px)*6);text-align:center;margin-top:calc(var(--px)*8);margin-bottom:calc(var(--px)*8)}
+.contact-list{margin-top:calc(var(--px)*7);display:flex;flex-wrap:wrap;justify-content:center;gap:calc(var(--px)*4)}
+.contact-list .chip{display:inline-block;font-family:"Press Start 2P",monospace;font-size:9px;
+  text-transform:uppercase;color:var(--void);background:var(--cyan);padding:calc(var(--px)*2) calc(var(--px)*3)}
+
+/* ── Footer ─────────────────────────────────────────────────────── */
+.foot{margin-top:calc(var(--px)*8);padding:calc(var(--px)*6) calc(var(--px)*5);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:calc(var(--px)*4)}
+.foot__links{display:flex;gap:calc(var(--px)*6);flex-wrap:wrap}
+.foot__links a{font-family:"Press Start 2P",monospace;font-size:10px;color:var(--white);
+  position:relative;padding-left:calc(var(--px)*4);text-transform:uppercase}
+.foot__links a::before{content:"\25B6";position:absolute;left:0;color:var(--yellow);opacity:0}
+.foot__links a:hover{color:var(--yellow)}
+.foot__links a:hover::before{opacity:1}
+
+@media(max-width:860px){
+  .features{grid-template-columns:1fr}
+  .hero{grid-template-columns:1fr}
+  #sprite{display:none}
+}

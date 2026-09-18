@@ -326,7 +326,7 @@
     .btn.is-pressed,.cta .cta-btn.is-pressed,.dialog__close.is-pressed{
       transform:translateY(1px);filter:brightness(1.25);transition-duration:.12s}
     .ctl.is-pressed,.nav ul a.is-pressed,.site-footer__links a.is-pressed,
-    .dp-skill.is-pressed,.dp-back.is-pressed{
+    .dp-skill.is-pressed,.dp-example.is-pressed,.dp-back.is-pressed{
       color:var(--gold);text-shadow:0 0 14px var(--trace-1);transition-duration:.12s}
 
     @media(max-width:820px){
@@ -377,13 +377,13 @@
     .design-points h2{font-family:"UnifrakturMaguntia",serif;font-size:32px;margin:0;color:var(--bone);
       text-shadow:0 0 30px var(--halo-soft);line-height:1.1}
     .dp-actions{display:flex;flex-wrap:wrap}
-    .dp-skill,.dp-back{display:block;font-family:"Cinzel",serif;font-size:10px;letter-spacing:.28em;
+    .dp-skill,.dp-example,.dp-back{display:block;font-family:"Cinzel",serif;font-size:10px;letter-spacing:.28em;
       text-indent:.28em;text-transform:uppercase;color:var(--ink-4);padding:0 20px;
       transition:color .5s ease,text-shadow .5s ease}
-    .dp-skill{color:var(--gold)}
+    .dp-skill,.dp-example{color:var(--gold)}
     .dp-actions a + a{border-left:1px solid var(--trace-3)}
-    .dp-skill:hover,.dp-back:hover{color:var(--gold);text-shadow:0 0 14px var(--trace-1)}
-    .dp-skill:focus-visible,.dp-back:focus-visible{outline:1px solid var(--gold);outline-offset:5px}
+    .dp-skill:hover,.dp-example:hover,.dp-back:hover{color:var(--gold);text-shadow:0 0 14px var(--trace-1)}
+    .dp-skill:focus-visible,.dp-example:focus-visible,.dp-back:focus-visible{outline:1px solid var(--gold);outline-offset:5px}
     .dp{margin:0}
     .dp-row{display:grid;grid-template-columns:200px 1fr;gap:26px;align-items:start;
       padding:20px 0;border-top:1px solid var(--trace-3)}
@@ -518,8 +518,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/gothic/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/gothic/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>
@@ -663,7 +663,7 @@
     }
 
     /* Press feedback that survives a touch tap. */
-    var PRESSABLE = '.btn, .ctl, .nav ul a, .cta .cta-btn, .site-footer__links a, .dp-skill, .dp-back, .dialog__close';
+    var PRESSABLE = '.btn, .ctl, .nav ul a, .cta .cta-btn, .site-footer__links a, .dp-skill, .dp-example, .dp-back, .dialog__close';
     var MIN_HOLD = 160;
     document.querySelectorAll(PRESSABLE).forEach(function (el) {
       var at = 0, timer = null;

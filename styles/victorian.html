@@ -291,10 +291,10 @@
     .dp-actions{display:flex;gap:20px;align-items:baseline}
     .design-points h2{font-family:"Abril Fatface",serif;font-size:18px;font-weight:400;letter-spacing:.06em;
       text-transform:uppercase;color:var(--burgundy);margin:0}
-    .dp-skill,.dp-back{font-family:"Playfair Display",serif;font-size:12px;letter-spacing:.04em;color:var(--gilt-lo);
+    .dp-skill,.dp-example,.dp-back{font-family:"Playfair Display",serif;font-size:12px;letter-spacing:.04em;color:var(--gilt-lo);
       text-decoration:underline;text-underline-offset:3px;transition:color .3s ease}
-    .dp-skill:hover,.dp-back:hover{color:var(--burgundy)}
-    .dp-skill:focus-visible,.dp-back:focus-visible{outline:1px solid var(--gilt-lo);outline-offset:2px}
+    .dp-skill:hover,.dp-example:hover,.dp-back:hover{color:var(--burgundy)}
+    .dp-skill:focus-visible,.dp-example:focus-visible,.dp-back:focus-visible{outline:1px solid var(--gilt-lo);outline-offset:2px}
     .dp{margin:0}
     .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:18px 0;border-top:1px solid color-mix(in srgb, var(--ink) 16%, transparent)}
     .dp-row:first-child{border-top:0;padding-top:0}
@@ -419,8 +419,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/victorian/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/victorian/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>

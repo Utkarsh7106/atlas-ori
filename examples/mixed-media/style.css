@@ -1,0 +1,158 @@
+/* Nova Riot Press -- built only from skills/mixed-media/SKILL.md.
+   At least three reproduction processes visible at once: halftone,
+   riso multiply plates, photocopy grain, torn/pasted cuttings. */
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+:root{
+  --stock:#ece7dd;
+  --ink:#141414;
+  --pink:#ff4f79;
+  --blue:#0f4cf0;
+  --yellow:#ffd400;
+  --poster:"Bebas Neue",Impact,sans-serif;
+  --serif:"Libre Baskerville",Georgia,serif;
+  --grotesque:"DM Sans",Verdana,sans-serif;
+}
+
+body{
+  background:
+    repeating-linear-gradient(85deg, rgba(20,20,20,.04) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(5deg, rgba(20,20,20,.035) 0 1px, transparent 1px 5px),
+    var(--stock);
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:13.5px;
+  line-height:1.8;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px 70px}
+
+/* every cutting: keyline, hard shadow, small rotation */
+.cut{background:#fff;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);
+  position:relative}
+
+/* halftone screen, multiply-blended over a block */
+.halftone{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(var(--ink) 34%, transparent 36%) 0 0/6px 6px;
+  mix-blend-mode:multiply;opacity:.5}
+
+/* riso overprint wash: oversized asymmetric ellipse bleeding past edge,
+   multiply-blended so overlaps make a third colour */
+.wash{position:absolute;border-radius:62% 38% 55% 45% / 48% 55% 45% 52%;
+  mix-blend-mode:multiply;pointer-events:none;transition:transform 160ms steps(2)}
+
+.label{font-family:var(--grotesque);font-weight:700;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink)}
+
+.btn{display:inline-block;font-family:var(--poster);font-size:18px;letter-spacing:.02em;
+  color:var(--ink);background:var(--yellow);border:2px solid var(--ink);
+  box-shadow:4px 4px 0 var(--ink);padding:10px 24px;
+  transition:transform 160ms steps(2),box-shadow 160ms steps(2)}
+.btn:hover,.btn.is-pressed{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+
+/* ── Nav: torn-edge strip ────────────────────────────────────────────── */
+.nav{background:var(--ink);color:var(--stock);display:flex;justify-content:space-between;
+  align-items:center;gap:16px;flex-wrap:wrap;padding:16px 22px;margin:18px 0;
+  clip-path:polygon(0 4px,2% 0,6% 3px,11% 0,16% 4px,22% 1px,28% 3px,34% 0,40% 3px,
+    46% 1px,52% 4px,58% 0,64% 3px,70% 1px,76% 4px,82% 0,88% 3px,94% 1px,100% 3px,
+    100% 100%,0 100%)}
+.logo{font-family:var(--poster);font-size:22px;letter-spacing:.02em;color:var(--yellow)}
+.nav ul{display:flex;gap:20px;flex-wrap:wrap}
+.nav ul a{font-family:var(--grotesque);font-weight:700;font-size:12px;letter-spacing:.08em;
+  text-transform:uppercase;transition:color 160ms steps(2)}
+.nav ul a:hover,.nav ul a[aria-current="page"]{color:var(--pink)}
+
+/* ── Hero: ransom-note headline, every word its own face/size/plate/angle */
+.hero{padding:24px 6px 0}
+.hero h1{margin:0;font-weight:400;font-size:0;line-height:1.15}
+.hero h1 .w{display:inline-block;font-size:1rem;padding:2px 10px;margin:3px 4px 3px 0;
+  position:relative}
+.w--poster{font-family:var(--poster);font-size:56px;background:var(--ink);color:var(--stock);
+  rotate:-2deg}
+.w--serif-i{font-family:var(--serif);font-style:italic;font-size:30px;background:var(--yellow);
+  rotate:2.4deg}
+.w--grot{font-family:var(--grotesque);font-weight:700;font-size:34px;background:var(--stock);
+  border:2px solid var(--ink);rotate:-1.2deg}
+.w--pink{font-family:var(--poster);font-size:50px;background:var(--pink);color:var(--stock);
+  rotate:1.6deg}
+.w--blue{font-family:var(--serif);font-style:italic;font-size:32px;background:var(--blue);
+  color:var(--stock);rotate:-2.2deg}
+
+.hero .deck{margin:22px 0 0;max-width:56ch;font-size:15px}
+.hero .actions{margin-top:24px}
+
+/* ── Features ────────────────────────────────────────────────────────── */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:34px}
+.card{padding:20px;overflow:visible}
+.card:nth-child(1){rotate:-1.4deg}
+.card:nth-child(2){rotate:1deg}
+.card:nth-child(3){rotate:-.8deg}
+.card .wash{width:70px;height:70px;top:-14px;right:-14px;background:var(--pink);z-index:0}
+.card__inner{position:relative;z-index:1}
+.card h3{font-family:var(--poster);font-weight:400;font-size:24px;margin:0 0 8px}
+.card p{margin:0;font-size:13px}
+
+/* ── CTA ────────────────────────────────────────────────────────────── */
+.cta{margin-top:34px;text-align:center;padding:30px 20px}
+.cta h2{font-family:var(--poster);font-weight:400;font-size:clamp(26px,4vw,40px);margin:0 0 20px}
+
+/* ── Page heading ────────────────────────────────────────────────────── */
+.page-head{padding:24px 6px 0}
+.page-head h1{font-family:var(--poster);font-weight:400;font-size:clamp(40px,7vw,74px);margin:0}
+.page-head p{margin:16px 0 0;max-width:56ch;font-size:14.5px}
+
+/* ── Zines (Work) ────────────────────────────────────────────────────── */
+.zines{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:30px;margin-bottom:30px}
+.zine{padding:20px;position:relative;overflow:visible}
+.zine:nth-child(1){rotate:-1.6deg}
+.zine:nth-child(2){rotate:1.3deg}
+.zine:nth-child(3){rotate:-.9deg}
+.zine:nth-child(4){rotate:1.7deg}
+.zine .wash{width:90px;height:90px;bottom:-18px;left:-16px;background:var(--blue);z-index:0}
+.zine__inner{position:relative;z-index:1}
+.zine h2{font-family:var(--poster);font-weight:400;font-size:26px;margin:0 0 8px}
+.zine p{margin:0 0 10px;font-size:13px}
+
+/* ── About ───────────────────────────────────────────────────────────── */
+.about-lead{padding:24px;margin-top:30px;margin-bottom:30px;position:relative}
+.about-lead p{margin:0 0 16px;max-width:60ch}
+.about-lead p:last-child{margin-bottom:0}
+.about-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.fact{padding:18px;text-align:center}
+.fact:nth-child(1){rotate:-1.3deg}
+.fact:nth-child(2){rotate:1deg}
+.fact:nth-child(3){rotate:-.7deg}
+.fact h3{font-family:var(--poster);font-weight:400;font-size:28px;margin:0 0 6px;color:var(--pink)}
+.fact p{margin:0;font-size:12.5px}
+
+/* ── Contact ─────────────────────────────────────────────────────────── */
+.contact{text-align:center;padding:30px 20px;margin-top:30px;margin-bottom:30px}
+.contact-list{margin-top:22px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.contact-list .chip{display:inline-block;font-family:var(--grotesque);font-weight:700;font-size:11px;
+  padding:6px 12px;border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+.foot{margin-top:30px;padding:16px 22px;background:var(--ink);color:var(--stock);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.foot p{margin:0;font-size:11.5px}
+.foot__links{display:flex;gap:16px;flex-wrap:wrap}
+.foot__links a{font-family:var(--grotesque);font-weight:700;font-size:11px;text-transform:uppercase}
+.foot__links a:hover{color:var(--pink)}
+
+@media(max-width:760px){
+  .features{grid-template-columns:1fr}
+  .zines{grid-template-columns:1fr}
+  .about-facts{grid-template-columns:1fr}
+  .hero h1 .w{font-size:.72rem}
+  .w--poster{font-size:38px}
+  .w--pink{font-size:34px}
+  .w--serif-i{font-size:22px}
+  .w--grot{font-size:24px}
+  .w--blue{font-size:23px}
+}

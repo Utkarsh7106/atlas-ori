@@ -1,0 +1,151 @@
+/* Vex Okafor -- built only from skills/cybercore/SKILL.md.
+   One phosphor hue at three brightness levels + one error color.
+   Monospace everywhere. ASCII box-drawing structure. steps(1) only. */
+
+*{box-sizing:border-box}
+html{color-scheme:dark}
+body{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+:root{
+  --void:#000000;
+  --phosphor:#00ff41;
+  --trace:#2f9a45;
+  --pale:#b6ffcb;
+  --error:#ff003c;
+  --mono:"JetBrains Mono","Courier New",monospace;
+  --crt:VT323,"Courier New",monospace;
+}
+
+body{
+  background:var(--void);
+  color:var(--pale);
+  font-family:var(--mono);
+  font-size:13.5px;
+  line-height:1.7;
+  position:relative;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:1px solid var(--phosphor);outline-offset:2px}
+/* no transition property is declared anywhere on this page -- every
+   state change (hover, glitch) snaps instantly by default, per the
+   skill's steps(1)-only rule; nothing here ever eases. */
+
+/* CRT stack: scanlines + rolling luminance band + mains flicker */
+.crt{position:fixed;inset:0;pointer-events:none;z-index:5}
+.crt::before{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg, rgba(0,0,0,.35) 0 1px, transparent 1px 3px)}
+.crt::after{content:"";position:absolute;left:0;right:0;height:130px;
+  background:linear-gradient(rgba(0,255,65,0),rgba(0,255,65,.05),rgba(0,255,65,0));
+  animation:roll 7s linear infinite}
+@keyframes roll{0%{top:-130px}100%{top:100vh}}
+body{animation:mains 6s steps(1) infinite}
+@keyframes mains{0%,97%,100%{opacity:1}98%{opacity:.94}99%{opacity:1}}
+@media(prefers-reduced-motion:reduce){
+  .crt::after{animation:none}
+  body{animation:none}
+}
+
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px 60px}
+
+/* labelled ASCII box: 1px trace border, tag notched into top-left edge */
+.box{border:1px solid var(--trace);position:relative;padding:22px}
+.box[data-tag]::before{content:attr(data-tag);position:absolute;top:-9px;left:14px;
+  background:var(--void);padding:0 6px;color:var(--trace);font-size:11px;letter-spacing:.05em}
+
+.glow{text-shadow:0 0 6px currentColor}
+.dim{color:var(--trace)}
+.bright{color:var(--phosphor)}
+
+.btn{display:inline-block;font-family:var(--mono);font-weight:700;font-size:13px;
+  color:var(--void);background:var(--phosphor);border:1px solid var(--phosphor);
+  padding:10px 22px;text-shadow:none}
+.btn:hover{background:var(--void);color:var(--phosphor);text-shadow:0 0 6px currentColor}
+.btn--ghost{background:var(--void);color:var(--phosphor);border:1px solid var(--phosphor);
+  text-shadow:0 0 6px currentColor}
+.btn--ghost:hover{background:var(--phosphor);color:var(--void);text-shadow:none}
+
+.ascii{color:var(--trace);font-family:var(--mono);font-size:11px;line-height:1.3;
+  white-space:pre;overflow-x:auto;margin:0}
+
+/* headline: channel-split glitch pseudo-copies, offset in error/pale */
+.glitch{position:relative;font-family:var(--crt);font-weight:400;text-transform:uppercase;
+  color:var(--phosphor);text-shadow:0 0 6px currentColor}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;
+  width:100%;opacity:0}
+.glitch.glitching::before{opacity:.8;color:var(--error);clip-path:inset(0 0 68% 0);
+  transform:translate(-3px,-1px)}
+.glitch.glitching::after{opacity:.8;color:var(--pale);clip-path:inset(72% 0 0 0);
+  transform:translate(3px,1px)}
+@media(prefers-reduced-motion:reduce){.glitch::before,.glitch::after{display:none}}
+
+.cursor{display:inline-block;width:.5em;height:1em;background:var(--phosphor);
+  vertical-align:-.15em;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.cursor{animation:none}}
+
+/* ── Nav ─────────────────────────────────────────────────────────────── */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:22px 0;border-bottom:1px solid var(--trace)}
+.logo{color:var(--phosphor);text-shadow:0 0 6px currentColor;font-size:15px}
+.nav ul{display:flex;gap:22px;flex-wrap:wrap}
+.nav ul a{font-size:12.5px;color:var(--trace);padding:4px 8px}
+.nav ul a:hover,.nav ul a[aria-current="page"]{background:var(--phosphor);color:var(--void)}
+
+/* ── Hero ────────────────────────────────────────────────────────────── */
+.hero{padding:40px 0}
+.hero .dim{display:block;margin-bottom:14px}
+.hero h1{font-size:clamp(38px,7.4vw,72px);line-height:.98;margin:0}
+.hero p{margin:18px 0 0;max-width:60ch;color:var(--pale)}
+.hero .actions{margin-top:26px;display:flex;gap:14px;flex-wrap:wrap}
+
+/* ── Features ────────────────────────────────────────────────────────── */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px}
+.card h3{color:var(--phosphor);text-shadow:0 0 6px currentColor;font-size:16px;margin:0 0 10px}
+.card p{margin:0 0 12px;font-size:13px}
+.card .hex{font-size:10px;color:var(--trace);word-break:break-all;text-shadow:none}
+
+/* ── CTA ────────────────────────────────────────────────────────────── */
+.cta{margin-top:20px;text-align:center;padding:36px 20px}
+.cta h2{color:var(--phosphor);text-shadow:0 0 6px currentColor;font-size:clamp(20px,3vw,28px);margin:0 0 20px}
+
+/* ── Page heading ────────────────────────────────────────────────────── */
+.page-head{padding:34px 0}
+.page-head .dim{display:block;margin-bottom:14px}
+.page-head h1{font-size:clamp(30px,5vw,52px);margin:0}
+.page-head p{margin:16px 0 0;color:var(--pale);max-width:60ch}
+
+/* ── Tools (Work) ───────────────────────────────────────────────────── */
+.tools{display:flex;flex-direction:column;gap:18px;margin-top:20px}
+.tool{padding:20px 22px}
+.tool__top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px}
+.tool h2{color:var(--phosphor);text-shadow:0 0 6px currentColor;font-size:17px;margin:0}
+.tool p{margin:10px 0 0;font-size:13px;max-width:60ch}
+
+/* ── About ───────────────────────────────────────────────────────────── */
+.about-lead{padding:26px;margin-top:20px}
+.about-lead p{margin:0 0 16px}
+.about-lead p:last-child{margin-bottom:0}
+.about-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px}
+.fact{padding:18px;text-align:center}
+.fact h3{color:var(--phosphor);text-shadow:0 0 6px currentColor;font-size:20px;margin:0 0 6px}
+.fact p{margin:0;font-size:12.5px;color:var(--trace)}
+
+/* ── Contact ─────────────────────────────────────────────────────────── */
+.contact{padding:34px 20px;text-align:center;margin-top:20px}
+.contact dl{display:inline-grid;grid-template-columns:auto 1fr;gap:10px 20px;margin:0 0 26px;text-align:left}
+.contact dt{color:var(--trace);font-size:12px;align-self:center}
+.contact dd{margin:0;align-self:center;font-size:13px}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+.foot{margin-top:20px;padding:18px 0;border-top:1px solid var(--trace);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.foot p{margin:0;font-size:11.5px;color:var(--trace)}
+.foot__links{display:flex;gap:18px;flex-wrap:wrap}
+.foot__links a{font-size:11.5px;color:var(--trace)}
+.foot__links a:hover{color:var(--phosphor)}
+
+@media(max-width:760px){
+  .features{grid-template-columns:1fr}
+  .about-facts{grid-template-columns:1fr}
+}

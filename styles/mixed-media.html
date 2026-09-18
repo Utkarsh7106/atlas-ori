@@ -384,7 +384,7 @@
       transform:rotate(0deg) translate(3px,3px);
       box-shadow:0 0 0 2px var(--chip-edge), 1px 1px 0 var(--riso-blue)}
     .ctl.is-pressed,.nav ul a.is-pressed,.site-footer__links a.is-pressed,
-    .dp-skill.is-pressed,.dp-back.is-pressed{
+    .dp-skill.is-pressed,.dp-example.is-pressed,.dp-back.is-pressed{
       background:var(--riso-blue);color:var(--on-cool);transform:rotate(-2.4deg)}
 
     @media(max-width:860px){
@@ -430,14 +430,15 @@
     .design-points h2{font-family:"Bebas Neue",sans-serif;font-size:34px;letter-spacing:.06em;
       line-height:1;margin:0;color:var(--riso-yellow)}
     .dp-actions{display:flex;gap:6px;flex-wrap:wrap}
-    .dp-skill,.dp-back{display:block;font-family:"DM Sans",sans-serif;font-size:12px;font-weight:700;
+    .dp-skill,.dp-example,.dp-back{display:block;font-family:"DM Sans",sans-serif;font-size:12px;font-weight:700;
       letter-spacing:.12em;text-transform:uppercase;color:var(--body-ink);background:var(--stock);
       padding:6px 14px;box-shadow:0 0 0 2px var(--chip-edge);
       transition:background .16s steps(2),color .16s steps(2),transform .16s steps(2)}
     .dp-skill{background:var(--riso-yellow);color:var(--on-warm)}
-    .dp-skill:hover{background:var(--riso-pink);color:var(--on-warm)}
+    .dp-example{background:var(--riso-blue);color:var(--on-cool)}
+    .dp-skill:hover,.dp-example:hover{background:var(--riso-pink);color:var(--on-warm)}
     .dp-back:hover{background:var(--riso-pink);color:var(--on-warm)}
-    .dp-skill:focus-visible,.dp-back:focus-visible{outline:3px solid var(--riso-blue);outline-offset:3px}
+    .dp-skill:focus-visible,.dp-example:focus-visible,.dp-back:focus-visible{outline:3px solid var(--riso-blue);outline-offset:3px}
     .dp{margin:0}
     .dp-row{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start;
       background:var(--stock);padding:18px 20px;margin-bottom:16px;
@@ -577,8 +578,8 @@
       <div class="dp-kicker">
         <h2>Design Points</h2>
         <div class="dp-actions">
-          <!-- TODO: link to generated SKILL.md -->
-          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-skill" href="../skills/mixed-media/SKILL.md" download>Download skill</a>
+          <a class="dp-example" href="../examples/mixed-media/index.html">Example website</a>
           <a class="dp-back" href="../index.html">← All styles</a>
         </div>
       </div>
@@ -720,7 +721,7 @@
     }
 
     /* Press feedback that survives a touch tap. */
-    var PRESSABLE = '.ctl, .nav ul a, .btn, .cta .cta-btn, .site-footer__links a, .dp-skill, .dp-back, .dialog__close';
+    var PRESSABLE = '.ctl, .nav ul a, .btn, .cta .cta-btn, .site-footer__links a, .dp-skill, .dp-example, .dp-back, .dialog__close';
     var MIN_HOLD = 150;
     document.querySelectorAll(PRESSABLE).forEach(function (el) {
       var at = 0, timer = null;

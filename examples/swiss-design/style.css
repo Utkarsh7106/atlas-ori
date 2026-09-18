@@ -1,0 +1,157 @@
+/* Rasterwerk — built only from skills/swiss-design/SKILL.md.
+   Font stacks fall back to system faces (Helvetica Neue / Arial, generic
+   monospace) rather than embedding webfonts: this example folder is meant
+   to stay self-contained, and copying font files in here would either
+   duplicate them 29 times over or reach outside the folder into the main
+   site's /assets. The stacks below are the exact ones the skill specifies. */
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+ul{margin:0;padding:0}
+
+:root{
+  --bg:#ffffff;
+  --ink:#111111;
+  --accent:#d31f16;
+  --grey:#707070;
+  --hair:#dcdcdc;
+  --col-gap:24px;
+  --margin:clamp(20px,4vw,56px);
+}
+
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  padding:0 var(--margin);
+}
+a{color:inherit;text-decoration:none}
+.mono{font-family:"IBM Plex Mono",monospace}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:var(--col-gap);
+  max-width:1400px;
+  margin:0 auto;
+}
+
+/* ── Nav: two masses, wordmark left, links right, closed by a 4px rule ── */
+.nav{padding-top:28px;position:relative}
+.nav .logo{grid-column:1/5;font-size:20px;font-weight:700;letter-spacing:-.04em;text-transform:uppercase}
+.nav ul{grid-column:7/13;display:flex;justify-content:flex-end;gap:32px;list-style:none}
+.nav a{font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase}
+.nav a:hover,.nav a[aria-current="page"]{color:var(--accent)}
+.nav-rule{grid-column:1/13;height:4px;background:var(--ink);margin-top:18px}
+
+/* ── Hero (home only) ──────────────────────────────────────────────── */
+.hero{padding:72px 0 0;align-items:start}
+.hero h1{grid-column:1/10;font-size:clamp(46px,9.2vw,124px);font-weight:700;
+  line-height:.88;letter-spacing:-.048em;text-transform:uppercase;margin:0}
+.hero .deck{grid-column:10/13;border-top:1px solid var(--ink);padding-top:10px}
+.hero .deck span{display:block;font-size:10px;letter-spacing:.14em;color:var(--accent);
+  margin-bottom:8px;text-transform:uppercase}
+.hero .deck p{font-size:13px;line-height:1.45;margin:0}
+
+.hero-lower{grid-column:1/13;display:grid;grid-template-columns:repeat(12,1fr);
+  gap:var(--col-gap);align-items:center;margin-top:56px;padding-bottom:88px}
+
+/* Full-column-width solid-color button, sized by its grid cell, not its label. */
+.btn{grid-column:1/4;display:block;width:100%;background:var(--accent);color:var(--bg);
+  padding:20px 0;text-align:center;font-size:12px;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;transition:background .18s linear}
+.btn:hover{background:var(--ink)}
+.meta{grid-column:5/9;font-size:11px;line-height:1.5;letter-spacing:.08em;
+  color:var(--grey);text-transform:uppercase}
+
+/* One geometric mark, placed on the grid as content. */
+.mark{grid-column:11/13;justify-self:end;width:84px;height:84px;border-radius:50%;background:var(--accent)}
+
+/* ── Page heading (Work / About / Contact) ────────────────────────── */
+.page-head{padding:72px 0 56px}
+.page-head h1{grid-column:1/13;font-size:clamp(46px,9.2vw,104px);font-weight:700;
+  line-height:.88;letter-spacing:-.048em;text-transform:uppercase;margin:0}
+.page-head .meta{grid-column:1/13;margin-top:14px}
+
+/* ── Cards: numeral, 2px top rule, one weight up from body ──────────── */
+.features{padding-bottom:96px}
+.card{grid-column:span 4;border-top:2px solid var(--ink);padding-top:14px}
+.card--quarter{grid-column:span 3}
+.num{display:block;font-size:11px;letter-spacing:.1em;color:var(--accent);margin-bottom:26px}
+.card h3{font-size:clamp(20px,2.2vw,28px);font-weight:700;letter-spacing:-.03em;
+  text-transform:uppercase;margin:0 0 12px;line-height:1}
+.card p{font-size:15px;line-height:1.45;max-width:26ch;margin:0}
+
+/* ── CTA band ─────────────────────────────────────────────────────── */
+.cta{border-top:4px solid var(--ink);padding:56px 0 96px;align-items:end}
+.cta h2{grid-column:1/9;font-size:clamp(38px,7vw,88px);font-weight:700;line-height:.9;
+  letter-spacing:-.048em;text-transform:uppercase;margin:0}
+.cta .cta-btn{display:inline-block;grid-column:10/13;background:var(--ink);color:var(--bg);
+  padding:20px 0;width:100%;text-align:center;font-size:12px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;transition:background .18s linear}
+.cta .cta-btn:hover{background:var(--accent)}
+
+/* ── Work list: narrow numeral/meta column against a wide title ─────── */
+.work-list{list-style:none;padding-bottom:56px}
+.work-row{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--col-gap);
+  border-top:2px solid var(--ink);padding:24px 0;align-items:baseline;max-width:1400px;margin:0 auto}
+.work-row:first-child{padding-top:24px}
+.work-num{grid-column:1/2;font-size:11px;letter-spacing:.1em;color:var(--accent)}
+.work-meta{grid-column:2/6;font-size:11px;letter-spacing:.08em;color:var(--grey);text-transform:uppercase}
+.work-title{grid-column:6/13;font-size:clamp(22px,3vw,34px);font-weight:700;
+  letter-spacing:-.03em;text-transform:uppercase;margin:0;line-height:1.05}
+
+/* ── About intro ──────────────────────────────────────────────────── */
+.about-intro{padding-bottom:56px}
+.about-lead{grid-column:1/9;font-size:clamp(22px,2.6vw,32px);font-weight:400;
+  line-height:1.3;letter-spacing:-.01em;margin:0}
+.process{padding-bottom:96px}
+
+/* ── Contact: wide action block against a narrow detail column ──────── */
+.contact{padding-bottom:96px;align-items:center}
+.contact-btn{grid-column:1/9;display:block;width:100%;background:var(--accent);color:var(--bg);
+  padding:28px 32px;font-size:clamp(16px,2vw,22px);font-weight:700;letter-spacing:-.01em;
+  text-align:left;transition:background .18s linear}
+.contact-btn:hover{background:var(--ink)}
+.contact .meta{grid-column:1/9;margin-top:16px}
+.contact-details{grid-column:10/13;justify-self:end;font-size:12px;line-height:1.6;color:var(--grey)}
+.contact-details p{margin:0 0 12px}
+.contact-details p:last-child{margin-bottom:0}
+
+/* ── Footer ───────────────────────────────────────────────────────── */
+.site-footer{padding:0 0 40px;align-items:center}
+.site-footer__rule{grid-column:1/13;height:4px;background:var(--ink);margin-bottom:26px}
+.site-footer__mark{grid-column:1/4;font-size:20px;font-weight:700;letter-spacing:-.04em;
+  text-transform:uppercase;margin:0}
+.site-footer__meta{grid-column:4/9;font-size:11px;line-height:1.5;letter-spacing:.08em;
+  color:var(--grey);text-transform:uppercase}
+.site-footer__links{grid-column:9/13;display:flex;justify-content:flex-end;gap:32px}
+.site-footer__links a{font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  border-bottom:2px solid transparent;padding-bottom:3px;transition:border-color .18s linear,color .18s linear}
+.site-footer__links a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+
+@media(max-width:760px){
+  .nav .logo{grid-column:1/13}
+  .nav ul{grid-column:1/13;margin-top:14px;justify-content:flex-start;flex-wrap:wrap;gap:18px}
+  .hero h1,.hero .deck{grid-column:1/13}
+  .hero .deck{margin-top:28px}
+  .card,.card--quarter{grid-column:span 12}
+  .btn{grid-column:1/7}
+  .meta{grid-column:1/13;margin-top:8px}
+  .mark{display:none}
+  .cta h2,.cta .cta-btn{grid-column:1/13}
+  .cta .cta-btn{margin-top:32px}
+  .work-num,.work-meta,.work-title{grid-column:1/13}
+  .work-meta{margin-top:4px}
+  .work-title{margin-top:10px}
+  .about-lead{grid-column:1/13}
+  .contact-btn,.contact .meta{grid-column:1/13}
+  .contact-details{grid-column:1/13;justify-self:start;margin-top:24px}
+  .site-footer__mark,.site-footer__meta,.site-footer__links{grid-column:1/13}
+  .site-footer__meta{margin-top:10px}
+  .site-footer__links{justify-content:flex-start;margin-top:18px}
+}
