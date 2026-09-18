@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Minimalism — Carousel Preview — Atlas</title>
+<meta name="description" content="Minimalism carousel preview — five variant executions of the Minimalism style, switched client-side. Staging file, not linked from the live site.">
+<!-- STAGING FILE — Phase 1 pilot for the "one style, several designs" carousel pattern.
+     Not linked from index.html or any live page. Piloted from styles/minimalism.html,
+     which this file does not modify. All five variants below share identical nav/hero/
+     card/CTA content; only visual treatment, elaborateness and layout complexity vary,
+     per the content-parity rule in CONTRIBUTING.md extended across variants instead of
+     across styles. -->
+<link rel="stylesheet" href="../assets/reset.css">
+<style>
+  /* Self-hosted webfonts -- see assets/fonts/. Same Dancing Script + Inter cuts as
+     styles/minimalism.html, plus IBM Plex Mono for Variant 3's numeral device only. */
+  @font-face{font-family:'Dancing Script';font-style:normal;font-weight:700;font-display:swap;src:url('../assets/fonts/dancing-script/dancing-script-700.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+  @font-face{font-family:'Dancing Script';font-style:normal;font-weight:700;font-display:swap;src:url('../assets/fonts/dancing-script/dancing-script-700-ext.woff2') format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+  @font-face{font-family:'Inter';font-style:normal;font-weight:300;font-display:swap;src:url('../assets/fonts/inter/inter-400.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+  @font-face{font-family:'Inter';font-style:normal;font-weight:300;font-display:swap;src:url('../assets/fonts/inter/inter-400-ext.woff2') format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+  @font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url('../assets/fonts/inter/inter-400.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+  @font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url('../assets/fonts/inter/inter-400-ext.woff2') format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+  @font-face{font-family:'Inter';font-style:normal;font-weight:500;font-display:swap;src:url('../assets/fonts/inter/inter-400.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+  @font-face{font-family:'Inter';font-style:normal;font-weight:500;font-display:swap;src:url('../assets/fonts/inter/inter-400-ext.woff2') format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+  @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url('../assets/fonts/ibm-plex-mono/ibm-plex-mono-400.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+  @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url('../assets/fonts/ibm-plex-mono/ibm-plex-mono-400-ext.woff2') format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+
+  /* Skip link: identical device to every other page on the site. */
+  .skip-link{position:absolute;left:8px;top:-60px;z-index:9999;padding:10px 18px;
+    background:#111;color:#fff;border:2px solid #fff;border-radius:4px;
+    font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif;
+    text-decoration:none;transition:top .15s ease}
+  .skip-link:focus{top:8px}
+
+  /* ══ MINIMALISM — CAROUSEL PREVIEW ═══════════════════════════════
+     Five variants, one file. All five obey the same rule the live page
+     does: remove until it breaks, then add one thing back — no accent
+     hue anywhere, hierarchy only from size/weight/space. Variant 1 is
+     that rule applied almost exactly as the live page does it; each
+     later variant keeps the rule but pushes layout complexity, scale
+     contrast or (Variant 5) an illustration further. No new colour
+     token is introduced anywhere below — every variant reuses only
+     --ink/--muted/--rule/--paper/--tint, so every contrast pair in
+     every variant reduces to the ratios already audited here. */
+
+  :root{
+    --th-paper:#ffffff;
+    --th-ink:#0a0a0a;
+    --th-muted:#5c5c5c;   /* 6.69:1 on paper */
+    --th-rule:#e5e5e5;
+    --th-tint:#fafafa;
+
+    --paper:var(--th-paper);
+    --ink:var(--th-ink);
+    --muted:var(--th-muted);
+    --rule:var(--th-rule);
+    --tint:var(--th-tint);
+
+    --gap:clamp(96px,14vh,160px);   /* shared chrome (footer, Design Points) only */
+    --rail:0px;
+  }
+
+  :root[data-theme="dark"]{
+    --th-paper:#0a0a0a;
+    --th-ink:#f5f5f5;     /* 18.16:1 on paper */
+    --th-muted:#a3a3a3;   /*  7.85:1 on paper, 7.30:1 on tint */
+    --th-rule:#2a2a2a;
+    --th-tint:#141414;
+  }
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Inter",-apple-system,"Helvetica Neue",Arial,sans-serif;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    padding-left:var(--rail);
+    transition:padding-left .28s ease,background-color .28s ease,color .28s ease;
+  }
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 32px}
+  .visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+  /* ── Nav (shared shell — one instance, skinned per active variant) ── */
+  .nav{display:flex;justify-content:space-between;align-items:baseline;
+    gap:24px;padding:40px 0;transition:border-color .28s ease,background-color .28s ease}
+  .logo{font-size:15px;font-weight:500;letter-spacing:-.02em}
+  .nav-right{display:flex;align-items:baseline;gap:56px}
+  .nav ul{display:flex;gap:36px}
+  .nav ul a{font-size:14px;color:var(--muted);position:relative;padding-bottom:2px}
+  .nav ul a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+    background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.7,.3,1)}
+  .nav ul a:hover{color:var(--ink)}
+  .nav ul a:hover::after{transform:scaleX(1)}
+
+  .controls{display:flex;flex-wrap:wrap;gap:28px}
+  .ctl{display:inline-flex;align-items:baseline;gap:8px;
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);transition:color .22s ease}
+  .ctl__value{color:var(--ink);transition:color .22s ease}
+  .ctl:hover,.ctl:hover .ctl__value{color:var(--ink)}
+  .ctl:focus-visible{outline:1px solid var(--ink);outline-offset:5px}
+
+  /* Sidebar mode always wins over any per-variant nav skin below —
+     boosted with an element selector so it beats the (0,2,0) variant
+     overrides regardless of source order. */
+  :root[data-nav="side"]{--rail:212px}
+  html[data-nav="side"] .nav{
+    position:fixed;left:0;top:0;bottom:0;width:var(--rail);
+    flex-direction:column;align-items:flex-start;justify-content:flex-start;
+    gap:0;padding:40px 28px;
+    background:var(--paper);border-right:1px solid var(--rule);
+    overflow-y:auto;z-index:90;
+    transition:background-color .28s ease,border-color .28s ease}
+  [data-nav="side"] .nav-right{flex-direction:column;align-items:flex-start;gap:40px;margin-top:44px}
+  [data-nav="side"] .nav ul{flex-direction:column;gap:16px}
+  [data-nav="side"] .controls{flex-direction:column;gap:14px}
+
+  /* ── Carousel mechanics ─────────────────────────────────────────
+     All five .variant sections stay in the DOM; visibility is the
+     native `hidden` attribute (removes layout + a11y-tree + tab order
+     in one step). Controls sit inside .variant-viewport (position:
+     relative) so they scroll away with the active design instead of
+     floating over the shared footer/Design Points below. */
+  .variant-viewport{position:relative}
+
+  /* top is set per-frame by JS (positionArrows), to the vertical centre
+     of whichever hero is active — heroes differ in height across the
+     five variants, so a fixed 50%-of-viewport value lands on the card
+     row for some of them. The static 200px here is only a same-paint
+     fallback before that first JS pass runs. */
+  .discover-arrow,.variant-nav{
+    position:absolute;top:200px;transform:translateY(-50%);
+    width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--rule);border-radius:0;background:var(--paper);
+    color:var(--muted);font-size:16px;line-height:1;
+    transition:color .18s ease,border-color .18s ease}
+  .discover-arrow{right:-56px}
+  .variant-nav--prev{left:-56px}
+  @media(max-width:900px){
+    .discover-arrow{right:4px}
+    .variant-nav--prev{left:4px}
+  }
+  .discover-arrow:hover,.discover-arrow:focus-visible,
+  .variant-nav:hover,.variant-nav:focus-visible{color:var(--ink);border-color:var(--ink)}
+  .discover-arrow:focus-visible,.variant-nav:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+
+  /* Faintness comes from --muted, not opacity: blending --ink over
+     --paper at a "faint" opacity computes to roughly 2.3:1, under the
+     3:1 floor for non-text UI (WCAG 1.4.11). --muted is already
+     audited at 6.69:1 / 7.85:1, so the arrow reads as faint by colour
+     while staying comfortably above the floor. Opacity is reserved for
+     the pulse itself, which moves within a safe .75–1 range. */
+  .discover-arrow[data-state="nudging"]{animation:arrow-nudge 1.2s ease-in-out 3}
+  @keyframes arrow-nudge{
+    0%,100%{transform:translateY(-50%) scale(1);opacity:.75}
+    50%{transform:translateY(-50%) scale(1.15);opacity:1}
+  }
+
+  /* Hidden by default; revealed the moment data-carousel-discovered
+     flips to "true" — pre-paint for a returning visitor, on first
+     click for a new one. */
+  .variant-nav--prev,.variant-dots{display:none}
+  html[data-carousel-discovered="true"] .variant-nav--prev,
+  html[data-carousel-discovered="true"] .variant-dots{display:flex}
+
+  .variant-dots{position:absolute;left:50%;bottom:-32px;transform:translateX(-50%);
+    gap:12px;align-items:center}
+  /* Ticks, not circles: a filled circle (border-radius) would break
+     the page's own zero-radius rule for controls, so the "dot" idiom
+     is redrawn as the page's own hairline-tick vocabulary instead. */
+  .variant-dot{width:2px;height:16px;border-radius:0;border:0;padding:0;
+    background:var(--muted);transition:background-color .18s ease}
+  .variant-dot[aria-current="true"]{background:var(--ink)}
+  .variant-dot:hover,.variant-dot:focus-visible{background:var(--ink)}
+  .variant-dot:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+
+  /* ── Baseline component styles (= Variant 1) ─────────────────────
+     Variants 2–5 override only what changes, below. Padding now reads
+     var(--vgap) — each variant's own rhythm token — instead of the
+     shared var(--gap), which stays reserved for the footer/Design
+     Points section further down the page. */
+  .variant-1,.variant-2,.variant-5{--vgap:var(--gap)}
+  .variant-3{--vgap:clamp(88px,13vh,144px)}
+  .variant-4{--vgap:clamp(120px,18vh,220px)}
+
+  .hero{padding:var(--vgap) 0}
+  .hero h1{font-size:clamp(38px,6.4vw,68px);font-weight:300;line-height:1.06;
+    letter-spacing:-.038em;max-width:14ch}
+  .hero p{margin-top:28px;font-size:17px;color:var(--muted);max-width:38ch;line-height:1.6}
+
+  .btn{display:inline-block;margin-top:48px;border:1px solid var(--ink);border-radius:0;
+    padding:15px 30px;font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+    background:var(--paper);color:var(--ink);
+    transition:background .22s ease,color .22s ease,border-color .22s ease}
+  .btn:hover{background:var(--ink);color:var(--paper)}
+  .btn:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:56px;padding-bottom:var(--vgap)}
+  .card{border-top:1px solid var(--rule);padding-top:22px;transition:border-color .28s ease}
+  .icon{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  .card h3{font-size:17px;font-weight:500;letter-spacing:-.01em;margin:14px 0 10px}
+  .card p{font-size:15px;color:var(--muted);line-height:1.62}
+
+  .cta{border-top:1px solid var(--rule);padding:var(--vgap) 0;transition:border-color .28s ease}
+  .cta h2{font-size:clamp(28px,4.4vw,46px);font-weight:300;letter-spacing:-.035em}
+
+  .reveal{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ══ VARIANT 2 — RULED ═══════════════════════════════════════════
+     The nav gains the same hairline the cards already use below, so
+     the page's one separator device also frames its own chrome; the
+     three cards trade their equal gap for a shared vertical hairline,
+     turning three independent blocks into one ruled row. */
+  .variant-2 .nav{border-bottom:1px solid var(--rule)}
+  .variant-2 .nav ul a{letter-spacing:.01em}
+  .variant-2 .features{gap:0}
+  .variant-2 .card{padding:22px 32px 0}
+  .variant-2 .card:first-child{padding-left:0}
+  .variant-2 .card:not(:first-child){border-left:1px solid var(--rule)}
+
+  /* ══ VARIANT 3 — ASYMMETRIC EDITORIAL ════════════════════════════
+     Hero and cards both move off the equal-thirds grid the baseline
+     uses. SECOND TYPEFACE, SCOPED: a grotesque's digits don't read as
+     distinctly non-body at 11px, so a tabular mono numeral is added —
+     via a CSS counter, not new markup — only for these three index
+     marks; headline, body and nav text stay Inter-only. */
+  .variant-3 .nav{display:grid;grid-template-columns:7fr 4fr;column-gap:24px;align-items:baseline}
+  .variant-3 .hero{display:grid;grid-template-columns:7fr 4fr;column-gap:48px;align-items:start}
+  .variant-3 .hero h1{grid-column:1;grid-row:1/3;margin:0}
+  .variant-3 .hero p{grid-column:2;grid-row:1;margin-top:0}
+  .variant-3 .hero .btn{grid-column:2;grid-row:2;align-self:start}
+  .variant-3 .features{grid-template-columns:2fr 1fr 1fr 2fr;counter-reset:card}
+  .variant-3 .card{counter-increment:card}
+  .variant-3 .card::before{content:"0" counter(card);display:block;margin-bottom:10px;
+    font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:11px;letter-spacing:.06em;color:var(--muted)}
+  .variant-3 .card:nth-child(1){grid-column:1/3}
+  .variant-3 .card:nth-child(2){grid-column:3}
+  .variant-3 .card:nth-child(3){grid-column:4}
+
+  /* ══ VARIANT 4 — EXTREME SCALE, INTENSIFIED RHYTHM ═══════════════
+     One typeface, pushed harder: a much larger headline, cards demoted
+     further, and a much larger --vgap. The card grid gets an
+     asymmetric bento-style span, but bento-grid.html's usual filled
+     tile is forbidden here — Minimalism has no fills — so the same
+     effect is drawn entirely in borders and whitespace instead. */
+  .variant-4 .nav{padding:56px 0}
+  .variant-4 .nav ul a{letter-spacing:.03em}
+  .variant-4 .logo{letter-spacing:.02em}
+  .variant-4 .hero h1{font-size:clamp(48px,9vw,120px);max-width:11ch}
+  .variant-4 .card h3{font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+  .variant-4 .card p{font-size:13px}
+  .variant-4 .features{grid-template-columns:2fr 1fr;grid-template-rows:auto auto;gap:0}
+  .variant-4 .card{border-top:0}
+  .variant-4 .card:nth-child(1){grid-column:1;grid-row:1/3;border-right:1px solid var(--rule);
+    padding:0 40px 0 0}
+  .variant-4 .card:nth-child(2){grid-column:2;grid-row:1;padding:0 0 40px 40px}
+  .variant-4 .card:nth-child(3){grid-column:2;grid-row:2;padding:40px 0 0 40px;
+    border-top:1px solid var(--rule)}
+
+  /* ══ VARIANT 5 — ILLUSTRATED, MOST ELABORATE ═════════════════════
+     PHOTO/ILLUSTRATION OPTION, RECONCILED: an inline SVG line
+     illustration keeps this variant free of any raster asset and
+     greyscale-pure by construction (only --ink/--muted/--rule are
+     used as stroke/fill), rather than relying on filter:grayscale()
+     to launder a colour source. Its three marked points echo the
+     three cards below (structure / contrast / rhythm). Because the
+     illustration sits behind the top of the page, this is the one
+     variant whose nav gets an opaque backing — a legibility fix, not
+     decoration. */
+  .variant-5 .nav{background:var(--paper);border-bottom:1px solid var(--rule)}
+  .variant-5 .hero{display:flex;align-items:center;gap:clamp(32px,6vw,72px)}
+  .variant-5 .hero-copy{flex:0 1 55%;min-width:0}
+  .variant-5 .hero-copy h1,.variant-5 .hero-copy p,.variant-5 .hero-copy .btn{max-width:none}
+  .hero-art{flex:0 1 40%;max-width:320px;height:auto;overflow:visible}
+  .hero-art .art-line{fill:none;stroke:var(--rule);stroke-width:1}
+  .hero-art .art-line--soft{stroke:var(--muted)}
+  .hero-art .art-dot{fill:var(--ink)}
+  /* Card border-width echoes the illustration's own 1px line weight —
+     the "thin decorative rule pulled from the illustration" device. */
+  .variant-5 .features{grid-template-columns:repeat(3,1fr);gap:0;padding-bottom:calc(var(--vgap) + 56px)}
+  .variant-5 .card{border-left:1px solid var(--rule);padding:22px 28px 0}
+  .variant-5 .card:first-child{border-left:0;padding-left:0}
+  .variant-5 .card:nth-child(2){transform:translateY(28px)}
+  .variant-5 .card:nth-child(3){transform:translateY(56px)}
+
+  /* ── Footer (shared, identical across all five, appears once) ──── */
+  .site-footer{border-top:1px solid var(--rule);padding:56px 0 var(--gap);
+    display:grid;grid-template-columns:auto auto 1fr;align-items:baseline;
+    column-gap:56px;row-gap:40px;transition:border-color .28s ease}
+  .site-footer__mark{grid-column:1;grid-row:1;font-size:15px;font-weight:500;letter-spacing:-.02em}
+  .site-footer__note{grid-column:2;grid-row:1;font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted)}
+  .site-footer__links{grid-column:3;grid-row:1;justify-self:end;display:flex;gap:36px}
+  .site-footer__links a{font-size:14px;color:var(--muted);position:relative;padding-bottom:2px}
+  .site-footer__links a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+    background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.7,.3,1)}
+  .site-footer__links a:hover{color:var(--ink)}
+  .site-footer__links a:hover::after{transform:scaleX(1)}
+  .site-footer__links a:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+
+  .signature{grid-column:1;grid-row:2;justify-self:start;
+    font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+    font-weight:700;font-size:26px;line-height:1.2;letter-spacing:0;
+    text-transform:none;color:var(--ink);
+    border-bottom:1px solid transparent;padding-bottom:1px;
+    transition:border-color .18s linear}
+  .signature:hover{border-bottom-color:var(--ink)}
+  .signature:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+
+  /* ── Design Points (shared, identical across all five, once) ───── */
+  .dp-divider{height:0;border-top:1px solid var(--rule);margin:0;transition:border-color .28s ease}
+  .design-points{position:relative;z-index:80;background:var(--paper);color:var(--ink);
+    padding:var(--gap) 32px;
+    font-family:"Inter",-apple-system,"Helvetica Neue",Arial,sans-serif;
+    font-size:15px;line-height:1.62;letter-spacing:0;text-transform:none;
+    text-align:left;font-style:normal;font-weight:400}
+  .dp-inner{max-width:920px;margin:0 auto}
+  .dp-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:44px}
+  .design-points h2{font:500 11px/1.4 "Inter",-apple-system,"Helvetica Neue",Arial,sans-serif;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0}
+  .dp-links{display:flex;align-items:baseline;gap:28px}
+  .dp-skill,.dp-back{font-size:14px;color:var(--muted);position:relative;padding-bottom:2px}
+  .dp-skill::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+    background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.7,.3,1)}
+  .dp-skill:hover{color:var(--ink)}
+  .dp-skill:hover::after{transform:scaleX(1)}
+  .dp-skill:focus-visible,.dp-back:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+  .dp-back::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+    background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.7,.3,1)}
+  .dp-back:hover{color:var(--ink)}
+  .dp-back:hover::after{transform:scaleX(1)}
+  .dp{margin:0}
+  .dp-row{display:grid;grid-template-columns:190px 1fr;gap:20px;padding:26px 0;
+    border-top:1px solid var(--rule);transition:border-color .28s ease}
+  .dp-row:first-child{border-top:0;padding-top:0}
+  .dp dt{font:500 11px/1.5 "Inter",-apple-system,"Helvetica Neue",Arial,sans-serif;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  .dp dd{margin:0;color:var(--ink)}
+  .dp dd > ul,.dp dd > ol{padding-left:20px}
+  .dp dd > ul{list-style:disc}
+  .dp dd > ol{list-style:decimal}
+  .dp li{margin-bottom:9px}
+  .dp li:last-child{margin-bottom:0}
+  .dp code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:13px;color:var(--muted)}
+  .dp-palette{list-style:none!important;padding-left:0!important}
+  .sw{display:inline-block;width:13px;height:13px;border-radius:0;
+    border:1px solid var(--muted);vertical-align:-2px;margin-right:8px;background:var(--c)}
+
+  @media(max-width:720px){
+    .features{grid-template-columns:1fr;gap:36px}
+    .nav ul{gap:22px}
+    .wrap{padding:0 22px}
+
+    :root[data-nav="side"]{--rail:0px}
+    html[data-nav="side"] .nav{position:static;width:auto;
+      padding:40px 0;border-right:0;overflow:visible;background:none}
+    .nav,html[data-nav="side"] .nav{flex-direction:column;align-items:flex-start;gap:22px}
+    .nav-right,[data-nav="side"] .nav-right{flex-direction:row;flex-wrap:wrap;
+      align-items:baseline;gap:22px 32px;margin-top:0;width:100%}
+    [data-nav="side"] .nav ul{flex-direction:row;gap:22px}
+    [data-nav="side"] .controls{flex-direction:row;gap:24px}
+    .site-footer{grid-template-columns:1fr;row-gap:22px}
+    .site-footer__mark,.site-footer__note,.site-footer__links,.signature{grid-column:1;justify-self:start}
+    .site-footer__note{grid-row:2}
+    .site-footer__links{grid-row:3;gap:24px}
+    .signature{grid-row:4;margin-top:12px}
+
+    /* Per-variant grid overrides collapse back to a single stacked
+       column on narrow viewports — layout complexity is a desktop
+       device here, not something asked to survive at phone width. */
+    .variant-2 .features{gap:36px}
+    .variant-2 .card{padding:22px 0 0;border-left:0}
+    .variant-3 .nav{display:flex}
+    .variant-3 .hero{display:block}
+    .variant-3 .hero h1,.variant-3 .hero p,.variant-3 .hero .btn{grid-column:auto;grid-row:auto}
+    .variant-3 .features{grid-template-columns:1fr}
+    .variant-3 .card:nth-child(1),.variant-3 .card:nth-child(2),.variant-3 .card:nth-child(3){grid-column:auto}
+    .variant-4 .features{grid-template-columns:1fr}
+    .variant-4 .card,.variant-4 .card:nth-child(1),.variant-4 .card:nth-child(2),.variant-4 .card:nth-child(3){
+      grid-column:1;grid-row:auto;border-right:0;padding:22px 0 0;border-top:1px solid var(--rule)}
+    .variant-4 .card:first-child{border-top:0;padding-top:0}
+    .variant-5 .hero{flex-direction:column-reverse}
+    .hero-art{max-width:220px}
+    .variant-5 .features{grid-template-columns:1fr}
+    .variant-5 .card{border-left:0;transform:none;padding:22px 0 0}
+    .variant-5 .card:first-child{padding-top:0}
+
+    /* Controls drop into a centred row below the content instead of
+       floating at the page edge — at 375px there is no gutter wide
+       enough to hold a 40px control without it clipping hero text. */
+    .variant-controls{display:flex;justify-content:center;align-items:center;
+      flex-wrap:wrap;gap:20px;margin-top:40px}
+    .discover-arrow,.variant-nav,.variant-dots{position:static;top:auto;left:auto;
+      right:auto;bottom:auto;transform:none}
+  }
+</style>
+<script>
+  /* Applied before first paint so a stored preference never flashes the
+     default first. 'atlas-theme' is the sitewide key, shared with every
+     other page. 'atlas-min-carousel-nav' and 'atlas-min-carousel-
+     discovered' are new keys scoped to this staging file, deliberately
+     not reusing minimalism.html's own 'atlas-min-nav' — QA on this
+     preview should never contaminate the live page's stored state. */
+  (function () {
+    var root = document.documentElement;
+    function read(key, allowed, fallback) {
+      try {
+        var v = localStorage.getItem(key);
+        return allowed.indexOf(v) > -1 ? v : fallback;
+      } catch (e) { return fallback; }
+    }
+    root.setAttribute('data-nav',   read('atlas-min-carousel-nav', ['top', 'side'], 'top'));
+    root.setAttribute('data-theme', read('atlas-theme', ['light', 'dark'], 'light'));
+    root.setAttribute('data-carousel-discovered',
+      read('atlas-min-carousel-discovered', ['true'], 'false'));
+  })();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<main id="main-content">
+
+  <div class="wrap" id="carousel-shell" data-active-variant="1">
+
+    <nav class="nav" id="shell-nav">
+      <a href="../index.html" class="logo">Atlas</a>
+      <div class="nav-right">
+        <ul>
+          <li><a href="#">Work</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+        <div class="controls">
+          <button type="button" class="ctl" id="nav-toggle" aria-pressed="false">
+            <span class="ctl__label">Nav</span>
+            <span class="ctl__value" id="nav-toggle-value">Top</span>
+          </button>
+          <button type="button" class="ctl" id="theme-toggle" aria-pressed="false">
+            <span class="ctl__label">Theme</span>
+            <span class="ctl__value" id="theme-toggle-value">Light</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <p id="carousel-status" class="visually-hidden" aria-live="polite">Design 1 of 5</p>
+
+    <div class="variant-viewport" id="variant-viewport" role="group"
+      aria-roledescription="carousel" aria-label="Minimalism design variants">
+
+      <!-- VARIANT 1 — BASELINE: the live page's own layout, unchanged.
+           The most obvious "yes, that's Minimalism" execution. -->
+      <section class="variant variant-1" id="variant-1" data-variant="1">
+        <header class="hero reveal">
+          <h1>Design is how it feels to use.</h1>
+          <p>A study in visual language, one style at a time.</p>
+          <a href="#" class="btn">Explore</a>
+        </header>
+        <section class="features">
+          <article class="card reveal">
+            <span class="icon">Grid</span>
+            <h3>Structure</h3>
+            <p>Every element has a reason to be where it is.</p>
+          </article>
+          <article class="card reveal">
+            <span class="icon">Split</span>
+            <h3>Contrast</h3>
+            <p>Tension between elements creates meaning.</p>
+          </article>
+          <article class="card reveal">
+            <span class="icon">Pulse</span>
+            <h3>Rhythm</h3>
+            <p>Repetition and spacing set the pace.</p>
+          </article>
+        </section>
+        <section class="cta reveal">
+          <h2>Start building.</h2>
+          <!-- TODO: replace with real contact -->
+          <a href="mailto:hello@example.com" class="btn cta-btn">Get in touch</a>
+        </section>
+      </section>
+
+      <!-- VARIANT 2 — RULED: the nav and cards pick up one more hairline. -->
+      <section class="variant variant-2" id="variant-2" data-variant="2" hidden>
+        <header class="hero reveal">
+          <h1>Design is how it feels to use.</h1>
+          <p>A study in visual language, one style at a time.</p>
+          <a href="#" class="btn">Explore</a>
+        </header>
+        <section class="features">
+          <article class="card reveal">
+            <span class="icon">Grid</span>
+            <h3>Structure</h3>
+            <p>Every element has a reason to be where it is.</p>
+          </article>
+          <article class="card reveal">
+            <span class="icon">Split</span>
+            <h3>Contrast</h3>
+            <p>Tension between elements creates meaning.</p>
+          </article>
+          <article class="card reveal">
+            <span class="icon">Pulse</span>
+            <h3>Rhythm</h3>
+            <p>Repetition and spacing set the pace.</p>
+          </article>
+        </section>
+        <section class="cta reveal">
+          <h2>Start building.</h2>
+          <!-- TODO: replace with real contact -->
+          <a href="mailto:hello@example.com" class="btn cta-btn">Get in touch</a>
+        </section>
+      </section>
+
+      <!-- VARIANT 3 — ASYMMETRIC EDITORIAL: split hero, asymmetric card grid,
+           scoped IBM Plex Mono numerals (see CSS comment above). -->
+      <section class="variant variant-3" id="variant-3" data-variant="3" hidden>
+        <header class="hero reveal">
+          <h1>Design is how it feels to use.</h1>
+          <p>A study in visual language, one style at a time.</p>
+          <a href="#" class="btn">Explore</a>
+        </header>
+        <section class="features">
+          <article class="card reveal">
+            <span class="icon">Grid</span>
+            <h3>Structure</h3>
+            <p>Every element has a reason to be where it is.</p>
+          </article>
+          <article class="card reveal">
+            <span class="icon">Split</span>
+            <h3>Contrast</h3>
+            <p>Tension between elements creates meaning.</p>
+          </article>
+          <article class="card reveal">
+            <span class="icon">Pulse</span>
+            <h3>Rhythm</h3>
+            <p>Repetition and spacing set the pace.</p>
+          </article>
+        </section>
+        <section class="cta reveal">
+          <h2>Start building.</h2>
+          <!-- TODO: replace with real contact -->
+          <a href="mailto:hello@example.com" class="btn cta-btn">Get in touch</a>
+        </section>
+      </section>
+
+      <!-- VARIANT 4 — EXTREME SCALE, INTENSIFIED RHYTHM: the largest headline
+           and rhythm token of the five; cards drawn as hairline-only bento spans. -->
+      <section class="variant variant-4" id="variant-4" data-variant="4" hidden>
+        <header class="hero reveal">
+          <h1>Design is how it feels to use.</h1>
+          <p>A study in visual language, one style at a time.</p>
+          <a href="#" class="btn">Explore</a>
+        </header>
+        <section class="features">
+          <article class="card reveal">
+            <span class="icon">Grid</span>
+            <h3>Structure</h3>
+            <p>Every element has a reason to be where it is.</p>
+          </article>
+          <article class="card reveal">
+            <span class="icon">Split</span>
+            <h3>Contrast</h3>
+            <p>Tension between elements creates meaning.</p>
+          </article>
+          <article class="card reveal">
+            <span class="icon">Pulse</span>
+            <h3>Rhythm</h3>
+            <p>Repetition and spacing set the pace.</p>
+          </article>
+        </section>
+        <section class="cta reveal">
+          <h2>Start building.</h2>
+          <!-- TODO: replace with real contact -->
+          <a href="mailto:hello@example.com" class="btn cta-btn">Get in touch</a>
+        </section>
+      </section>
+
+      <!-- VARIANT 5 — ILLUSTRATED, MOST ELABORATE: adds a decorative inline
+           SVG (see CSS comment above for the greyscale-only rationale) and
+           the most complex card arrangement of the five. -->
+      <section class="variant variant-5" id="variant-5" data-variant="5" hidden>
+        <header class="hero reveal">
+          <div class="hero-copy">
+            <h1>Design is how it feels to use.</h1>
+            <p>A study in visual language, one style at a time.</p>
+            <a href="#" class="btn">Explore</a>
+          </div>
+          <!-- CONTENT-PARITY OVERRIDE: purely decorative inline SVG line
+               illustration, added only to this variant to exercise the
+               brief's "photo/illustration" option; it carries no
+               information beyond the hero text already present, so it is
+               aria-hidden and adds no content of its own. -->
+          <svg class="hero-art" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+            <circle class="art-line" cx="200" cy="180" r="130"></circle>
+            <circle class="art-line art-line--soft" cx="270" cy="120" r="46"></circle>
+            <line class="art-line" x1="40" y1="320" x2="320" y2="40"></line>
+            <line class="art-line" x1="60" y1="60" x2="340" y2="300"></line>
+            <circle class="art-dot" cx="200" cy="180" r="3"></circle>
+            <circle class="art-dot" cx="270" cy="120" r="3"></circle>
+            <circle class="art-dot" cx="120" cy="260" r="3"></circle>
+          </svg>
+        </header>
+        <section class="features">
+          <article class="card reveal">
+            <span class="icon">Grid</span>
+            <h3>Structure</h3>
+            <p>Every element has a reason to be where it is.</p>
+          </article>
+          <article class="card reveal">
+            <span class="icon">Split</span>
+            <h3>Contrast</h3>
+            <p>Tension between elements creates meaning.</p>
+          </article>
+          <article class="card reveal">
+            <span class="icon">Pulse</span>
+            <h3>Rhythm</h3>
+            <p>Repetition and spacing set the pace.</p>
+          </article>
+        </section>
+        <section class="cta reveal">
+          <h2>Start building.</h2>
+          <!-- TODO: replace with real contact -->
+          <a href="mailto:hello@example.com" class="btn cta-btn">Get in touch</a>
+        </section>
+      </section>
+
+      <!-- Discovery control: a real, always-focusable button from first
+           paint, regardless of animation or discovered state. Wrapped
+           with the prev arrow and dots in one container so a narrow
+           viewport can drop them into a centred row below the content
+           instead of floating over the hero text (see mobile query —
+           there is no side gutter wide enough at phone width to hide
+           a floating arrow without it clipping the headline). -->
+      <div class="variant-controls" id="variant-controls">
+        <button type="button" class="discover-arrow" id="discover-arrow"
+          aria-label="Browse other Minimalism designs" data-state="idle">
+          <span aria-hidden="true">&#8594;</span>
+        </button>
+        <button type="button" class="variant-nav variant-nav--prev" id="variant-prev"
+          aria-label="Previous design">
+          <span aria-hidden="true">&#8592;</span>
+        </button>
+        <div class="variant-dots" id="variant-dots" role="group" aria-label="Design variants">
+          <button type="button" class="variant-dot" data-goto="1" aria-current="true"  aria-label="Design 1 of 5"></button>
+          <button type="button" class="variant-dot" data-goto="2" aria-current="false" aria-label="Design 2 of 5"></button>
+          <button type="button" class="variant-dot" data-goto="3" aria-current="false" aria-label="Design 3 of 5"></button>
+          <button type="button" class="variant-dot" data-goto="4" aria-current="false" aria-label="Design 4 of 5"></button>
+          <button type="button" class="variant-dot" data-goto="5" aria-current="false" aria-label="Design 5 of 5"></button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    <p class="site-footer__mark">Atlas</p>
+    <p class="site-footer__note">Minimalism · one typeface · hairlines only</p>
+    <nav class="site-footer__links" aria-label="Footer">
+      <a href="../index.html">All styles</a>
+      <a href="https://github.com/Utkarsh7106/atlas">Source</a>
+    </nav>
+    <!-- TODO: replace with portfolio link -->
+    <a class="signature" href="#">Built with care</a>
+  </footer>
+
+  <hr class="dp-divider">
+
+  <section class="design-points" id="design-points" data-style="Minimalism">
+    <div class="dp-inner">
+      <div class="dp-kicker">
+        <h2>Design Points</h2>
+        <span class="dp-links">
+          <!-- TODO: link to generated SKILL.md -->
+          <a class="dp-skill" href="#">Download skill</a>
+          <a class="dp-back" href="../index.html">← All styles</a>
+        </span>
+      </div>
+      <dl class="dp">
+
+        <div class="dp-row" data-field="style-name">
+          <dt>Style Name</dt>
+          <dd>Minimalism</dd>
+        </div>
+
+        <div class="dp-row" data-field="era-origin">
+          <dt>Era / Origin</dt>
+          <dd>Post-2015 SaaS and developer-tool minimalism — Stripe, Linear, Vercel — which is what this page actually builds: a neutral grotesque (Inter), fluid <code>clamp()</code> type, hairline-separated cards, no ornament. That idiom descends from 1960s–70s minimal art and Dieter Rams' product design at Braun, but the closer and more accurate lineage is the last decade of interface work.</dd>
+        </div>
+
+        <div class="dp-row" data-field="color-palette">
+          <dt>Color Palette</dt>
+          <dd>
+            <ul class="dp-palette">
+              <li><span class="sw" style="--c:#ffffff"></span><code>#ffffff</code> — page background, the dominant surface</li>
+              <li><span class="sw" style="--c:#0a0a0a"></span><code>#0a0a0a</code> — headings, logo, button fill on hover</li>
+              <li><span class="sw" style="--c:#5c5c5c"></span><code>#5c5c5c</code> — body copy and nav links</li>
+              <li><span class="sw" style="--c:#e5e5e5"></span><code>#e5e5e5</code> — 1px hairline rules, the only drawn lines</li>
+              <li><span class="sw" style="--c:#fafafa"></span><code>#fafafa</code> — reserved hover tint</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="typography">
+          <dt>Typography</dt>
+          <dd>Inter for everything (fallback: Helvetica Neue, Arial) — deliberately unpaired; a second family would be one decision too many. Weights limited to 300 for display, 400 for body, 500 for labels and the logo. Sizing is a narrow ramp: 11px labels, 14–15px body, 17px card titles, and one large jump to <code>clamp(38px, 6.4vw, 68px)</code> for the hero. Display sizes get −0.038em tracking; body stays at 0.</dd>
+        </div>
+
+        <div class="dp-row" data-field="layout-logic">
+          <dt>Layout Logic</dt>
+          <dd>A single 920px centred column, all content flush left with a ragged right edge; no element is centred except the column itself. Vertical rhythm is one large token — <code>clamp(96px, 14vh, 160px)</code> — between sections and 8px multiples inside them, so whitespace, not boxes, does the grouping.</dd>
+        </div>
+
+        <div class="dp-row" data-field="signature-techniques">
+          <dt>Signature Techniques</dt>
+          <dd>
+            <ul>
+              <li>1px hairline rules in <code>#e5e5e5</code> as the only separators — no cards, panels, or filled containers anywhere.</li>
+              <li>Zero border-radius and zero box-shadow; depth is never simulated.</li>
+              <li>Measure capped at 14ch for the headline and 38ch for body copy, forcing generous unused space at the right.</li>
+              <li>Uppercase 11px labels at 0.18em tracking as the sole ornamental device.</li>
+              <li>An outlined button that inverts to solid on hover — the page's single colour event.</li>
+            </ul>
+          </dd>
+        </div>
+
+        <div class="dp-row" data-field="motion-interaction">
+          <dt>Motion/Interaction</dt>
+          <dd>Restrained and short. Nav links grow a 1px underline from the left over 280ms (<code>scaleX</code> with a left transform-origin). The button crossfades background and text colour over 220ms. An <code>IntersectionObserver</code> reveals the hero, cards and CTA once each with a 10px rise and fade over 600ms, then unobserves — nothing animates twice, nothing loops. Two controls sit in the nav at the page's 11px label size: one moves the nav between a top bar and a fixed left rail by changing a single <code>--rail</code> token, the other flips <code>data-theme</code> so the whole page re-resolves through five colour tokens; both persist to <code>localStorage</code> and reflow over 280ms. Every transition here is CSS, so <code>prefers-reduced-motion</code> mutes all of it.</dd>
+        </div>
+
+        <div class="dp-row" data-field="common-mistake">
+          <dt>Common Mistake</dt>
+          <dd>Treating "minimal" as "less content" rather than less ornamentation — cutting copy instead of cutting borders, shadows and radius, when the actual mechanism is one hairline as the only separator and zero border-radius or shadow anywhere.</dd>
+        </div>
+
+        <div class="dp-row" data-field="production-caveat">
+          <dt>Production Caveat</dt>
+          <dd>One unpaired typeface at three weights means every hierarchy decision rides on size and the single accent-colour event (the outline-to-solid button). Adding a second surface without that same discipline — a second font, a shadow "just this once" — erodes the whole system fast.</dd>
+        </div>
+
+        <div class="dp-row" data-field="accessibility-risk">
+          <dt>Accessibility Risk</dt>
+          <dd>Body copy sits at <code>#5c5c5c</code> on white and the nav's hover cue is a 1px underline that grows from the left — both legible, but low-affordance: a user relying on link-shape recognition rather than colour has almost no non-colour cue until hover or focus reveals the underline.</dd>
+        </div>
+
+        <div class="dp-row" data-field="when-not-to-use">
+          <dt>When Not To Use</dt>
+          <dd>Interfaces where users need to scan or compare many similar items quickly, like a dense dashboard or comparison table. The whitespace-as-hierarchy approach that works at three cards collapses information density at scale.</dd>
+        </div>
+
+        <div class="dp-row" data-field="replication-rules">
+          <dt>Replication Rules</dt>
+          <dd>
+            <ol>
+              <li>Use one typeface at no more than three weights, and never let a decorative face in.</li>
+              <li>Restrict colour to white, near-black, one grey for secondary text, and one lighter grey for rules — no accent hue at all.</li>
+              <li>Separate content with 1px hairlines or empty space only; forbid yourself borders on all four sides, fills, radii, and shadows.</li>
+              <li>Set every section's vertical padding from a single large spacing token (96–160px) so the page reads as air with text in it.</li>
+              <li>Establish hierarchy through size and weight jumps alone — if you are reaching for colour or a box to signal importance, delete something instead.</li>
+            </ol>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+  </section>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); }
+      catch (e) { /* private mode / quota */ }
+    }
+
+    /* ── Nav: top bar <-> fixed left rail (shared shell, drives all 5) ── */
+    var navBtn   = document.getElementById('nav-toggle');
+    var navValue = document.getElementById('nav-toggle-value');
+    function applyNav(mode) {
+      root.setAttribute('data-nav', mode);
+      navBtn.setAttribute('aria-pressed', String(mode === 'side'));
+      navValue.textContent = mode === 'side' ? 'Side' : 'Top';
+    }
+    applyNav(root.getAttribute('data-nav') === 'side' ? 'side' : 'top');
+    navBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-nav') === 'side' ? 'top' : 'side';
+      applyNav(next);
+      store('atlas-min-carousel-nav', next);
+    });
+
+    /* ── Light / dark, whole page (shared shell, drives all 5) ────────── */
+    var themeBtn   = document.getElementById('theme-toggle');
+    var themeValue = document.getElementById('theme-toggle-value');
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode);
+      themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
+      themeValue.textContent = mode === 'dark' ? 'Dark' : 'Light';
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      store('atlas-theme', next);
+    });
+  })();
+</script>
+
+<script>
+  /* Carousel + discovery-control state machine. */
+  (function () {
+    var root = document.documentElement;
+    function store(key, value) {
+      try { localStorage.setItem(key, value); }
+      catch (e) { /* private mode / quota */ }
+    }
+
+    var TOTAL  = 5;
+    var shell  = document.getElementById('carousel-shell');
+    var viewport = document.getElementById('variant-viewport');
+    var panels = Array.prototype.slice.call(document.querySelectorAll('.variant'));
+    var dots   = Array.prototype.slice.call(document.querySelectorAll('.variant-dot'));
+    var status = document.getElementById('carousel-status');
+    var arrow  = document.getElementById('discover-arrow');
+    var prevBtn = document.getElementById('variant-prev');
+    var current = 1;
+
+    /* Heroes differ in height across the five variants (Variant 4's
+       larger --vgap, Variant 5's illustration, etc.), so the arrows are
+       centred on whichever hero is actually showing, not a fixed
+       fraction of the whole (much taller) viewport — that would land
+       them on the card row instead, overlapping card text. */
+    function positionArrows() {
+      var hero = panels[current - 1] && panels[current - 1].querySelector('.hero');
+      if (!hero) return;
+      var vRect = viewport.getBoundingClientRect();
+      var hRect = hero.getBoundingClientRect();
+      var centerY = Math.round((hRect.top - vRect.top) + hRect.height / 2);
+      arrow.style.top = centerY + 'px';
+      prevBtn.style.top = centerY + 'px';
+    }
+
+    function goToVariant(n) {
+      if (n < 1) n = TOTAL;
+      if (n > TOTAL) n = 1;
+      current = n;
+      panels.forEach(function (p) {
+        p.hidden = Number(p.getAttribute('data-variant')) !== n;
+      });
+      shell.setAttribute('data-active-variant', String(n));
+      dots.forEach(function (d) {
+        d.setAttribute('aria-current', String(Number(d.getAttribute('data-goto')) === n));
+      });
+      status.textContent = 'Design ' + n + ' of ' + TOTAL;
+      positionArrows();
+    }
+    function nextIndex() { return current === TOTAL ? 1 : current + 1; }
+    function prevIndex() { return current === 1 ? TOTAL : current - 1; }
+    window.addEventListener('resize', positionArrows);
+
+    /* ── Discovery nudge: setTimeout only, never :hover, so it works on
+       touch. Elapsed time is wall-clock since load (including
+       backgrounded time) — the simplest reading of "first minute on
+       the page", and harmless if a background tab throttles it late. */
+    var NUDGE_SCHEDULE_MS = [3000, 15000, 30000, 50000];
+    var BURST_DURATION_MS = 3600; /* 3 x the 1.2s keyframe */
+    var pendingTimers = [];
+
+    function scheduleNudges() {
+      NUDGE_SCHEDULE_MS.forEach(function (delay) {
+        pendingTimers.push(setTimeout(function () {
+          arrow.setAttribute('data-state', 'nudging');
+          pendingTimers.push(setTimeout(function () {
+            if (arrow.getAttribute('data-state') === 'nudging') {
+              arrow.setAttribute('data-state', 'idle');
+            }
+          }, BURST_DURATION_MS));
+        }, delay));
+      });
+    }
+
+    /* Permanent, one-way transition: stop nudging forever for this
+       visitor, persist first, then morph the SAME element into "Next"
+       (rather than hide it behind a fresh one) so a keyboard/screen-
+       reader user who just activated it keeps focus across the switch. */
+    function markDiscovered() {
+      pendingTimers.forEach(clearTimeout);
+      pendingTimers = [];
+      store('atlas-min-carousel-discovered', 'true');
+      root.setAttribute('data-carousel-discovered', 'true');
+      arrow.setAttribute('data-state', 'discovered');
+      arrow.setAttribute('aria-label', 'Next design');
+    }
+
+    arrow.addEventListener('click', function () {
+      if (root.getAttribute('data-carousel-discovered') !== 'true') {
+        markDiscovered();
+      }
+      goToVariant(nextIndex());
+    });
+    prevBtn.addEventListener('click', function () { goToVariant(prevIndex()); });
+    dots.forEach(function (d) {
+      d.addEventListener('click', function () { goToVariant(Number(d.getAttribute('data-goto'))); });
+    });
+
+    if (root.getAttribute('data-carousel-discovered') === 'true') {
+      /* Returning visitor: CSS has already revealed prev/dots pre-paint
+         (see html[data-carousel-discovered="true"] rules) — no nudge
+         timer is ever started. */
+      arrow.setAttribute('data-state', 'discovered');
+      arrow.setAttribute('aria-label', 'Next design');
+    } else {
+      scheduleNudges();
+    }
+
+    goToVariant(1);
+  })();
+</script>
+
+<script>
+  /* Reveal each element once, then stop watching it. A hidden panel's
+     .reveal children simply report isIntersecting:false until the
+     panel is un-hidden, so no extra wiring is needed for the four
+     panels that start hidden. */
+  (function () {
+    var items = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    items.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+</main>
+</body>
+</html>
